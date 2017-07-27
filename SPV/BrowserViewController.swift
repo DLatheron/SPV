@@ -14,11 +14,14 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     var webView: WKWebView!
     @IBOutlet weak var barView: UIView!
     @IBOutlet weak var urlField: UITextField!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     
     // Web Browser navigator
+    @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var reloadButton: UIBarButtonItem!
+    @IBOutlet weak var tabsButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     
     required init(coder aDecoder: NSCoder) {
@@ -28,21 +31,12 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         
         super.init(coder: aDecoder)!
     }
-//    
-//    override func loadView() {
-//        //super.loadView()
-//        webView.uiDelegate = self
-//        webView.navigationDelegate = self
-//        
-////        webViewHost = webView
-//    }
 
     override func viewDidLoad() {
         let topBarHeight = CGFloat.init(64)
         
         super.viewDidLoad()
         
-        barView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: topBarHeight)
         webView.uiDelegate = self
         webView.navigationDelegate = self
         
@@ -55,9 +49,8 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
 
         webView.scrollView.contentInset = UIEdgeInsetsMake(topBarHeight, 0, 0, 0)
         
-        let myURL = URL(string: "http://arstechnica.co.uk/")
-        let myRequest = URLRequest(url: myURL!)
-        webView.load(myRequest)
+        urlField.text = "http://arstechnica.co.uk/"
+        navigateTo(url: urlField.text!)
     }
     
     override func didReceiveMemoryWarning() {
@@ -76,7 +69,28 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
             self.webView.goForward()
         }
     }
+    
+    @IBAction func refresh(sender: UIBarButtonItem) {
+        self.webView.reload()
+    }
 
+    @IBAction func done(sender: UIBarButtonItem) {
+        urlField.resignFirstResponder()
+        self.navigateTo(url: urlField.text!)
+    }
+    
+    func navigateTo(url: String) {
+        let myURL = URL(string: url)
+        let myRequest = URLRequest(url: myURL!)
+        webView.load(myRequest)
+    }
+    
+    //MARK:- UITextFieldDelegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        urlField.resignFirstResponder()
+        self.navigateTo(url: urlField.text!)
+        return false
+    }
     
     //MARK:- WKNavigationDelegate
     func webView(_ webView: WKWebView,
