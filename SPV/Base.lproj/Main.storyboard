@@ -72,7 +72,7 @@
                                         <barButtonItem key="leftBarButtonItem" title="URL" id="7lt-7W-T74"/>
                                         <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="qLc-Ic-hN7">
                                             <rect key="frame" x="55" y="27" width="262" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <nil key="textColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="go"/>
@@ -116,6 +116,7 @@
                                 </items>
                             </toolbar>
                         </subviews>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="cit-Uh-R6s" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="3hZ-it-cmI"/>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="nRt-hr-Xvv" secondAttribute="bottom" id="7yc-Kk-NBM"/>
@@ -127,6 +128,9 @@
                             <constraint firstItem="eaW-wb-9Gr" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="qcC-gO-4ix"/>
                             <constraint firstItem="cit-Uh-R6s" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" constant="-20" id="vaA-FZ-XxA"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="5UH-PY-sgg" appends="YES" id="CG8-kc-sRh"/>
+                        </connections>
                     </view>
                     <tabBarItem key="tabBarItem" title="Browser" image="browser" id="cPa-gy-q4n"/>
                     <connections>
@@ -134,6 +138,7 @@
                         <outlet property="barView" destination="cit-Uh-R6s" id="N7n-TS-SaV"/>
                         <outlet property="doneButton" destination="eRW-z9-Fjm" id="8wJ-Xa-cSS"/>
                         <outlet property="forwardButton" destination="7Y4-2y-2th" id="qvA-wP-Ril"/>
+                        <outlet property="longPressGesture" destination="5UH-PY-sgg" id="Ask-4L-J1l"/>
                         <outlet property="progressView" destination="eaW-wb-9Gr" id="ttP-Nd-shH"/>
                         <outlet property="reloadButton" destination="SQc-7w-hpE" id="Yf7-g7-huJ"/>
                         <outlet property="tabsButton" destination="vVt-Kb-Mct" id="PUH-ZH-rga"/>
@@ -142,6 +147,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="5UH-PY-sgg">
+                    <connections>
+                        <action selector="longPressDetected:" destination="8rJ-Kc-sve" id="0JJ-A4-WN4"/>
+                        <outlet property="delegate" destination="8rJ-Kc-sve" id="lhz-MD-0za"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="749.60000000000002" y="359.37031484257875"/>
         </scene>

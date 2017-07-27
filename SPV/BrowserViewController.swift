@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UITextFieldDelegate {
+class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate {
     
     var webView: WKWebView!
     @IBOutlet weak var barView: UIView!
@@ -23,6 +23,8 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     @IBOutlet weak var reloadButton: UIBarButtonItem!
     @IBOutlet weak var tabsButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
+    
+    @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
     
     required init(coder aDecoder: NSCoder) {
         let webConfiguration = WKWebViewConfiguration()
@@ -64,8 +66,32 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoBack), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoForward), options: .new, context: nil)
         
+        longPressGesture.cancelsTouchesInView = true;
+
+        
+        // TODO: Work out which ones we need to lose and which ones we should keep. Keep single click (or add them ourselves).
+        // Remove all of the web view's gesture recognisers.
+        webView.scrollView.subviews[0].gestureRecognizers?.forEach(webView.scrollView.subviews[0].removeGestureRecognizer)
+        
+        webView.addGestureRecognizer(longPressGesture)
+        webView.allowsBackForwardNavigationGestures = true
+        webView.allowsLinkPreview = false
+        // Correctly disables interaction with the underlying view - but
+        // then we can't navigate to links...
+        //webView.scrollView.subviews[0].isUserInteractionEnabled = false
+
         urlField.text = "arstechnica.co.uk/"
         navigateTo(url: urlField.text!)
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    @IBAction func longPressDetected(_ sender: Any) {
+        print("Long press detected")
+        // TODO: Determine where was pressed in the document and what to do...
+
     }
     
     override func observeValue(forKeyPath keyPath: String?,
@@ -142,12 +168,17 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     func webView(_ webView: WKWebView,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
         print(error.localizedDescription)
     }
+    
     func webView(_ webView: WKWebView,
                  didStartProvisionalNavigation navigation: WKNavigation!) {
         print("Navigating to page")
     }
+    
     func webView(_ webView: WKWebView,
                  didFinish navigation: WKNavigation!) {
         print("Page loaded")
