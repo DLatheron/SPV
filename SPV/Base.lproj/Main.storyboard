@@ -47,7 +47,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="-320"/>
+            <point key="canvasLocation" x="750" y="-383"/>
         </scene>
         <!--Browser Controller-->
         <scene sceneID="wg7-f3-ORb">
@@ -69,8 +69,8 @@
                                 <items>
                                     <navigationItem id="6M0-gh-KTi">
                                         <nil key="title"/>
-                                        <barButtonItem key="leftBarButtonItem" title="URL" style="plain" id="7lt-7W-T74"/>
-                                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="qLc-Ic-hN7">
+                                        <barButtonItem key="leftBarButtonItem" title="URL" id="7lt-7W-T74"/>
+                                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="qLc-Ic-hN7">
                                             <rect key="frame" x="55" y="27" width="262" height="30"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                             <nil key="textColor"/>
@@ -94,13 +94,13 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nRt-hr-Xvv">
                                 <rect key="frame" x="0.0" y="574" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem image="back" id="rXy-AK-CuV">
+                                    <barButtonItem enabled="NO" image="back" id="rXy-AK-CuV">
                                         <connections>
                                             <action selector="backWithSender:" destination="8rJ-Kc-sve" id="6hS-GG-Diu"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="dlo-F6-pL0"/>
-                                    <barButtonItem image="forward" id="7Y4-2y-2th">
+                                    <barButtonItem enabled="NO" image="forward" id="7Y4-2y-2th">
                                         <connections>
                                             <action selector="forwardWithSender:" destination="8rJ-Kc-sve" id="6V4-YP-qRj"/>
                                         </connections>
@@ -203,7 +203,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zsc-2H-cTS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="1047"/>
+            <point key="canvasLocation" x="750" y="1108"/>
         </scene>
     </scenes>
     <resources>

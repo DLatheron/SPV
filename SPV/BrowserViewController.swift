@@ -43,14 +43,44 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         view.insertSubview(webView, at: 0)
         
         webView.translatesAutoresizingMaskIntoConstraints = false
-        let height = NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1, constant: 0)
-        let width = NSLayoutConstraint(item: webView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1, constant: 0)
+        let height = NSLayoutConstraint(item: webView,
+                                        attribute: .height,
+                                        relatedBy: .equal,
+                                        toItem: view,
+                                        attribute: .height,
+                                        multiplier: 1,
+                                        constant: 0)
+        let width = NSLayoutConstraint(item: webView,
+                                       attribute: .width,
+                                       relatedBy: .equal,
+                                       toItem: view,
+                                       attribute: .width,
+                                       multiplier: 1,
+                                       constant: 0)
         view.addConstraints([height, width])
 
         webView.scrollView.contentInset = UIEdgeInsetsMake(topBarHeight, 0, 0, 0)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoBack), options: .new, context: nil)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoForward), options: .new, context: nil)
         
-        urlField.text = "http://arstechnica.co.uk/"
+        urlField.text = "arstechnica.co.uk/"
         navigateTo(url: urlField.text!)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey : Any]?,
+                               context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(WKWebView.estimatedProgress) {
+            progressView.progress = Float(webView.estimatedProgress)
+        }
+        if keyPath == #keyPath(WKWebView.canGoBack) {
+            backButton.isEnabled = webView.canGoBack
+        }
+        if keyPath == #keyPath(WKWebView.canGoForward) {
+            forwardButton.isEnabled = webView.canGoForward
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,8 +110,24 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     }
     
     func navigateTo(url: String) {
-        let myURL = URL(string: url)
+        var modifiedUrl = url
+        
+        let secureProtocol = "https://"
+        let insecureProtocol = "http://"
+        
+        let lowercaseUrl = url.lowercased()
+        if (!lowercaseUrl.hasPrefix(secureProtocol) &&
+            !lowercaseUrl.hasPrefix(insecureProtocol)) {
+            modifiedUrl = insecureProtocol + modifiedUrl
+        }
+        
+        if (modifiedUrl != url) {
+            urlField.text = modifiedUrl
+        }
+        
+        let myURL = URL(string: modifiedUrl)
         let myRequest = URLRequest(url: myURL!)
+        
         webView.load(myRequest)
     }
     
