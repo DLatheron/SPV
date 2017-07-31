@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
 		F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAA91F28F92F00000D9B /* AppDelegate.swift */; };
 		F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */; };
 		F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAAD1F28F92F00000D9B /* BrowserViewController.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
 		F9BABAA61F28F92F00000D9B /* SPV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9BABAA91F28F92F00000D9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 		F9BABAA81F28F92F00000D9B /* SPV */ = {
 			isa = PBXGroup;
 			children = (
+				F92FBF491F2B9D4600E99589 /* Helpful.js */,
 				F9BABAA91F28F92F00000D9B /* AppDelegate.swift */,
 				F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */,
 				F9BABAAD1F28F92F00000D9B /* BrowserViewController.swift */,
@@ -239,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9BABAB61F28F92F00000D9B /* LaunchScreen.storyboard in Resources */,
+				F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */,
 				F9BABAB31F28F92F00000D9B /* Assets.xcassets in Resources */,
 				F9BABAB11F28F92F00000D9B /* Main.storyboard in Resources */,
 			);
@@ -515,6 +519,7 @@
 				F9BABAD21F28F92F00000D9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F9BABAD31F28F92F00000D9B /* Build configuration list for PBXNativeTarget "SPVTests" */ = {
 			isa = XCConfigurationList;
@@ -523,6 +528,7 @@
 				F9BABAD51F28F92F00000D9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F9BABAD61F28F92F00000D9B /* Build configuration list for PBXNativeTarget "SPVUITests" */ = {
 			isa = XCConfigurationList;
@@ -531,6 +537,7 @@
 				F9BABAD81F28F92F00000D9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

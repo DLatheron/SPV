@@ -9,7 +9,15 @@
 import UIKit
 import WebKit
 
-class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate {
+    
+    //let initialPageUrl = "http://arstechnica.co.uk"
+    let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
+    let topBarHeight = CGFloat.init(64)
+    let barViewAnimationSpeed = 0.25
+
+    var barViewOffScreenRect: CGRect!
+    var barViewOnScreenRect: CGRect!
     
     var webView: WKWebView!
     @IBOutlet weak var barView: UIView!
@@ -35,8 +43,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     }
 
     override func viewDidLoad() {
-        let topBarHeight = CGFloat.init(64)
-        
         super.viewDidLoad()
         
         webView.uiDelegate = self
@@ -62,6 +68,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         view.addConstraints([height, width])
 
         webView.scrollView.contentInset = UIEdgeInsetsMake(topBarHeight, 0, 0, 0)
+        webView.scrollView.delegate = self;
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoBack), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoForward), options: .new, context: nil)
@@ -79,9 +86,28 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         // Correctly disables interaction with the underlying view - but
         // then we can't navigate to links...
         //webView.scrollView.subviews[0].isUserInteractionEnabled = false
+        
+        barViewOffScreenRect = CGRect(x: 0,
+                                      y: -(20 + barView.frame.height),
+                                      width: barView.frame.width,
+                                      height: barView.frame.height)
+        barViewOnScreenRect = CGRect(x: 0,
+                                     y: 20,
+                                     width: barView.frame.width,
+                                     height: barView.frame.height)
+        barView.frame = barViewOffScreenRect
+        showUrlBar()
 
-        urlField.text = "arstechnica.co.uk/"
+        urlField.text = initialPageUrl
         navigateTo(url: urlField.text!)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y <= -topBarHeight) {
+            showUrlBar()
+        } else {
+            hideUrlBar()
+        }
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -90,8 +116,29 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     
     @IBAction func longPressDetected(_ sender: Any) {
         print("Long press detected")
+        
+        let location = longPressGesture.location(in: webView);
+        
         // TODO: Determine where was pressed in the document and what to do...
-
+        let jsFunction = "console.log('\(location.x), \(location.y)'); return 'result string';"
+        
+        webView.evaluateJavaScript(jsFunction, completionHandler: {
+            (result, error) -> Void in
+                // Do stuff here...
+                print(result ?? "")
+        })
+    }
+    
+    func hideUrlBar() {
+        UIView.animate(withDuration: barViewAnimationSpeed) {
+            self.barView.frame = self.barViewOffScreenRect
+        }
+    }
+    
+    func showUrlBar() {
+        UIView.animate(withDuration: barViewAnimationSpeed) {
+            self.barView.frame = self.barViewOnScreenRect
+        }
     }
     
     override func observeValue(forKeyPath keyPath: String?,
