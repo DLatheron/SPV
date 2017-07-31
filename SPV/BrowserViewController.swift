@@ -95,19 +95,31 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                                      y: 20,
                                      width: barView.frame.width,
                                      height: barView.frame.height)
-        barView.frame = barViewOffScreenRect
-        showUrlBar()
+        //barView.frame = barViewOffScreenRect
+        //showUrlBar()
 
         urlField.text = initialPageUrl
         navigateTo(url: urlField.text!)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (scrollView.contentOffset.y <= -topBarHeight) {
-            showUrlBar()
-        } else {
-            hideUrlBar()
-        }
+        let contentYOffset = scrollView.contentOffset.y;
+        print("content Y Offset: ", contentYOffset)
+        var offset = -64 - contentYOffset
+        print("Offset: ", offset)
+        
+        offset = max(offset, -contentYOffset)
+        offset = min(offset, 0)
+        
+        barView.frame = CGRect(x: 0, y: 20 + offset, width: barView.frame.width, height: barView.frame.height)
+        
+        
+        
+//        if (scrollView.contentOffset.y <= -topBarHeight) {
+//            showUrlBar()
+//        } else {
+//            hideUrlBar()
+//        }
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -115,7 +127,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     }
     
     @IBAction func longPressDetected(_ sender: Any) {
-        print("Long press detected")
+        //print("Long press detected")
         
         let location = longPressGesture.location(in: webView);
         
@@ -128,19 +140,20 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                 print(result ?? "")
         })
     }
-    
-    func hideUrlBar() {
-        UIView.animate(withDuration: barViewAnimationSpeed) {
-            self.barView.frame = self.barViewOffScreenRect
-        }
-    }
-    
-    func showUrlBar() {
-        UIView.animate(withDuration: barViewAnimationSpeed) {
-            self.barView.frame = self.barViewOnScreenRect
-        }
-    }
-    
+//    
+//    func hideUrlBar() {
+//        UIView.animate(withDuration: barViewAnimationSpeed) {
+//            self.barView.frame = self.barViewOffScreenRect
+//            
+//        }
+//    }
+//    
+//    func showUrlBar() {
+//        UIView.animate(withDuration: barViewAnimationSpeed) {
+//            self.barView.frame = self.barViewOnScreenRect
+//        }
+//    }
+//    
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?,

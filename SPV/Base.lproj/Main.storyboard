@@ -61,18 +61,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3st-bG-3GF">
-                                <rect key="frame" x="0.0" y="20" width="376" height="44"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3st-bG-3GF">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <subviews>
                                     <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cit-Uh-R6s">
-                                        <rect key="frame" x="0.0" y="0.0" width="377" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="376" height="44"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                         <items>
                                             <navigationItem id="6M0-gh-KTi">
                                                 <nil key="title"/>
                                                 <barButtonItem key="leftBarButtonItem" title="URL" id="7lt-7W-T74"/>
                                                 <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="qLc-Ic-hN7">
-                                                    <rect key="frame" x="60.5" y="7" width="256" height="30"/>
+                                                    <rect key="frame" x="60.5" y="7" width="255" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -90,7 +90,7 @@
                                         </items>
                                     </navigationBar>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eaW-wb-9Gr">
-                                        <rect key="frame" x="0.0" y="44" width="377" height="2"/>
+                                        <rect key="frame" x="0.0" y="44" width="376" height="2"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                     </progressView>
                                 </subviews>
@@ -99,6 +99,10 @@
                                     <constraint firstAttribute="height" constant="44" id="QrC-E8-8Vu"/>
                                 </constraints>
                             </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jEm-nF-dMv">
+                                <rect key="frame" x="0.0" y="-24" width="375" height="44"/>
+                                <items/>
+                            </toolbar>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nRt-hr-Xvv">
                                 <rect key="frame" x="0.0" y="574" width="375" height="44"/>
                                 <items>
@@ -127,11 +131,14 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="nRt-hr-Xvv" secondAttribute="bottom" id="7yc-Kk-NBM"/>
+                            <constraint firstItem="jEm-nF-dMv" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="GV2-OR-OhN"/>
                             <constraint firstItem="nRt-hr-Xvv" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="Ipm-00-jTy"/>
                             <constraint firstItem="nRt-hr-Xvv" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="Mal-yJ-4d5"/>
+                            <constraint firstItem="jEm-nF-dMv" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="PCX-EE-NyO"/>
                             <constraint firstItem="3st-bG-3GF" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" id="TEH-9g-Iil"/>
                             <constraint firstItem="3st-bG-3GF" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="ZZ8-Nn-s09"/>
                             <constraint firstItem="3st-bG-3GF" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="aWY-ko-qAc"/>
+                            <constraint firstItem="3st-bG-3GF" firstAttribute="top" secondItem="jEm-nF-dMv" secondAttribute="bottom" id="aih-ns-Ul0"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="5UH-PY-sgg" appends="YES" id="CG8-kc-sRh"/>
