@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */; };
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
 		F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAA91F28F92F00000D9B /* AppDelegate.swift */; };
 		F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBBarController.swift; sourceTree = "<group>"; };
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
 		F9BABAA61F28F92F00000D9B /* SPV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9BABAA91F28F92F00000D9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				F9BABAB41F28F92F00000D9B /* LaunchScreen.storyboard */,
 				F9BABAB71F28F92F00000D9B /* Info.plist */,
 				F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */,
+				F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */,
 			);
 			path = SPV;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
 				F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */,
