@@ -13,12 +13,11 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     
     //let initialPageUrl = "http://arstechnica.co.uk"
     let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
-    let topBarHeight = CGFloat.init(64)
+    let statusBarHeight = CGFloat.init(20)
+    let urlBarHeight = CGFloat.init(44)
+    let topBarHeight = CGFloat.init(20 + 44)
     let barViewAnimationSpeed = 0.25
 
-    var barViewOffScreenRect: CGRect!
-    var barViewOnScreenRect: CGRect!
-    
     var webView: WKWebView!
     @IBOutlet weak var barView: UIView!
     @IBOutlet weak var urlField: UITextField!
@@ -87,14 +86,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         // then we can't navigate to links...
         //webView.scrollView.subviews[0].isUserInteractionEnabled = false
         
-        barViewOffScreenRect = CGRect(x: 0,
-                                      y: -(20 + barView.frame.height),
-                                      width: barView.frame.width,
-                                      height: barView.frame.height)
-        barViewOnScreenRect = CGRect(x: 0,
-                                     y: 20,
-                                     width: barView.frame.width,
-                                     height: barView.frame.height)
         //barView.frame = barViewOffScreenRect
         //showUrlBar()
 
@@ -103,23 +94,14 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let contentYOffset = scrollView.contentOffset.y;
-        print("content Y Offset: ", contentYOffset)
-        var offset = -64 - contentYOffset
-        print("Offset: ", offset)
+        // Values are wrong... topBarHeight should be 64, topOffset should be 64 to totally hide the bar??? 
         
-        offset = max(offset, -contentYOffset)
-        offset = min(offset, 0)
+        let offset = max(min(-topBarHeight - scrollView.contentOffset.y, 0), -topBarHeight)
         
-        barView.frame = CGRect(x: 0, y: 20 + offset, width: barView.frame.width, height: barView.frame.height)
-        
-        
-        
-//        if (scrollView.contentOffset.y <= -topBarHeight) {
-//            showUrlBar()
-//        } else {
-//            hideUrlBar()
-//        }
+        barView.frame = CGRect(x: 0,
+                               y: statusBarHeight + offset,
+                               width: barView.frame.width,
+                               height: barView.frame.height)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
