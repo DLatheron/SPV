@@ -26,10 +26,8 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     var shouldShowSearchResults: Bool = false
     
     @IBOutlet weak var barView: UIView!
-//    @IBOutlet weak var searchBar: UISearchBar!
     
     @IBOutlet weak var searchResultsTable: UITableView!
-    @IBOutlet weak var doneButton: UIBarButtonItem!
     
     // Web Browser navigator
     @IBOutlet weak var toolbar: UIToolbar!
@@ -39,8 +37,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     @IBOutlet weak var tabsButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
-    
-    @IBOutlet weak var tableView: UITableView!
     
     required init(coder aDecoder: NSCoder) {
         let webConfiguration = WKWebViewConfiguration()
@@ -54,9 +50,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        webView.uiDelegate = self
-        webView.navigationDelegate = self
-        
         // Search controller and bar.
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = true
@@ -66,12 +59,17 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         
         // Hide the search icon.
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
-//        [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setLeftViewMode:UITextFieldViewModeNever];
         
         let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as! UITextField
         textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
         
+        searchController.searchBar.text = initialPageUrl
+        
         barView.insertSubview(searchController.searchBar, at: 0)
+        
+        // Web view
+        webView.uiDelegate = self
+        webView.navigationDelegate = self
         
         view.insertSubview(webView, at: 0)
         
@@ -100,9 +98,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         
         longPressGesture.cancelsTouchesInView = true
         
-        //searchBar.delegate = self
-
-        
         // TODO: Work out which ones we need to lose and which ones we should keep. Keep single click (or add them ourselves).
         // Remove all of the web view's gesture recognisers.
         webView.scrollView.subviews[0].gestureRecognizers?.forEach(webView.scrollView.subviews[0].removeGestureRecognizer)
@@ -114,10 +109,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         // then we can't navigate to links...
         //webView.scrollView.subviews[0].isUserInteractionEnabled = false
         
-        //barView.frame = barViewOffScreenRect
-        //showUrlBar()
-
-        searchController.searchBar.text = initialPageUrl
         navigateTo(url: searchController.searchBar.text!)
     }
     
@@ -185,11 +176,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         self.webView.reload()
     }
 
-//    @IBAction func done(sender: UIBarButtonItem) {
-//        searchBar.resignFirstResponder()
-//        self.navigateTo(url: searchBar.text!)
-//    }
-    
     func navigateTo(url: String) {
         var modifiedUrl = url
         
@@ -272,56 +258,37 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     func updateSearchResults(for searchController: UISearchController) {
         let searchString = searchController.searchBar.text
         
-        // Filter the data array and get only those countries that match the search text.
-        filteredData = data.filter({ (country) -> Bool in
-            let countryText: NSString = country as NSString
-            
-            return (countryText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-        })
+        if (searchString?.isEmpty)! {
+            filteredData = data
+        } else {
+            // Filter the data array and get only those countries that match the search text.
+            filteredData = data.filter({ (country) -> Bool in
+                let countryText: NSString = country as NSString
+                
+                return (countryText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+            })
+        }
         
         // Reload the tableview.
         searchResultsTable.reloadData()
-        //searchResultsTable.isHidden = false
     }
-//
-//    func searchBar(_ searchBar: UISearchBar,
-//                   textDidChange searchText: String) {
-//        
-//        filtered = data.filter({ (text) -> Bool in
-//            let tmp: NSString = searchText as NSString
-//            let range = tmp.range(of: searchText, options: NSString.CompareOptions.caseInsensitive)
-//            return range.location != NSNotFound
-//        })
-//        if(filtered.count == 0){
-//            searchActive = false;
-//        } else {
-//            searchActive = true;
-//        }
-//        self.searchDisplayController?.searchResultsTableView.reloadData()
-//        //self.tableView.reloadData()
-//    }
     
     //MARK:- UITableViewDelegate
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // Proposed sections:
+        // - Bookmarks
+        // - History
+        // - Google search
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (shouldShowSearchResults) {
-            return filteredData.count
-        } else {
-            return data.count
-        }
+        return filteredData.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {        
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!;
-        if(shouldShowSearchResults) {
-            cell.textLabel?.text = filteredData[indexPath.row]
-        } else {
-            cell.textLabel?.text = data[indexPath.row]
-        }
+        cell.textLabel?.text = filteredData[indexPath.row]
         
         return cell;
     }
