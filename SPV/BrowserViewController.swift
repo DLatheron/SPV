@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate {
+class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
     
     //let initialPageUrl = "http://arstechnica.co.uk"
     let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
@@ -19,8 +19,16 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     let barViewAnimationSpeed = 0.25
 
     var webView: WKWebView!
+    var searchController: UISearchController!
+    
+    var data = ["San Francisco","New York","San Jose","Chicago","Los Angeles","Austin","Seattle"]
+    var filteredData:[String] = []
+    var shouldShowSearchResults: Bool = false
+    
     @IBOutlet weak var barView: UIView!
-    @IBOutlet weak var urlField: UITextField!
+//    @IBOutlet weak var searchBar: UISearchBar!
+    
+    @IBOutlet weak var searchResultsTable: UITableView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     
     // Web Browser navigator
@@ -30,13 +38,15 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     @IBOutlet weak var reloadButton: UIBarButtonItem!
     @IBOutlet weak var tabsButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
-    
     @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
+    
+    @IBOutlet weak var tableView: UITableView!
     
     required init(coder aDecoder: NSCoder) {
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.allowsInlineMediaPlayback = true;
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        searchController = UISearchController(searchResultsController: nil)
         
         super.init(coder: aDecoder)!
     }
@@ -46,6 +56,22 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         
         webView.uiDelegate = self
         webView.navigationDelegate = self
+        
+        // Search controller and bar.
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        
+        // Hide the search icon.
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
+//        [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setLeftViewMode:UITextFieldViewModeNever];
+        
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as! UITextField
+        textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
+        
+        barView.insertSubview(searchController.searchBar, at: 0)
         
         view.insertSubview(webView, at: 0)
         
@@ -72,7 +98,9 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoBack), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoForward), options: .new, context: nil)
         
-        longPressGesture.cancelsTouchesInView = true;
+        longPressGesture.cancelsTouchesInView = true
+        
+        //searchBar.delegate = self
 
         
         // TODO: Work out which ones we need to lose and which ones we should keep. Keep single click (or add them ourselves).
@@ -89,13 +117,11 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         //barView.frame = barViewOffScreenRect
         //showUrlBar()
 
-        urlField.text = initialPageUrl
-        navigateTo(url: urlField.text!)
+        searchController.searchBar.text = initialPageUrl
+        navigateTo(url: searchController.searchBar.text!)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // Values are wrong... topBarHeight should be 64, topOffset should be 64 to totally hide the bar??? 
-        
         let offset = max(min(-topBarHeight - scrollView.contentOffset.y, 0), -topBarHeight)
         
         barView.frame = CGRect(x: 0,
@@ -122,20 +148,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                 print(result ?? "")
         })
     }
-//    
-//    func hideUrlBar() {
-//        UIView.animate(withDuration: barViewAnimationSpeed) {
-//            self.barView.frame = self.barViewOffScreenRect
-//            
-//        }
-//    }
-//    
-//    func showUrlBar() {
-//        UIView.animate(withDuration: barViewAnimationSpeed) {
-//            self.barView.frame = self.barViewOnScreenRect
-//        }
-//    }
-//    
+   
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?,
@@ -172,10 +185,10 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         self.webView.reload()
     }
 
-    @IBAction func done(sender: UIBarButtonItem) {
-        urlField.resignFirstResponder()
-        self.navigateTo(url: urlField.text!)
-    }
+//    @IBAction func done(sender: UIBarButtonItem) {
+//        searchBar.resignFirstResponder()
+//        self.navigateTo(url: searchBar.text!)
+//    }
     
     func navigateTo(url: String) {
         var modifiedUrl = url
@@ -190,7 +203,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         }
         
         if (modifiedUrl != url) {
-            urlField.text = modifiedUrl
+            searchController.searchBar.text = modifiedUrl
         }
         
         let myURL = URL(string: modifiedUrl)
@@ -201,8 +214,8 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     
     //MARK:- UITextFieldDelegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        urlField.resignFirstResponder()
-        self.navigateTo(url: urlField.text!)
+        searchController.searchBar.resignFirstResponder()
+        self.navigateTo(url: searchController.searchBar.text!)
         return false
     }
     
@@ -224,6 +237,93 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     func webView(_ webView: WKWebView,
                  didFinish navigation: WKNavigation!) {
         print("Page loaded")
+    }
+    
+    //MARK:- UISearchBarDelegate
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = true
+        searchResultsTable.reloadData()
+        searchResultsTable.isHidden = !shouldShowSearchResults
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = false
+        searchResultsTable.reloadData()
+        searchResultsTable.isHidden = !shouldShowSearchResults
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = false
+        searchResultsTable.reloadData()
+        searchResultsTable.isHidden = !shouldShowSearchResults
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowSearchResults {
+            searchController.isActive = true
+            searchResultsTable.isHidden = !shouldShowSearchResults
+        }
+        
+        searchController.searchBar.resignFirstResponder()
+        
+        self.navigateTo(url: searchController.searchBar.text!)
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchString = searchController.searchBar.text
+        
+        // Filter the data array and get only those countries that match the search text.
+        filteredData = data.filter({ (country) -> Bool in
+            let countryText: NSString = country as NSString
+            
+            return (countryText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
+        })
+        
+        // Reload the tableview.
+        searchResultsTable.reloadData()
+        //searchResultsTable.isHidden = false
+    }
+//
+//    func searchBar(_ searchBar: UISearchBar,
+//                   textDidChange searchText: String) {
+//        
+//        filtered = data.filter({ (text) -> Bool in
+//            let tmp: NSString = searchText as NSString
+//            let range = tmp.range(of: searchText, options: NSString.CompareOptions.caseInsensitive)
+//            return range.location != NSNotFound
+//        })
+//        if(filtered.count == 0){
+//            searchActive = false;
+//        } else {
+//            searchActive = true;
+//        }
+//        self.searchDisplayController?.searchResultsTableView.reloadData()
+//        //self.tableView.reloadData()
+//    }
+    
+    //MARK:- UITableViewDelegate
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (shouldShowSearchResults) {
+            return filteredData.count
+        } else {
+            return data.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!;
+        if(shouldShowSearchResults) {
+            cell.textLabel?.text = filteredData[indexPath.row]
+        } else {
+            cell.textLabel?.text = data[indexPath.row]
+        }
+        
+        return cell;
     }
 }
 

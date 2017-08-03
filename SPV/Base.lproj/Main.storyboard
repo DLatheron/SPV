@@ -61,34 +61,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="w49-69-Z4R" userLabel="Search Results Table">
+                                <rect key="frame" x="0.0" y="62" width="375" height="512"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="g90-3A-lcS" style="IBUITableViewCellStyleDefault" id="h3j-nU-vZX">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h3j-nU-vZX" id="xK2-1a-EKO">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g90-3A-lcS">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="8rJ-Kc-sve" id="poT-dt-YcI"/>
+                                    <outlet property="delegate" destination="8rJ-Kc-sve" id="wrY-tZ-PU6"/>
+                                </connections>
+                            </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3st-bG-3GF">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <subviews>
-                                    <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cit-Uh-R6s">
-                                        <rect key="frame" x="0.0" y="0.0" width="376" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                        <items>
-                                            <navigationItem id="6M0-gh-KTi">
-                                                <nil key="title"/>
-                                                <barButtonItem key="leftBarButtonItem" title="URL" id="7lt-7W-T74"/>
-                                                <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="qLc-Ic-hN7">
-                                                    <rect key="frame" x="60.5" y="7" width="255" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL" returnKeyType="go"/>
-                                                    <connections>
-                                                        <outlet property="delegate" destination="8rJ-Kc-sve" id="OJr-D3-Z4D"/>
-                                                    </connections>
-                                                </textField>
-                                                <barButtonItem key="rightBarButtonItem" image="navigateTo" id="eRW-z9-Fjm">
-                                                    <connections>
-                                                        <action selector="doneWithSender:" destination="8rJ-Kc-sve" id="DEq-p5-cJB"/>
-                                                    </connections>
-                                                </barButtonItem>
-                                            </navigationItem>
-                                        </items>
-                                    </navigationBar>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eaW-wb-9Gr">
                                         <rect key="frame" x="0.0" y="44" width="376" height="2"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -99,7 +102,7 @@
                                     <constraint firstAttribute="height" constant="44" id="QrC-E8-8Vu"/>
                                 </constraints>
                             </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jEm-nF-dMv">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jEm-nF-dMv" userLabel="Statusbar">
                                 <rect key="frame" x="0.0" y="-24" width="375" height="44"/>
                                 <items/>
                             </toolbar>
@@ -148,14 +151,13 @@
                     <connections>
                         <outlet property="backButton" destination="rXy-AK-CuV" id="cT7-9E-whT"/>
                         <outlet property="barView" destination="3st-bG-3GF" id="fZa-3D-w4I"/>
-                        <outlet property="doneButton" destination="eRW-z9-Fjm" id="8wJ-Xa-cSS"/>
                         <outlet property="forwardButton" destination="7Y4-2y-2th" id="qvA-wP-Ril"/>
                         <outlet property="longPressGesture" destination="5UH-PY-sgg" id="Ask-4L-J1l"/>
                         <outlet property="progressView" destination="eaW-wb-9Gr" id="ttP-Nd-shH"/>
                         <outlet property="reloadButton" destination="SQc-7w-hpE" id="Yf7-g7-huJ"/>
+                        <outlet property="searchResultsTable" destination="w49-69-Z4R" id="TcK-oe-sqx"/>
                         <outlet property="tabsButton" destination="vVt-Kb-Mct" id="PUH-ZH-rga"/>
                         <outlet property="toolbar" destination="nRt-hr-Xvv" id="acD-SZ-Abv"/>
-                        <outlet property="urlField" destination="qLc-Ic-hN7" id="RGO-ND-POc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
@@ -242,7 +244,6 @@
         <image name="back" width="25" height="25"/>
         <image name="browser" width="25" height="25"/>
         <image name="forward" width="25" height="25"/>
-        <image name="navigateTo" width="25" height="25"/>
         <image name="refresh" width="25" height="25"/>
         <image name="settings" width="25" height="25"/>
         <image name="tabs" width="25" height="25"/>
