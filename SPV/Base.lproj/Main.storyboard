@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Albums View Controller-->
+        <!--Media-->
         <scene sceneID="E6Z-rP-3a9">
             <objects>
                 <collectionViewController id="Yty-C6-eYb" customClass="AlbumsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
@@ -48,41 +48,25 @@
                             <outlet property="delegate" destination="Yty-C6-eYb" id="cqW-wo-qCM"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="oUS-cY-6Un"/>
+                    <navigationItem key="navigationItem" title="Media" id="oUS-cY-6Un"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gfL-mj-j4j" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1610" y="-384"/>
         </scene>
-        <!--Photo Details View Controller-->
+        <!--Media Viewer-->
         <scene sceneID="DNg-va-s7F">
             <objects>
-                <viewController id="ciT-K2-RIX" customClass="PhotoDetailsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Media Viewer" id="ciT-K2-RIX" customClass="PhotoDetailsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="5BH-z0-jiY"/>
-                        <viewControllerLayoutGuide type="bottom" id="5p0-KB-8uU"/>
+                        <viewControllerLayoutGuide type="top" id="i0n-wr-heX"/>
+                        <viewControllerLayoutGuide type="bottom" id="EQv-xo-CYW"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="GLe-Uh-EMn">
+                    <view key="view" contentMode="scaleToFill" id="aiN-xH-0Nc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="6" translatesAutoresizingMaskIntoConstraints="NO" id="0St-64-san">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <imageView multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lgi-Wl-byZ">
-                                        <rect key="frame" x="-0.68059701507445425" y="-63.57313432830756" width="375.00000000000045" height="667.00000000000011"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </imageView>
-                                </subviews>
-                            </scrollView>
-                        </subviews>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <connections>
-                        <outlet property="imageView" destination="lgi-Wl-byZ" id="9mm-Lc-eaQ"/>
-                        <outlet property="scrollView" destination="0St-64-san" id="o6f-pn-tfM"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eWD-SK-nVb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
