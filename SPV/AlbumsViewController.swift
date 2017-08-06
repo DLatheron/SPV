@@ -44,12 +44,36 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! PhotoCell
-        //let flickrPhoto = photoForIndexPath(indexPath: indexPath)
-        cell.backgroundColor = UIColor.black
-        cell.imageView.image = nil;
+        let filePath = photoFilePathForIndexPath(indexPath: indexPath)
+        let photo = UIImage(contentsOfFile: filePath)
+        cell.filePath = filePath
+        cell.imageView.image = photo
         return cell
     }
-
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
+        if (segue.identifier == "PhotoDetails") {
+            let photoCell = sender as! PhotoCell
+            let photoDetailsVC = segue.destination as! PhotoDetailsViewController
+            photoDetailsVC.filePath = photoCell.filePath
+            photoDetailsVC.image = photoCell.imageView.image
+        }
+    }
+    
+    func photoFilePathForIndexPath(indexPath: IndexPath) -> String {
+        let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
+        let filename: String
+        
+        switch indexPath.row {
+            case 0: filename = "Test01.jpg"
+            case 1: filename = "Test02.jpg"
+            case 2: filename = "Test03.jpg"
+            case 3: filename = "Test04.png"
+            default:
+                filename = "Unknown.png"
+        }
+        
+        return documentDirectoryPath.appendingPathComponent(filename)
+    }
 }
 

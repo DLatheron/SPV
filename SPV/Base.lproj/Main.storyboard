@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -13,7 +13,7 @@
         <scene sceneID="E6Z-rP-3a9">
             <objects>
                 <collectionViewController id="Yty-C6-eYb" customClass="AlbumsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="bsK-6Q-7CP">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="bsK-6Q-7CP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -31,7 +31,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4I-Hd-xUy">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T4I-Hd-xUy">
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
@@ -39,7 +39,7 @@
                                 </view>
                                 <connections>
                                     <outlet property="imageView" destination="T4I-Hd-xUy" id="H68-q7-Pbq"/>
-                                    <segue destination="ciT-K2-RIX" kind="show" id="i5c-S0-ryM"/>
+                                    <segue destination="ciT-K2-RIX" kind="show" identifier="PhotoDetails" id="i5c-S0-ryM"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -54,10 +54,10 @@
             </objects>
             <point key="canvasLocation" x="1610" y="-384"/>
         </scene>
-        <!--View Controller-->
+        <!--Photo Details View Controller-->
         <scene sceneID="DNg-va-s7F">
             <objects>
-                <viewController id="ciT-K2-RIX" sceneMemberID="viewController">
+                <viewController id="ciT-K2-RIX" customClass="PhotoDetailsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5BH-z0-jiY"/>
                         <viewControllerLayoutGuide type="bottom" id="5p0-KB-8uU"/>
@@ -66,22 +66,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lgi-Wl-byZ">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" maximumZoomScale="6" translatesAutoresizingMaskIntoConstraints="NO" id="0St-64-san">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                            </imageView>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <imageView multipleTouchEnabled="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lgi-Wl-byZ">
+                                        <rect key="frame" x="-0.68059701507445425" y="-63.57313432830756" width="375.00000000000045" height="667.00000000000011"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="lgi-Wl-byZ" firstAttribute="centerX" secondItem="GLe-Uh-EMn" secondAttribute="centerX" id="DxM-f9-5F6"/>
-                            <constraint firstItem="lgi-Wl-byZ" firstAttribute="centerY" secondItem="GLe-Uh-EMn" secondAttribute="centerY" id="TR8-CT-W3c"/>
-                            <constraint firstItem="lgi-Wl-byZ" firstAttribute="width" secondItem="GLe-Uh-EMn" secondAttribute="width" id="d6x-Lr-hNp"/>
-                            <constraint firstItem="lgi-Wl-byZ" firstAttribute="height" secondItem="GLe-Uh-EMn" secondAttribute="height" id="nFc-0v-2z3"/>
-                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="lgi-Wl-byZ" id="9mm-Lc-eaQ"/>
+                        <outlet property="scrollView" destination="0St-64-san" id="o6f-pn-tfM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eWD-SK-nVb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2423" y="-385"/>
+            <point key="canvasLocation" x="2421.5999999999999" y="-385.45727136431788"/>
         </scene>
         <!--Browser Controller-->
         <scene sceneID="wg7-f3-ORb">

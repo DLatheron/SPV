@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,7 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions:
+        [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        copyTestResources()
+        
+        
         // Override point for customization after application launch.
         return true
     }
@@ -41,6 +48,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func copyTestResources() {
+        let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
+        
+        copyTestResource(resourceName: "Test01", ofType: "jpg", toPath: documentDirectoryPath)
+        copyTestResource(resourceName: "Test02", ofType: "jpg", toPath: documentDirectoryPath)
+        copyTestResource(resourceName: "Test03", ofType: "jpg", toPath: documentDirectoryPath)
+        copyTestResource(resourceName: "Test04", ofType: "png", toPath: documentDirectoryPath)
+    }
+    
+    func copyTestResource(resourceName srcFilename: String,
+                          ofType srcType: String,
+                          toPath dstPath: NSString) {
+        let fileManger = FileManager.default
+        var destinationPath = dstPath.appendingPathComponent(srcFilename) as NSString;
+        destinationPath = destinationPath.appendingPathExtension(srcType)! as NSString
+        
+        let srcPath = Bundle.main.path(forResource: srcFilename, ofType: srcType)
+        do {
+            try fileManger.copyItem(atPath: srcPath!, toPath: destinationPath as String)
+        }
+        catch let error as NSError {
+            print("Unable to copy test resources because of \(error)")
+        }
+        
+    }
 }
 

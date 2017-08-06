@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		639170031F374E15001E5ABE /* Test01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63916FFF1F374E15001E5ABE /* Test01.jpg */; };
+		639170041F374E15001E5ABE /* Test02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 639170001F374E15001E5ABE /* Test02.jpg */; };
+		639170051F374E15001E5ABE /* Test03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 639170011F374E15001E5ABE /* Test03.jpg */; };
+		639170061F374E15001E5ABE /* Test04.png in Resources */ = {isa = PBXBuildFile; fileRef = 639170021F374E15001E5ABE /* Test04.png */; };
+		639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639170071F376001001E5ABE /* PhotoDetailsViewController.swift */; };
 		F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */; };
 		F914D4F31F34D4BA00B9042E /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F21F34D4BA00B9042E /* PhotoCell.swift */; };
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
@@ -39,6 +44,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		63916FFF1F374E15001E5ABE /* Test01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test01.jpg; sourceTree = "<group>"; };
+		639170001F374E15001E5ABE /* Test02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test02.jpg; sourceTree = "<group>"; };
+		639170011F374E15001E5ABE /* Test03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test03.jpg; sourceTree = "<group>"; };
+		639170021F374E15001E5ABE /* Test04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Test04.png; sourceTree = "<group>"; };
+		639170071F376001001E5ABE /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 		F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBBarController.swift; sourceTree = "<group>"; };
 		F914D4F21F34D4BA00B9042E /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
@@ -84,9 +94,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		63916FFE1F374E00001E5ABE /* TestData */ = {
+			isa = PBXGroup;
+			children = (
+				63916FFF1F374E15001E5ABE /* Test01.jpg */,
+				639170001F374E15001E5ABE /* Test02.jpg */,
+				639170011F374E15001E5ABE /* Test03.jpg */,
+				639170021F374E15001E5ABE /* Test04.png */,
+			);
+			name = TestData;
+			sourceTree = "<group>";
+		};
 		F9BABA9D1F28F92F00000D9B = {
 			isa = PBXGroup;
 			children = (
+				63916FFE1F374E00001E5ABE /* TestData */,
 				F9BABAA81F28F92F00000D9B /* SPV */,
 				F9BABABF1F28F92F00000D9B /* SPVTests */,
 				F9BABACA1F28F92F00000D9B /* SPVUITests */,
@@ -118,6 +140,7 @@
 				F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */,
 				F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */,
 				F914D4F21F34D4BA00B9042E /* PhotoCell.swift */,
+				639170071F376001001E5ABE /* PhotoDetailsViewController.swift */,
 			);
 			path = SPV;
 			sourceTree = "<group>";
@@ -208,15 +231,18 @@
 				TargetAttributes = {
 					F9BABAA51F28F92F00000D9B = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 4NH6Q37JYD;
 						ProvisioningStyle = Automatic;
 					};
 					F9BABABB1F28F92F00000D9B = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 4NH6Q37JYD;
 						ProvisioningStyle = Automatic;
 						TestTargetID = F9BABAA51F28F92F00000D9B;
 					};
 					F9BABAC61F28F92F00000D9B = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 4NH6Q37JYD;
 						ProvisioningStyle = Automatic;
 						TestTargetID = F9BABAA51F28F92F00000D9B;
 					};
@@ -247,8 +273,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				639170051F374E15001E5ABE /* Test03.jpg in Resources */,
+				639170061F374E15001E5ABE /* Test04.png in Resources */,
 				F9BABAB61F28F92F00000D9B /* LaunchScreen.storyboard in Resources */,
 				F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */,
+				639170031F374E15001E5ABE /* Test01.jpg in Resources */,
+				639170041F374E15001E5ABE /* Test02.jpg in Resources */,
 				F9BABAB31F28F92F00000D9B /* Assets.xcassets in Resources */,
 				F9BABAB11F28F92F00000D9B /* Main.storyboard in Resources */,
 			);
@@ -275,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
@@ -357,9 +388,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 4NH6Q37JYD;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -408,9 +441,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 4NH6Q37JYD;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -434,6 +469,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4NH6Q37JYD;
 				INFOPLIST_FILE = SPV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ellipseSoftware.SPV;
@@ -446,6 +484,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 4NH6Q37JYD;
 				INFOPLIST_FILE = SPV/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ellipseSoftware.SPV;
