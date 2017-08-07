@@ -13,8 +13,15 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     var scrollView: UIScrollView!
     var imageView: UIImageView!
     
-    var filePath: String = ""
+    var photoManager: PhotoManager? = nil
+    var index: Int = 0
     var image: UIImage! = nil
+    
+    var singleTap: UITapGestureRecognizer? = nil
+    var doubleTap: UITapGestureRecognizer? = nil
+    var swipeLeft: UISwipeGestureRecognizer? = nil
+    var swipeRight: UISwipeGestureRecognizer? = nil
+    
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -22,9 +29,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.hidesBarsOnTap = true
-        
+                
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         imageView.image = image
         imageView.sizeToFit()
@@ -43,6 +48,14 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         view.addSubview(scrollView)
 
         setupGestureRecognizers()
+        
+        navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        removeGestureRecognizers()
     }
     
     override func viewWillLayoutSubviews() {
@@ -86,26 +99,33 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     //MARK: - Gesture recognition
     func setupGestureRecognizers() {
         // Single tab for full screen.
-        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
-        singleTap.numberOfTapsRequired = 1
+        singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
+        singleTap?.numberOfTapsRequired = 1
 
         // Double tab for zoom.
-        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
-        doubleTap.numberOfTapsRequired = 2
-        scrollView.addGestureRecognizer(doubleTap)
-        scrollView.addGestureRecognizer(singleTap)
+        doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
+        doubleTap?.numberOfTapsRequired = 2
+        scrollView.addGestureRecognizer(doubleTap!)
+        scrollView.addGestureRecognizer(singleTap!)
         
-        singleTap.require(toFail: doubleTap)
+        singleTap?.require(toFail: doubleTap!)
         
         // Swipe left for next image.
-        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeLeft(_:)))
-        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
-        self.view.addGestureRecognizer(swipeLeft)
+        swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeLeft(_:)))
+        swipeLeft?.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(swipeLeft!)
         
         // Swipe right for previous image.
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeRight(_:)))
-        swipeRight.direction = UISwipeGestureRecognizerDirection.right
-        self.view.addGestureRecognizer(swipeRight)
+        swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeRight(_:)))
+        swipeRight?.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight!)
+    }
+    
+    func removeGestureRecognizers() {
+        scrollView.removeGestureRecognizer(singleTap!)
+        scrollView.removeGestureRecognizer(doubleTap!)
+        scrollView.removeGestureRecognizer(swipeLeft!)
+        scrollView.removeGestureRecognizer(swipeRight!)
     }
     
     func handleSingleTap(_ recognizer: UITapGestureRecognizer) {

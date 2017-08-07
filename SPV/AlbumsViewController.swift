@@ -14,7 +14,12 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
     fileprivate let reuseIdentifier = "PhotoCellId"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     
-    var albums = ["image001.png", "image002.png", "image003.png", "image004.png"]
+    var photoManager = PhotoManager(withPhotos: [
+        "Test01.jpg",
+        "Test02.jpg",
+        "Test03.jpg",
+        "Test04.png"
+    ])
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -37,7 +42,7 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        return albums.count
+        return photoManager.count
     }
     
     override func collectionView(_ collectionView: UICollectionView,
@@ -47,6 +52,7 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
         let filePath = photoFilePathForIndexPath(indexPath: indexPath)
         let photo = UIImage(contentsOfFile: filePath)
         cell.filePath = filePath
+        cell.indexPath = indexPath
         cell.imageView.image = photo
         return cell
     }
@@ -55,23 +61,15 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
         if (segue.identifier == "PhotoDetails") {
             let photoCell = sender as! PhotoCell
             let photoDetailsVC = segue.destination as! PhotoDetailsViewController
-            photoDetailsVC.filePath = photoCell.filePath
+            photoDetailsVC.photoManager = photoManager
+            photoDetailsVC.index = (photoCell.indexPath?.row)!
             photoDetailsVC.image = photoCell.imageView.image
         }
     }
     
     func photoFilePathForIndexPath(indexPath: IndexPath) -> String {
         let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
-        let filename: String
-        
-        switch indexPath.row {
-            case 0: filename = "Test01.jpg"
-            case 1: filename = "Test02.jpg"
-            case 2: filename = "Test03.jpg"
-            case 3: filename = "Test04.png"
-            default:
-                filename = "Unknown.png"
-        }
+        let filename = photoManager.getPhotoPath(at: indexPath.row)
         
         return documentDirectoryPath.appendingPathComponent(filename)
     }

@@ -14,6 +14,7 @@
 		639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639170071F376001001E5ABE /* PhotoDetailsViewController.swift */; };
 		F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */; };
 		F914D4F31F34D4BA00B9042E /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F21F34D4BA00B9042E /* PhotoCell.swift */; };
+		F914D4F51F38C33A00B9042E /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F41F38C33A00B9042E /* PhotoManager.swift */; };
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
 		F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAA91F28F92F00000D9B /* AppDelegate.swift */; };
 		F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */; };
@@ -51,6 +52,7 @@
 		639170071F376001001E5ABE /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 		F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBBarController.swift; sourceTree = "<group>"; };
 		F914D4F21F34D4BA00B9042E /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		F914D4F41F38C33A00B9042E /* PhotoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
 		F9BABAA61F28F92F00000D9B /* SPV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9BABAA91F28F92F00000D9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */,
 				F914D4F21F34D4BA00B9042E /* PhotoCell.swift */,
 				639170071F376001001E5ABE /* PhotoDetailsViewController.swift */,
+				F914D4F41F38C33A00B9042E /* PhotoManager.swift */,
 			);
 			path = SPV;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 			files = (
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
+				F914D4F51F38C33A00B9042E /* PhotoManager.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
 				F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */,

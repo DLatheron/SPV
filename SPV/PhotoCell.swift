@@ -13,4 +13,5 @@ class PhotoCell : UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     
     var filePath: String = ""
+    var indexPath: IndexPath? = nil
 }
