@@ -29,7 +29,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         imageView.image = image
         imageView.sizeToFit()
@@ -149,6 +149,24 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     // TODO: Need access to the full list of images...
     
     func handleSwipeLeft(_ recognizer: UITapGestureRecognizer) {
+        var tempFrame = imageView.frame
+        tempFrame.origin.x = 300;
+        
+        let newImageView = UIImageView(frame:tempFrame)
+        newImageView.image = imageView.image // Get new image UIImage(contentsOfFile: <#T##String#>)
+        
+        scrollView.addSubview(newImageView)
+
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       options: .curveEaseInOut,
+                       animations: {
+            newImageView.frame = self.imageView.frame
+        }) { (finished) in
+            self.imageView.removeFromSuperview()
+            self.imageView = newImageView
+        }
+        
         print("Swipe left")
     }
     
