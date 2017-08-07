@@ -42,7 +42,6 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(imageView)
         view.addSubview(scrollView)
 
-        // TODO: Setup gesture recogniser for single tap to remove the top and bottom bars...
         setupGestureRecognizers()
     }
     
@@ -76,24 +75,46 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
         let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
         
-        // TODO: Handle the dynamic nature of the bars - turned on and off by single tap.
-        scrollView.contentInset = UIEdgeInsets(top: max(verticalPadding, 64),
+        let isFullScreen = navigationController?.isNavigationBarHidden == true
+        
+        scrollView.contentInset = UIEdgeInsets(top: max(verticalPadding, isFullScreen ? 0 : 64),
                                                left: horizontalPadding,
-                                               bottom: max(verticalPadding, 44),
+                                               bottom: max(verticalPadding, isFullScreen ? 0 : 44),
                                                right: horizontalPadding)
     }
     
     //MARK: - Gesture recognition
     func setupGestureRecognizers() {
+        // Single tab for full screen.
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
         singleTap.numberOfTapsRequired = 1
 
+        // Double tab for zoom.
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTap.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTap)
         scrollView.addGestureRecognizer(singleTap)
         
         singleTap.require(toFail: doubleTap)
+        
+        // Swipe left for next image.
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeLeft(_:)))
+        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(swipeLeft)
+        
+        // Swipe right for previous image.
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeRight(_:)))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
+        let currentState = navigationController?.isNavigationBarHidden == false
+        
+        navigationController?.setNavigationBarHidden(currentState, animated: true)
+        setTabBarVisible(visible: !currentState, animated: true)
+        
+        centreImage()
     }
     
     func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
@@ -105,17 +126,19 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         }
     }
     
-    func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
-        let currentState = navigationController?.isNavigationBarHidden == false
-
-        navigationController?.setNavigationBarHidden(currentState, animated: true)
-        setTabBarVisible(visible: !currentState, animated: true)
+    // TODO: Need access to the full list of images...
+    
+    func handleSwipeLeft(_ recognizer: UITapGestureRecognizer) {
+        print("Swipe left")
     }
+    
+    func handleSwipeRight(_ recognizer: UITapGestureRecognizer) {
+        print("Swipe right")
+    }
+
     
     //MARK: - Tab bar hiding
     func setTabBarVisible(visible:Bool, animated:Bool) {
-        //* This cannot be called before viewDidLayoutSubviews(), because the frame is not set before this time
-        
         if (tabBarIsVisible() == visible) { return }
         
         // Get a frame calculation ready
