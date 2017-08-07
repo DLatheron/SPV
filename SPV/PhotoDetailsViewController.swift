@@ -23,6 +23,8 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.hidesBarsOnTap = true
+        
         imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         imageView.image = image
         imageView.sizeToFit()
@@ -41,12 +43,20 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         view.addSubview(scrollView)
 
         // TODO: Setup gesture recogniser for single tap to remove the top and bottom bars...
-        setupZoomGestureRecognizer()
+        setupGestureRecognizers()
     }
     
     override func viewWillLayoutSubviews() {
         setZoomScale()
         centreImage()
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return navigationController?.isNavigationBarHidden == true
+    }
+    
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return UIStatusBarAnimation.slide
     }
     
     func setZoomScale() {
@@ -74,10 +84,16 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     }
     
     //MARK: - Gesture recognition
-    func setupZoomGestureRecognizer() {
+    func setupGestureRecognizers() {
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
+        singleTap.numberOfTapsRequired = 1
+
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTap.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTap)
+        scrollView.addGestureRecognizer(singleTap)
+        
+        singleTap.require(toFail: doubleTap)
     }
     
     func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
@@ -87,6 +103,40 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         } else {
             scrollView.setZoomScale(scrollView.maximumZoomScale, animated: true)
         }
+    }
+    
+    func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
+        let currentState = navigationController?.isNavigationBarHidden == false
+
+        navigationController?.setNavigationBarHidden(currentState, animated: true)
+        setTabBarVisible(visible: !currentState, animated: true)
+    }
+    
+    //MARK: - Tab bar hiding
+    func setTabBarVisible(visible:Bool, animated:Bool) {
+        //* This cannot be called before viewDidLayoutSubviews(), because the frame is not set before this time
+        
+        if (tabBarIsVisible() == visible) { return }
+        
+        // Get a frame calculation ready
+        let frame = self.tabBarController?.tabBar.frame
+        let height = frame?.size.height
+        let offsetY = (visible ? -height! : height)
+        
+        // Zero duration means no animation
+        let duration:TimeInterval = (animated ? 0.3 : 0.0)
+        
+        // Animate the tab bar
+        if frame != nil {
+            UIView.animate(withDuration: duration) {
+                self.tabBarController?.tabBar.frame = frame!.offsetBy(dx: 0, dy: offsetY!)
+                return
+            }
+        }
+    }
+    
+    func tabBarIsVisible() ->Bool {
+        return (self.tabBarController?.tabBar.frame.origin.y)! < self.view.frame.maxY
     }
     
     //MARK: - UIScrollViewDelegate
