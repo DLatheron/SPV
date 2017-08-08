@@ -144,13 +144,13 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="iwv-Zf-NE4"/>
-                                    <barButtonItem image="refresh" id="SQc-7w-hpE">
+                                    <barButtonItem systemItem="refresh" id="SQc-7w-hpE">
                                         <connections>
                                             <action selector="refreshWithSender:" destination="8rJ-Kc-sve" id="6cS-WN-vHn"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="C4Q-VN-Bfg"/>
-                                    <barButtonItem image="tabs" id="vVt-Kb-Mct"/>
+                                    <barButtonItem systemItem="organize" id="vVt-Kb-Mct"/>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -278,8 +278,6 @@
         <image name="back" width="25" height="25"/>
         <image name="browser" width="25" height="25"/>
         <image name="forward" width="25" height="25"/>
-        <image name="refresh" width="25" height="25"/>
         <image name="settings" width="25" height="25"/>
-        <image name="tabs" width="25" height="25"/>
     </resources>
 </document>

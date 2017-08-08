@@ -46,8 +46,12 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         
         scrollView.addSubview(imageView)
         view.addSubview(scrollView)
+        
+        title = photoManager?.getPhotoName(at: index)
 
         setupGestureRecognizers()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .plain, target: self, action: #selector(showInfo))
         
         navigationController?.isNavigationBarHidden = false
     }
@@ -69,6 +73,10 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return UIStatusBarAnimation.slide
+    }
+    
+    func showInfo() {
+        
     }
     
     func setZoomScale() {
@@ -146,17 +154,47 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         }
     }
     
-    // TODO: Need access to the full list of images...
-    
     func handleSwipeLeft(_ recognizer: UITapGestureRecognizer) {
+        print("Swipe left")
+        handleSwipe(forDirection: .left)
+    }
+    
+    func handleSwipeRight(_ recognizer: UITapGestureRecognizer) {
+        print("Swipe right")
+        handleSwipe(forDirection: .right)
+    }
+    
+    enum SwipeDirection {
+        case left
+        case right
+    }
+    
+    func handleSwipe(forDirection: SwipeDirection) {
         var tempFrame = imageView.frame
-        tempFrame.origin.x = 300;
+        var newImageIndex = index
+        
+        if forDirection == .left {
+            tempFrame.origin.x += tempFrame.width;
+            newImageIndex += 1
+        } else {
+            tempFrame.origin.x -= tempFrame.width;
+            newImageIndex -= 1
+        }
+        
+        let lastPhotoIndex = (photoManager?.count)! - 1
+        if (newImageIndex < 0) {
+            newImageIndex = lastPhotoIndex
+        } else if (newImageIndex > lastPhotoIndex) {
+            newImageIndex = 0
+        }
         
         let newImageView = UIImageView(frame:tempFrame)
-        newImageView.image = imageView.image // Get new image UIImage(contentsOfFile: <#T##String#>)
+        newImageView.image = photoManager?.getPhotoImage(at: newImageIndex)
+        
+        let newImageName = photoManager?.getPhotoName(at: newImageIndex)
         
         scrollView.addSubview(newImageView)
-
+        
         UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        options: .curveEaseInOut,
@@ -165,15 +203,10 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         }) { (finished) in
             self.imageView.removeFromSuperview()
             self.imageView = newImageView
+            self.index = newImageIndex
+            self.title = newImageName
         }
-        
-        print("Swipe left")
     }
-    
-    func handleSwipeRight(_ recognizer: UITapGestureRecognizer) {
-        print("Swipe right")
-    }
-
     
     //MARK: - Tab bar hiding
     func setTabBarVisible(visible:Bool, animated:Bool) {

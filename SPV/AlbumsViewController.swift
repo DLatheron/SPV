@@ -49,11 +49,10 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! PhotoCell
-        let filePath = photoFilePathForIndexPath(indexPath: indexPath)
-        let photo = UIImage(contentsOfFile: filePath)
-        cell.filePath = filePath
+        cell.filePath = photoManager.getPhotoPath(at: indexPath.row)
         cell.indexPath = indexPath
-        cell.imageView.image = photo
+        cell.imageView.image = photoManager.getPhotoImage(at: indexPath.row)
+        
         return cell
     }
     
@@ -65,13 +64,6 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
             photoDetailsVC.index = (photoCell.indexPath?.row)!
             photoDetailsVC.image = photoCell.imageView.image
         }
-    }
-    
-    func photoFilePathForIndexPath(indexPath: IndexPath) -> String {
-        let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
-        let filename = photoManager.getPhotoPath(at: indexPath.row)
-        
-        return documentDirectoryPath.appendingPathComponent(filename)
     }
 }
 
