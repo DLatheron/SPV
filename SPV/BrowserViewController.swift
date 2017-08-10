@@ -56,6 +56,8 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         searchController.searchBar.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
+        //searchController.searchBar.backgroundColor = UIColor.clear
+        searchController.searchBar.subviews[0].subviews[0].removeFromSuperview()
         
         // Hide the search icon.
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never

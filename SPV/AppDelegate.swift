@@ -51,10 +51,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func copyTestResources() {
         let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
         
-        copyTestResource(resourceName: "Test01", ofType: "jpg", toPath: documentDirectoryPath)
-        copyTestResource(resourceName: "Test02", ofType: "jpg", toPath: documentDirectoryPath)
-        copyTestResource(resourceName: "Test03", ofType: "jpg", toPath: documentDirectoryPath)
-        copyTestResource(resourceName: "Test04", ofType: "png", toPath: documentDirectoryPath)
+        copyTestResources(filenames: [
+            "Test01.jpg",
+            "Test02.jpg",
+            "Test03.jpg",
+            "Test04.png",
+            "Test05.jpg"
+            ], toPath: documentDirectoryPath)
+    }
+    
+    func copyTestResources(filenames: [String], toPath dstPath: NSString) {
+        for filename in filenames {
+            let filenameExt = (filename as NSString).pathExtension
+            let rawFilename = (filename as NSString).deletingPathExtension
+            
+            copyTestResource(resourceName: rawFilename,
+                             ofType: filenameExt,
+                             toPath: dstPath)
+        }
     }
     
     func copyTestResource(resourceName srcFilename: String,

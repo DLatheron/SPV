@@ -154,6 +154,7 @@
                                 </items>
                             </toolbar>
                         </subviews>
+                        <color key="backgroundColor" red="1" green="0.99564432780527068" blue="0.26293172465147507" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="nRt-hr-Xvv" secondAttribute="bottom" id="7yc-Kk-NBM"/>

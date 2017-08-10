@@ -14,12 +14,13 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
     fileprivate let reuseIdentifier = "PhotoCellId"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     
-    var photoManager = PhotoManager(withPhotos: [
-        "Test01.jpg",
-        "Test02.jpg",
-        "Test03.jpg",
-        "Test04.png"
-    ])
+//    var photoManager = PhotoManager(withPhotos: [
+//        "Test01.jpg",
+//        "Test02.jpg",
+//        "Test03.jpg",
+//        "Test04.png"
+//    ])
+    var photoManager = PhotoManager(fromDirectory: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!

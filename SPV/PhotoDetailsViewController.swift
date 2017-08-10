@@ -30,22 +30,10 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        imageView.image = image
-        imageView.sizeToFit()
-
-        scrollView = UIScrollView(frame: view.bounds)
-        scrollView.backgroundColor = UIColor.white
-        scrollView.contentSize = imageView.bounds.size
-        scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
-        scrollView.delegate = self
-        scrollView.minimumZoomScale = 1.0
-        scrollView.maximumZoomScale = 6.0
-        scrollView.zoomScale = 1.0
-        
-        scrollView.addSubview(imageView)
-        view.addSubview(scrollView)
+        self.imageView = PhotoDetailsViewController.createImageView(withImage: self.image)
+        self.scrollView = PhotoDetailsViewController.createScrollView(inParentView: self.view,
+                                                                      forImageView: self.imageView,
+                                                                      withDelegate: self)
         
         title = photoManager?.getPhotoName(at: index)
 
@@ -56,6 +44,34 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         navigationController?.isNavigationBarHidden = false
     }
     
+    class func createImageView(withImage image: UIImage) -> UIImageView {
+        let newImageView = UIImageView()
+        newImageView.image = image
+        newImageView.sizeToFit()
+        
+        return newImageView;
+    }
+    
+    class func createScrollView(inParentView parentView: UIView,
+                                forImageView embeddedImageView: UIImageView,
+                                withDelegate delegate: UIScrollViewDelegate) -> UIScrollView {
+        let newScrollView = UIScrollView(frame: parentView.bounds)
+        
+        newScrollView.backgroundColor = UIColor.white
+        newScrollView.contentSize = embeddedImageView.bounds.size
+        newScrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        newScrollView.delegate = delegate
+        newScrollView.minimumZoomScale = 1.0
+        newScrollView.maximumZoomScale = 6.0
+        newScrollView.zoomScale = 1.0
+        
+        newScrollView.addSubview(embeddedImageView)
+        parentView.addSubview(newScrollView)
+        
+        return newScrollView
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
@@ -63,45 +79,63 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     }
     
     override func viewWillLayoutSubviews() {
-        setZoomScale()
-        centreImage()
+        PhotoDetailsViewController.framePhoto(inScrollView: self.scrollView,
+                                              inImageView: self.imageView,
+                                              inFullscreen: self.isFullscreen)
+    }
+    
+    var isFullscreen: Bool {
+        get {
+            return navigationController?.isNavigationBarHidden == true
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
-        return navigationController?.isNavigationBarHidden == true
+        return isFullscreen
     }
     
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return UIStatusBarAnimation.slide
     }
     
+    class func framePhoto(inScrollView scrollViewToUse: UIScrollView,
+                          inImageView imageViewToFrame: UIImageView,
+                          inFullscreen isFullscreen: Bool) {
+        PhotoDetailsViewController.setZoomScale(forScrollView: scrollViewToUse,
+                                                forImageView: imageViewToFrame)
+        PhotoDetailsViewController.centreImage(forScrollView: scrollViewToUse,
+                                               forImageView: imageViewToFrame,
+                                               inFullscreen: isFullscreen)
+    }
+    
     func showInfo() {
         
     }
     
-    func setZoomScale() {
-        let imageViewSize = imageView.bounds.size
-        let scrollViewSize = scrollView.bounds.size
+    class func setZoomScale(forScrollView inScrollView: UIScrollView,
+                            forImageView imageViewToZoom: UIImageView) {
+        let imageViewSize = imageViewToZoom.bounds.size
+        let scrollViewSize = inScrollView.bounds.size
         let widthScale = scrollViewSize.width / imageViewSize.width
         let heightScale = scrollViewSize.height / imageViewSize.height
         
-        scrollView.minimumZoomScale = min(widthScale, heightScale)
-        scrollView.zoomScale = 1.0
+        inScrollView.minimumZoomScale = min(widthScale, heightScale)
+        inScrollView.zoomScale = min(widthScale, heightScale)
     }
     
-    func centreImage() {
-        let imageViewSize = imageView.frame.size
-        let scrollViewSize = scrollView.bounds.size
+    class func centreImage(forScrollView inScrollView: UIScrollView,
+                           forImageView imageViewToCentre: UIImageView,
+                           inFullscreen isFullScreen: Bool) {
+        let imageViewSize = imageViewToCentre.frame.size
+        let scrollViewSize = inScrollView.bounds.size
         
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
         let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
         
-        let isFullScreen = navigationController?.isNavigationBarHidden == true
-        
-        scrollView.contentInset = UIEdgeInsets(top: max(verticalPadding, isFullScreen ? 0 : 64),
-                                               left: horizontalPadding,
-                                               bottom: max(verticalPadding, isFullScreen ? 0 : 44),
-                                               right: horizontalPadding)
+        inScrollView.contentInset = UIEdgeInsets(top: max(verticalPadding, isFullScreen ? 0 : 64),
+                                                 left: horizontalPadding,
+                                                 bottom: max(verticalPadding, isFullScreen ? 0 : 44),
+                                                right: horizontalPadding)
     }
     
     //MARK: - Gesture recognition
@@ -113,8 +147,8 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         // Double tab for zoom.
         doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTap?.numberOfTapsRequired = 2
-        scrollView.addGestureRecognizer(doubleTap!)
-        scrollView.addGestureRecognizer(singleTap!)
+        self.view.addGestureRecognizer(doubleTap!)
+        self.view.addGestureRecognizer(singleTap!)
         
         singleTap?.require(toFail: doubleTap!)
         
@@ -130,10 +164,10 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     }
     
     func removeGestureRecognizers() {
-        scrollView.removeGestureRecognizer(singleTap!)
-        scrollView.removeGestureRecognizer(doubleTap!)
-        scrollView.removeGestureRecognizer(swipeLeft!)
-        scrollView.removeGestureRecognizer(swipeRight!)
+        self.view.removeGestureRecognizer(singleTap!)
+        self.view.removeGestureRecognizer(doubleTap!)
+        self.view.removeGestureRecognizer(swipeLeft!)
+        self.view.removeGestureRecognizer(swipeRight!)
     }
     
     func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
@@ -142,15 +176,18 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(currentState, animated: true)
         setTabBarVisible(visible: !currentState, animated: true)
         
-        centreImage()
+        PhotoDetailsViewController.centreImage(forScrollView: self.scrollView,
+                                               forImageView: self.imageView,
+                                               inFullscreen: navigationController?.isNavigationBarHidden == true)
     }
     
     func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
         // TODO: Also zoom into the point tapped...
-        if (scrollView.zoomScale > scrollView.minimumZoomScale) {
-            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+        // TODO: Multistage zoom - based on the size of the picture... no more than about 3 stages...
+        if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale) {
+            self.scrollView.setZoomScale(self.scrollView.minimumZoomScale, animated: true)
         } else {
-            scrollView.setZoomScale(scrollView.maximumZoomScale, animated: true)
+            self.scrollView.setZoomScale(self.scrollView.maximumZoomScale, animated: true)
         }
     }
     
@@ -170,14 +207,15 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     }
     
     func handleSwipe(forDirection: SwipeDirection) {
-        var tempFrame = imageView.frame
+        let tempFrame = self.scrollView.frame
         var newImageIndex = index
+        var xOffset = 0;
         
         if forDirection == .left {
-            tempFrame.origin.x += tempFrame.width;
+            xOffset = Int( self.scrollView.frame.width);
             newImageIndex += 1
         } else {
-            tempFrame.origin.x -= tempFrame.width;
+            xOffset = Int(-self.scrollView.frame.width);
             newImageIndex -= 1
         }
         
@@ -188,20 +226,30 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
             newImageIndex = 0
         }
         
-        let newImageView = UIImageView(frame:tempFrame)
-        newImageView.image = photoManager?.getPhotoImage(at: newImageIndex)
+        let image = (photoManager?.getPhotoImage(at: newImageIndex))!
+        let newImageView = PhotoDetailsViewController.createImageView(withImage: image)
+        let newScrollView = PhotoDetailsViewController.createScrollView(inParentView: self.view,
+                                                                        forImageView: newImageView,
+                                                                        withDelegate: self)
+        
+        view.addSubview(newScrollView)
+
+        PhotoDetailsViewController.framePhoto(inScrollView: newScrollView,
+                                              inImageView: newImageView,
+                                              inFullscreen: self.isFullscreen)
+        
+        //newScrollView.bounds.origin.x = CGFloat(xOffset)
         
         let newImageName = photoManager?.getPhotoName(at: newImageIndex)
-        
-        scrollView.addSubview(newImageView)
         
         UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        options: .curveEaseInOut,
                        animations: {
-            newImageView.frame = self.imageView.frame
+            newScrollView.frame = tempFrame
         }) { (finished) in
-            self.imageView.removeFromSuperview()
+            self.scrollView.removeFromSuperview()
+            self.scrollView = newScrollView
             self.imageView = newImageView
             self.index = newImageIndex
             self.title = newImageName
@@ -235,7 +283,9 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate {
     
     //MARK: - UIScrollViewDelegate
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centreImage()
+        PhotoDetailsViewController.centreImage(forScrollView: self.scrollView,
+                                               forImageView: self.imageView,
+                                               inFullscreen: navigationController?.isNavigationBarHidden == true)
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {

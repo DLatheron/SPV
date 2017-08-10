@@ -25,6 +25,7 @@
 		F9BABAC11F28F92F00000D9B /* SPVTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAC01F28F92F00000D9B /* SPVTests.swift */; };
 		F9BABACC1F28F92F00000D9B /* SPVUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABACB1F28F92F00000D9B /* SPVUITests.swift */; };
 		F9BABADA1F28FB6D00000D9B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */; };
+		F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		F9BABACB1F28F92F00000D9B /* SPVUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPVUITests.swift; sourceTree = "<group>"; };
 		F9BABACD1F28F92F00000D9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test05.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				639170001F374E15001E5ABE /* Test02.jpg */,
 				639170011F374E15001E5ABE /* Test03.jpg */,
 				639170021F374E15001E5ABE /* Test04.png */,
+				F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */,
 			);
 			name = TestData;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				639170051F374E15001E5ABE /* Test03.jpg in Resources */,
 				639170061F374E15001E5ABE /* Test04.png in Resources */,
 				F9BABAB61F28F92F00000D9B /* LaunchScreen.storyboard in Resources */,
+				F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */,
 				F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */,
 				639170031F374E15001E5ABE /* Test01.jpg in Resources */,
 				639170041F374E15001E5ABE /* Test02.jpg in Resources */,
