@@ -26,6 +26,7 @@
 		F9BABACC1F28F92F00000D9B /* SPVUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABACB1F28F92F00000D9B /* SPVUITests.swift */; };
 		F9BABADA1F28FB6D00000D9B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */; };
 		F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */; };
+		F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		F9BABACD1F28F92F00000D9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test05.jpg; sourceTree = "<group>"; };
+		F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +149,7 @@
 				F914D4F21F34D4BA00B9042E /* PhotoCell.swift */,
 				639170071F376001001E5ABE /* PhotoDetailsViewController.swift */,
 				F914D4F41F38C33A00B9042E /* PhotoManager.swift */,
+				F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */,
 			);
 			path = SPV;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
 				F914D4F51F38C33A00B9042E /* PhotoManager.swift in Sources */,
+				F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
 				F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */,
