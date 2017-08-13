@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		63396F071F40D91F000E5F3E /* Test06.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 63396F061F40D884000E5F3E /* Test06.mp4 */; };
 		639170031F374E15001E5ABE /* Test01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63916FFF1F374E15001E5ABE /* Test01.jpg */; };
 		639170041F374E15001E5ABE /* Test02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 639170001F374E15001E5ABE /* Test02.jpg */; };
 		639170051F374E15001E5ABE /* Test03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 639170011F374E15001E5ABE /* Test03.jpg */; };
@@ -284,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63396F071F40D91F000E5F3E /* Test06.mp4 in Resources */,
 				639170051F374E15001E5ABE /* Test03.jpg in Resources */,
 				639170061F374E15001E5ABE /* Test04.png in Resources */,
 				F9BABAB61F28F92F00000D9B /* LaunchScreen.storyboard in Resources */,
