@@ -47,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		63396F061F40D884000E5F3E /* Test06.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Test06.mp4; sourceTree = "<group>"; };
 		63916FFF1F374E15001E5ABE /* Test01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test01.jpg; sourceTree = "<group>"; };
 		639170001F374E15001E5ABE /* Test02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test02.jpg; sourceTree = "<group>"; };
 		639170011F374E15001E5ABE /* Test03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test03.jpg; sourceTree = "<group>"; };
@@ -103,6 +104,7 @@
 		63916FFE1F374E00001E5ABE /* TestData */ = {
 			isa = PBXGroup;
 			children = (
+				63396F061F40D884000E5F3E /* Test06.mp4 */,
 				63916FFF1F374E15001E5ABE /* Test01.jpg */,
 				639170001F374E15001E5ABE /* Test02.jpg */,
 				639170011F374E15001E5ABE /* Test03.jpg */,

@@ -56,7 +56,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "Test02.jpg",
             "Test03.jpg",
             "Test04.png",
-            "Test05.jpg"
+            "Test05.jpg",
+            "Test06.mp4"
             ], toPath: documentDirectoryPath)
     }
     
