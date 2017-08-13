@@ -25,6 +25,8 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     var filteredData:[String] = []
     var shouldShowSearchResults: Bool = false
     
+    let getImageJS: String;
+    
     @IBOutlet weak var barView: UIView!
     
     @IBOutlet weak var searchResultsTable: UITableView!
@@ -43,6 +45,17 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         webConfiguration.allowsInlineMediaPlayback = true;
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         searchController = UISearchController(searchResultsController: nil)
+        
+        let bundle = Bundle.main
+        let path = bundle.path(forResource: "GetImage", ofType: "js")
+        
+        do {
+            getImageJS = try String(contentsOfFile: path!)
+        }
+        catch {
+            NSLog("Failed to load javascript file")
+            getImageJS = ""
+        }
         
         super.init(coder: aDecoder)!
     }
@@ -100,9 +113,12 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         
         longPressGesture.cancelsTouchesInView = true
         
-        // TODO: Work out which ones we need to lose and which ones we should keep. Keep single click (or add them ourselves).
-        // Remove all of the web view's gesture recognisers.
-        webView.scrollView.subviews[0].gestureRecognizers?.forEach(webView.scrollView.subviews[0].removeGestureRecognizer)
+        // Remove all of the web view's long press gesture recognisers.
+        for recognizer in webView.scrollView.subviews[0].gestureRecognizers ?? [] {
+            if recognizer is UILongPressGestureRecognizer {
+                webView.scrollView.subviews[0].removeGestureRecognizer(recognizer)
+            }
+        }
         
         webView.addGestureRecognizer(longPressGesture)
         webView.allowsBackForwardNavigationGestures = true
@@ -128,17 +144,29 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     }
     
     @IBAction func longPressDetected(_ sender: Any) {
-        //print("Long press detected")
-        
         let location = longPressGesture.location(in: webView);
+        var js = getImageJS as NSString
         
-        // TODO: Determine where was pressed in the document and what to do...
-        let jsFunction = "console.log('\(location.x), \(location.y)'); return 'result string';"
+        js = js.replacingOccurrences(of: "{x}", with: location.x.description) as NSString
+        js = js.replacingOccurrences(of: "{y}", with: location.y.description) as NSString
         
-        webView.evaluateJavaScript(jsFunction, completionHandler: {
+    
+        webView.evaluateJavaScript(js as String, completionHandler: {
             (result, error) -> Void in
+            if error != nil {
+                NSLog("evaluteJavaScript error: \(error!.localizedDescription)")
+            } else {
                 // Do stuff here...
                 print(result ?? "")
+                let str = "\(result ?? "")"
+                
+                let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+                let documentsURL = paths[0] as URL
+                
+                Downloader.load(url: URL(string: str)!, to: documentsURL, completion: {
+                    print("\(str) downloaded to \(documentsURL)...")
+                })
+            }
         })
     }
    
