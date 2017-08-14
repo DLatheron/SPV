@@ -32,6 +32,7 @@
 		F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */; };
 		F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */; };
 		F9F2D3D01F41CC5C00FD6F78 /* Test07.gif in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3CF1F41CC5C00FD6F78 /* Test07.gif */; };
+		F9F2D3D21F42016C00FD6F78 /* Todo.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3D11F42016C00FD6F78 /* Todo.rtf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test05.jpg; sourceTree = "<group>"; };
 		F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoScrollView.swift; sourceTree = "<group>"; };
 		F9F2D3CF1F41CC5C00FD6F78 /* Test07.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Test07.gif; sourceTree = "<group>"; };
+		F9F2D3D11F42016C00FD6F78 /* Todo.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Todo.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +138,7 @@
 		F9BABA9D1F28F92F00000D9B = {
 			isa = PBXGroup;
 			children = (
+				F9F2D3D11F42016C00FD6F78 /* Todo.rtf */,
 				63916FFE1F374E00001E5ABE /* TestData */,
 				F9BABAA81F28F92F00000D9B /* SPV */,
 				F9BABABF1F28F92F00000D9B /* SPVTests */,
@@ -315,6 +318,7 @@
 				F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */,
 				639170031F374E15001E5ABE /* Test01.jpg in Resources */,
 				63396F091F40DE9E000E5F3E /* ImageCapture.js in Resources */,
+				F9F2D3D21F42016C00FD6F78 /* Todo.rtf in Resources */,
 				639170041F374E15001E5ABE /* Test02.jpg in Resources */,
 				F9BABAB31F28F92F00000D9B /* Assets.xcassets in Resources */,
 				F9BABAB11F28F92F00000D9B /* Main.storyboard in Resources */,
