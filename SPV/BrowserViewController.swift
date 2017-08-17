@@ -25,6 +25,8 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     var filteredData:[String] = []
     var shouldShowSearchResults: Bool = false
     
+    var photoManager: PhotoManager?
+    
     let getImageJS: String;
     
     @IBOutlet weak var barView: UIView!
@@ -39,6 +41,10 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     @IBOutlet weak var tabsButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
+    
+    @IBAction func unwindToBrowserViewController(segue:UIStoryboardSegue) {
+        
+    }
     
     required init(coder aDecoder: NSCoder) {
         let webConfiguration = WKWebViewConfiguration()
@@ -58,6 +64,17 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         }
         
         super.init(coder: aDecoder)!
+        
+        
+//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        let documentsURL = paths[0] as URL
+//        
+//        let testUrl: URL = URL(string: "https://static.pexels.com/photos/132037/pexels-photo-132037.jpeg")!
+//        let localUrl: URL = documentsURL.appendingPathComponent("TestDownload.jpg")
+//        
+//        DownloadManager.download(url: testUrl, to: localUrl) { 
+//            print("Download completed")
+//        }
     }
 
     override func viewDidLoad() {
@@ -139,6 +156,14 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                                height: barView.frame.height)
     }
     
+    override func prepare(for segue: UIStoryboardSegue,
+                          sender: Any?) {
+        if segue.identifier == "ShowDownloads" {
+            let downloadsVC = segue.destination as! DownloadsViewController
+            downloadsVC.photoManager = photoManager;
+        }
+    }
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -163,7 +188,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                 let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
                 let documentsURL = paths[0] as URL
                 
-                Downloader.load(url: URL(string: str)!, to: documentsURL, completion: {
+                DownloadManager.download(url: URL(string: str)!, to: documentsURL, completion: {
                     print("\(str) downloaded to \(documentsURL)...")
                 })
             }

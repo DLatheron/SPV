@@ -1,5 +1,5 @@
 //
-//  Downloader.swift
+//  DownloadManager.swift
 //  SPV
 //
 //  Created by David Latheron on 13/08/2017.
@@ -9,8 +9,8 @@
 import Foundation
 
 
-class Downloader {
-    class func load(url: URL, to localUrl: URL, completion: @escaping () -> ()) {
+class DownloadManager {
+    class func download(url: URL, to localUrl: URL, completion: @escaping () -> ()) {
         let sessionConfig = URLSessionConfiguration.default
         let session = URLSession(configuration: sessionConfig)
         let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
