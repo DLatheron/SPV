@@ -9,12 +9,13 @@
 import Foundation
 import UIKit
 
-class DownloadDetails {
+class DownloadDetails : NSObject {
     var name: String
     var timeRemaining: String
     var downloadSpeed: String
-    var percentage: Double
+    dynamic var percentage: Double
     var isPaused: Bool
+    
     
     
     init(name: String,

@@ -86,6 +86,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         searchController.searchBar.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
+        searchController.searchBar.frame = CGRect(x: 0, y: 20, width: barView.frame.width, height: 44)
         //searchController.searchBar.backgroundColor = UIColor.clear
         searchController.searchBar.subviews[0].subviews[0].removeFromSuperview()
         

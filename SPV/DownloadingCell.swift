@@ -16,12 +16,58 @@ class DownloadingCell : UITableViewCell {
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var pauseResumeButton: UIButton!
     
-    var downloadDetails: DownloadDetails? = nil
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        scheduledTimerWithTimeInterval()
+    }
+    
+    deinit {
+        removeObserver(self,
+                       forKeyPath: #keyPath(downloadDetails.percentage))
+    }
+    
+    var downloadDetails: DownloadDetails? = nil {
+        willSet(newDownloadDetails) {
+            if downloadDetails != nil {
+                removeObserver(self,
+                                forKeyPath: #keyPath(downloadDetails.percentage))
+            }
+        }
+        didSet {
+            if downloadDetails != nil {
+                addObserver(self,
+                            forKeyPath: #keyPath(downloadDetails.percentage),
+                            options: [.new, .old],
+                            context: nil)
+            }
+        }
+    }
+    
+    var timer = Timer()
+    
+    func scheduledTimerWithTimeInterval(){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateCounting), userInfo: nil, repeats: true)
+    }
+    
+    func updateCounting(){
+        downloadDetails?.percentage += 0.01
+        if (downloadDetails?.percentage)! > 1.0 { downloadDetails?.percentage = 0.0 }
+    }
     
     @IBAction func pauseOrResumeDownload(_ sender: Any) {
         let button: UIButton = sender as! UIButton
         
         button.isSelected ? resumeDownload() : pauseDownload()
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?,
+                               change: [NSKeyValueChangeKey : Any]?,
+                               context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(downloadDetails.percentage) {
+            progressView.progress = (downloadDetails?.percentage)!
+        }
     }
     
     func pauseDownload() {
