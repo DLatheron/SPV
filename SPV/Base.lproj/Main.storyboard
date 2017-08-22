@@ -183,10 +183,14 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Browser" image="browser" id="cPa-gy-q4n"/>
                     <connections>
+                        <outlet property="backButton" destination="AAp-3M-c9b" id="yVR-ma-FTP"/>
                         <outlet property="barView" destination="3st-bG-3GF" id="fZa-3D-w4I"/>
+                        <outlet property="forwardButton" destination="diz-ba-Dpd" id="FNB-AG-bdv"/>
                         <outlet property="longPressGesture" destination="5UH-PY-sgg" id="Ask-4L-J1l"/>
                         <outlet property="progressView" destination="eaW-wb-9Gr" id="ttP-Nd-shH"/>
+                        <outlet property="reloadButton" destination="NhF-P0-dJj" id="2lt-yZ-ivb"/>
                         <outlet property="searchResultsTable" destination="w49-69-Z4R" id="TcK-oe-sqx"/>
+                        <outlet property="tabsButton" destination="zRA-rK-mSr" id="ilW-4a-F0n"/>
                         <outlet property="toolbar" destination="nRt-hr-Xvv" id="acD-SZ-Abv"/>
                     </connections>
                 </viewController>

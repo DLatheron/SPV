@@ -169,7 +169,11 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         return true
     }
     
-    @IBAction func longPressDetected(_ sender: Any) {
+    @IBAction func longPressDetected(_ sender: UIGestureRecognizer) {
+        if sender.state != .ended {
+            return
+        }
+        
         let location = longPressGesture.location(in: webView);
         var js = getImageJS as NSString
         
@@ -182,16 +186,43 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
             if error != nil {
                 NSLog("evaluteJavaScript error: \(error!.localizedDescription)")
             } else {
-                // Do stuff here...
-                print(result ?? "")
-                let str = "\(result ?? "")"
+                let downloadActionHandler = { (action: UIAlertAction!) -> Void in
+                    // Do stuff here...
+                    print(result ?? "")
+                    let str = "\(result ?? "")"
+    
+                    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+                    let documentsURL = paths[0] as URL
+                    let uniqueFilename = NSUUID().uuidString
+                    let fileURL = documentsURL.appendingPathComponent(uniqueFilename).appendingPathExtension(".jpg");
+    
+                    DownloadManager.download(url: URL(string: str)!, to: fileURL, completion: {
+                        print("\(str) downloaded to \(fileURL)...")
+                    })
+                }
                 
-                let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-                let documentsURL = paths[0] as URL
+                let alertController = UIAlertController(title: "Image", message: "Action?", preferredStyle: .alert)
+                let downloadAction = UIAlertAction(title: "Download", style: .default, handler: downloadActionHandler)
+                let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
                 
-                DownloadManager.download(url: URL(string: str)!, to: documentsURL, completion: {
-                    print("\(str) downloaded to \(documentsURL)...")
-                })
+                alertController.addAction(downloadAction)
+                alertController.addAction(cancelAction)
+                
+                self.present(alertController, animated: true, completion: nil)
+                
+                
+//                // Do stuff here...
+//                print(result ?? "")
+//                let str = "\(result ?? "")"
+//                
+//                let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//                let documentsURL = paths[0] as URL
+//                let uniqueFilename = NSUUID().uuidString
+//                let fileURL = documentsURL.appendingPathComponent(uniqueFilename).appendingPathExtension(".jpg");
+//                
+//                DownloadManager.download(url: URL(string: str)!, to: fileURL, completion: {
+//                    print("\(str) downloaded to \(fileURL)...")
+//                })
             }
         })
     }
