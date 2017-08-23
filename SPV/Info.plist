@@ -49,10 +49,6 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
-<!--		<key>NSAllowsArbitraryLoadsInWebContent</key>-->
-<!--		<true/>-->
-<!--        <key>NSAllowsArbitraryLoadsForMedia</key>-->
-<!--        <true/>-->
 	</dict>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
