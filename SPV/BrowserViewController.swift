@@ -14,7 +14,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     //let initialPageUrl = "http://arstechnica.co.uk"
 //    let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
     //let initialPageUrl = "http://www.smartcc365.com/group/landscape-image/"
-    let initialPageUrl = "http://www.qygjxz.com/data/out/141/4236777-landscape-images.jpg"
+    let initialPageUrl = "https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_1280.jpg"
     let statusBarHeight = CGFloat.init(20)
     let urlBarHeight = CGFloat.init(44)
     let topBarHeight = CGFloat.init(20 + 44)
@@ -91,6 +91,10 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         searchController.searchBar.frame = CGRect(x: 0, y: 20, width: barView.frame.width, height: 44)
         //searchController.searchBar.backgroundColor = UIColor.clear
         searchController.searchBar.subviews[0].subviews[0].removeFromSuperview()
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.enablesReturnKeyAutomatically = true
+        searchController.searchBar.keyboardType = .URL
         
         // Hide the search icon.
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
@@ -178,13 +182,12 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         return paths[0] as NSURL
     }
     
-    func makeFileDownloadURL(downloadURL: NSString) -> NSURL {
+    func makeFileDownloadURL(downloadURL: NSString) -> URL {
         let originalFilename = downloadURL.lastPathComponent
         let documentsDirectoryURL = getURLForDocumentsDirectory()
-        // HOW DO WE MAKE
-        documentsDirectoryURL.appendingPathComponent(originalFilename);
+        let localFileURL = documentsDirectoryURL.appendingPathComponent(originalFilename);
         
-        return documentsDirectoryURL;
+        return localFileURL!
     }
     
     @IBAction func longPressDetected(_ sender: UIGestureRecognizer) {
@@ -230,7 +233,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                                                    style: .default,
                                                    handler: downloadActionHandler)
                 let cancelAction = UIAlertAction(title: "Cancel",
-                                                 style: .default,
+                                                 style: .cancel,
                                                  handler: nil)
                 
                 alertController.addAction(downloadAction)
@@ -309,6 +312,15 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     }
     
     //MARK:- WKNavigationDelegate
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let urlStr = navigationAction.request.url?.absoluteString {
+            searchController.searchBar.text = urlStr
+        }
+        decisionHandler(.allow)
+    }
+    
     func webView(_ webView: WKWebView,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
