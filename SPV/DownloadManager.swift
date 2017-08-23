@@ -12,6 +12,7 @@ import Foundation
 class DownloadManager {
     class func download(url: URL, to localUrl: URL, completion: @escaping () -> ()) {
         let sessionConfig = URLSessionConfiguration.default
+        sessionConfig.allowsCellularAccess = true
         let session = URLSession(configuration: sessionConfig)
         let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
         
@@ -26,7 +27,7 @@ class DownloadManager {
                     try FileManager.default.copyItem(at: tempLocalUrl, to: localUrl)
                     completion()
                 } catch (let writeError) {
-                    print("error writing file \(localUrl) : \(writeError)")
+                    print("Error writing file \(localUrl) : \(writeError)")
                 }
                 
             } else {

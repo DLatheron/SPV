@@ -12,7 +12,9 @@ import WebKit
 class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
     
     //let initialPageUrl = "http://arstechnica.co.uk"
-    let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
+//    let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
+    //let initialPageUrl = "http://www.smartcc365.com/group/landscape-image/"
+    let initialPageUrl = "http://www.qygjxz.com/data/out/141/4236777-landscape-images.jpg"
     let statusBarHeight = CGFloat.init(20)
     let urlBarHeight = CGFloat.init(44)
     let topBarHeight = CGFloat.init(20 + 44)
@@ -169,6 +171,22 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         return true
     }
     
+    func getURLForDocumentsDirectory() -> NSURL {
+        let paths = FileManager.default.urls(for: .documentDirectory,
+                                             in: .userDomainMask)
+
+        return paths[0] as NSURL
+    }
+    
+    func makeFileDownloadURL(downloadURL: NSString) -> NSURL {
+        let originalFilename = downloadURL.lastPathComponent
+        let documentsDirectoryURL = getURLForDocumentsDirectory()
+        // HOW DO WE MAKE
+        documentsDirectoryURL.appendingPathComponent(originalFilename);
+        
+        return documentsDirectoryURL;
+    }
+    
     @IBAction func longPressDetected(_ sender: UIGestureRecognizer) {
         if sender.state != .ended {
             return
@@ -186,43 +204,41 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
             if error != nil {
                 NSLog("evaluteJavaScript error: \(error!.localizedDescription)")
             } else {
+                print(result ?? "")
+                let imageURLString = "\(result ?? "")"
+                
                 let downloadActionHandler = { (action: UIAlertAction!) -> Void in
-                    // Do stuff here...
-                    print(result ?? "")
-                    let str = "\(result ?? "")"
+                    // Get the documents directory's path.
+//                    let documentsURL = self.getURLForDocumentsDirectory()
+                    let fileURL = self.makeFileDownloadURL(downloadURL: imageURLString as NSString)
+                    
+                    // Generate a unique filename for the download.
+//                    let uniqueFilename = NSUUID().uuidString
+//                    let fileURL = documentsURL.appendingPathComponent(uniqueFilename).appendingPathExtension(".jpg");
     
-                    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-                    let documentsURL = paths[0] as URL
-                    let uniqueFilename = NSUUID().uuidString
-                    let fileURL = documentsURL.appendingPathComponent(uniqueFilename).appendingPathExtension(".jpg");
-    
-                    DownloadManager.download(url: URL(string: str)!, to: fileURL, completion: {
-                        print("\(str) downloaded to \(fileURL)...")
+                    DownloadManager.download(url: URL(string: imageURLString)!,
+                                             to: fileURL as URL,
+                                             completion: {
+                        print("\(imageURLString) downloaded to \(fileURL)...")
                     })
                 }
                 
-                let alertController = UIAlertController(title: "Image", message: "Action?", preferredStyle: .alert)
-                let downloadAction = UIAlertAction(title: "Download", style: .default, handler: downloadActionHandler)
-                let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                let alertController = UIAlertController(title: "Image",
+                                                        message: imageURLString,
+                                                        preferredStyle: .actionSheet)
+                let downloadAction = UIAlertAction(title: "Download",
+                                                   style: .default,
+                                                   handler: downloadActionHandler)
+                let cancelAction = UIAlertAction(title: "Cancel",
+                                                 style: .default,
+                                                 handler: nil)
                 
                 alertController.addAction(downloadAction)
                 alertController.addAction(cancelAction)
                 
-                self.present(alertController, animated: true, completion: nil)
-                
-                
-//                // Do stuff here...
-//                print(result ?? "")
-//                let str = "\(result ?? "")"
-//                
-//                let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//                let documentsURL = paths[0] as URL
-//                let uniqueFilename = NSUUID().uuidString
-//                let fileURL = documentsURL.appendingPathComponent(uniqueFilename).appendingPathExtension(".jpg");
-//                
-//                DownloadManager.download(url: URL(string: str)!, to: fileURL, completion: {
-//                    print("\(str) downloaded to \(fileURL)...")
-//                })
+                self.present(alertController,
+                             animated: true,
+                             completion: nil)
             }
         })
     }
