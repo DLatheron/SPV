@@ -19,6 +19,7 @@ class PhotoManager {
     ]
     var basePath: NSString
     var photos: [String]
+    let downloadManager: DownloadManager = DownloadManager()
     
     init(withPhotos initialPhotos: [String]) {
         basePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString

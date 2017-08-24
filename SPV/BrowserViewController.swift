@@ -219,9 +219,9 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
 //                    let uniqueFilename = NSUUID().uuidString
 //                    let fileURL = documentsURL.appendingPathComponent(uniqueFilename).appendingPathExtension(".jpg");
     
-                    DownloadManager.download(url: URL(string: imageURLString)!,
-                                             to: fileURL as URL,
-                                             completion: {
+                    self.photoManager!.downloadManager.download(url: URL(string: imageURLString)!,
+                                                                to: fileURL as URL,
+                                                                completion: {
                         print("\(imageURLString) downloaded to \(fileURL)...")
                     })
                 }

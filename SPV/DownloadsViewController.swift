@@ -40,18 +40,18 @@ class DownloadsViewController : UIViewController, UITableViewDataSource, UITable
         "Completed"
     ]
     
-    var downloading = [
-        DownloadDetails(name: "pic0.jpg", timeRemaining: "0:15", downloadSpeed: "32Kb/s", percentage: 0.9),
-        DownloadDetails(name: "pic1.jpg", timeRemaining: "1:00:00", downloadSpeed: "0.1Kb/s", percentage: 0.01),
-        DownloadDetails(name: "pic2.jpg", timeRemaining: "0:02", downloadSpeed: "12Kb/s", percentage: 0.99),
-        DownloadDetails(name: "pic3.jpg", timeRemaining: "3:45", downloadSpeed: "0Kb/s", percentage: 0.45),
-        DownloadDetails(name: "pic4.jpg", timeRemaining: "5:00", downloadSpeed: "11Kb/s", percentage: 0.1),
-        DownloadDetails(name: "pic5.jpg", timeRemaining: "0:56", downloadSpeed: "12Mb/s", percentage: 0.3),
-        DownloadDetails(name: "pic6.jpg", timeRemaining: "0:18", downloadSpeed: "8Kb/s", percentage: 0.6),
-        DownloadDetails(name: "pic7.jpg", timeRemaining: "0:12", downloadSpeed: "345Kb/s", percentage: 0.8),
-        DownloadDetails(name: "pic8.jpg", timeRemaining: "0:34", downloadSpeed: "23Kb/s", percentage: 0.4),
-        DownloadDetails(name: "pic9.jpg", timeRemaining: "0:44", downloadSpeed: "19Kb/s", percentage: 0.2)
-    ]
+//    var downloading = [
+//        DownloadDetails(name: "pic0.jpg", timeRemaining: "0:15", downloadSpeed: "32Kb/s", percentage: 0.9),
+//        DownloadDetails(name: "pic1.jpg", timeRemaining: "1:00:00", downloadSpeed: "0.1Kb/s", percentage: 0.01),
+//        DownloadDetails(name: "pic2.jpg", timeRemaining: "0:02", downloadSpeed: "12Kb/s", percentage: 0.99),
+//        DownloadDetails(name: "pic3.jpg", timeRemaining: "3:45", downloadSpeed: "0Kb/s", percentage: 0.45),
+//        DownloadDetails(name: "pic4.jpg", timeRemaining: "5:00", downloadSpeed: "11Kb/s", percentage: 0.1),
+//        DownloadDetails(name: "pic5.jpg", timeRemaining: "0:56", downloadSpeed: "12Mb/s", percentage: 0.3),
+//        DownloadDetails(name: "pic6.jpg", timeRemaining: "0:18", downloadSpeed: "8Kb/s", percentage: 0.6),
+//        DownloadDetails(name: "pic7.jpg", timeRemaining: "0:12", downloadSpeed: "345Kb/s", percentage: 0.8),
+//        DownloadDetails(name: "pic8.jpg", timeRemaining: "0:34", downloadSpeed: "23Kb/s", percentage: 0.4),
+//        DownloadDetails(name: "pic9.jpg", timeRemaining: "0:44", downloadSpeed: "19Kb/s", percentage: 0.2)
+//    ]
     
     var completed = [
         (name: "pic10.jpg", size: "45KB", time: "3:20", index: 0),
@@ -70,6 +70,8 @@ class DownloadsViewController : UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        DownloadManager.shared.refresh();
+        
         downloadsTableView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
         downloadsTableView.allowsSelection = false
         downloadsTableView.sectionIndexMinimumDisplayRowCount = 99
@@ -86,7 +88,7 @@ class DownloadsViewController : UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return downloading.count
+            return DownloadManager.shared.downloadDetails.count
         } else {
             return completed.count
         }
@@ -98,7 +100,7 @@ class DownloadsViewController : UIViewController, UITableViewDataSource, UITable
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadingCell")! as! DownloadingCell
             
-            cell.downloadDetails = downloading[indexPath.row]
+            cell.downloadDetails = DownloadManager.shared.downloadDetails[indexPath.row]
             cell.updateCell()
             
             return cell
