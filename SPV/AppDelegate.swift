@@ -13,8 +13,6 @@ import Foundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var photoManager: PhotoManager?
-
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions:
@@ -22,16 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         copyTestResources()
         
-        photoManager = PhotoManager(fromDirectory: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
-        
-        // TODO: Set photo manager on AlbumsVC etc.
-        if let tbc : UITabBarController = self.window!.rootViewController as? UITabBarController {
-            let albumsVC = tbc.viewControllers![0] as? AlbumsViewController
-            albumsVC?.photoManager = photoManager!
-            
-            let browserVC = tbc.viewControllers![1] as? BrowserViewController
-            browserVC?.photoManager = photoManager!
-        }
+        MediaManager.shared.addMedia(rootDirectory: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
         
         // Override point for customization after application launch.
         return true

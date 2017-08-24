@@ -14,14 +14,7 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
     fileprivate let reuseIdentifier = "PhotoCellId"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     
-//    var photoManager = PhotoManager(withPhotos: [
-//        "Test01.jpg",
-//        "Test02.jpg",
-//        "Test03.jpg",
-//        "Test04.png"
-//    ])
-    var photoManager = PhotoManager(fromDirectory: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
-    
+   
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
@@ -43,16 +36,16 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
     
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        return photoManager.count
+        return MediaManager.shared.count
     }
     
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! PhotoCell
-        cell.filePath = photoManager.getPhotoPath(at: indexPath.row)
+        cell.filePath = MediaManager.shared.getPhotoPath(at: indexPath.row)
         cell.indexPath = indexPath
-        cell.imageView.image = photoManager.getPhotoImage(at: indexPath.row)
+        cell.imageView.image = MediaManager.shared.getPhotoImage(at: indexPath.row)
         
         return cell
     }
@@ -61,7 +54,6 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
         if (segue.identifier == "PhotoDetails") {
             let photoCell = sender as! PhotoCell
             let photoDetailsVC = segue.destination as! PhotoDetailsViewController
-            photoDetailsVC.photoManager = photoManager
             photoDetailsVC.index = (photoCell.indexPath?.row)!
             photoDetailsVC.image = photoCell.imageView.image
         }

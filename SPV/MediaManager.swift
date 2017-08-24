@@ -1,5 +1,5 @@
 //
-//  PhotoManager.swift
+//  MediaManager
 //  SPV
 //
 //  Created by dlatheron on 07/08/2017.
@@ -9,7 +9,9 @@
 import Foundation
 import UIKit
 
-class PhotoManager {
+class MediaManager {
+    static var shared = MediaManager()
+    
     let extensions = [
         "jpg",
         "jpeg",
@@ -17,20 +19,26 @@ class PhotoManager {
         "bmp",
         "gif"
     ]
-    var basePath: NSString
-    var photos: [String]
-    let downloadManager: DownloadManager = DownloadManager()
+    var basePath: String? = nil
+    var photos: [String] = []
     
-    init(withPhotos initialPhotos: [String]) {
-        basePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
-        photos = initialPhotos
+    init() {
     }
     
-    init(fromDirectory rootDirectory: String) {
-        basePath = rootDirectory as NSString
-        photos = []
-        photos = extractAllFiles(atPath: basePath as String, withExtensions: extensions)
+    func addMedia(rootDirectory: String) {
+        basePath = rootDirectory as String
+        photos = extractAllFiles(atPath: basePath!,
+                                 withExtensions: extensions)
     }
+    
+    func addMedia(url: URL) -> Int {
+        let filename = url.lastPathComponent
+        
+        photos.append(filename)
+        
+        return count - 1
+    }
+    
     
     // TODO: 
     // - Proper photo class underneath this manager;
@@ -43,7 +51,7 @@ class PhotoManager {
     }
     
     func getPhotoPath(at index: Int) -> String {
-        return basePath.appendingPathComponent(photos[index])
+        return ((basePath!) as NSString).appendingPathComponent(photos[index])
     }
     
     func getPhotoImage(at index: Int) -> UIImage? {

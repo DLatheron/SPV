@@ -12,7 +12,17 @@ import Foundation
 class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate {
     static var shared = DownloadManager()
     
-    var downloadDetails: [DownloadDetails] = []
+    var downloading: [DownloadDetails] = []
+    var completed: [DownloadDetails] = []
+    
+    override init() {
+        super.init()
+        
+        let details = DownloadDetails(remoteURL: URL(string: "http://image.jpg")!)
+        details.downloadComplete(atIndex: 0)
+        
+        completed.append(details)
+    }
     
     var session : URLSession {
         get {
@@ -28,49 +38,30 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         }
     }
     
-    func download(url: URL, to localUrl: URL, completion: @escaping () -> ()) {
-        let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
+    func download(remoteURL: URL,
+                  to localURL: URL,
+                  completion: @escaping () -> ()) {
+        let request = URLRequest(url: remoteURL,
+                                 cachePolicy: .useProtocolCachePolicy)
         
-        self.downloadDetails.append(DownloadDetails(url: localUrl,
-                                                    name: localUrl.lastPathComponent,
-                                                    timeRemaining: "-",
-                                                    downloadSpeed: "-",
-                                                    percentage: 0.0,
-                                                    isPaused: false))
+        self.downloading.append(DownloadDetails(remoteURL: remoteURL))
         
         let task = session.downloadTask(with: request)
-//        { (tempLocalUrl, response, error) in
-//            if let tempLocalUrl = tempLocalUrl, error == nil {
-//                // Success
-//                if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-//                    print("Success: \(statusCode)")
-//                }
-//                
-//                do {
-//                    try FileManager.default.copyItem(at: tempLocalUrl, to: localUrl)
-//                    completion()
-//                } catch (let writeError) {
-//                    print("Error writing file \(localUrl) : \(writeError)")
-//                }
-//                
-//            } else {
-//                print("Failure: \(error!.localizedDescription)");
-//            }
-//        }
         task.resume()
     }
     
     func refresh() {
         session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
-            self.downloadDetails = downloads.map { (download) in
-                DownloadDetails(url: (download.currentRequest?.url)!,
-                                name: (download.currentRequest?.url?.lastPathComponent)!,
-                                timeRemaining: "-",
-                                downloadSpeed: "-",
-                                percentage: Double(download.countOfBytesReceived) / Double(download.countOfBytesExpectedToReceive),
-                                isPaused: false)
+            self.downloading = downloads.map { (download) in
+                let remoteURL = (download.currentRequest?.url)!
+            
+                return DownloadDetails(remoteURL: remoteURL)
             }
         }
+    }
+    
+    func clearCompletedDownloads() {
+        completed = []
     }
     
     
@@ -83,35 +74,57 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         if totalBytesExpectedToWrite > 0 {
             let progress = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
             
-            updateProgress(forURL: (downloadTask.currentRequest?.url)!,
+            updateProgress(forRemoteURL: (downloadTask.currentRequest?.url)!,
                            progress: progress)
             
             debugPrint("Downloaded \(totalBytesWritten) of \(totalBytesExpectedToWrite) = \(progress)")
         }
     }
     
-    func updateProgress(forURL url: URL,
-                        progress: Double) {
-        for details in downloadDetails {
-            if (details.url == url) {
-                details.percentage = progress
+    func getDetails(fromRemoteURL url: URL) -> DownloadDetails? {
+        for details in downloading {
+            if (details.remoteURL == url) {
+                return details
             }
+        }
+        
+        return nil
+    }
+    
+    func updateProgress(forRemoteURL remoteURL: URL,
+                        progress: Double) {
+        if let details = getDetails(fromRemoteURL: remoteURL) {
+            details.percentage = progress
         }
     }
     
-    func getURLForDocumentsDirectory() -> NSURL {
+    func downloadComplete(forRemoteURL remoteURL: URL,
+                          toLocalURL localURL: URL) {
+        if let details = getDetails(fromRemoteURL: remoteURL) {
+            let detailsIndex = downloading.index(of: details)
+            downloading.remove(at: detailsIndex!)
+            
+            let mediaIndex = MediaManager.shared.addMedia(url: localURL)
+            
+            details.downloadComplete(atIndex: mediaIndex)
+            
+            completed.insert(details, at: 0)
+        }
+    }
+    
+    func getURLForDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory,
                                              in: .userDomainMask)
         
-        return paths[0] as NSURL
+        return paths[0] as URL
     }
     
-    func makeFileDownloadURL(downloadURL: NSURL) -> NSURL {
-        let originalFilename = downloadURL.lastPathComponent!
+    func makeFileDownloadURL(downloadURL: URL) -> URL {
+        let originalFilename = downloadURL.lastPathComponent
         let documentsDirectoryURL = getURLForDocumentsDirectory()
         let localFileURL = documentsDirectoryURL.appendingPathComponent(originalFilename);
         
-        return localFileURL as NSURL!
+        return localFileURL
     }
     
     func urlSession(_ session: URLSession,
@@ -122,14 +135,18 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
             print("Success: \(statusCode)")
         }
         
-        let localUrl = makeFileDownloadURL(downloadURL: location as NSURL)
+        let remoteURL = (downloadTask.currentRequest?.url)!
+        let localURL = makeFileDownloadURL(downloadURL: remoteURL)
         
         do {
-            try FileManager.default.copyItem(at: location, to: localUrl as URL)
+            try FileManager.default.copyItem(at: location, to: localURL)
             //completion()
         } catch (let writeError) {
-            print("Error writing file \(localUrl) : \(writeError)")
+            print("Error writing file \(localURL) : \(writeError)")
         }
+        
+        downloadComplete(forRemoteURL: remoteURL,
+                         toLocalURL: localURL)
         
         debugPrint("Did finished downloading")
     }

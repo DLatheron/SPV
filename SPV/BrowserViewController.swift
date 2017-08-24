@@ -27,8 +27,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     var filteredData:[String] = []
     var shouldShowSearchResults: Bool = false
     
-    var photoManager: PhotoManager?
-    
     let getImageJS: String;
     
     @IBOutlet weak var barView: UIView!
@@ -163,14 +161,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                                height: barView.frame.height)
     }
     
-    override func prepare(for segue: UIStoryboardSegue,
-                          sender: Any?) {
-        if segue.identifier == "ShowDownloads" {
-            let downloadsVC = segue.destination as! DownloadsViewController
-            downloadsVC.photoManager = photoManager;
-        }
-    }
-    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
@@ -219,9 +209,9 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
 //                    let uniqueFilename = NSUUID().uuidString
 //                    let fileURL = documentsURL.appendingPathComponent(uniqueFilename).appendingPathExtension(".jpg");
     
-                    self.photoManager!.downloadManager.download(url: URL(string: imageURLString)!,
-                                                                to: fileURL as URL,
-                                                                completion: {
+                    DownloadManager.shared.download(remoteURL: URL(string: imageURLString)!,
+                                                    to: fileURL as URL,
+                                                    completion: {
                         print("\(imageURLString) downloaded to \(fileURL)...")
                     })
                 }

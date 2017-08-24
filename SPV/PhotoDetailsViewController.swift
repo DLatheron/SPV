@@ -12,7 +12,6 @@ import UIKit
 class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fullscreen {
     var scrollView: PhotoScrollView!
     
-    var photoManager: PhotoManager? = nil
     var index: Int = 0
     var image: UIImage! = nil
     
@@ -33,7 +32,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
                                      forImage: self.image,
                                      fullscreen: self)
         
-        title = photoManager?.getPhotoName(at: index)
+        title = MediaManager.shared.getPhotoName(at: index)
 
         setupGestureRecognizers()
         
@@ -151,14 +150,14 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
             newImageIndex -= 1
         }
         
-        let lastPhotoIndex = (photoManager?.count)! - 1
+        let lastPhotoIndex = MediaManager.shared.count - 1
         if (newImageIndex < 0) {
             newImageIndex = lastPhotoIndex
         } else if (newImageIndex > lastPhotoIndex) {
             newImageIndex = 0
         }
         
-        let image = (photoManager?.getPhotoImage(at: newImageIndex))!
+        let image = (MediaManager.shared.getPhotoImage(at: newImageIndex))!
         let newScrollView = PhotoScrollView(parentView: self.view,
                                             forImage: image,
                                             fullscreen: self)
@@ -169,7 +168,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         newScrollView.setNeedsLayout()
         newScrollView.setNeedsDisplay()
         
-        let newImageName = photoManager?.getPhotoName(at: newImageIndex)
+        let newImageName = MediaManager.shared.getPhotoName(at: newImageIndex)
         
         UIView.animate(withDuration: 0.4,
                        delay: 0.0,
