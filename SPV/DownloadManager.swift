@@ -30,33 +30,43 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
     
     func download(url: URL, to localUrl: URL, completion: @escaping () -> ()) {
         let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy)
-        let task = session.downloadTask(with: request) { (tempLocalUrl, response, error) in
-            if let tempLocalUrl = tempLocalUrl, error == nil {
-                // Success
-                if let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                    print("Success: \(statusCode)")
-                }
-                
-                do {
-                    try FileManager.default.copyItem(at: tempLocalUrl, to: localUrl)
-                    completion()
-                } catch (let writeError) {
-                    print("Error writing file \(localUrl) : \(writeError)")
-                }
-                
-            } else {
-                print("Failure: \(error!.localizedDescription)");
-            }
-        }
+        
+        self.downloadDetails.append(DownloadDetails(url: localUrl,
+                                                    name: localUrl.lastPathComponent,
+                                                    timeRemaining: "-",
+                                                    downloadSpeed: "-",
+                                                    percentage: 0.0,
+                                                    isPaused: false))
+        
+        let task = session.downloadTask(with: request)
+//        { (tempLocalUrl, response, error) in
+//            if let tempLocalUrl = tempLocalUrl, error == nil {
+//                // Success
+//                if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+//                    print("Success: \(statusCode)")
+//                }
+//                
+//                do {
+//                    try FileManager.default.copyItem(at: tempLocalUrl, to: localUrl)
+//                    completion()
+//                } catch (let writeError) {
+//                    print("Error writing file \(localUrl) : \(writeError)")
+//                }
+//                
+//            } else {
+//                print("Failure: \(error!.localizedDescription)");
+//            }
+//        }
         task.resume()
     }
     
     func refresh() {
         session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
             self.downloadDetails = downloads.map { (download) in
-                DownloadDetails(name: "Test01.jpg",
-                                timeRemaining: "3m",
-                                downloadSpeed: "4KB/s",
+                DownloadDetails(url: (download.currentRequest?.url)!,
+                                name: (download.currentRequest?.url?.lastPathComponent)!,
+                                timeRemaining: "-",
+                                downloadSpeed: "-",
                                 percentage: Double(download.countOfBytesReceived) / Double(download.countOfBytesExpectedToReceive),
                                 isPaused: false)
             }
@@ -71,21 +81,64 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
         if totalBytesExpectedToWrite > 0 {
-            let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+            let progress = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
+            
+            updateProgress(forURL: (downloadTask.currentRequest?.url)!,
+                           progress: progress)
+            
             debugPrint("Downloaded \(totalBytesWritten) of \(totalBytesExpectedToWrite) = \(progress)")
         }
+    }
+    
+    func updateProgress(forURL url: URL,
+                        progress: Double) {
+        for details in downloadDetails {
+            if (details.url == url) {
+                details.percentage = progress
+            }
+        }
+    }
+    
+    func getURLForDocumentsDirectory() -> NSURL {
+        let paths = FileManager.default.urls(for: .documentDirectory,
+                                             in: .userDomainMask)
+        
+        return paths[0] as NSURL
+    }
+    
+    func makeFileDownloadURL(downloadURL: NSURL) -> NSURL {
+        let originalFilename = downloadURL.lastPathComponent!
+        let documentsDirectoryURL = getURLForDocumentsDirectory()
+        let localFileURL = documentsDirectoryURL.appendingPathComponent(originalFilename);
+        
+        return localFileURL as NSURL!
     }
     
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
+        // Success
+        if let statusCode = (downloadTask.response as? HTTPURLResponse)?.statusCode {
+            print("Success: \(statusCode)")
+        }
+        
+        let localUrl = makeFileDownloadURL(downloadURL: location as NSURL)
+        
+        do {
+            try FileManager.default.copyItem(at: location, to: localUrl as URL)
+            //completion()
+        } catch (let writeError) {
+            print("Error writing file \(localUrl) : \(writeError)")
+        }
+        
         debugPrint("Did finished downloading")
     }
     
     func urlSession(_ session: URLSession,
                     task: URLSessionTask,
                     didCompleteWithError error: Error?) {
-        debugPrint("Task completed: \(task), error: \(error ?? "" as! Error)")
+        debugPrint("Task completed: \(task), error: \(String(describing: error))")
+        
     }
     
     func calculateProgress(session: URLSession,

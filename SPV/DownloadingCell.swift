@@ -18,7 +18,7 @@ class DownloadingCell : UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        scheduledTimerWithTimeInterval()
+//        scheduledTimerWithTimeInterval()
     }
     
     deinit {
@@ -43,17 +43,17 @@ class DownloadingCell : UITableViewCell {
         }
     }
     
-    var timer = Timer()
+//    var timer = Timer()
     
-    func scheduledTimerWithTimeInterval(){
-        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateCounting), userInfo: nil, repeats: true)
-    }
+//    func scheduledTimerWithTimeInterval(){
+//        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+//        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateCounting), userInfo: nil, repeats: true)
+//    }
     
-    func updateCounting(){
-        downloadDetails?.percentage += 0.01
-        if (downloadDetails?.percentage)! > 1.0 { downloadDetails?.percentage = 0.0 }
-    }
+//    func updateCounting(){
+//        downloadDetails?.percentage += 0.01
+//        if (downloadDetails?.percentage)! > 1.0 { downloadDetails?.percentage = 0.0 }
+//    }
     
     @IBAction func pauseOrResumeDownload(_ sender: Any) {
         let button: UIButton = sender as! UIButton

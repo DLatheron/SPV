@@ -10,19 +10,20 @@ import Foundation
 import UIKit
 
 class DownloadDetails : NSObject {
+    var url: URL
     var name: String
     var timeRemaining: String
     var downloadSpeed: String
     dynamic var percentage: Double
     var isPaused: Bool
     
-    
-    
-    init(name: String,
+    init(url: URL,
+         name: String,
          timeRemaining: String,
          downloadSpeed: String,
          percentage: Double,
          isPaused: Bool = false) {
+        self.url = url
         self.name = name
         self.timeRemaining = timeRemaining
         self.downloadSpeed = downloadSpeed
