@@ -8,6 +8,12 @@
 
 import Foundation
 
+extension Comparable {
+    func clamp(to limits: ClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
 class Download : NSObject {
     var remoteURL: URL
     var name: String
@@ -23,7 +29,12 @@ class Download : NSObject {
     
     var progress: Double {
         get {
-            return Double(bytesDownloaded) / Double(totalSizeInBytes)
+            if (totalSizeInBytes > 0) {
+                let progress = Double(bytesDownloaded) / Double(totalSizeInBytes)
+                return progress.clamp(to: 0.0 ... 1.0)
+            } else {
+                return 0.0
+            }
         }
     }
     
@@ -128,35 +139,11 @@ class Download : NSObject {
             }
         }
     }
-    
-//    var size: Int64
-//    var timeRemaining: String
-//    var downloadSpeed: String
-//    dynamic var percentage: Double
-//    var isPaused: Bool
-//    var time: String
+
     var index: Int? = nil
     
     init(remoteURL: URL) {
         self.remoteURL = remoteURL
         self.name = remoteURL.lastPathComponent
-//        self.size = 0
-//        self.timeRemaining = "-"
-//        self.downloadSpeed = "-"
-//        self.percentage = 0.0
-//        self.isPaused = false
-//        self.time = ""
-//        self.index = nil
     }
-    
-//    func downloadComplete(atIndex: Int) {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "MM-dd-yyyy HH:mm"
-//        
-//        self.time = dateFormatter.string(from: Date())
-//        self.index = atIndex
-//        self.percentage = 1.0
-//        self.downloadSpeed = "-"
-//        self.timeRemaining = "-"
-//    }
 }

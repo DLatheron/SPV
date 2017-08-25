@@ -38,6 +38,7 @@
 		F9F2D3D61F42D3B200FD6F78 /* DownloadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3D51F42D3B200FD6F78 /* DownloadingCell.swift */; };
 		F9F2D3D81F435F9700FD6F78 /* CompletedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3D71F435F9600FD6F78 /* CompletedCell.swift */; };
 		F9F2D3DB1F44202F00FD6F78 /* CircularProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3DA1F44202F00FD6F78 /* CircularProgressIndicator.swift */; };
+		F9F2D3DD1F504E2E00FD6F78 /* DownloadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3DC1F504E2E00FD6F78 /* DownloadTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		F9F2D3D51F42D3B200FD6F78 /* DownloadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadingCell.swift; sourceTree = "<group>"; };
 		F9F2D3D71F435F9600FD6F78 /* CompletedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedCell.swift; sourceTree = "<group>"; };
 		F9F2D3DA1F44202F00FD6F78 /* CircularProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularProgressIndicator.swift; sourceTree = "<group>"; };
+		F9F2D3DC1F504E2E00FD6F78 /* DownloadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 		F9BABABF1F28F92F00000D9B /* SPVTests */ = {
 			isa = PBXGroup;
 			children = (
+				F9F2D3DC1F504E2E00FD6F78 /* DownloadTest.swift */,
 				F9BABAC01F28F92F00000D9B /* SPVTests.swift */,
 				F9BABAC21F28F92F00000D9B /* Info.plist */,
 			);
@@ -392,6 +395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9BABAC11F28F92F00000D9B /* SPVTests.swift in Sources */,
+				F9F2D3DD1F504E2E00FD6F78 /* DownloadTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
