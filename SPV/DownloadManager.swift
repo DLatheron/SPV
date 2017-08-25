@@ -12,14 +12,14 @@ import Foundation
 class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate {
     static var shared = DownloadManager()
     
-    var downloading: [DownloadDetails] = []
-    var completed: [DownloadDetails] = []
+    var downloading: [Download] = []
+    var completed: [Download] = []
     
     override init() {
         super.init()
         
-        let details = DownloadDetails(remoteURL: URL(string: "http://image.jpg")!)
-        details.downloadComplete(atIndex: 0)
+        let details = Download(remoteURL: URL(string: "http://image.jpg")!)
+        details.index = 0
         
         completed.append(details)
     }
@@ -44,7 +44,7 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         let request = URLRequest(url: remoteURL,
                                  cachePolicy: .useProtocolCachePolicy)
         
-        self.downloading.append(DownloadDetails(remoteURL: remoteURL))
+        self.downloading.append(Download(remoteURL: remoteURL))
         
         let task = session.downloadTask(with: request)
         task.resume()
@@ -55,7 +55,7 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
             self.downloading = downloads.map { (download) in
                 let remoteURL = (download.currentRequest?.url)!
             
-                return DownloadDetails(remoteURL: remoteURL)
+                return Download(remoteURL: remoteURL)
             }
         }
     }
@@ -72,16 +72,17 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
         if totalBytesExpectedToWrite > 0 {
-            let progress = Double(totalBytesWritten) / Double(totalBytesExpectedToWrite)
+            let remoteURL = (downloadTask.currentRequest?.url)!
+            if let download = getDetails(fromRemoteURL: remoteURL) {
+                download.totalSizeInBytes = totalBytesExpectedToWrite
+                download.bytesDownloaded = totalBytesWritten
+            }
             
-            updateProgress(forRemoteURL: (downloadTask.currentRequest?.url)!,
-                           progress: progress)
-            
-            debugPrint("Downloaded \(totalBytesWritten) of \(totalBytesExpectedToWrite) = \(progress)")
+            debugPrint("Downloaded \(totalBytesWritten) of \(totalBytesExpectedToWrite)")
         }
     }
     
-    func getDetails(fromRemoteURL url: URL) -> DownloadDetails? {
+    func getDetails(fromRemoteURL url: URL) -> Download? {
         for details in downloading {
             if (details.remoteURL == url) {
                 return details
@@ -91,12 +92,12 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         return nil
     }
     
-    func updateProgress(forRemoteURL remoteURL: URL,
-                        progress: Double) {
-        if let details = getDetails(fromRemoteURL: remoteURL) {
-            details.percentage = progress
-        }
-    }
+//    func updateProgress(forRemoteURL remoteURL: URL,
+//                        progress: Double) {
+//        if let details = getDetails(fromRemoteURL: remoteURL) {
+//            details.percentage = progress
+//        }
+//    }
     
     func downloadComplete(forRemoteURL remoteURL: URL,
                           toLocalURL localURL: URL) {
@@ -106,7 +107,7 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
             
             let mediaIndex = MediaManager.shared.addMedia(url: localURL)
             
-            details.downloadComplete(atIndex: mediaIndex)
+            details.index = mediaIndex
             
             completed.insert(details, at: 0)
         }

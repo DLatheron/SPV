@@ -56,14 +56,14 @@ class DownloadsViewController : UIViewController, UITableViewDataSource, UITable
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadingCell")! as! DownloadingCell
             
-            cell.downloadDetails = DownloadManager.shared.downloading[indexPath.row]
+            cell.download = DownloadManager.shared.downloading[indexPath.row]
             cell.updateCell()
             
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CompletedCell")! as! CompletedCell
 
-            cell.downloadDetails = DownloadManager.shared.completed[indexPath.row]
+            cell.download = DownloadManager.shared.completed[indexPath.row]
             cell.updateCell()
             
 //            cell.title.text = DownloadManager.shared.completed[indexPath.row].name

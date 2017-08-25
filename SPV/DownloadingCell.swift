@@ -18,20 +18,20 @@ class DownloadingCell : UITableViewCell {
     
     deinit {
         removeObserver(self,
-                       forKeyPath: #keyPath(downloadDetails.percentage))
+                       forKeyPath: #keyPath(download.percentage))
     }
     
-    var downloadDetails: DownloadDetails? = nil {
-        willSet(newDownloadDetails) {
-            if downloadDetails != nil {
+    var download: Download? = nil {
+        willSet(newDownload) {
+            if download != nil {
                 removeObserver(self,
-                                forKeyPath: #keyPath(downloadDetails.percentage))
+                                forKeyPath: #keyPath(download.percentage))
             }
         }
         didSet {
-            if downloadDetails != nil {
+            if download != nil {
                 addObserver(self,
-                            forKeyPath: #keyPath(downloadDetails.percentage),
+                            forKeyPath: #keyPath(download.percentage),
                             options: [.new, .old],
                             context: nil)
             }
@@ -49,15 +49,15 @@ class DownloadingCell : UITableViewCell {
                                of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?,
                                context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(downloadDetails.percentage) {
-            progressView.progress = (downloadDetails?.percentage)!
+        if keyPath == #keyPath(download.percentage) {
+            progressView.progress = (download?.percentage)!
         }
     }
     
     func pauseDownload() {
         print("TODO: Pause the associated download.")
         
-        downloadDetails?.isPaused = true
+        download?.pause = true
         pauseResumeButton.isSelected = true
         
         updateCell()
@@ -66,16 +66,16 @@ class DownloadingCell : UITableViewCell {
     func resumeDownload() {
         print("TODO: Resume the associated download.")
 
-        downloadDetails?.isPaused = false
+        download?.pause = false
         pauseResumeButton.isSelected = false
 
         updateCell()
     }
     
     func updateCell() {
-        if let downloadDetails = self.downloadDetails {
-            title.text = downloadDetails.name
-            if (downloadDetails.isPaused) {
+        if let download = self.download {
+            title.text = download.name
+            if (download.pause) {
                 title.textColor = UIColor.lightGray
                 
                 status.text = ""
@@ -83,10 +83,10 @@ class DownloadingCell : UITableViewCell {
             } else {
                 title.textColor = UIColor.darkText
 
-                status.text = "Remaining: \(downloadDetails.timeRemaining), Speed: \(downloadDetails.downloadSpeed)"
+                status.text = "Remaining: \(download.timeRemainingHumanReadable), Speed: \(download.downloadSpeedHumanReadable)"
             }
             
-            progressView.progress = downloadDetails.percentage
+            progressView.progress = download.percentage
         }
     }
 }

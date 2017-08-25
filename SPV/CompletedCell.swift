@@ -16,13 +16,13 @@ class CompletedCell : UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var status: UILabel!
     
-    var downloadDetails: DownloadDetails? = nil
+    var download: Download? = nil
     
     func updateCell() {
-        if let downloadDetails = self.downloadDetails {
-            title.text = downloadDetails.name
-            status.text = "Size: \(downloadDetails.size), Time: \(downloadDetails.time)"
-            downloadedImageView.image = MediaManager.shared.getPhotoImage(at: downloadDetails.index!)
+        if let download = self.download {
+            title.text = download.name
+            status.text = "Size: \(download.totalSizeInBytes), Time: \(download.durationHumanReadable)"
+            downloadedImageView.image = MediaManager.shared.getPhotoImage(at: download.index!)
         }
     }
 }
