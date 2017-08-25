@@ -15,8 +15,8 @@ extension Comparable {
 }
 
 class Download : NSObject {
-    var remoteURL: URL
-    var name: String
+    internal(set) var remoteURL: URL
+    internal(set) var name: String
     
     var totalSizeInBytes: Int64 = 0
     var bytesDownloaded: Int64 = 0
@@ -46,7 +46,11 @@ class Download : NSObject {
     
     var complete: Bool {
         get {
-            return bytesDownloaded == totalSizeInBytes
+            if (totalSizeInBytes > 0) {
+                return bytesDownloaded >= totalSizeInBytes
+            } else {
+                return false
+            }
         }
     }
     
@@ -56,8 +60,8 @@ class Download : NSObject {
         }
     }
     
-    var startTime: Date = Date()
-    var endTime: Date? = nil
+    internal(set) var startTime: Date = Date()
+    internal(set) var endTime: Date? = nil
     
     var durationInSeconds: TimeInterval? {
         get {
@@ -124,14 +128,9 @@ class Download : NSObject {
         }
     }
     
-    var pause: Bool {
-        get {
-            return self.pause
-        }
-        set(value) {
-            self.pause = value
-            
-            if value {
+    var pause: Bool = true {
+        didSet {
+            if pause {
                 // Pausing.
             } else {
                 // Resuming.
