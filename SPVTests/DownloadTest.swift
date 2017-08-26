@@ -162,8 +162,9 @@ class DownloadTest: XCTestCase {
         let download = Download(remoteURL: remoteURL)
         
         download.pause = false
-        download.startTime = Date()
-        download.endTime = Date().addingTimeInterval(20)
+        let date = Date()
+        download.startTime = date
+        download.endTime = date.addingTimeInterval(20)
         
         XCTAssertEqual(download.durationInSeconds, 20)
     }
@@ -172,8 +173,9 @@ class DownloadTest: XCTestCase {
         let download = Download(remoteURL: remoteURL)
         
         download.pause = false
-        download.startTime = Date()
-        download.endTime = Date().addingTimeInterval(20)
+        let date = Date()
+        download.startTime = date
+        download.endTime = date.addingTimeInterval(20)
         
         XCTAssertEqual(download.durationHumanReadable, "20.0s")
     }
@@ -184,6 +186,40 @@ class DownloadTest: XCTestCase {
         download.pause = true
         
         XCTAssertEqual(download.durationHumanReadable, "-")
+    }
+    
+    func test_downloadSpeedInBPS() {
+        let download = Download(remoteURL: remoteURL)
+        
+        download.pause = false
+        let date = Date()
+        download.startTime = date
+        download.endTime = date.addingTimeInterval(10)
+        download.totalSizeInBytes = 1_000
+        download.bytesDownloaded = 100
+        
+        XCTAssertEqual(download.downloadSpeedInBPS, 10)
+    }
+    
+    func test_downloadSpeedInBPS_paused() {
+        let download = Download(remoteURL: remoteURL)
+
+        download.pause = true
+        
+        XCTAssertNil(download.downloadSpeedInBPS)
+    }
+
+    func test_timeRemainingInSeconds() {
+        let download = Download(remoteURL: remoteURL)
+        
+        download.pause = false
+        let date = Date()
+        download.startTime = date
+        download.endTime = date.addingTimeInterval(10)
+        download.totalSizeInBytes = 1_000
+        download.bytesDownloaded = 500
+        
+        XCTAssertEqual(download.timeRemainingInSeconds, 10)
     }
     
     // Test

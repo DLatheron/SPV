@@ -101,7 +101,7 @@ class Download : NSObject {
         get {
             // Calculate how long it takes to download a byte and scale up?
             if let bps = downloadSpeedInBPS {
-                return Double(bytesRemaining) * bps
+                return Double(bytesRemaining) / bps
             } else {
                 return nil
             }
