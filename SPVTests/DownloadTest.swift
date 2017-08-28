@@ -169,24 +169,24 @@ class DownloadTest: XCTestCase {
         XCTAssertEqual(download.durationInSeconds, 20)
     }
     
-    func test_durationHumanReadable_validDuration() {
-        let download = Download(remoteURL: remoteURL)
-        
-        download.pause = false
-        let date = Date()
-        download.startTime = date
-        download.endTime = date.addingTimeInterval(20)
-        
-        XCTAssertEqual(download.durationHumanReadable, "20.0s")
-    }
+//    func test_durationHumanReadable_validDuration() {
+//        let download = Download(remoteURL: remoteURL)
+//        
+//        download.pause = false
+//        let date = Date()
+//        download.startTime = date
+//        download.endTime = date.addingTimeInterval(20)
+//        
+//        XCTAssertEqual(download.durationHumanReadable, "20.0s")
+//    }
     
-    func test_durationHumanReadable_invalidDuration() {
-        let download = Download(remoteURL: remoteURL)
-        
-        download.pause = true
-        
-        XCTAssertEqual(download.durationHumanReadable, "-")
-    }
+//    func test_durationHumanReadable_invalidDuration() {
+//        let download = Download(remoteURL: remoteURL)
+//        
+//        download.pause = true
+//        
+//        XCTAssertEqual(download.durationHumanReadable, "-")
+//    }
     
     func test_downloadSpeedInBPS() {
         let download = Download(remoteURL: remoteURL)
@@ -222,5 +222,48 @@ class DownloadTest: XCTestCase {
         XCTAssertEqual(download.timeRemainingInSeconds, 10)
     }
     
-    // Test
+    func test_timeRemainingInSeconds_paused() {
+        let download = Download(remoteURL: remoteURL)
+        
+        download.pause = true
+        let date = Date()
+        download.startTime = date
+        download.endTime = date.addingTimeInterval(10)
+        download.totalSizeInBytes = 1_000
+        download.bytesDownloaded = 500
+        
+        XCTAssertNil(download.timeRemainingInSeconds)
+    }
+    
+    func test_humanReadableBytes_nonSI() {
+        XCTAssertEqual(Download.humanReadableBytes(bytes: nil), "-")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 1_000), "1,000B")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 2_000), "2.0KiB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 5_300), "5.2KiB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 2_000_000), "1.9MiB")
+        
+        XCTAssertEqual(Download.humanReadableBytes(bytes: nil, space: true), "-")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 1_000, space: true), "1,000 B")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 2_000, space: true), "2.0 KiB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 5_300, space: true), "5.2 KiB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 2_000_000, space: true), "1.9 MiB")
+    }
+    
+    func test_humanReadableBytes_si() {
+        XCTAssertEqual(Download.humanReadableBytes(bytes: nil, si: true), "-")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 1_000, si: true), "1.0kB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 2_000, si: true), "2.0kB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 5_300, si: true), "5.3kB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 2_000_000, si: true), "2.0MB")
+        
+        XCTAssertEqual(Download.humanReadableBytes(bytes: nil, si: true, space: true), "-")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 1_000, si: true, space: true), "1.0 kB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 2_000, si: true, space: true), "2.0 kB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 5_300, si: true, space: true), "5.3 kB")
+        XCTAssertEqual(Download.humanReadableBytes(bytes: 2_000_000, si: true, space: true), "2.0 MB")
+    }
+    
+    // Tests for human readable duration.
+    
+    // Tests for human readable BPS.
 }

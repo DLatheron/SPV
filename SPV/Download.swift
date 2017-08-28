@@ -77,16 +77,6 @@ class Download : NSObject {
         }
     }
     
-    var durationHumanReadable: String {
-        get {
-            if let durationInSeconds = durationInSeconds {
-                return "\(durationInSeconds)s"
-            } else {
-                return "-"
-            }
-        }
-    }
-    
     var downloadSpeedInBPS: Double? {
         get {
             if let duration = durationInSeconds, duration > 0 {
@@ -108,26 +98,6 @@ class Download : NSObject {
         }
     }
     
-    var timeRemainingHumanReadable: String {
-        get {
-            if let timeRemainingInSeconds = timeRemainingInSeconds {
-                return "\(timeRemainingInSeconds)s"
-            } else {
-                return "-"
-            }
-        }
-    }
-    
-    var downloadSpeedHumanReadable: String {
-        get {
-            if let downloadSpeedInBPS = downloadSpeedInBPS {
-                return "\(downloadSpeedInBPS)bps"
-            } else {
-                return "-"
-            }
-        }
-    }
-    
     var pause: Bool = true {
         didSet {
             if pause {
@@ -144,5 +114,65 @@ class Download : NSObject {
     init(remoteURL: URL) {
         self.remoteURL = remoteURL
         self.name = remoteURL.lastPathComponent
+    }
+    
+    class func humanReadableBytes(bytes: Int64?,
+                                  si: Bool = false,
+                                  space: Bool = false) -> String {
+        if let bytes = bytes {
+            let spacing = space ? " " : ""
+            let unit = si ? 1000 : 1024
+
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            
+            if (bytes < Int64(unit)) {
+                let formattedNumber = numberFormatter.string(from: NSNumber(value: bytes))
+                return formattedNumber! + spacing + "B";
+            } else {
+                let chars = si ? [ "kB", "MB", "GB", "TB", "PB", "EB" ] : [ "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" ]
+                let exp = Int(log(Double(bytes)) / log(Double(unit)));
+                let suffix = chars[exp - 1];
+
+                numberFormatter.minimumFractionDigits = 1
+                numberFormatter.maximumFractionDigits = 1
+     
+                let formattedNumber = numberFormatter.string(from: NSNumber(value: Double(bytes) / pow(Double(unit), Double(exp))))
+                
+                return formattedNumber! + spacing + suffix;
+            }
+        } else {
+            return "-"
+        }
+    }
+    
+    class func humanReadableDuration(duration: TimeInterval?) -> String {
+        if let duration = duration {
+            switch duration {
+            case _ where duration <= 1.0:
+                return "< 1 sec"
+            case let seconds where duration < 60.0:
+                return "\(seconds) secs"
+            case let minutes where duration < (60.0 * 60.0):
+                let seconds = Int(duration) % 60
+                return "\(minutes):\(seconds)"
+            default:
+                let hours = Int(duration) / (60 * 60)
+                let minutes = Int(duration) / 60 % 60
+                let seconds = Int(duration) % 60
+                return "\(hours):\(minutes):\(seconds)"
+            }
+        } else {
+            return "-"
+        }
+    }
+    
+    class func humanReadableBPS(bytesPerSecond: Double?,
+                                si: Bool = false) -> String {
+        if let bytesPerSecond = bytesPerSecond {
+            return "\(bytesPerSecond)"
+        } else {
+            return "-"
+        }
     }
 }
