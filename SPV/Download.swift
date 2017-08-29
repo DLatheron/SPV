@@ -148,18 +148,18 @@ class Download : NSObject {
     
     class func humanReadableDuration(duration: TimeInterval?) -> String {
         if let duration = duration {
+            let hours = Int(duration) / (60 * 60)
+            let minutes = Int(duration) / 60 % 60
+            let seconds = Int(duration) % 60
+
             switch duration {
             case _ where duration <= 1.0:
                 return "< 1 sec"
-            case let seconds where duration < 60.0:
+            case _ where duration < 60.0:
                 return "\(seconds) secs"
-            case let minutes where duration < (60.0 * 60.0):
-                let seconds = Int(duration) % 60
+            case _ where duration < (60.0 * 60.0):
                 return "\(minutes):\(seconds)"
             default:
-                let hours = Int(duration) / (60 * 60)
-                let minutes = Int(duration) / 60 % 60
-                let seconds = Int(duration) % 60
                 return "\(hours):\(minutes):\(seconds)"
             }
         } else {
@@ -167,10 +167,46 @@ class Download : NSObject {
         }
     }
     
+    enum BPSUnits: Int {
+        case bitsPerSecond = 0
+        case siBytesPerSecond = 1
+        case bytesPerSecond = 2
+    }
+    
     class func humanReadableBPS(bytesPerSecond: Double?,
-                                si: Bool = false) -> String {
+                                units: BPSUnits = .bitsPerSecond,
+                                space: Bool = false) -> String {
+        let allTransferUnits = [
+            ( scaler:    1, units: [ "bps", "Kbps",  "Mbps",  "Gbps",  "Tbps",  "Pbps",  "Ebps" ]),
+            ( scaler: 8000, units: [ "B/s", "KB/s",  "MB/s",  "GB/s",  "TB/s",  "PB/s",  "EB/s" ]),
+            ( scaler: 8192, units: [ "B/s", "KiBps", "MiBps", "GiBps", "TiBps", "PiBps", "EiB"  ])
+        ]
+        
+        let transferUnit = allTransferUnits[units]
+        
+        
         if let bytesPerSecond = bytesPerSecond {
-            return "\(bytesPerSecond)"
+            let spacing = space ? " " : ""
+            let unit = si ? 1000.0 : 1024.0
+            
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            
+            if (bytesPerSecond < Double(unit)) {
+                let formattedNumber = numberFormatter.string(from: NSNumber(value: bytesPerSecond))
+                return formattedNumber! + spacing + "B";
+            } else {
+                let chars = si ? [ "KB/s", "MB/s", "GB/s", "TB/s", "PB/s", "EB/s" ] : [ "KiBps", "MiBps", "GiBps", "TiBps", "PiBps", "EiB" ]
+                let exp = Int(log(Double(bytesPerSecond)) / log(Double(unit)));
+                let suffix = chars[exp - 1];
+                
+                numberFormatter.minimumFractionDigits = 1
+                numberFormatter.maximumFractionDigits = 1
+                
+                let formattedNumber = numberFormatter.string(from: NSNumber(value: Double(bytesPerSecond) / pow(Double(unit), Double(exp))))
+                
+                return formattedNumber! + spacing + suffix;
+            }
         } else {
             return "-"
         }

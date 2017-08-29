@@ -264,6 +264,22 @@ class DownloadTest: XCTestCase {
     }
     
     // Tests for human readable duration.
+    func test_humanReadableDuration() {
+        let oneHourPlus = TimeInterval(exactly: (((1 * 60) + 17) * 60) + 46)
+        let almostOneMinute = TimeInterval(exactly: 59)
+        let almostFiveMinutes = TimeInterval(exactly: (4 * 60) + 34)
+        
+        XCTAssertEqual(Download.humanReadableDuration(duration: nil), "-")
+        XCTAssertEqual(Download.humanReadableDuration(duration: TimeInterval(exactly: 1)), "< 1 sec")
+        XCTAssertEqual(Download.humanReadableDuration(duration: almostOneMinute), "59 secs")
+        XCTAssertEqual(Download.humanReadableDuration(duration: almostFiveMinutes), "4:34")
+        XCTAssertEqual(Download.humanReadableDuration(duration: oneHourPlus), "1:17:46")
+    }
     
     // Tests for human readable BPS.
+    func test_humanReadableBPS() {
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: nil), "-")
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 50), "50bps")
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 5_000), "5.0kbps")
+    }
 }
