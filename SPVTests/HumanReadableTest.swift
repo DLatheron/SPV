@@ -21,6 +21,9 @@ class HumanReadableTest: XCTestCase {
         super.tearDown()
     }
     
+    // Class for size tests.
+    // - Use si/non-si enumeration.
+    
     
     func test_bytes_nonSI() {
         XCTAssertEqual(HumanReadable.bytes(bytes: nil), "-")
@@ -50,18 +53,36 @@ class HumanReadableTest: XCTestCase {
         XCTAssertEqual(HumanReadable.bytes(bytes: 2_000_000, si: true, space: true), "2.0 MB")
     }
     
-    // Tests for human readable duration.
-    func test_duration() {
-        let oneHourPlus = TimeInterval(exactly: (((1 * 60) + 17) * 60) + 46)
-        let almostOneMinute = TimeInterval(exactly: 59)
-        let almostFiveMinutes = TimeInterval(exactly: (4 * 60) + 34)
+    
+    class DurationTest {
+        let expectedOutput: String
+        let duration: TimeInterval?
         
-        XCTAssertEqual(HumanReadable.duration(duration: nil), "-")
-        XCTAssertEqual(HumanReadable.duration(duration: TimeInterval(exactly: 1)), "< 1 sec")
-        XCTAssertEqual(HumanReadable.duration(duration: almostOneMinute), "59 secs")
-        XCTAssertEqual(HumanReadable.duration(duration: almostFiveMinutes), "4:34")
-        XCTAssertEqual(HumanReadable.duration(duration: oneHourPlus), "1:17:46")
+        init(expectedOutput: String, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) {
+            self.expectedOutput = expectedOutput
+            self.duration = TimeInterval(hours * 60 * 60 + minutes * 60 + seconds)
+        }
+
+        init(expectedOutput: String, duration: TimeInterval?) {
+            self.expectedOutput = expectedOutput
+            self.duration = duration
+        }
     }
+    
+    func test_duration() {
+        let tests = [
+            DurationTest(expectedOutput: "-", duration: nil),
+            DurationTest(expectedOutput: "< 1 sec", seconds: 1),
+            DurationTest(expectedOutput: "59 secs", seconds: 59),
+            DurationTest(expectedOutput: "4:34", minutes: 4, seconds: 34),
+            DurationTest(expectedOutput: "1:17:46", hours: 1, minutes: 17, seconds: 46)
+        ]
+        
+        tests.forEach { test in
+            XCTAssertEqual(HumanReadable.duration(duration: test.duration), test.expectedOutput)
+        }
+    }
+    
     
     class BPSTest {
         let bytesPerSecond: Double?
