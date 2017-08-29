@@ -67,28 +67,29 @@ class HumanReadable {
         case bytesPerSecond = 2
     }
     
+    static private let bpsUnits = [
+        (
+            multipler: 1.0 / 8.0,
+            scaler: 1000.0,
+            units: [ "bps", "Kbps",  "Mbps",  "Gbps",  "Tbps",  "Pbps",  "Ebps" ]
+        ),
+        (
+            multipler: 1.0,
+            scaler: 1000.0,
+            units: [ "B/s", "KB/s",  "MB/s",  "GB/s",  "TB/s",  "PB/s",  "EB/s" ]
+        ),
+        (
+            multipler: 1.0,
+            scaler: 1024.0,
+            units: [ "B/s", "KiB/s", "MiB/s", "GiB/s", "TiB/s", "PiB/s", "EiB/s" ]
+        )
+    ]
+    
     class func bps(bytesPerSecond: Double?,
                    units: BPSUnits = .bitsPerSecond,
                    space: Bool = false) -> String {
-        let allTransferUnits = [
-            (
-                multipler: 1.0 / 8.0,
-                scaler: 1000.0,
-                units: [ "bps", "Kbps",  "Mbps",  "Gbps",  "Tbps",  "Pbps",  "Ebps" ]
-            ),
-            (
-                multipler: 1.0,
-                scaler: 8000.0,
-                units: [ "B/s", "KB/s",  "MB/s",  "GB/s",  "TB/s",  "PB/s",  "EB/s" ]
-            ),
-            (
-                multipler: 1.0,
-                scaler: 8192.0,
-                units: [ "B/s", "KiB/s", "MiB/s", "GiB/s", "TiB/s", "PiB/s", "EiB/s" ]
-            )
-        ]
-        
-        let transferUnit = allTransferUnits[units.rawValue]
+
+        let transferUnit = bpsUnits[units.rawValue]
         
         if var bytesPerSecond = bytesPerSecond {
             bytesPerSecond = bytesPerSecond * transferUnit.multipler
