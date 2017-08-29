@@ -21,7 +21,7 @@ class CompletedCell : UITableViewCell {
     func updateCell() {
         if let download = self.download {
             title.text = download.name
-            status.text = "Size: \(download.totalSizeInBytes), Time: \(Download.humanReadableDuration(duration: download.timeRemainingInSeconds))"
+            status.text = "Size: \(download.totalSizeInBytes), Time: \(HumanReadable.duration(duration: download.timeRemainingInSeconds))"
             downloadedImageView.image = MediaManager.shared.getPhotoImage(at: download.index!)
         }
     }

@@ -83,8 +83,8 @@ class DownloadingCell : UITableViewCell {
             } else {
                 title.textColor = UIColor.darkText
                 
-                let timeRemaining = Download.humanReadableDuration(duration: download.timeRemainingInSeconds)
-                let downloadSpeed = Download.humanReadableBPS(bytesPerSecond: download.downloadSpeedInBPS)
+                let timeRemaining = HumanReadable.duration(duration: download.timeRemainingInSeconds)
+                let downloadSpeed = HumanReadable.bps(bytesPerSecond: download.downloadSpeedInBPS)
 
                 status.text = "Remaining: \(timeRemaining), Speed: \(downloadSpeed))"
             }
