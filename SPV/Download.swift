@@ -177,33 +177,31 @@ class Download : NSObject {
                                 units: BPSUnits = .bitsPerSecond,
                                 space: Bool = false) -> String {
         let allTransferUnits = [
-            ( scaler:    1, units: [ "bps", "Kbps",  "Mbps",  "Gbps",  "Tbps",  "Pbps",  "Ebps" ]),
-            ( scaler: 8000, units: [ "B/s", "KB/s",  "MB/s",  "GB/s",  "TB/s",  "PB/s",  "EB/s" ]),
-            ( scaler: 8192, units: [ "B/s", "KiBps", "MiBps", "GiBps", "TiBps", "PiBps", "EiB"  ])
+            ( scaler: 1000.0, units: [ "bps", "Kbps",  "Mbps",  "Gbps",  "Tbps",  "Pbps",  "Ebps" ]),
+            ( scaler: 8000.0, units: [ "B/s", "KB/s",  "MB/s",  "GB/s",  "TB/s",  "PB/s",  "EB/s" ]),
+            ( scaler: 8192.0, units: [ "B/s", "KiBps", "MiBps", "GiBps", "TiBps", "PiBps", "EiB"  ])
         ]
         
-        let transferUnit = allTransferUnits[units]
-        
+        let transferUnit = allTransferUnits[units.rawValue]
         
         if let bytesPerSecond = bytesPerSecond {
             let spacing = space ? " " : ""
-            let unit = si ? 1000.0 : 1024.0
+            let scaler = transferUnit.scaler
+            let units = transferUnit.units
             
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            numberFormatter.minimumFractionDigits = 1
+            numberFormatter.maximumFractionDigits = 1
             
-            if (bytesPerSecond < Double(unit)) {
+            if (bytesPerSecond < scaler) {
                 let formattedNumber = numberFormatter.string(from: NSNumber(value: bytesPerSecond))
-                return formattedNumber! + spacing + "B";
+                return formattedNumber! + spacing + units[0];
             } else {
-                let chars = si ? [ "KB/s", "MB/s", "GB/s", "TB/s", "PB/s", "EB/s" ] : [ "KiBps", "MiBps", "GiBps", "TiBps", "PiBps", "EiB" ]
-                let exp = Int(log(Double(bytesPerSecond)) / log(Double(unit)));
-                let suffix = chars[exp - 1];
+                let exp = Int(log(bytesPerSecond) / log(scaler));
+                let suffix = units[exp];
                 
-                numberFormatter.minimumFractionDigits = 1
-                numberFormatter.maximumFractionDigits = 1
-                
-                let formattedNumber = numberFormatter.string(from: NSNumber(value: Double(bytesPerSecond) / pow(Double(unit), Double(exp))))
+                let formattedNumber = numberFormatter.string(from: NSNumber(value: Double(bytesPerSecond) / pow(scaler, Double(exp))))
                 
                 return formattedNumber! + spacing + suffix;
             }

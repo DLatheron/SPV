@@ -277,9 +277,23 @@ class DownloadTest: XCTestCase {
     }
     
     // Tests for human readable BPS.
-    func test_humanReadableBPS() {
+    func test_humanReadableBPS_bps() {
         XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: nil), "-")
-        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 50), "50bps")
-        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 5_000), "5.0kbps")
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 50), "50.0bps")
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 5_000), "5.0Kbps")
+        
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 4_000_000), "4.0Mbps")
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 3_000_000_000), "3.0Gbps")
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 2_000_000_000_000), "2.0Tbps")
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 7_000_000_000_000_000), "7.0Pbps")
+        XCTAssertEqual(Download.humanReadableBPS(bytesPerSecond: 6_000_000_000_000_000_000), "6.0Ebps")
+    }
+    
+    func test_humanReadableBPS_siBytesPerSecond() {
+        
+    }
+    
+    func test_humanReadableBPS_bytesPerSecond() {
+        
     }
 }

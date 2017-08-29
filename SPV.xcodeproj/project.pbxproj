@@ -42,6 +42,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		F969AC951F55B8D2005C7F8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F969AC8E1F55B8D2005C7F8D /* Sleipnir.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 46718B56194B6A2C006E8A18;
+			remoteInfo = Sleipnir;
+		};
+		F969AC971F55B8D2005C7F8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F969AC8E1F55B8D2005C7F8D /* Sleipnir.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4640EB84196942AF00AE5952;
+			remoteInfo = "Sleipnir-iOS";
+		};
+		F969AC991F55B8D2005C7F8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F969AC8E1F55B8D2005C7F8D /* Sleipnir.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4640EBB51969440500AE5952;
+			remoteInfo = "Sleipnir-OSX";
+		};
+		F969AC9B1F55B8D2005C7F8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F969AC8E1F55B8D2005C7F8D /* Sleipnir.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 314AE5C1196D78DA00CA7ED7;
+			remoteInfo = Spec;
+		};
 		F9BABABD1F28F92F00000D9B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F9BABA9E1F28F92F00000D9B /* Project object */;
@@ -73,6 +101,7 @@
 		F914D4F21F34D4BA00B9042E /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		F914D4F41F38C33A00B9042E /* MediaManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
+		F969AC8E1F55B8D2005C7F8D /* Sleipnir.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sleipnir.xcodeproj; path = ThirdParty/Sleipnir/Sleipnir/Sleipnir.xcodeproj; sourceTree = "<group>"; };
 		F9BABAA61F28F92F00000D9B /* SPV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9BABAA91F28F92F00000D9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +176,17 @@
 			name = TestData;
 			sourceTree = "<group>";
 		};
+		F969AC8F1F55B8D2005C7F8D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F969AC961F55B8D2005C7F8D /* Sleipnir */,
+				F969AC981F55B8D2005C7F8D /* Sleipnir.framework */,
+				F969AC9A1F55B8D2005C7F8D /* Sleipnir.framework */,
+				F969AC9C1F55B8D2005C7F8D /* Spec */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F9BABA9D1F28F92F00000D9B = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +196,7 @@
 				F9BABABF1F28F92F00000D9B /* SPVTests */,
 				F9BABACA1F28F92F00000D9B /* SPVUITests */,
 				F9BABAA71F28F92F00000D9B /* Products */,
+				F969AC8E1F55B8D2005C7F8D /* Sleipnir.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -320,6 +361,12 @@
 			mainGroup = F9BABA9D1F28F92F00000D9B;
 			productRefGroup = F9BABAA71F28F92F00000D9B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F969AC8F1F55B8D2005C7F8D /* Products */;
+					ProjectRef = F969AC8E1F55B8D2005C7F8D /* Sleipnir.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				F9BABAA51F28F92F00000D9B /* SPV */,
@@ -328,6 +375,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F969AC961F55B8D2005C7F8D /* Sleipnir */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = Sleipnir;
+			remoteRef = F969AC951F55B8D2005C7F8D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F969AC981F55B8D2005C7F8D /* Sleipnir.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Sleipnir.framework;
+			remoteRef = F969AC971F55B8D2005C7F8D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F969AC9A1F55B8D2005C7F8D /* Sleipnir.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Sleipnir.framework;
+			remoteRef = F969AC991F55B8D2005C7F8D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F969AC9C1F55B8D2005C7F8D /* Spec */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = Spec;
+			remoteRef = F969AC9B1F55B8D2005C7F8D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F9BABAA41F28F92F00000D9B /* Resources */ = {
