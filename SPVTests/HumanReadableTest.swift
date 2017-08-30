@@ -9,6 +9,57 @@
 import XCTest
 @testable import SPV
 
+let KIBIBYTE: Int64 = 1024
+let MEBIBYTE: Int64 = 1024 * 1024
+let GIBIBYTE: Int64 = 1024 * 1024 * 1024
+let TEBIBYTE: Int64 = 1024 * 1024 * 1024 * 1024
+let PEBIBYTE: Int64 = 1024 * 1024 * 1024 * 1024 * 1024
+let EXBIBYTE: Int64 = 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+
+let KILOBYTE: Int64 = 1024
+let MEGABYTE: Int64 = 1024 * 1024
+let GIGABYTE: Int64 = 1024 * 1024 * 1024
+let TERABYTE: Int64 = 1024 * 1024 * 1024 * 1024
+let PETABYTE: Int64 = 1024 * 1024 * 1024 * 1024 * 1024
+let EXABYTE:  Int64 = 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+
+extension Double {
+    var BYTES: Double { return self }
+    
+    var KIBIBYTES: Double { return self * Double(KIBIBYTE) }
+    var MEBIBYTES: Double { return self * Double(MEBIBYTE) }
+    var GIBIBYTES: Double { return self * Double(GIBIBYTE) }
+    var TEBIBYTES: Double { return self * Double(TEBIBYTE) }
+    var PEBIBYTES: Double { return self * Double(PEBIBYTE) }
+    var EXBIBYTES: Double { return self * Double(EXBIBYTE) }
+    
+    var KILOBYTES: Double { return self * Double(KILOBYTE) }
+    var MEGABYTES: Double { return self * Double(MEGABYTE) }
+    var GIGABYTES: Double { return self * Double(GIGABYTE) }
+    var TERABYTES: Double { return self * Double(TERABYTE) }
+    var PETABYTES: Double { return self * Double(PETABYTE) }
+    var EXABYTES: Double { return self * Double(EXABYTE) }
+}
+
+
+extension Int64 {
+    var BYTES: Int64 { return self }
+    
+    var KIBIBYTES: Int64 { return self * KIBIBYTE }
+    var MEBIBYTES: Int64 { return self * MEBIBYTE }
+    var GIBIBYTES: Int64 { return self * GIBIBYTE }
+    var TEBIBYTES: Int64 { return self * TEBIBYTE }
+    var PEBIBYTES: Int64 { return self * PEBIBYTE }
+    var EXBIBYTES: Int64 { return self * EXBIBYTE }
+    
+    var KILOBYTES: Int64 { return self * KILOBYTE }
+    var MEGABYTES: Int64 { return self * MEGABYTE }
+    var GIGABYTES: Int64 { return self * GIGABYTE }
+    var TERABYTES: Int64 { return self * TERABYTE }
+    var PETABYTES: Int64 { return self * PETABYTE }
+    var EXABYTES: Int64 { return self * EXABYTE }
+}
+
 class HumanReadableTest: XCTestCase {
     
     override func setUp() {
@@ -24,33 +75,80 @@ class HumanReadableTest: XCTestCase {
     // Class for size tests.
     // - Use si/non-si enumeration.
     
-    
-    func test_bytes_nonSI() {
-        XCTAssertEqual(HumanReadable.bytes(bytes: nil), "-")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 1_000), "1,000B")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 2_000), "2.0KiB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 5_300), "5.2KiB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 2_000_000), "1.9MiB")
+    class BytesTest {
+        let expectedOutput: String
+        let bytes: Int64?
         
-        XCTAssertEqual(HumanReadable.bytes(bytes: nil, space: true), "-")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 1_000, space: true), "1,000 B")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 2_000, space: true), "2.0 KiB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 5_300, space: true), "5.2 KiB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 2_000_000, space: true), "1.9 MiB")
+        init(expectedOutput: String, bytes: Int64?) {
+            self.expectedOutput = expectedOutput;
+            self.bytes = bytes
+        }
     }
     
-    func test_bytes_si() {
-        XCTAssertEqual(HumanReadable.bytes(bytes: nil, si: true), "-")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 1_000, si: true), "1.0kB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 2_000, si: true), "2.0kB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 5_300, si: true), "5.3kB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 2_000_000, si: true), "2.0MB")
+    func test_bytes_pow2() {
+        let tests = [
+            BytesTest(expectedOutput: "-", bytes: nil),
+            BytesTest(expectedOutput: "1 B", bytes: Int64(1).BYTES),
+            BytesTest(expectedOutput: "999 B", bytes: Int64(999).BYTES),
+            BytesTest(expectedOutput: "1,000 B", bytes: Int64(1_000).BYTES),
+            BytesTest(expectedOutput: "2.0 KiB", bytes: Int64(2).KIBIBYTES),
+            BytesTest(expectedOutput: "5.3 KiB", bytes: Int64(5_300).BYTES),
+            BytesTest(expectedOutput: "2.0 MiB", bytes: Int64(2).MEBIBYTES),
+            BytesTest(expectedOutput: "3.0 GiB", bytes: Int64(3).GIBIBYTES),
+            BytesTest(expectedOutput: "4.0 TiB", bytes: Int64(4).TEBIBYTES),
+            BytesTest(expectedOutput: "5.0 PiB", bytes: Int64(5).PEBIBYTES),
+            BytesTest(expectedOutput: "6.0 EiB", bytes: Int64(6).EXBIBYTES)
+        ]
         
-        XCTAssertEqual(HumanReadable.bytes(bytes: nil, si: true, space: true), "-")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 1_000, si: true, space: true), "1.0 kB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 2_000, si: true, space: true), "2.0 kB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 5_300, si: true, space: true), "5.3 kB")
-        XCTAssertEqual(HumanReadable.bytes(bytes: 2_000_000, si: true, space: true), "2.0 MB")
+        // Spaces.
+        tests.forEach { test in
+            XCTAssertEqual(
+                HumanReadable.bytes(bytes: test.bytes,
+                                    si: false,
+                                    space: true
+                ),
+                test.expectedOutput)
+        }
+        
+        // No spaces.
+        tests.forEach { test in
+            XCTAssertEqual(
+                HumanReadable.bytes(bytes: test.bytes,
+                                    si: false,
+                                    space: false
+                ),
+                test.expectedOutput.replacingOccurrences(of: " ", with: ""))
+        }
+    }
+    
+    func test_bytes_pow10() {
+        let tests = [
+            BytesTest(expectedOutput: "-", bytes: nil),
+            BytesTest(expectedOutput: "1.0 kB", bytes: Int64(1).KILOBYTES),
+            BytesTest(expectedOutput: "2.0 kB", bytes: Int64(2).KILOBYTES),
+            BytesTest(expectedOutput: "5.3 kB", bytes: Int64(5_300).BYTES),
+            BytesTest(expectedOutput: "2.0 MB", bytes: Int64(2).MEGABYTES)
+        ]
+        
+        // Spaces.
+        tests.forEach { test in
+            XCTAssertEqual(
+                HumanReadable.bytes(bytes: test.bytes,
+                                    si: true,
+                                    space: true
+                ),
+                test.expectedOutput)
+        }
+        
+        // No spaces.
+        tests.forEach { test in
+            XCTAssertEqual(
+                HumanReadable.bytes(bytes: test.bytes,
+                                    si: true,
+                                    space: false
+                ),
+                test.expectedOutput.replacingOccurrences(of: " ", with: ""))
+        }
     }
     
     
@@ -138,15 +236,15 @@ class HumanReadableTest: XCTestCase {
     func test_bps_siBytes() {
         let tests = [
             BPSTest(bytesPerSecond: nil, expectedOutput: "-"),
-            BPSTest(bytesPerSecond: 0.5, expectedOutput: "0.5 B/s"),
-            BPSTest(bytesPerSecond: 1, expectedOutput: "1.0 B/s"),
-            BPSTest(bytesPerSecond: 50, expectedOutput: "50.0 B/s"),
-            BPSTest(bytesPerSecond: 5_000, expectedOutput: "5.0 KB/s"),
-            BPSTest(bytesPerSecond: 4_000_000, expectedOutput: "4.0 MB/s"),
-            BPSTest(bytesPerSecond: 3_000_000_000, expectedOutput: "3.0 GB/s"),
-            BPSTest(bytesPerSecond: 2_000_000_000_000, expectedOutput: "2.0 TB/s"),
-            BPSTest(bytesPerSecond: 7_000_000_000_000_000, expectedOutput: "7.0 PB/s"),
-            BPSTest(bytesPerSecond: 6_000_000_000_000_000_000, expectedOutput: "6.0 EB/s"),
+            BPSTest(bytesPerSecond: 0.5.BYTES, expectedOutput: "0.5 B/s"),
+            BPSTest(bytesPerSecond: 1.5.BYTES, expectedOutput: "1.0 B/s"),
+            BPSTest(bytesPerSecond: 50.0.BYTES, expectedOutput: "50.0 B/s"),
+            BPSTest(bytesPerSecond: 5.0.KILOBYTES, expectedOutput: "5.0 KB/s"),
+            BPSTest(bytesPerSecond: 4.0.MEGABYTES, expectedOutput: "4.0 MB/s"),
+            BPSTest(bytesPerSecond: 3.0.GIGABYTES, expectedOutput: "3.0 GB/s"),
+            BPSTest(bytesPerSecond: 2.0.TERABYTES, expectedOutput: "2.0 TB/s"),
+            BPSTest(bytesPerSecond: 7.0.PETABYTES, expectedOutput: "7.0 PB/s"),
+            BPSTest(bytesPerSecond: 6.0.EXABYTES, expectedOutput: "6.0 EB/s"),
         ]
         let bpsUnits = HumanReadable.BPSUnits.siBytesPerSecond
         
@@ -170,13 +268,6 @@ class HumanReadableTest: XCTestCase {
     }
 
     func test_bps_bytes() {
-        let KILOBYTE: Double = 1024
-        let MEGABYTE: Double = 1024 * 1024
-        let GIGABYTE: Double = 1024 * 1024 * 1024
-        let TERABYTE: Double = 1024 * 1024 * 1024 * 1024
-        let PETABYTE: Double = 1024 * 1024 * 1024 * 1024 * 1024
-        let EXABYTE:  Double = 1024 * 1024 * 1024 * 1024 * 1024 * 1024
-        
         let tests = [
             BPSTest(bytesPerSecond: nil, expectedOutput: "-"),
             BPSTest(bytesPerSecond: 0.5, expectedOutput: "0.5 B/s"),
