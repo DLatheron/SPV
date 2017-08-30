@@ -99,12 +99,13 @@ class HumanReadableTest: XCTestCase {
             BytesTest(expectedOutput: "5.0 PiB", bytes: Int64(5).PEBIBYTES),
             BytesTest(expectedOutput: "6.0 EiB", bytes: Int64(6).EXBIBYTES)
         ]
+        let bytesUnits = HumanReadable.BytesUnits.bytes
         
         // Spaces.
         tests.forEach { test in
             XCTAssertEqual(
                 HumanReadable.bytes(bytes: test.bytes,
-                                    si: false,
+                                    units: bytesUnits,
                                     space: true
                 ),
                 test.expectedOutput)
@@ -114,7 +115,7 @@ class HumanReadableTest: XCTestCase {
         tests.forEach { test in
             XCTAssertEqual(
                 HumanReadable.bytes(bytes: test.bytes,
-                                    si: false,
+                                    units: bytesUnits,
                                     space: false
                 ),
                 test.expectedOutput.replacingOccurrences(of: " ", with: ""))
@@ -129,12 +130,13 @@ class HumanReadableTest: XCTestCase {
             BytesTest(expectedOutput: "5.3 kB", bytes: Int64(5_300).BYTES),
             BytesTest(expectedOutput: "2.0 MB", bytes: Int64(2).MEGABYTES)
         ]
+        let bytesUnits = HumanReadable.BytesUnits.siBytes
         
         // Spaces.
         tests.forEach { test in
             XCTAssertEqual(
                 HumanReadable.bytes(bytes: test.bytes,
-                                    si: true,
+                                    units: bytesUnits,
                                     space: true
                 ),
                 test.expectedOutput)
@@ -144,7 +146,7 @@ class HumanReadableTest: XCTestCase {
         tests.forEach { test in
             XCTAssertEqual(
                 HumanReadable.bytes(bytes: test.bytes,
-                                    si: true,
+                                    units: bytesUnits,
                                     space: false
                 ),
                 test.expectedOutput.replacingOccurrences(of: " ", with: ""))

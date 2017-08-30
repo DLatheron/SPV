@@ -10,28 +10,69 @@ import Foundation
 
 class HumanReadable {
     
+    enum BytesUnits: Int {
+        case bytes = 0
+        case siBytes = 1
+    }
+    
+    enum BPSUnits: Int {
+        case bitsPerSecond = 0
+        case siBytesPerSecond = 1
+        case bytesPerSecond = 2
+    }
+    
+    static private let bytesUnits = [
+        (
+            scaler: 1024.0,
+            units: [ "B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" ]
+        ),
+        (
+            scaler: 1000.0,
+            units: [ "B", "kB", "MB", "GB", "TB", "PB", "EB" ]
+        )
+    ]
+    
+    static private let bpsUnits = [
+        (
+            multipler: 1.0 / 8.0,
+            scaler: 1000.0,
+            units: [ "bps", "Kbps",  "Mbps",  "Gbps",  "Tbps",  "Pbps",  "Ebps" ]
+        ),
+        (
+            multipler: 1.0,
+            scaler: 1000.0,
+            units: [ "B/s", "KB/s",  "MB/s",  "GB/s",  "TB/s",  "PB/s",  "EB/s" ]
+        ),
+        (
+            multipler: 1.0,
+            scaler: 1024.0,
+            units: [ "B/s", "KiB/s", "MiB/s", "GiB/s", "TiB/s", "PiB/s", "EiB/s" ]
+        )
+    ]
+    
     class func bytes(bytes: Int64?,
-                     si: Bool = false,
+                     units: BytesUnits = .bytes,
                      space: Bool = false) -> String {
         if let bytes = bytes {
+            let transferunits = bytesUnits[units.rawValue]
             let spacing = space ? " " : ""
-            let unit = si ? 1000 : 1024
+            let scaler = transferunits.scaler
+            let units = transferunits.units
             
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = NumberFormatter.Style.decimal
             
-            if (bytes < Int64(unit)) {
+            if (bytes < Int64(scaler)) {
                 let formattedNumber = numberFormatter.string(from: NSNumber(value: bytes))
-                return formattedNumber! + spacing + "B";
+                return formattedNumber! + spacing + units[0];
             } else {
-                let chars = si ? [ "kB", "MB", "GB", "TB", "PB", "EB" ] : [ "KiB", "MiB", "GiB", "TiB", "PiB", "EiB" ]
-                let exp = Int(log(Double(bytes)) / log(Double(unit)));
-                let suffix = chars[exp - 1];
+                let exp = Int(log(Double(bytes)) / log(scaler));
+                let suffix = units[exp];
                 
                 numberFormatter.minimumFractionDigits = 1
                 numberFormatter.maximumFractionDigits = 1
                 
-                let formattedNumber = numberFormatter.string(from: NSNumber(value: Double(bytes) / pow(Double(unit), Double(exp))))
+                let formattedNumber = numberFormatter.string(from: NSNumber(value: Double(bytes) / pow(scaler, Double(exp))))
                 
                 return formattedNumber! + spacing + suffix;
             }
@@ -60,38 +101,14 @@ class HumanReadable {
             return "-"
         }
     }
-    
-    enum BPSUnits: Int {
-        case bitsPerSecond = 0
-        case siBytesPerSecond = 1
-        case bytesPerSecond = 2
-    }
-    
-    static private let bpsUnits = [
-        (
-            multipler: 1.0 / 8.0,
-            scaler: 1000.0,
-            units: [ "bps", "Kbps",  "Mbps",  "Gbps",  "Tbps",  "Pbps",  "Ebps" ]
-        ),
-        (
-            multipler: 1.0,
-            scaler: 1000.0,
-            units: [ "B/s", "KB/s",  "MB/s",  "GB/s",  "TB/s",  "PB/s",  "EB/s" ]
-        ),
-        (
-            multipler: 1.0,
-            scaler: 1024.0,
-            units: [ "B/s", "KiB/s", "MiB/s", "GiB/s", "TiB/s", "PiB/s", "EiB/s" ]
-        )
-    ]
+
     
     class func bps(bytesPerSecond: Double?,
                    units: BPSUnits = .bitsPerSecond,
                    space: Bool = false) -> String {
-
-        let transferUnit = bpsUnits[units.rawValue]
-        
         if var bytesPerSecond = bytesPerSecond {
+            let transferUnit = bpsUnits[units.rawValue]
+            
             bytesPerSecond = bytesPerSecond * transferUnit.multipler
             
             let spacing = space ? " " : ""
@@ -105,6 +122,7 @@ class HumanReadable {
             
             if (bytesPerSecond < scaler) {
                 let formattedNumber = numberFormatter.string(from: NSNumber(value: bytesPerSecond))
+                
                 return formattedNumber! + spacing + units[0];
             } else {
                 let exp = Int(log(bytesPerSecond) / log(scaler));
