@@ -52,25 +52,30 @@ class DownloadsViewController : UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: Different types depending on the section???
-        if indexPath.section == 0 {
+        switch indexPath.section {
+        case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadingCell")! as! DownloadingCell
+            let download = DownloadManager.shared.downloading[indexPath.row]
             
-            cell.download = DownloadManager.shared.downloading[indexPath.row]
+            download.changedEvent = { changedPropertyName in
+                cell.updateCell()
+            }
+        
+            cell.download = download
             cell.updateCell()
-            
+        
             return cell
-        } else {
+            
+        case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "CompletedCell")! as! CompletedCell
 
             cell.download = DownloadManager.shared.completed[indexPath.row]
             cell.updateCell()
             
-//            cell.title.text = DownloadManager.shared.completed[indexPath.row].name
-//            cell.status.text = "Size: \(DownloadManager.shared.completed[indexPath.row].size), Time: \(DownloadManager.shared.completed[indexPath.row].time)"
-//            cell.downloadedImageView.image = photoManager?.getPhotoImage(at: DownloadManager.shared.completed[indexPath.row].index!)
-            
             return cell
+            
+        default:
+            fatalError("Invalid Section Index \(indexPath.section)")
         }
     }
     
