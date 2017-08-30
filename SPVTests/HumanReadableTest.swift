@@ -21,6 +21,9 @@ class HumanReadableTest: XCTestCase {
         super.tearDown()
     }
     
+    // Class for size tests.
+    // - Use si/non-si enumeration.
+    
     
     func test_bytes_nonSI() {
         XCTAssertEqual(HumanReadable.bytes(bytes: nil), "-")
@@ -50,79 +53,160 @@ class HumanReadableTest: XCTestCase {
         XCTAssertEqual(HumanReadable.bytes(bytes: 2_000_000, si: true, space: true), "2.0 MB")
     }
     
-    // Tests for human readable duration.
-    func test_duration() {
-        let oneHourPlus = TimeInterval(exactly: (((1 * 60) + 17) * 60) + 46)
-        let almostOneMinute = TimeInterval(exactly: 59)
-        let almostFiveMinutes = TimeInterval(exactly: (4 * 60) + 34)
+    
+    class DurationTest {
+        let expectedOutput: String
+        let duration: TimeInterval?
         
-        XCTAssertEqual(HumanReadable.duration(duration: nil), "-")
-        XCTAssertEqual(HumanReadable.duration(duration: TimeInterval(exactly: 1)), "< 1 sec")
-        XCTAssertEqual(HumanReadable.duration(duration: almostOneMinute), "59 secs")
-        XCTAssertEqual(HumanReadable.duration(duration: almostFiveMinutes), "4:34")
-        XCTAssertEqual(HumanReadable.duration(duration: oneHourPlus), "1:17:46")
+        init(expectedOutput: String, hours: Int = 0, minutes: Int = 0, seconds: Int = 0) {
+            self.expectedOutput = expectedOutput
+            self.duration = TimeInterval(hours * 60 * 60 + minutes * 60 + seconds)
+        }
+
+        init(expectedOutput: String, duration: TimeInterval?) {
+            self.expectedOutput = expectedOutput
+            self.duration = duration
+        }
     }
     
-    // Tests for human readable BPS.
-    class BPSTest {
-        let bytesPerSecond: Int64?
-        let expectedOutput: String
-        let units: HumanReadable.BPSUnits
-        let space: Bool
+    func test_duration() {
+        let tests = [
+            DurationTest(expectedOutput: "-", duration: nil),
+            DurationTest(expectedOutput: "< 1 sec", seconds: 1),
+            DurationTest(expectedOutput: "59 secs", seconds: 59),
+            DurationTest(expectedOutput: "4:34", minutes: 4, seconds: 34),
+            DurationTest(expectedOutput: "1:17:46", hours: 1, minutes: 17, seconds: 46)
+        ]
         
-        init(bitsPerSecond: Int64?,
+        tests.forEach { test in
+            XCTAssertEqual(HumanReadable.duration(duration: test.duration), test.expectedOutput)
+        }
+    }
+    
+    
+    class BPSTest {
+        let bytesPerSecond: Double?
+        let expectedOutput: String
+        
+        init(bitsPerSecond: Double?,
              expectedOutput: String) {
             self.bytesPerSecond = bitsPerSecond == nil ? nil : bitsPerSecond! * 8
             self.expectedOutput = expectedOutput
-            self.units = HumanReadable.BPSUnits.bitsPerSecond
-            self.space = false
         }
         
-        init(bytesPerSecond: Int64?,
+        init(bytesPerSecond: Double?,
              expectedOutput: String) {
             self.bytesPerSecond = bytesPerSecond
             self.expectedOutput = expectedOutput
-            self.units = HumanReadable.BPSUnits.bytesPerSecond
-            self.space = false
         }
     }
     
     func test_bps_bits() {
         let tests = [
             BPSTest(bitsPerSecond: nil, expectedOutput: "-"),
-            BPSTest(bitsPerSecond: 50, expectedOutput: "50.0bps"),
-            BPSTest(bitsPerSecond: 5_000, expectedOutput: "5.0Kbps"),
-            BPSTest(bitsPerSecond: 4_000_000, expectedOutput: "4.0Mbps"),
-            BPSTest(bitsPerSecond: 3_000_000_000, expectedOutput: "3.0Gbps"),
-            BPSTest(bitsPerSecond: 2_000_000_000_000, expectedOutput: "2.0Tbps"),
-            BPSTest(bitsPerSecond: 7_000_000_000_000_000, expectedOutput: "7.0Pbps"),
-            BPSTest(bitsPerSecond: 6_000_000_000_000_000_000, expectedOutput: "6.0Ebps"),
+            BPSTest(bitsPerSecond: 0.5, expectedOutput: "0.5 bps"),
+            BPSTest(bitsPerSecond: 1, expectedOutput: "1.0 bps"),
+            BPSTest(bitsPerSecond: 50, expectedOutput: "50.0 bps"),
+            BPSTest(bitsPerSecond: 5_000, expectedOutput: "5.0 Kbps"),
+            BPSTest(bitsPerSecond: 4_000_000, expectedOutput: "4.0 Mbps"),
+            BPSTest(bitsPerSecond: 3_000_000_000, expectedOutput: "3.0 Gbps"),
+            BPSTest(bitsPerSecond: 2_000_000_000_000, expectedOutput: "2.0 Tbps"),
+            BPSTest(bitsPerSecond: 7_000_000_000_000_000, expectedOutput: "7.0 Pbps"),
+            BPSTest(bitsPerSecond: 6_000_000_000_000_000_000, expectedOutput: "6.0 Ebps"),
         ]
+        let bpsUnits = HumanReadable.BPSUnits.bitsPerSecond
         
-        for test in tests.enumerated() {
+        // Spaces.
+        tests.forEach { test in
             XCTAssertEqual(HumanReadable.bps(
                 bytesPerSecond: test.bytesPerSecond,
-                units: test.units,
-                space: test.space
+                units: bpsUnits,
+                space: true
             ), test.expectedOutput)
         }
         
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: nil), "-")
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: 8 * 50), "50.0bps")
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: 8 * 5_000), "5.0Kbps")
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: 8 * 4_000_000), "4.0Mbps")
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: 8 * 3_000_000_000), "3.0Gbps")
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: 8 * 2_000_000_000_000), "2.0Tbps")
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: 8 * 7_000_000_000_000_000), "7.0Pbps")
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: 8 * 6_000_000_000_000_000_000), "6.0Ebps")
+        // No spaces.
+        tests.forEach { test in
+            XCTAssertEqual(HumanReadable.bps(
+                bytesPerSecond: test.bytesPerSecond,
+                units: bpsUnits,
+                space: false
+            ), test.expectedOutput.replacingOccurrences(of: " ", with: ""))
+        }
     }
     
-    func test_bps_si() {
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: nil, units: .siBytesPerSecond), "-")
-        XCTAssertEqual(HumanReadable.bps(bytesPerSecond: 50, units: .siBytesPerSecond), "50.0B/s")
-    }
-    
-    func test_bps_bytes() {
+    func test_bps_siBytes() {
+        let tests = [
+            BPSTest(bytesPerSecond: nil, expectedOutput: "-"),
+            BPSTest(bytesPerSecond: 0.5, expectedOutput: "0.5 B/s"),
+            BPSTest(bytesPerSecond: 1, expectedOutput: "1.0 B/s"),
+            BPSTest(bytesPerSecond: 50, expectedOutput: "50.0 B/s"),
+            BPSTest(bytesPerSecond: 5_000, expectedOutput: "5.0 KB/s"),
+            BPSTest(bytesPerSecond: 4_000_000, expectedOutput: "4.0 MB/s"),
+            BPSTest(bytesPerSecond: 3_000_000_000, expectedOutput: "3.0 GB/s"),
+            BPSTest(bytesPerSecond: 2_000_000_000_000, expectedOutput: "2.0 TB/s"),
+            BPSTest(bytesPerSecond: 7_000_000_000_000_000, expectedOutput: "7.0 PB/s"),
+            BPSTest(bytesPerSecond: 6_000_000_000_000_000_000, expectedOutput: "6.0 EB/s"),
+        ]
+        let bpsUnits = HumanReadable.BPSUnits.siBytesPerSecond
         
+        // Spaces.
+        tests.forEach { test in
+            XCTAssertEqual(HumanReadable.bps(
+                bytesPerSecond: test.bytesPerSecond,
+                units: bpsUnits,
+                space: true
+            ), test.expectedOutput)
+        }
+        
+        // No spaces.
+        tests.forEach { test in
+            XCTAssertEqual(HumanReadable.bps(
+                bytesPerSecond: test.bytesPerSecond,
+                units: bpsUnits,
+                space: false
+            ), test.expectedOutput.replacingOccurrences(of: " ", with: ""))
+        }
+    }
+
+    func test_bps_bytes() {
+        let KILOBYTE: Double = 1024
+        let MEGABYTE: Double = 1024 * 1024
+        let GIGABYTE: Double = 1024 * 1024 * 1024
+        let TERABYTE: Double = 1024 * 1024 * 1024 * 1024
+        let PETABYTE: Double = 1024 * 1024 * 1024 * 1024 * 1024
+        let EXABYTE:  Double = 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+        
+        let tests = [
+            BPSTest(bytesPerSecond: nil, expectedOutput: "-"),
+            BPSTest(bytesPerSecond: 0.5, expectedOutput: "0.5 B/s"),
+            BPSTest(bytesPerSecond: 1, expectedOutput: "1.0 B/s"),
+            BPSTest(bytesPerSecond: 50, expectedOutput: "50.0 B/s"),
+            BPSTest(bytesPerSecond: 5 * KILOBYTE, expectedOutput: "5.0 KiB/s"),
+            BPSTest(bytesPerSecond: 4 * MEGABYTE, expectedOutput: "4.0 MiB/s"),
+            BPSTest(bytesPerSecond: 3 * GIGABYTE, expectedOutput: "3.0 GiB/s"),
+            BPSTest(bytesPerSecond: 2 * TERABYTE, expectedOutput: "2.0 TiB/s"),
+            BPSTest(bytesPerSecond: 7 * PETABYTE, expectedOutput: "7.0 PiB/s"),
+            BPSTest(bytesPerSecond: 6 * EXABYTE, expectedOutput: "6.0 EiB/s"),
+        ]
+        let bpsUnits = HumanReadable.BPSUnits.bytesPerSecond
+        
+        // Spaces.
+        tests.forEach { test in
+            XCTAssertEqual(HumanReadable.bps(
+                bytesPerSecond: test.bytesPerSecond,
+                units: bpsUnits,
+                space: true
+            ), test.expectedOutput)
+        }
+        
+        // No spaces.
+        tests.forEach { test in
+            XCTAssertEqual(HumanReadable.bps(
+                bytesPerSecond: test.bytesPerSecond,
+                units: bpsUnits,
+                space: false
+            ), test.expectedOutput.replacingOccurrences(of: " ", with: ""))
+        }
     }
 }
