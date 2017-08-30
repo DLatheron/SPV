@@ -169,25 +169,6 @@ class DownloadTest: XCTestCase {
         XCTAssertEqual(download.durationInSeconds, 20)
     }
     
-//    func test_durationHumanReadable_validDuration() {
-//        let download = Download(remoteURL: remoteURL)
-//        
-//        download.pause = false
-//        let date = Date()
-//        download.startTime = date
-//        download.endTime = date.addingTimeInterval(20)
-//        
-//        XCTAssertEqual(download.durationHumanReadable, "20.0s")
-//    }
-    
-//    func test_durationHumanReadable_invalidDuration() {
-//        let download = Download(remoteURL: remoteURL)
-//        
-//        download.pause = true
-//        
-//        XCTAssertEqual(download.durationHumanReadable, "-")
-//    }
-    
     func test_downloadSpeedInBPS() {
         let download = Download(remoteURL: remoteURL)
         
@@ -233,5 +214,36 @@ class DownloadTest: XCTestCase {
         download.bytesDownloaded = 500
         
         XCTAssertNil(download.timeRemainingInSeconds)
+    }
+    
+    func test_totalSizeInBytes_changed() {
+        let download = Download(remoteURL: remoteURL)
+        
+        let expect = expectation(description: "changedEvent is call when a property is updated")
+        
+        download.changedEvent = { (propertyName) in
+            XCTAssertEqual(propertyName, "totalSizeInBytes")
+            expect.fulfill()
+        }
+        
+        download.totalSizeInBytes = 34
+        
+        waitForExpectations(timeout: 1) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout errored: \(error)")
+            }
+        }
+    }
+    
+    func test_totalSizeInBytes_noChange() {
+        let download = Download(remoteURL: remoteURL)
+        
+        download.totalSizeInBytes = 34
+
+        download.changedEvent = { (propertyName) in
+            XCTFail("Change event should not have fired")
+        }
+        
+        download.totalSizeInBytes = 34
     }
 }

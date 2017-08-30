@@ -18,8 +18,26 @@ class Download : NSObject {
     internal(set) var remoteURL: URL
     internal(set) var name: String
     
-    var totalSizeInBytes: Int64 = 0
-    var bytesDownloaded: Int64 = 0
+    var totalSizeInBytes: Int64 = 0 {
+        didSet {
+            if (totalSizeInBytes != oldValue) {
+                if let changedEvent = changedEvent {
+                    changedEvent("totalSizeInBytes")
+                }
+            }
+        }
+    }
+    var bytesDownloaded: Int64 = 0 {
+        didSet {
+            if (bytesDownloaded != oldValue) {
+                if let changedEvent = changedEvent {
+                    changedEvent("bytesDownloaded")
+                }
+            }
+        }
+    }
+    
+    var changedEvent: ((String) -> ())? = nil
     
     var totalSizeInBytesHumanReadable: String {
         get {
