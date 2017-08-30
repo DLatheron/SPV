@@ -16,12 +16,12 @@ let TEBIBYTE: Int64 = 1024 * 1024 * 1024 * 1024
 let PEBIBYTE: Int64 = 1024 * 1024 * 1024 * 1024 * 1024
 let EXBIBYTE: Int64 = 1024 * 1024 * 1024 * 1024 * 1024 * 1024
 
-let KILOBYTE: Int64 = 1024
-let MEGABYTE: Int64 = 1024 * 1024
-let GIGABYTE: Int64 = 1024 * 1024 * 1024
-let TERABYTE: Int64 = 1024 * 1024 * 1024 * 1024
-let PETABYTE: Int64 = 1024 * 1024 * 1024 * 1024 * 1024
-let EXABYTE:  Int64 = 1024 * 1024 * 1024 * 1024 * 1024 * 1024
+let KILOBYTE: Int64 = 1000
+let MEGABYTE: Int64 = 1000 * 1000
+let GIGABYTE: Int64 = 1000 * 1000 * 1000
+let TERABYTE: Int64 = 1000 * 1000 * 1000 * 1000
+let PETABYTE: Int64 = 1000 * 1000 * 1000 * 1000 * 1000
+let EXABYTE:  Int64 = 1000 * 1000 * 1000 * 1000 * 1000 * 1000
 
 extension Double {
     var BYTES: Double { return self }
@@ -92,7 +92,7 @@ class HumanReadableTest: XCTestCase {
             BytesTest(expectedOutput: "999 B", bytes: Int64(999).BYTES),
             BytesTest(expectedOutput: "1,000 B", bytes: Int64(1_000).BYTES),
             BytesTest(expectedOutput: "2.0 KiB", bytes: Int64(2).KIBIBYTES),
-            BytesTest(expectedOutput: "5.3 KiB", bytes: Int64(5_300).BYTES),
+            BytesTest(expectedOutput: "5.2 KiB", bytes: Int64(5_300).BYTES),
             BytesTest(expectedOutput: "2.0 MiB", bytes: Int64(2).MEBIBYTES),
             BytesTest(expectedOutput: "3.0 GiB", bytes: Int64(3).GIBIBYTES),
             BytesTest(expectedOutput: "4.0 TiB", bytes: Int64(4).TEBIBYTES),
@@ -192,6 +192,12 @@ class HumanReadableTest: XCTestCase {
             self.expectedOutput = expectedOutput
         }
         
+        init(bytesPerSecond: Int64,
+             expectedOutput: String) {
+            self.bytesPerSecond = Double(bytesPerSecond)
+            self.expectedOutput = expectedOutput
+        }
+        
         init(bytesPerSecond: Double?,
              expectedOutput: String) {
             self.bytesPerSecond = bytesPerSecond
@@ -237,7 +243,7 @@ class HumanReadableTest: XCTestCase {
         let tests = [
             BPSTest(bytesPerSecond: nil, expectedOutput: "-"),
             BPSTest(bytesPerSecond: 0.5.BYTES, expectedOutput: "0.5 B/s"),
-            BPSTest(bytesPerSecond: 1.5.BYTES, expectedOutput: "1.0 B/s"),
+            BPSTest(bytesPerSecond: 1.0.BYTES, expectedOutput: "1.0 B/s"),
             BPSTest(bytesPerSecond: 50.0.BYTES, expectedOutput: "50.0 B/s"),
             BPSTest(bytesPerSecond: 5.0.KILOBYTES, expectedOutput: "5.0 KB/s"),
             BPSTest(bytesPerSecond: 4.0.MEGABYTES, expectedOutput: "4.0 MB/s"),
@@ -270,15 +276,15 @@ class HumanReadableTest: XCTestCase {
     func test_bps_bytes() {
         let tests = [
             BPSTest(bytesPerSecond: nil, expectedOutput: "-"),
-            BPSTest(bytesPerSecond: 0.5, expectedOutput: "0.5 B/s"),
-            BPSTest(bytesPerSecond: 1, expectedOutput: "1.0 B/s"),
-            BPSTest(bytesPerSecond: 50, expectedOutput: "50.0 B/s"),
-            BPSTest(bytesPerSecond: 5 * KILOBYTE, expectedOutput: "5.0 KiB/s"),
-            BPSTest(bytesPerSecond: 4 * MEGABYTE, expectedOutput: "4.0 MiB/s"),
-            BPSTest(bytesPerSecond: 3 * GIGABYTE, expectedOutput: "3.0 GiB/s"),
-            BPSTest(bytesPerSecond: 2 * TERABYTE, expectedOutput: "2.0 TiB/s"),
-            BPSTest(bytesPerSecond: 7 * PETABYTE, expectedOutput: "7.0 PiB/s"),
-            BPSTest(bytesPerSecond: 6 * EXABYTE, expectedOutput: "6.0 EiB/s"),
+            BPSTest(bytesPerSecond: 0.5.BYTES, expectedOutput: "0.5 B/s"),
+            BPSTest(bytesPerSecond: 1.0.BYTES, expectedOutput: "1.0 B/s"),
+            BPSTest(bytesPerSecond: 50.0.BYTES, expectedOutput: "50.0 B/s"),
+            BPSTest(bytesPerSecond: 5.0.KIBIBYTES, expectedOutput: "5.0 KiB/s"),
+            BPSTest(bytesPerSecond: 4.0.MEBIBYTES, expectedOutput: "4.0 MiB/s"),
+            BPSTest(bytesPerSecond: 3.0.GIBIBYTES, expectedOutput: "3.0 GiB/s"),
+            BPSTest(bytesPerSecond: 2.0.TEBIBYTES, expectedOutput: "2.0 TiB/s"),
+            BPSTest(bytesPerSecond: 7.0.PEBIBYTES, expectedOutput: "7.0 PiB/s"),
+            BPSTest(bytesPerSecond: 6.0.EXBIBYTES, expectedOutput: "6.0 EiB/s"),
         ]
         let bpsUnits = HumanReadable.BPSUnits.bytesPerSecond
         
