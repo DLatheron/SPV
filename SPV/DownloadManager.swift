@@ -50,11 +50,13 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
                   completion: @escaping () -> ()) {
         let request = URLRequest(url: remoteURL,
                                  cachePolicy: .useProtocolCachePolicy)
+        let download = Download(remoteURL: remoteURL)
         
         self.sections[0].entries.append(Download(remoteURL: remoteURL))
         
         let task = session.downloadTask(with: request)
         task.resume()
+        download.pause = false
     }
     
     func refresh() {
@@ -75,6 +77,7 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
                     totalBytesExpectedToWrite: Int64) {
         if totalBytesExpectedToWrite > 0 {
             let remoteURL = (downloadTask.currentRequest?.url)!
+            
             if let download = getDetails(fromRemoteURL: remoteURL) {
                 download.totalSizeInBytes = totalBytesExpectedToWrite
                 download.bytesDownloaded = totalBytesWritten
@@ -93,13 +96,6 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         
         return nil
     }
-    
-//    func updateProgress(forRemoteURL remoteURL: URL,
-//                        progress: Double) {
-//        if let details = getDetails(fromRemoteURL: remoteURL) {
-//            details.percentage = progress
-//        }
-//    }
     
     func downloadComplete(forRemoteURL remoteURL: URL,
                           toLocalURL localURL: URL) {
@@ -151,7 +147,10 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         downloadComplete(forRemoteURL: remoteURL,
                          toLocalURL: localURL)
         
-        debugPrint("Did finished downloading")
+        // TODO: Need to tell the VC that we have finished downloading and updated the contents 
+        //       of the arrays...
+        
+        debugPrint("Did finish downloading")
     }
     
     func urlSession(_ session: URLSession,

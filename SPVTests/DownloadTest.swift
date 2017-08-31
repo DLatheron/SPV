@@ -216,22 +216,31 @@ class DownloadTest: XCTestCase {
         XCTAssertNil(download.timeRemainingInSeconds)
     }
     
-    func test_totalSizeInBytes_changed() {
-        let download = Download(remoteURL: remoteURL)
-        
+    func waitForAsync(timeout: TimeInterval = 1,
+                      isInverted: Bool = false,
+                      action: (_ expectation: XCTestExpectation) -> Void) {
         let expect = expectation(description: "changedEvent is call when a property is updated")
+        expect.isInverted = isInverted
         
-        download.changedEvent = { (propertyName) in
-            XCTAssertEqual(propertyName, "totalSizeInBytes")
-            expect.fulfill()
-        }
+        action(expect)
         
-        download.totalSizeInBytes = 34
-        
-        waitForExpectations(timeout: 1) { error in
+        waitForExpectations(timeout: timeout) { error in
             if let error = error {
                 XCTFail("waitForExpectationsWithTimeout errored: \(error)")
             }
+        }
+    }
+    
+    func test_totalSizeInBytes_changed() {
+        let download = Download(remoteURL: remoteURL)
+        
+        waitForAsync() { expectation in
+            download.changedEvent = { (propertyName) in
+                XCTAssertEqual(propertyName, "totalSizeInBytes")
+                expectation.fulfill()
+            }
+            
+            download.totalSizeInBytes = 34
         }
     }
     
@@ -239,11 +248,40 @@ class DownloadTest: XCTestCase {
         let download = Download(remoteURL: remoteURL)
         
         download.totalSizeInBytes = 34
-
-        download.changedEvent = { (propertyName) in
-            XCTFail("Change event should not have fired")
-        }
         
-        download.totalSizeInBytes = 34
+        waitForAsync(isInverted: true) { expectation in
+            download.changedEvent = { (propertyName) in
+                expectation.fulfill()
+            }
+            
+            download.totalSizeInBytes = 34
+        }
+    }
+    
+    func test_bytesDownloaded_changed() {
+        let download = Download(remoteURL: remoteURL)
+        
+        waitForAsync() { expectation in
+            download.changedEvent = { (propertyName) in
+                XCTAssertEqual(propertyName, "bytesDownloaded")
+                expectation.fulfill()
+            }
+            
+            download.bytesDownloaded = 34
+        }
+    }
+    
+    func test_bytesDownloaded_noChange() {
+        let download = Download(remoteURL: remoteURL)
+        
+        download.bytesDownloaded = 34
+        
+        waitForAsync(isInverted: true) { expectation in
+            download.changedEvent = { (propertyName) in
+                expectation.fulfill()
+            }
+            
+            download.bytesDownloaded = 34
+        }
     }
 }

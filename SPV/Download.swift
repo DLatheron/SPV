@@ -108,7 +108,7 @@ class Download : NSObject {
     var timeRemainingInSeconds: TimeInterval? {
         get {
             // Calculate how long it takes to download a byte and scale up?
-            if let bps = downloadSpeedInBPS {
+            if let bps = downloadSpeedInBPS, bps > 0.0 {
                 return Double(bytesRemaining) / bps
             } else {
                 return nil

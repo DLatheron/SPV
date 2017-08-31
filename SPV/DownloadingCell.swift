@@ -16,28 +16,13 @@ class DownloadingCell : UITableViewCell {
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var pauseResumeButton: UIButton!
     
-    deinit {
-        removeObserver(self,
-                       forKeyPath: #keyPath(download.percentage))
-    }
+    var download: Download? = nil
     
-    var download: Download? = nil {
-        willSet(newDownload) {
-            if download != nil {
-                removeObserver(self,
-                                forKeyPath: #keyPath(download.percentage))
-            }
-        }
-        didSet {
-            if download != nil {
-                addObserver(self,
-                            forKeyPath: #keyPath(download.percentage),
-                            options: [.new, .old],
-                            context: nil)
-            }
+    deinit {
+        if let download = download {
+            download.changedEvent = nil
         }
     }
-
     
     @IBAction func pauseOrResumeDownload(_ sender: Any) {
         let button: UIButton = sender as! UIButton
@@ -45,13 +30,10 @@ class DownloadingCell : UITableViewCell {
         button.isSelected ? resumeDownload() : pauseDownload()
     }
     
-    override func observeValue(forKeyPath keyPath: String?,
-                               of object: Any?,
-                               change: [NSKeyValueChangeKey : Any]?,
-                               context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(download.percentage) {
-            progressView.progress = (download?.percentage)!
-        }
+    func downloadPropertyChanged(_ propertyChanged: String) {
+        print("PropertyChanged \(propertyChanged) - refresh this cell")
+        
+        // TODO: Tell the owning tabl
     }
     
     func pauseDownload() {
@@ -73,23 +55,25 @@ class DownloadingCell : UITableViewCell {
     }
     
     func updateCell() {
-        if let download = self.download {
-            title.text = download.name
-            if (download.pause) {
-                title.textColor = UIColor.lightGray
-                
-                status.text = ""
-                
-            } else {
-                title.textColor = UIColor.darkText
-                
-                let timeRemaining = HumanReadable.duration(duration: download.timeRemainingInSeconds)
-                let downloadSpeed = HumanReadable.bps(bytesPerSecond: download.downloadSpeedInBPS)
+        if let download = download {
+            DispatchQueue.main.async() {
+                self.title.text = download.name
+                if (download.pause) {
+                    self.title.textColor = UIColor.lightGray
+                    
+                    self.status.text = ""
+                    
+                } else {
+                    self.title.textColor = UIColor.darkText
+                    
+                    let timeRemaining = HumanReadable.duration(duration: download.timeRemainingInSeconds)
+                    let downloadSpeed = HumanReadable.bps(bytesPerSecond: download.downloadSpeedInBPS)
 
-                status.text = "Remaining: \(timeRemaining), Speed: \(downloadSpeed))"
+                    self.status.text = "Remaining: \(timeRemaining), Speed: \(downloadSpeed))"
+                }
+                
+                self.progressView.progress = download.progress
             }
-            
-            progressView.progress = download.percentage
         }
     }
 }
