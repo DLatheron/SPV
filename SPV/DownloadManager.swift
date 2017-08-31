@@ -7,21 +7,28 @@
 //
 
 import Foundation
+import UIKit
 
-
-class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate {
+class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate, UITableViewDataSource, UITableViewDelegate {
     static var shared = DownloadManager()
     
-    var downloading: [Download] = []
-    var completed: [Download] = []
+    class Section {
+        let title: String
+        var entries: [Download]
+        
+        init(title: String) {
+            self.title = title
+            self.entries = []
+        }
+    }
+    
+    private var sections = [
+        Section(title: "Active"),
+        Section(title: "Completed")
+    ]
     
     override init() {
         super.init()
-        
-        let details = Download(remoteURL: URL(string: "http://image.jpg")!)
-        details.index = 0
-        
-        completed.append(details)
     }
     
     var session : URLSession {
@@ -44,7 +51,7 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         let request = URLRequest(url: remoteURL,
                                  cachePolicy: .useProtocolCachePolicy)
         
-        self.downloading.append(Download(remoteURL: remoteURL))
+        self.sections[0].entries.append(Download(remoteURL: remoteURL))
         
         let task = session.downloadTask(with: request)
         task.resume()
@@ -52,18 +59,13 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
     
     func refresh() {
         session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
-            self.downloading = downloads.map { (download) in
+            self.sections[0].entries = downloads.map { (download) in
                 let remoteURL = (download.currentRequest?.url)!
             
                 return Download(remoteURL: remoteURL)
             }
         }
     }
-    
-    func clearCompletedDownloads() {
-        completed = []
-    }
-    
     
     // MARK: - URLSessionDownloadDelegate
     func urlSession(_ session: URLSession,
@@ -83,7 +85,7 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
     }
     
     func getDetails(fromRemoteURL url: URL) -> Download? {
-        for details in downloading {
+        for details in sections[0].entries {
             if (details.remoteURL == url) {
                 return details
             }
@@ -102,14 +104,14 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
     func downloadComplete(forRemoteURL remoteURL: URL,
                           toLocalURL localURL: URL) {
         if let details = getDetails(fromRemoteURL: remoteURL) {
-            let detailsIndex = downloading.index(of: details)
-            downloading.remove(at: detailsIndex!)
+            let detailsIndex = sections[0].entries.index(of: details)
+            sections[0].entries.remove(at: detailsIndex!)
             
             let mediaIndex = MediaManager.shared.addMedia(url: localURL)
             
             details.index = mediaIndex
             
-            completed.insert(details, at: 0)
+            sections[1].entries.insert(details, at: 0)
         }
     }
     
@@ -167,5 +169,66 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
             let progress = bytesExpectedToReceive > 0 ? Float(bytesReceived) / Float(bytesExpectedToReceive) : 0.0
             completionHandler(progress)
         }
+    }
+    
+    func clearCompletedDownloads(in tableView: UITableView) {
+        sections[1].entries = []
+        
+        tableView.reloadSections(IndexSet(integer: 1),
+                                 with: UITableViewRowAnimation.fade)
+    }
+    
+    // MARK:- UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return sections.map { section in
+            return section.title
+        }
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return sections[section].entries.count
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   titleForHeaderInSection section: Int) -> String? {
+        if (sections[section].entries.count == 0) {
+            return nil
+        } else {
+            return sections[section].title
+        }
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = indexPath.section;
+        if section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadingCell")! as! DownloadingCell
+            
+            cell.download = sections[section].entries[indexPath.row]
+            cell.updateCell()
+            
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CompletedCell")! as! CompletedCell
+            
+            cell.download = sections[section].entries[indexPath.row]
+            cell.updateCell()
+            
+            return cell
+        }
+    }
+    
+    // MARK:- UITableViewDelegate
+    func tableView(_ tableView: UITableView,
+                   heightForHeaderInSection section: Int) -> CGFloat {
+        if (section == 1 && sections[section].entries.count == 0) {
+            return 0
+        }
+        return 60
     }
 }
