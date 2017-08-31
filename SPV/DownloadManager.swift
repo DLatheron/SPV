@@ -29,9 +29,11 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
     
     override init() {
         super.init()
+
+        initExistingDownloads()
     }
     
-    var session : URLSession {
+    var session: URLSession {
         get {
             let config = URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
             
@@ -52,14 +54,17 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
                                  cachePolicy: .useProtocolCachePolicy)
         let download = Download(remoteURL: remoteURL)
         
-        self.sections[0].entries.append(Download(remoteURL: remoteURL))
+        self.sections[0].entries.append(download)
+        
+        // We have added a new item into the list, so we need to refresh the table
+        // 
         
         let task = session.downloadTask(with: request)
         task.resume()
         download.pause = false
     }
     
-    func refresh() {
+    func initExistingDownloads() {
         session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
             self.sections[0].entries = downloads.map { (download) in
                 let remoteURL = (download.currentRequest?.url)!

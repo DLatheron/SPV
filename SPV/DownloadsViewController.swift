@@ -27,8 +27,6 @@ class DownloadsViewController : UIViewController {
         downloadsTableView.delegate = downloadManager
         downloadsTableView.dataSource = downloadManager
 
-        downloadManager.refresh();
-        
         downloadsTableView.contentInset = UIEdgeInsets(top: 44, left: 0, bottom: 0, right: 0)
         downloadsTableView.allowsSelection = false
         downloadsTableView.sectionIndexMinimumDisplayRowCount = 99
