@@ -28,20 +28,12 @@ class DownloadsViewController : UIViewController {
     let downloadSection = IndexSet(integer: 0)
     let completedSection = IndexSet(integer: 1)
     
-    var downloads: [Download] = [] {
-        didSet {
-            downloadsTableView.reloadSections(downloadSection, with: .automatic)
-        }
-    }
-    var completed: [Download] = [] {
-        didSet {
-            downloadsTableView.reloadSections(completedSection, with: .automatic)
-        }
-    }
+    var downloads: [Download] = []
+    var completed: [Download] = []
     
     required init(coder aDecoder: NSCoder) {
         //downloadManager = DownloadManager.shared
-        downloadManager = FakeDownloadManager()
+        downloadManager = FakeDownloadManager.shared
 
         super.init(coder: aDecoder)!
 
@@ -70,9 +62,7 @@ class DownloadsViewController : UIViewController {
 extension DownloadsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForHeaderInSection section: Int) -> CGFloat {
-        if section == Sections.downloads.rawValue && downloads.count == 0 {
-            return 0
-        } else if section == Sections.completed.rawValue && completed.count == 0 {
+        if section == Sections.completed.rawValue && completed.count == 0 {
             return 0
         } else {
             return 60
@@ -103,9 +93,7 @@ extension DownloadsViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    titleForHeaderInSection section: Int) -> String? {
-        if section == Sections.downloads.rawValue && downloads.count == 0 {
-            return nil
-        } else if section == Sections.completed.rawValue && completed.count == 0 {
+        if section == Sections.completed.rawValue && completed.count == 0 {
             return nil
         } else {
             return sectionTitles[section]
@@ -151,9 +139,15 @@ extension DownloadsViewController : DownloadChangedProtocol {
         DispatchQueue.main.async {
             if let row = self.downloads.index(of: download) {
                 let indexPath = IndexPath(row: row,
-                                          section: 0)
+                                          section: Sections.downloads.rawValue)
                 let cell = self.downloadsTableView.cellForRow(at: indexPath) as? DownloadingCell
                 cell?.configure(withDownload: download)
+            } else {
+                let row = 0
+                let indexPath = IndexPath(row: row,
+                                          section: Sections.downloads.rawValue)
+                self.downloads.insert(download, at: Sections.downloads.rawValue);
+                self.downloadsTableView.insertRows(at: [indexPath], with: .automatic)
             }
         }
     }
@@ -167,9 +161,9 @@ extension DownloadsViewController : DownloadChangedProtocol {
                 self.completed.insert(download, at: dstRow)
 
                 let srcIndexPath = IndexPath(row: srcRow,
-                                             section: 0)
+                                             section: Sections.downloads.rawValue)
                 let dstIndexPath = IndexPath(row: dstRow,
-                                             section: 1)
+                                             section: Sections.completed.rawValue)
                 
                 self.downloadsTableView.moveRow(at: srcIndexPath,
                                                 to: dstIndexPath)

@@ -9,23 +9,18 @@
 import Foundation
 
 class FakeDownloadManager {
+    static var shared = FakeDownloadManager()
+    
     weak var delegate: DownloadChangedProtocol?
     
-    var downloads: [Download] = [] //{
-//        didSet {
-//            delegate?.allDownloadsChanged(downloads: downloads)
-//        }
-//    }
+    var downloads: [Download] = []
     
     init() {
-        add(download: Download(remoteURL: URL(string: "http://nowhere.co.uk/image01.jpg")!))
-        
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: timerTick)
     }
     
     func add(download: Download) {
         downloads.append(download)
-        
         delegate?.downloadChanged(download: download)
     }
     
@@ -34,25 +29,27 @@ class FakeDownloadManager {
     }
     
     func completed(download: Download) {
+        downloads.remove(at: (downloads.index(of: download)!))
         delegate?.downloadCompleted(download: download)
     }
     
     func timerTick(timer: Timer) {
         if downloads.count == 0 {
-            add(download: Download(remoteURL: URL(string: "http://nowhere.co.uk/image01.jpg")!))
+            let interval = timer.fireDate.timeIntervalSince1970;
+            
+            add(download: Download(remoteURL: URL(string: "http://nowhere.co.uk/image-\(interval).jpg")!))
         } else {
             downloads.forEach { (download) in
                 if download.totalSizeInBytes == 0 {
                     download.totalSizeInBytes = 1_000
-                    delegate?.downloadChanged(download: download)
+                    update(download: download)
                 } else if (download.bytesDownloaded < download.totalSizeInBytes) {
                     if download.pause == true {
                         download.bytesDownloaded += 50
-                        delegate?.downloadChanged(download: download)
+                        update(download: download)
                     }
                 } else if (download.bytesDownloaded >= download.totalSizeInBytes) {
-                    downloads.remove(at: downloads.index(of: download)!)
-                    delegate?.downloadCompleted(download: download)
+                    completed(download: download)
                 }
             }
         }
