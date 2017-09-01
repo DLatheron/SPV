@@ -71,9 +71,11 @@ class DownloadingCell : UITableViewCell {
         title.text = download.name
         
         if (download.pause) {
+            pauseResumeButton.isSelected = true
             title.textColor = UIColor.lightGray
             status.text = ""
         } else {
+            pauseResumeButton.isSelected = false
             title.textColor = UIColor.darkText
             
             let time = HumanReadable.duration(duration: download.timeRemainingInSeconds)

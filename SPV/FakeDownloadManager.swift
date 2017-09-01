@@ -17,7 +17,7 @@ class FakeDownloadManager {
     var completed: [Download] = []
     
     init() {
-        Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: timerTick)
+        Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true, block: timerTick)
     }
     
     func clearCompletedDownloads() {
@@ -59,7 +59,7 @@ class FakeDownloadManager {
                     update(download: download)
                 } else if (download.bytesDownloaded < download.totalSizeInBytes) {
                     if !download.pause {
-                        download.bytesDownloaded += 50
+                        download.bytesDownloaded += 5
                         update(download: download)
                     }
                 } else if (download.bytesDownloaded >= download.totalSizeInBytes) {
