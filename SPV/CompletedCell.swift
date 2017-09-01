@@ -16,13 +16,9 @@ class CompletedCell : UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var status: UILabel!
     
-    var download: Download? = nil
-    
-    func updateCell() {
-        if let download = self.download {
-            title.text = download.name
-            status.text = "Size: \(download.totalSizeInBytes), Time: \(HumanReadable.duration(duration: download.timeRemainingInSeconds))"
-            downloadedImageView.image = MediaManager.shared.getPhotoImage(at: download.index!)
-        }
+    func configure(withDownload download: Download) {
+        title.text = download.name
+        status.text = "Size: \(download.totalSizeInBytes), Time: \(HumanReadable.duration(duration: download.timeRemainingInSeconds))"
+        downloadedImageView.image = MediaManager.shared.getPhotoImage(at: 0)//download.index!)
     }
 }
