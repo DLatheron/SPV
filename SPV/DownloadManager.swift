@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 protocol DownloadChangedProtocol: class {
-    func allDownloadsChanged(downloads: [Download])
     func downloadChanged(download: Download)
     func downloadCompleted(download: Download)
 }
@@ -20,16 +19,17 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
     
     weak var delegate: DownloadChangedProtocol?
     
-    var downloads: [Download] = [] {
-        didSet {
-            delegate?.allDownloadsChanged(downloads: downloads)
-        }
-    }
+    var downloads: [Download] = [];
+    var completed: [Download] = [];
     
     override init() {
         super.init()
 
         initExistingDownloads()
+    }
+    
+    func clearCompletedDownloads() {
+        completed = []
     }
     
     var session: URLSession {

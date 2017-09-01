@@ -39,7 +39,6 @@
 		F9F2D3D21F42016C00FD6F78 /* Todo.rtf in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3D11F42016C00FD6F78 /* Todo.rtf */; };
 		F9F2D3D41F42CE0200FD6F78 /* DownloadsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3D31F42CE0200FD6F78 /* DownloadsViewController.swift */; };
 		F9F2D3D61F42D3B200FD6F78 /* DownloadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3D51F42D3B200FD6F78 /* DownloadingCell.swift */; };
-		F9F2D3D81F435F9700FD6F78 /* CompletedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3D71F435F9600FD6F78 /* CompletedCell.swift */; };
 		F9F2D3DB1F44202F00FD6F78 /* CircularProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3DA1F44202F00FD6F78 /* CircularProgressIndicator.swift */; };
 		F9F2D3DD1F504E2E00FD6F78 /* DownloadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3DC1F504E2E00FD6F78 /* DownloadTest.swift */; };
 /* End PBXBuildFile section */
@@ -100,7 +99,6 @@
 		F9F2D3D11F42016C00FD6F78 /* Todo.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Todo.rtf; sourceTree = "<group>"; };
 		F9F2D3D31F42CE0200FD6F78 /* DownloadsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
 		F9F2D3D51F42D3B200FD6F78 /* DownloadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadingCell.swift; sourceTree = "<group>"; };
-		F9F2D3D71F435F9600FD6F78 /* CompletedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedCell.swift; sourceTree = "<group>"; };
 		F9F2D3DA1F44202F00FD6F78 /* CircularProgressIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularProgressIndicator.swift; sourceTree = "<group>"; };
 		F9F2D3DC1F504E2E00FD6F78 /* DownloadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -198,7 +196,6 @@
 				F9C50C071F59376000EE79E5 /* FakeDownloadManager.swift */,
 				F9F2D3D31F42CE0200FD6F78 /* DownloadsViewController.swift */,
 				F9F2D3D51F42D3B200FD6F78 /* DownloadingCell.swift */,
-				F9F2D3D71F435F9600FD6F78 /* CompletedCell.swift */,
 				63D026E41F4F4E6B00006275 /* Download.swift */,
 				F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */,
 			);
@@ -383,7 +380,6 @@
 			files = (
 				63396F0E1F40FB30000E5F3E /* DownloadManager.swift in Sources */,
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
-				F9F2D3D81F435F9700FD6F78 /* CompletedCell.swift in Sources */,
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
 				F914D4F51F38C33A00B9042E /* MediaManager.swift in Sources */,

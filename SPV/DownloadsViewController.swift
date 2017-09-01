@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+protocol DownloadPauseResumeProtocol: class {
+    func pauseDownload(forCell cell: DownloadingCell)
+    func resumeDownload(forCell cell: DownloadingCell)
+}
+
 
 class DownloadsViewController : UIViewController {
     @IBOutlet weak var downloadsTableView: UITableView!
@@ -39,6 +44,7 @@ class DownloadsViewController : UIViewController {
 
         downloadManager.delegate = self
         downloads = downloadManager.downloads
+        completed = downloadManager.completed
     }
     
     override func viewDidLoad() {
@@ -55,7 +61,12 @@ class DownloadsViewController : UIViewController {
     }
     
     @IBAction func clearCompletedDownloads(_ sender: Any) {
-        completed = []
+        downloadManager.clearCompletedDownloads()
+        
+        completed = downloadManager.completed
+        
+        downloadsTableView.reloadSections([Sections.completed.rawValue],
+                                          with: .automatic)
     }
 }
 
@@ -100,26 +111,26 @@ extension DownloadsViewController : UITableViewDataSource {
         }
     }
     
+    // Download for IndexPath???
+    func getDownload(for indexPath: IndexPath) -> Download {
+        if indexPath.section == Sections.downloads.rawValue {
+            return downloads[indexPath.row]
+        } else if indexPath.section == Sections.completed.rawValue {
+            return completed[indexPath.row]
+        } else {
+            fatalError("Unexpected section")
+        }
+    }
+    
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = indexPath.section;
-
-        if section == 0 {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadingCell", for: indexPath) as? DownloadingCell {
-                let download = downloads[indexPath.row]
-                
-                cell.configure(withDownload: download)
-
-                return cell
-            }
-        } else {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "CompletedCell", for: indexPath) as? CompletedCell {
-                let download = completed[indexPath.row]
-                
-                cell.configure(withDownload: download)
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadingCell", for: indexPath) as? DownloadingCell {
+            let download = getDownload(for: indexPath)
             
-                return cell
-            }
+            cell.configure(withDownload: download)
+            cell.delegate = self
+
+            return cell
         }
         
         return UITableViewCell()
@@ -127,14 +138,6 @@ extension DownloadsViewController : UITableViewDataSource {
 }
 
 extension DownloadsViewController : DownloadChangedProtocol {
-    func allDownloadsChanged(downloads: [Download]) {
-        DispatchQueue.main.async {
-            self.downloads = downloads
-            
-            self.downloadsTableView.reloadSections(self.downloadSection, with: .automatic)
-        }
-    }
-    
     func downloadChanged(download: Download) {
         DispatchQueue.main.async {
             if let row = self.downloads.index(of: download) {
@@ -153,6 +156,8 @@ extension DownloadsViewController : DownloadChangedProtocol {
     }
     
     func downloadCompleted(download: Download) {
+        assert(download.index != nil)
+        
         DispatchQueue.main.async {
             if let srcRow = self.downloads.index(of: download) {
                 let dstRow = 0
@@ -167,6 +172,38 @@ extension DownloadsViewController : DownloadChangedProtocol {
                 
                 self.downloadsTableView.moveRow(at: srcIndexPath,
                                                 to: dstIndexPath)
+                
+                let cell = self.downloadsTableView.cellForRow(at: dstIndexPath) as? DownloadingCell
+                
+                cell?.configure(withDownload: download)
+            }
+        }
+    }
+}
+
+extension DownloadsViewController : DownloadPauseResumeProtocol {
+    func getDownload(forCell cell: DownloadingCell) -> Download? {
+        if let indexPath = self.downloadsTableView.indexPath(for: cell) {
+            return getDownload(for: indexPath)
+        } else {
+            return nil
+        }
+    }
+    
+    func pauseDownload(forCell cell: DownloadingCell) {
+        if let download = getDownload(forCell: cell) {
+            if !download.pause {
+                download.pause = true
+                cell.configure(withDownload: download)
+            }
+        }
+    }
+
+    func resumeDownload(forCell cell: DownloadingCell) {
+        if let download = getDownload(forCell: cell) {
+            if download.pause {
+                download.pause = false
+                cell.configure(withDownload: download)
             }
         }
     }
