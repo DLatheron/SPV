@@ -14,11 +14,10 @@ protocol DownloadPauseResumeProtocol: class {
     func resumeDownload(forCell cell: DownloadingCell)
 }
 
-
 class DownloadsViewController : UIViewController {
     @IBOutlet weak var downloadsTableView: UITableView!
 
-    let downloadManager: FakeDownloadManager
+    let downloadManager: DownloadManagerBase
     
     enum Sections: Int {
         case downloads = 0
@@ -37,8 +36,8 @@ class DownloadsViewController : UIViewController {
     var completed: [Download] = []
     
     required init(coder aDecoder: NSCoder) {
-        //downloadManager = DownloadManager.shared
-        downloadManager = FakeDownloadManager.shared
+        downloadManager = DownloadManager.shared
+        //downloadManager = FakeDownloadManager.shared
 
         super.init(coder: aDecoder)!
 
@@ -192,6 +191,7 @@ extension DownloadsViewController : DownloadPauseResumeProtocol {
     
     func pauseDownload(forCell cell: DownloadingCell) {
         if let download = getDownload(forCell: cell) {
+            downloadManager.pause(download: download)
             if !download.pause {
                 download.pause = true
                 cell.configure(withDownload: download)
@@ -201,6 +201,7 @@ extension DownloadsViewController : DownloadPauseResumeProtocol {
 
     func resumeDownload(forCell cell: DownloadingCell) {
         if let download = getDownload(forCell: cell) {
+            downloadManager.resume(download: download)
             if download.pause {
                 download.pause = false
                 cell.configure(withDownload: download)

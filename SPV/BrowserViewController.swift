@@ -201,19 +201,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                 let imageURLString = "\(result ?? "")"
                 
                 let downloadActionHandler = { (action: UIAlertAction!) -> Void in
-                    // Get the documents directory's path.
-//                    let documentsURL = self.getURLForDocumentsDirectory()
-                    let fileURL = self.makeFileDownloadURL(downloadURL: imageURLString as NSString)
-                    
-                    // Generate a unique filename for the download.
-//                    let uniqueFilename = NSUUID().uuidString
-//                    let fileURL = documentsURL.appendingPathComponent(uniqueFilename).appendingPathExtension(".jpg");
-    
-                    DownloadManager.shared.download(remoteURL: URL(string: imageURLString)!,
-                                                    to: fileURL as URL,
-                                                    completion: {
-                        print("\(imageURLString) downloaded to \(fileURL)...")
-                    })
+                    DownloadManager.shared.download(remoteURL: URL(string: imageURLString)!)
                 }
                 
                 let alertController = UIAlertController(title: "Image",

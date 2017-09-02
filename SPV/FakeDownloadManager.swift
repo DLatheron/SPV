@@ -8,45 +8,15 @@
 
 import Foundation
 
-class FakeDownloadManager {
+class FakeDownloadManager : DownloadManagerBase {
     static var shared = FakeDownloadManager()
     
-    weak var delegate: DownloadChangedProtocol?
-    
-    var downloads: [Download] = []
-    var completed: [Download] = []
-    
-    init() {
+    override init() {
+        super.init()
+        
         Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true, block: timerTick)
     }
-    
-    func clearCompletedDownloads() {
-        completed = []
-    }
-    
-    func add(download: Download) {
-        download.pause = false
-        downloads.insert(download, at: 0)
-        
-        print("New \(download.name) started")
-        delegate?.downloadChanged(download: download)
-    }
-    
-    func update(download: Download) {
-        print("\(download.name) progress \(download.percentage)%")
-        delegate?.downloadChanged(download: download)
-    }
-    
-    func completed(download: Download) {
-        download.index = 0
-        
-        downloads.remove(at: (downloads.index(of: download)!))
-        completed.insert(download, at: 0)
-        
-        print("\(download.name) completed")
-        delegate?.downloadCompleted(download: download)
-    }
-    
+
     func timerTick(timer: Timer) {
         if downloads.count == 0 {
             let interval = timer.fireDate.timeIntervalSince1970;
@@ -63,7 +33,8 @@ class FakeDownloadManager {
                         update(download: download)
                     }
                 } else if (download.bytesDownloaded >= download.totalSizeInBytes) {
-                    completed(download: download)
+                    completed(download: download,
+                              mediaIndex: 0)
                 }
             }
         }

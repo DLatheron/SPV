@@ -9,29 +9,10 @@
 import Foundation
 import UIKit
 
-protocol DownloadChangedProtocol: class {
-    func downloadChanged(download: Download)
-    func downloadCompleted(download: Download)
-}
-
-class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate {
+class DownloadManager : DownloadManagerBase {
     static var shared = DownloadManager()
     
-    weak var delegate: DownloadChangedProtocol?
-    
-    var downloads: [Download] = [];
-    var completed: [Download] = [];
-    
-    override init() {
-        super.init()
-
-        initExistingDownloads()
-    }
-    
-    func clearCompletedDownloads() {
-        completed = []
-    }
-    
+    // On-demand creation of the session - this is effectively a persistent object.
     var session: URLSession {
         get {
             let config = URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
@@ -46,73 +27,29 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         }
     }
     
-    func download(remoteURL: URL,
-                  to localURL: URL,
-                  completion: @escaping () -> ()) {
-        let request = URLRequest(url: remoteURL,
-                                 cachePolicy: .useProtocolCachePolicy)
-        let download = Download(remoteURL: remoteURL)
-        
-        self.downloads.append(download)
-        
-        // We have added a new item into the list, so we need to refresh the table
-        // 
-        
-        let task = session.downloadTask(with: request)
-        task.resume()
-        download.pause = false
-    }
-    
-    func initExistingDownloads() {
+    override init() {
+        super.init()
+
+        // Find any existing downloads associated with the session.
         session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
             self.downloads = downloads.map { (download) in
                 let remoteURL = (download.currentRequest?.url)!
-            
+                
                 return Download(remoteURL: remoteURL)
             }
         }
     }
     
-    // MARK: - URLSessionDownloadDelegate
-    func urlSession(_ session: URLSession,
-                    downloadTask: URLSessionDownloadTask,
-                    didWriteData: Int64,
-                    totalBytesWritten: Int64,
-                    totalBytesExpectedToWrite: Int64) {
-        if totalBytesExpectedToWrite > 0 {
-            let remoteURL = (downloadTask.currentRequest?.url)!
-            
-            if let download = getDetails(fromRemoteURL: remoteURL) {
-                download.totalSizeInBytes = totalBytesExpectedToWrite
-                download.bytesDownloaded = totalBytesWritten
-            }
-            
-            debugPrint("Downloaded \(totalBytesWritten) of \(totalBytesExpectedToWrite)")
-        }
-    }
-    
-    func getDetails(fromRemoteURL url: URL) -> Download? {
-        for details in self.downloads {
-            if (details.remoteURL == url) {
-                return details
-            }
-        }
+    func download(remoteURL: URL) {
+        let request = URLRequest(url: remoteURL,
+                                 cachePolicy: .useProtocolCachePolicy)
+        let download = Download(remoteURL: remoteURL)
         
-        return nil
-    }
-    
-    func downloadComplete(forRemoteURL remoteURL: URL,
-                          toLocalURL localURL: URL) {
-        if let details = getDetails(fromRemoteURL: remoteURL) {
-            let detailsIndex = self.downloads.index(of: details)
-            self.downloads.remove(at: detailsIndex!)
-            
-            let mediaIndex = MediaManager.shared.addMedia(url: localURL)
-            
-            details.index = mediaIndex
-            
-            delegate?.downloadCompleted(download: details)
-        }
+        let task = session.downloadTask(with: request)
+        task.resume()
+        download.pause = false
+
+        add(download: download)
     }
     
     func getURLForDocumentsDirectory() -> URL {
@@ -129,11 +66,12 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         
         return localFileURL
     }
-    
+}
+
+extension DownloadManager : URLSessionDelegate {
     func urlSession(_ session: URLSession,
                     downloadTask: URLSessionDownloadTask,
                     didFinishDownloadingTo location: URL) {
-        // Success
         if let statusCode = (downloadTask.response as? HTTPURLResponse)?.statusCode {
             print("Success: \(statusCode)")
         }
@@ -143,34 +81,44 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
         
         do {
             try FileManager.default.copyItem(at: location, to: localURL)
-            //completion()
         } catch (let writeError) {
             print("Error writing file \(localURL) : \(writeError)")
         }
         
-        downloadComplete(forRemoteURL: remoteURL,
-                         toLocalURL: localURL)
-        
-        // TODO: Need to tell the VC that we have finished downloading and updated the contents 
-        //       of the arrays...
-        
-        debugPrint("Did finish downloading")
+        if let index = indexOfDownload(byRemoteURL: remoteURL) {
+            let download = downloads[index]
+            let mediaIndex = MediaManager.shared.addMedia(url: localURL)
+            
+            completed(download: download,
+                      mediaIndex: mediaIndex)
+        } else {
+            // TODO: How can we not have found the download???
+        }
     }
     
     func urlSession(_ session: URLSession,
                     task: URLSessionTask,
                     didCompleteWithError error: Error?) {
+        // TODO: Mark the download as having errored and allow a retry???
         debugPrint("Task completed: \(task), error: \(String(describing: error))")
-        
     }
-    
-    func calculateProgress(session: URLSession,
-                           completionHandler: @escaping (Float) -> ()) {
-        session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
-            let bytesReceived = downloads.map{ $0.countOfBytesReceived }.reduce(0, +)
-            let bytesExpectedToReceive = downloads.map{ $0.countOfBytesExpectedToReceive }.reduce(0, +)
-            let progress = bytesExpectedToReceive > 0 ? Float(bytesReceived) / Float(bytesExpectedToReceive) : 0.0
-            completionHandler(progress)
+}
+
+extension DownloadManager : URLSessionDownloadDelegate {
+    func urlSession(_ session: URLSession,
+                    downloadTask: URLSessionDownloadTask,
+                    didWriteData: Int64,
+                    totalBytesWritten: Int64,
+                    totalBytesExpectedToWrite: Int64) {
+        if totalBytesExpectedToWrite > 0 {
+            let remoteURL = (downloadTask.currentRequest?.url)!
+            
+            if let download = findDownload(byRemoteURL: remoteURL) {
+                download.totalSizeInBytes = totalBytesExpectedToWrite
+                download.bytesDownloaded = totalBytesWritten
+                
+                update(download: download)
+            }
         }
     }
 }
