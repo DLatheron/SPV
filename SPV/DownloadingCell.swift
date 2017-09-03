@@ -56,7 +56,7 @@ class DownloadingCell : UITableViewCell {
         let size = HumanReadable.bytes(bytes: download.totalSizeInBytes,
                                        units: .bytes,
                                        space: false)
-        let time = HumanReadable.duration(duration: download.durationInSeconds)
+        let time = HumanReadable.duration(duration: download.durationInSeconds())
         
         status.text = "Size: \(size), Time: \(time)"
         
@@ -70,7 +70,7 @@ class DownloadingCell : UITableViewCell {
     private func configureActiveCell(for download: Download) {
         title.text = download.name
         
-        if (download.pause) {
+        if (download.isPaused) {
             pauseResumeButton.isSelected = true
             title.textColor = UIColor.lightGray
             status.text = ""
@@ -78,8 +78,8 @@ class DownloadingCell : UITableViewCell {
             pauseResumeButton.isSelected = false
             title.textColor = UIColor.darkText
             
-            let time = HumanReadable.duration(duration: download.timeRemainingInSeconds)
-            let speed = HumanReadable.bps(bytesPerSecond: download.downloadSpeedInBPS)
+            let time = HumanReadable.duration(duration: download.timeRemainingInSeconds())
+            let speed = HumanReadable.bps(bytesPerSecond: download.downloadSpeedInBPS())
             
             status.text = "Remaining: \(time), Speed: \(speed)"
         }

@@ -47,7 +47,6 @@ class DownloadManager : DownloadManagerBase {
         let task = session.downloadTask(with: request)
         let download = Download(remoteURL: remoteURL,
                                 task: task)
-        download.pause = false
 
         add(download: download)
     }

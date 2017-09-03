@@ -28,7 +28,7 @@ class FakeDownloadManager : DownloadManagerBase {
                     download.totalSizeInBytes = 1_000
                     update(download: download)
                 } else if (download.bytesDownloaded < download.totalSizeInBytes) {
-                    if !download.pause {
+                    if !download.isPaused {
                         download.bytesDownloaded += 5
                         update(download: download)
                     }

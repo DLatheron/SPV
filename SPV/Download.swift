@@ -16,48 +16,28 @@ extension Comparable {
 
 class Download : NSObject {
 
-    // Bugs:
-    // - Doesn't accurately record the total time taken to download a file;
-    // - Doesn't correctly calculate timeRemaining when you pause and resume;
-    //   - Should accumulate time as you pause and resume it for the total time;
-    //   - Should record the number of bytes downloaded since you started/resumed
-    //     the download for speed and time remaining calculations.
-    
     internal(set) var remoteURL: URL
     internal(set) var name: String
-    internal(set) var task: URLSessionDownloadTask?
+    internal var task: URLSessionDownloadTask?
+
+    internal(set) var startTime: Date? = nil
+    internal var timeAccumulated: TimeInterval = 0.0
+    internal var bytesSinceResume: Int64 = 0
+
+    internal(set) var totalSizeInBytes: Int64 = 0
+    internal(set) var index: Int? = nil
+    internal(set) var isPaused: Bool = true
     
-    var totalSizeInBytes: Int64 = 0 {
+    internal(set) var bytesDownloaded: Int64 = 0 {
         didSet {
-            if (totalSizeInBytes != oldValue) {
-                if let changedEvent = changedEvent {
-                    changedEvent("totalSizeInBytes")
-                }
-            }
-        }
-    }
-    
-    var bytesDownloaded: Int64 = 0 {
-        didSet {
-            if (bytesDownloaded != oldValue) {
-                if let changedEvent = changedEvent {
-                    changedEvent("bytesDownloaded")
-                }
-            }
-        }
-    }
-    
-    var changedEvent: ((String) -> ())? = nil
-    
-    var totalSizeInBytesHumanReadable: String {
-        get {
-            return "\(totalSizeInBytes) bytes"
+            let bytesDelta = bytesDownloaded - oldValue
+            bytesSinceResume += bytesDelta
         }
     }
     
     var progress: Double {
         get {
-            if (totalSizeInBytes > 0) {
+            if totalSizeInBytes > 0 {
                 let progress = Double(bytesDownloaded) / Double(totalSizeInBytes)
                 return progress.clamp(to: 0.0 ... 1.0)
             } else {
@@ -74,7 +54,7 @@ class Download : NSObject {
     
     var complete: Bool {
         get {
-            if (totalSizeInBytes > 0) {
+            if index != nil {
                 return bytesDownloaded >= totalSizeInBytes
             } else {
                 return false
@@ -87,63 +67,69 @@ class Download : NSObject {
             return totalSizeInBytes - bytesDownloaded
         }
     }
-    
-    internal(set) var startTime: Date = Date()
-    internal(set) var endTime: Date? = nil
-    
-    var durationInSeconds: TimeInterval? {
-        get {
-            if !pause{
-                if let endTime = endTime {
-                    return endTime.timeIntervalSince(startTime)
-                } else {
-                    return -startTime.timeIntervalSinceNow
-                }
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    var downloadSpeedInBPS: Double? {
-        get {
-            if let duration = durationInSeconds, duration > 0 {
-                return Double(bytesDownloaded) / duration
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    var timeRemainingInSeconds: TimeInterval? {
-        get {
-            // Calculate how long it takes to download a byte and scale up?
-            if let bps = downloadSpeedInBPS, bps > 0.0 {
-                return Double(bytesRemaining) / bps
-            } else {
-                return nil
-            }
-        }
-    }
-    
-    var pause: Bool = true {
-        didSet {
-            if pause {
-                task?.suspend()
-            } else {
-                startTime = Date()
-                
-                task?.resume()
-            }
-        }
-    }
 
-    var index: Int? = nil
-    
     init(remoteURL: URL,
-         task: URLSessionDownloadTask? = nil) {
+         task: URLSessionDownloadTask? = nil,
+         at date: Date = Date()) {
         self.remoteURL = remoteURL
         self.name = remoteURL.lastPathComponent
         self.task = task
+    }
+    
+    func completed(withMediaIndex index: Int,
+                   at date: Date = Date()) {
+        self.index = index
+        
+        accumulateTimeSinceLastResumed(date: date)
+    }
+    
+    func pause(at date: Date = Date()) {
+        if !isPaused {
+            task?.suspend()
+            isPaused = true
+
+            accumulateTimeSinceLastResumed(date: date)
+        }
+    }
+    
+    func resume(at date: Date = Date()) {
+        if isPaused {
+            startTime = date
+            self.bytesSinceResume = 0
+            
+            task?.resume()
+            isPaused = false
+        }
+    }
+    
+    func durationInSeconds(at date: Date = Date()) -> TimeInterval {
+        if isPaused || complete {
+            return timeAccumulated
+        } else {
+            return timeAccumulated + date.timeIntervalSince(self.startTime!)
+        }
+    }
+    
+    func downloadSpeedInBPS(at date: Date = Date()) -> Double? {
+        let duration = durationInSeconds(at: date)
+        
+        if !isPaused && duration > 0.0  {
+            return Double(bytesSinceResume) / duration
+        } else {
+            return nil
+        }
+    }
+    
+    func timeRemainingInSeconds(at date: Date = Date()) -> TimeInterval? {
+        if let bps = downloadSpeedInBPS(at: date), bps > 0.0, !isPaused {
+            return Double(bytesRemaining) / bps
+        } else {
+            return nil
+        }
+    }
+    
+    private func accumulateTimeSinceLastResumed(date: Date) {
+        self.timeAccumulated += date.timeIntervalSince(self.startTime!)
+        self.startTime = date
     }
 }

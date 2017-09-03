@@ -45,9 +45,9 @@ class DownloadManagerBase : NSObject {
     }
     
     func add(download: Download) {
-        download.pause = false
         downloads.insert(download, at: 0)
         
+        download.resume()
         print("New \(download.name) started")
         delegate?.downloadChanged(download: download)
     }

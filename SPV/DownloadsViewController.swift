@@ -191,14 +191,14 @@ extension DownloadsViewController : DownloadPauseResumeProtocol {
     
     func pauseDownload(forCell cell: DownloadingCell) {
         if let download = getDownload(forCell: cell) {
-            download.pause = true
+            download.pause()
             cell.configure(withDownload: download)
         }
     }
 
     func resumeDownload(forCell cell: DownloadingCell) {
         if let download = getDownload(forCell: cell) {
-            download.pause = false
+            download.resume()
             cell.configure(withDownload: download)
         }
     }
