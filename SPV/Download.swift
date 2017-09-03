@@ -15,8 +15,17 @@ extension Comparable {
 }
 
 class Download : NSObject {
+
+    // Bugs:
+    // - Doesn't accurately record the total time taken to download a file;
+    // - Doesn't correctly calculate timeRemaining when you pause and resume;
+    //   - Should accumulate time as you pause and resume it for the total time;
+    //   - Should record the number of bytes downloaded since you started/resumed
+    //     the download for speed and time remaining calculations.
+    
     internal(set) var remoteURL: URL
     internal(set) var name: String
+    internal(set) var task: URLSessionDownloadTask?
     
     var totalSizeInBytes: Int64 = 0 {
         didSet {
@@ -27,6 +36,7 @@ class Download : NSObject {
             }
         }
     }
+    
     var bytesDownloaded: Int64 = 0 {
         didSet {
             if (bytesDownloaded != oldValue) {
@@ -119,18 +129,21 @@ class Download : NSObject {
     var pause: Bool = true {
         didSet {
             if pause {
-                // Pausing.
+                task?.suspend()
             } else {
-                // Resuming.
                 startTime = Date()
+                
+                task?.resume()
             }
         }
     }
 
     var index: Int? = nil
     
-    init(remoteURL: URL) {
+    init(remoteURL: URL,
+         task: URLSessionDownloadTask? = nil) {
         self.remoteURL = remoteURL
         self.name = remoteURL.lastPathComponent
+        self.task = task
     }
 }

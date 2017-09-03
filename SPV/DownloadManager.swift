@@ -32,10 +32,11 @@ class DownloadManager : DownloadManagerBase {
 
         // Find any existing downloads associated with the session.
         session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
-            self.downloads = downloads.map { (download) in
-                let remoteURL = (download.currentRequest?.url)!
+            self.downloads = downloads.map { (downloadTask) in
+                let remoteURL = (downloadTask.currentRequest?.url)!
                 
-                return Download(remoteURL: remoteURL)
+                return Download(remoteURL: remoteURL,
+                                task: downloadTask)
             }
         }
     }
@@ -43,10 +44,9 @@ class DownloadManager : DownloadManagerBase {
     func download(remoteURL: URL) {
         let request = URLRequest(url: remoteURL,
                                  cachePolicy: .useProtocolCachePolicy)
-        let download = Download(remoteURL: remoteURL)
-        
         let task = session.downloadTask(with: request)
-        task.resume()
+        let download = Download(remoteURL: remoteURL,
+                                task: task)
         download.pause = false
 
         add(download: download)
@@ -85,15 +85,12 @@ extension DownloadManager : URLSessionDelegate {
             print("Error writing file \(localURL) : \(writeError)")
         }
         
-        if let index = indexOfDownload(byRemoteURL: remoteURL) {
-            let download = downloads[index]
-            let mediaIndex = MediaManager.shared.addMedia(url: localURL)
-            
-            completed(download: download,
-                      mediaIndex: mediaIndex)
-        } else {
-            // TODO: How can we not have found the download???
-        }
+        let index = indexOfDownload(byRemoteURL: remoteURL)!
+        let download = downloads[index]
+        let mediaIndex = MediaManager.shared.addMedia(url: localURL)
+        
+        completed(download: download,
+                  mediaIndex: mediaIndex)
     }
     
     func urlSession(_ session: URLSession,

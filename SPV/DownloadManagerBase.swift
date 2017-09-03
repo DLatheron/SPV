@@ -67,6 +67,4 @@ class DownloadManagerBase : NSObject {
         print("\(download.name) completed")
         delegate?.downloadCompleted(download: download)
     }
-    
-    func pause(#imageLiteral(resourceName: "download"))
 }
