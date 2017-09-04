@@ -10,8 +10,9 @@ import Foundation
 
 
 protocol DownloadChangedProtocol: class {
-    func downloadChanged(download: Download)
-    func downloadCompleted(download: Download)
+    func changed(download: Download)
+    func deleted(download: Download)
+    func completed(download: Download)
 }
 
 class DownloadManagerBase : NSObject {
@@ -45,9 +46,15 @@ class DownloadManagerBase : NSObject {
     }
     
     func delete(download: Download) {
+        if let index = downloads.index(of: download) {
+            downloads.remove(at: index)
+        } else if let index = completed.index(of: download) {
+            completed.remove(at: index)
+        }
+        
         download.task?.cancel()
         print("\(download.name) deleted")
-        delete?.downloadDeleted(download: download)
+        delegate?.deleted(download: download)
     }
     
     func add(download: Download) {
@@ -55,12 +62,12 @@ class DownloadManagerBase : NSObject {
         
         download.resume()
         print("New \(download.name) started")
-        delegate?.downloadChanged(download: download)
+        delegate?.changed(download: download)
     }
     
     func update(download: Download) {
         print("\(download.name) progress \(download.percentage)%")
-        delegate?.downloadChanged(download: download)
+        delegate?.changed(download: download)
     }
     
     func completed(download: Download,
@@ -71,6 +78,6 @@ class DownloadManagerBase : NSObject {
         completed.insert(download, at: 0)
         
         print("\(download.name) completed")
-        delegate?.downloadCompleted(download: download)
+        delegate?.completed(download: download)
     }
 }

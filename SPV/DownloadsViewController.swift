@@ -89,24 +89,9 @@ extension DownloadsViewController : UITableViewDelegate {
                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let download = getDownload(for: indexPath)
-            downloadManager.delete(download: download
+            downloadManager.delete(download: download)
         }
     }
-    
-//    // Override to support conditional editing of the table view.
-//    // This only needs to be implemented if you are going to be returning NO
-//    // for some items. By default, all items are editable.
-//    - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-//    // Return YES if you want the specified item to be editable.
-//    return YES;
-//    }
-//    
-//    // Override to support editing the table view.
-//    - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//    //add code here for when you hit delete
-//    }    
-//    }
 }
 
 extension DownloadsViewController : UITableViewDataSource {
@@ -138,7 +123,6 @@ extension DownloadsViewController : UITableViewDataSource {
         }
     }
     
-    // Download for IndexPath???
     func getDownload(for indexPath: IndexPath) -> Download {
         if indexPath.section == Sections.downloads.rawValue {
             return downloads[indexPath.row]
@@ -162,6 +146,18 @@ extension DownloadsViewController : UITableViewDataSource {
         
         return UITableViewCell()
     }
+    
+    func tableView(_ tableView: UITableView,
+                   titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+            switch indexPath.section {
+            case Sections.downloads.rawValue:
+                return "Cancel"
+            case Sections.completed.rawValue:
+                return "Clear"
+            default:
+                fatalError("Unknown section \(indexPath.section)")
+            }
+    }
 }
 
 extension DownloadsViewController : DownloadChangedProtocol {
@@ -177,7 +173,7 @@ extension DownloadsViewController : DownloadChangedProtocol {
         }
     }
     
-    func downloadChanged(download: Download) {
+    func changed(download: Download) {
         DispatchQueue.main.async {
             if let indexPath = self.getIndexPath(of: download) {
                 let cell = self.downloadsTableView.cellForRow(at: indexPath) as? DownloadingCell
@@ -191,16 +187,36 @@ extension DownloadsViewController : DownloadChangedProtocol {
         }
     }
     
-    func downloadDeleted(download: Download) {
+    func deleted(download: Download) {
         DispatchQueue.main.async {
             if let indexPath = self.getIndexPath(of: download) {
-                self.downloadsTableView.deleteRows(at: [indexPath],
-                                                   with: .automatic)
+                switch indexPath.section {
+                case Sections.downloads.rawValue:
+                    self.downloads.remove(at: indexPath.row)
+                    self.downloadsTableView.deleteRows(at: [indexPath],
+                                                       with: .automatic)
+
+                case Sections.completed.rawValue:
+                    self.completed.remove(at: indexPath.row)
+                    
+                    if self.completed.count == 0 {
+                        self.downloadsTableView.reloadSections([Sections.completed.rawValue],
+                                                               with: .automatic)
+                    } else {
+                        self.downloadsTableView.deleteRows(at: [indexPath],
+                                                           with: .automatic)
+                        
+                    }
+                    
+                default:
+                    fatalError("Unknown section \(indexPath.section)")
+                }
+                
             }
         }
     }
     
-    func downloadCompleted(download: Download) {
+    func completed(download: Download) {
         assert(download.index != nil)
         
         DispatchQueue.main.async {
