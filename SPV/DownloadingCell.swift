@@ -56,7 +56,7 @@ class DownloadingCell : UITableViewCell {
         let size = HumanReadable.bytes(bytes: download.totalSizeInBytes,
                                        units: .bytes,
                                        space: false)
-        let time = HumanReadable.duration(duration: download.durationInSeconds())
+        let time = HumanReadable.duration(duration: download.totalDurationInSeconds())
         
         status.text = "Size: \(size), Time: \(time)"
         

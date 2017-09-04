@@ -106,6 +106,14 @@ class Download : NSObject {
         if isPaused || complete {
             return timeAccumulated
         } else {
+            return date.timeIntervalSince(self.startTime!)
+        }
+    }
+    
+    func totalDurationInSeconds(at date: Date = Date()) -> TimeInterval? {
+        if isPaused || complete {
+            return timeAccumulated
+        } else {
             return timeAccumulated + date.timeIntervalSince(self.startTime!)
         }
     }

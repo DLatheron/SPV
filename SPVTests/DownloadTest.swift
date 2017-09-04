@@ -165,6 +165,42 @@ class DownloadTest: XCTestCase {
         XCTAssertEqual(download.isPaused, false)
     }
     
+    // MARK:- totalDurationInSeconds
+    func test_totalDurationInSeconds_neverPaused() {
+        let date = Date()
+        let download = Download(remoteURL: remoteURL)
+        
+        download.resume(at: date)
+        download.totalSizeInBytes = 1_000
+        download.bytesDownloaded = 500
+        
+        XCTAssertEqual(download.totalDurationInSeconds(at: date.addingTimeInterval(20)), 20.0)
+    }
+    
+    func test_totalDurationInSeconds_notComplete() {
+        let date = Date()
+        let download = Download(remoteURL: remoteURL)
+        
+        download.resume(at: date)
+        download.totalSizeInBytes = 1_000
+        download.bytesDownloaded = 500
+        download.pause(at: date.addingTimeInterval(20))
+        download.resume(at: date.addingTimeInterval(30))
+
+        XCTAssertEqual(download.totalDurationInSeconds(at: date.addingTimeInterval(40)), 30.0)
+    }
+
+    func test_totalDurationInSeconds_complete() {
+        let date = Date()
+        let download = Download(remoteURL: remoteURL)
+        
+        download.resume(at: date)
+        download.completed(withMediaIndex: 0,
+                           at: date.addingTimeInterval(10))
+        
+        XCTAssertEqual(download.totalDurationInSeconds(), 10.0)
+    }
+    
     // MARK:- durationInSeconds
     func test_durationInSeconds_paused() {
         let date = Date()
@@ -188,7 +224,7 @@ class DownloadTest: XCTestCase {
         download.pause(at: date.addingTimeInterval(20))
         download.resume(at: date.addingTimeInterval(30))
         
-        XCTAssertEqual(download.durationInSeconds(at: date.addingTimeInterval(40)), 30)
+        XCTAssertEqual(download.durationInSeconds(at: date.addingTimeInterval(40)), 10)
     }
     
     func test_durationInSeconds_complete() {
