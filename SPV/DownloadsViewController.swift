@@ -78,10 +78,38 @@ extension DownloadsViewController : UITableViewDelegate {
             return 60
         }
     }
+    
+    func tableView(_ tableView: UITableView,
+                   canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCellEditingStyle,
+                   forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let download = getDownload(for: indexPath)
+            downloadManager.delete(download: download
+        }
+    }
+    
+//    // Override to support conditional editing of the table view.
+//    // This only needs to be implemented if you are going to be returning NO
+//    // for some items. By default, all items are editable.
+//    - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+//    // Return YES if you want the specified item to be editable.
+//    return YES;
+//    }
+//    
+//    // Override to support editing the table view.
+//    - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    if (editingStyle == UITableViewCellEditingStyleDelete) {
+//    //add code here for when you hit delete
+//    }    
+//    }
 }
 
 extension DownloadsViewController : UITableViewDataSource {
-    // MARK:- UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return sectionTitles.count
     }
@@ -137,19 +165,37 @@ extension DownloadsViewController : UITableViewDataSource {
 }
 
 extension DownloadsViewController : DownloadChangedProtocol {
+    func getIndexPath(of download: Download) -> IndexPath? {
+        if let row = self.downloads.index(of: download) {
+            return IndexPath(row: row,
+                             section: Sections.downloads.rawValue)
+        } else if let row = self.completed.index(of: download) {
+            return IndexPath(row: row,
+                             section: Sections.completed.rawValue)
+        } else {
+            return nil
+        }
+    }
+    
     func downloadChanged(download: Download) {
         DispatchQueue.main.async {
-            if let row = self.downloads.index(of: download) {
-                let indexPath = IndexPath(row: row,
-                                          section: Sections.downloads.rawValue)
+            if let indexPath = self.getIndexPath(of: download) {
                 let cell = self.downloadsTableView.cellForRow(at: indexPath) as? DownloadingCell
                 cell?.configure(withDownload: download)
             } else {
-                let row = 0
-                let indexPath = IndexPath(row: row,
+                let indexPath = IndexPath(row: 0,
                                           section: Sections.downloads.rawValue)
                 self.downloads.insert(download, at: Sections.downloads.rawValue);
                 self.downloadsTableView.insertRows(at: [indexPath], with: .automatic)
+            }
+        }
+    }
+    
+    func downloadDeleted(download: Download) {
+        DispatchQueue.main.async {
+            if let indexPath = self.getIndexPath(of: download) {
+                self.downloadsTableView.deleteRows(at: [indexPath],
+                                                   with: .automatic)
             }
         }
     }
@@ -158,14 +204,12 @@ extension DownloadsViewController : DownloadChangedProtocol {
         assert(download.index != nil)
         
         DispatchQueue.main.async {
-            if let srcRow = self.downloads.index(of: download) {
+            if let srcIndexPath = self.getIndexPath(of: download) {
                 let dstRow = 0
                 
-                self.downloads.remove(at: srcRow)
+                self.downloads.remove(at: srcIndexPath.row)
                 self.completed.insert(download, at: dstRow)
 
-                let srcIndexPath = IndexPath(row: srcRow,
-                                             section: Sections.downloads.rawValue)
                 let dstIndexPath = IndexPath(row: dstRow,
                                              section: Sections.completed.rawValue)
                 

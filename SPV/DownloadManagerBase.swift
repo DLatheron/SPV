@@ -44,6 +44,12 @@ class DownloadManagerBase : NSObject {
         completed = []
     }
     
+    func delete(download: Download) {
+        download.task?.cancel()
+        print("\(download.name) deleted")
+        delete?.downloadDeleted(download: download)
+    }
+    
     func add(download: Download) {
         downloads.insert(download, at: 0)
         
