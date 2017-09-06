@@ -24,11 +24,13 @@ class MediaMetadataTest: XCTestCase {
     func test_init_json() {
         let jsonString: String =
             "{\n" +
-            "    \"MediaMetadata\": {\n" +
-            "        \"Rating\": 5,\n" +
-            "        \"Downloaded\": \"2017-09-05T07:52:00Z\"\n" +
-            "    }\n" +
-            "}\n"
+            "    \"rating\": 5,\n" +
+            "    \"downloaded\": \"2017-09-05T07:52:00Z\",\n" +
+            "    \"tags\": [\n" +
+            "         \"Tag1\",\n" +
+            "         \"Tag2\"\n" +
+            "    ]\n" +
+            "}"
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
@@ -39,5 +41,6 @@ class MediaMetadataTest: XCTestCase {
         XCTAssertNotNil(metadata)
         XCTAssertEqual(metadata?.rating, 5)
         XCTAssertEqual(metadata?.dateDownloaded, date)
+        XCTAssertEqual((metadata?.tags)!, ["Tag1", "Tag2"])
     }
 }

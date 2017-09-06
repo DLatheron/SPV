@@ -12,6 +12,7 @@ import SwiftyJSON
 class MediaMetadata {
     var rating: Int = 0
     var dateDownloaded: Date? = Date()
+    var tags: [String] = []
     
     
     init() {
@@ -20,15 +21,15 @@ class MediaMetadata {
     init?(jsonString: String) {
         if let dataFromString = jsonString.data(using: .utf8,
                                                 allowLossyConversion: false) {
-            let json = JSON(data: dataFromString)
-            let mediaMetadata = json["MediaMetadata"]
+            let json = JSON(data: dataFromString,
+                            options: .allowFragments)
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             
-            
-            self.rating = mediaMetadata["Rating"].intValue
-            self.dateDownloaded = dateFormatter.date(from: mediaMetadata["Downloaded"].stringValue)
+            self.rating = json["rating"].intValue
+            self.dateDownloaded = dateFormatter.date(from: json["downloaded"].stringValue)
+            self.tags = json["tags"].arrayValue.map({$0.stringValue})
         } else {
             return nil
         }

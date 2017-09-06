@@ -1,6 +1,9 @@
 {
-    "PhotoMetadata": {
-        "Rating": 5
-        "Downloaded": "2017-09-05T07:52:00Z"
-    }
+    "rating": 5
+    "downloaded": "2017-09-05T07:52:00Z",
+    "tags": [
+        "Tag1",
+        "Tag2",
+        "Tag3"
+    ]
 }
