@@ -1,6 +1,17 @@
 {
+    "titie": "A photo by me",
+    "id": "GUID-GUID-GUID-GUID",
+    "source": "From whence it came",
+    "importDate": "2017-09-05T07:52:00Z",
+    "creationDate": "2017-09-05T07:52:00Z",
+    "fileSize": 4532,
+    "resolution": {
+        "width": 2448,
+        "height": 3264
+    },
+    "previousViews": 0,
+    "lastViewed": null
     "rating": 5
-    "downloaded": "2017-09-05T07:52:00Z",
     "tags": [
         "Tag1",
         "Tag2",

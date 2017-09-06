@@ -42,7 +42,7 @@ class MediaManager {
     
     // TODO: 
     // - Proper photo class underneath this manager;
-    //   - Name and other metadata (populated on-demand???);
+    //   - Name and other info (populated on-demand???);
     // - Caching of images;
     // - Caching of photo paths (if necessary?);
     

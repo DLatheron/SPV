@@ -27,6 +27,8 @@
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
 		F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */; };
 		F969ACA21F55C9D4005C7F8D /* HumanReadableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */; };
+		F973F8051F601A4200A5813B /* JSONTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8041F601A4200A5813B /* JSONTestHelper.swift */; };
+		F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8061F601AD600A5813B /* JSONHelper.swift */; };
 		F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAA91F28F92F00000D9B /* AppDelegate.swift */; };
 		F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */; };
 		F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAAD1F28F92F00000D9B /* BrowserViewController.swift */; };
@@ -40,11 +42,9 @@
 		F9C50C0A1F5E7EEF00EE79E5 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C091F5E7EEF00EE79E5 /* Media.swift */; };
 		F9C50C0C1F5E7F0600EE79E5 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */; };
 		F9C50C0E1F5E7F2900EE79E5 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C0D1F5E7F2900EE79E5 /* Video.swift */; };
-		F9C50C101F5E7F6200EE79E5 /* MediaMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C0F1F5E7F6200EE79E5 /* MediaMetadata.swift */; };
-		F9C50C121F5E7F7000EE79E5 /* PhotoMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C111F5E7F7000EE79E5 /* PhotoMetadata.swift */; };
-		F9C50C141F5E7F7C00EE79E5 /* VideoMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C131F5E7F7C00EE79E5 /* VideoMetadata.swift */; };
+		F9C50C101F5E7F6200EE79E5 /* MediaInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */; };
 		F9C50C171F5E80F600EE79E5 /* Photo.json in Resources */ = {isa = PBXBuildFile; fileRef = F9C50C161F5E80F600EE79E5 /* Photo.json */; };
-		F9C50C1B1F5F02DF00EE79E5 /* MediaMetadataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C1A1F5F02DF00EE79E5 /* MediaMetadataTest.swift */; };
+		F9C50C1B1F5F02DF00EE79E5 /* MediaInfoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C1A1F5F02DF00EE79E5 /* MediaInfoTest.swift */; };
 		F9C50C1D1F5F50B800EE79E5 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F9C50C1C1F5F50B800EE79E5 /* Podfile */; };
 		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */; };
@@ -101,6 +101,8 @@
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
 		F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadable.swift; sourceTree = "<group>"; };
 		F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadableTest.swift; sourceTree = "<group>"; };
+		F973F8041F601A4200A5813B /* JSONTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTestHelper.swift; sourceTree = "<group>"; };
+		F973F8061F601AD600A5813B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		F9BABAA61F28F92F00000D9B /* SPV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9BABAA91F28F92F00000D9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewController.swift; sourceTree = "<group>"; };
@@ -120,11 +122,9 @@
 		F9C50C091F5E7EEF00EE79E5 /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		F9C50C0D1F5E7F2900EE79E5 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
-		F9C50C0F1F5E7F6200EE79E5 /* MediaMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaMetadata.swift; sourceTree = "<group>"; };
-		F9C50C111F5E7F7000EE79E5 /* PhotoMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoMetadata.swift; sourceTree = "<group>"; };
-		F9C50C131F5E7F7C00EE79E5 /* VideoMetadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoMetadata.swift; sourceTree = "<group>"; };
+		F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfo.swift; sourceTree = "<group>"; };
 		F9C50C161F5E80F600EE79E5 /* Photo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Photo.json; path = JSON/Photo.json; sourceTree = "<group>"; };
-		F9C50C1A1F5F02DF00EE79E5 /* MediaMetadataTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaMetadataTest.swift; sourceTree = "<group>"; };
+		F9C50C1A1F5F02DF00EE79E5 /* MediaInfoTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoTest.swift; sourceTree = "<group>"; };
 		F9C50C1C1F5F50B800EE79E5 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/SPV-efrwuliddfrewpeoxhcadziytpjt/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		F9D301871F5F592900ADEEF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -269,9 +269,8 @@
 				F9C50C091F5E7EEF00EE79E5 /* Media.swift */,
 				F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */,
 				F9C50C0D1F5E7F2900EE79E5 /* Video.swift */,
-				F9C50C0F1F5E7F6200EE79E5 /* MediaMetadata.swift */,
-				F9C50C111F5E7F7000EE79E5 /* PhotoMetadata.swift */,
-				F9C50C131F5E7F7C00EE79E5 /* VideoMetadata.swift */,
+				F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */,
+				F973F8061F601AD600A5813B /* JSONHelper.swift */,
 			);
 			path = SPV;
 			sourceTree = "<group>";
@@ -284,7 +283,8 @@
 				F9BABAC01F28F92F00000D9B /* SPVTests.swift */,
 				F9BABAC21F28F92F00000D9B /* Info.plist */,
 				F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */,
-				F9C50C1A1F5F02DF00EE79E5 /* MediaMetadataTest.swift */,
+				F9C50C1A1F5F02DF00EE79E5 /* MediaInfoTest.swift */,
+				F973F8041F601A4200A5813B /* JSONTestHelper.swift */,
 			);
 			path = SPVTests;
 			sourceTree = "<group>";
@@ -614,20 +614,19 @@
 				63396F0E1F40FB30000E5F3E /* DownloadManager.swift in Sources */,
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
+				F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
 				639DBDB71F5B1D4700BDD48E /* DownloadManagerBase.swift in Sources */,
 				F914D4F51F38C33A00B9042E /* MediaManager.swift in Sources */,
 				F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */,
 				F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,
-				F9C50C141F5E7F7C00EE79E5 /* VideoMetadata.swift in Sources */,
 				F9C50C0E1F5E7F2900EE79E5 /* Video.swift in Sources */,
-				F9C50C101F5E7F6200EE79E5 /* MediaMetadata.swift in Sources */,
+				F9C50C101F5E7F6200EE79E5 /* MediaInfo.swift in Sources */,
 				F9F2D3D41F42CE0200FD6F78 /* DownloadsViewController.swift in Sources */,
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
 				F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */,
 				F9C50C0C1F5E7F0600EE79E5 /* Photo.swift in Sources */,
-				F9C50C121F5E7F7000EE79E5 /* PhotoMetadata.swift in Sources */,
 				F914D4F31F34D4BA00B9042E /* PhotoCell.swift in Sources */,
 				F9F2D3DB1F44202F00FD6F78 /* CircularProgressIndicator.swift in Sources */,
 				F9C50C0A1F5E7EEF00EE79E5 /* Media.swift in Sources */,
@@ -642,9 +641,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9BABAC11F28F92F00000D9B /* SPVTests.swift in Sources */,
+				F973F8051F601A4200A5813B /* JSONTestHelper.swift in Sources */,
 				F969ACA21F55C9D4005C7F8D /* HumanReadableTest.swift in Sources */,
 				F9F2D3DD1F504E2E00FD6F78 /* DownloadTest.swift in Sources */,
-				F9C50C1B1F5F02DF00EE79E5 /* MediaMetadataTest.swift in Sources */,
+				F9C50C1B1F5F02DF00EE79E5 /* MediaInfoTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
