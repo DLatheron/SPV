@@ -56,4 +56,36 @@ class MediaInfo {
             return nil
         }
     }
+    
+    internal func makeJSON() -> JSON {
+        let dateFormatter = ISO8601DateFormatter()
+        
+        return JSON([
+            "title": title,
+            "id": id == nil ? "null" : String(describing: id!),
+            "source": source,
+            "importDate": importDate == nil ? "null" : dateFormatter.string(from: importDate!),
+            "creationDate": creationDate == nil ? "null" : dateFormatter.string(from: creationDate!),
+            "fileSize": fileSize,
+            "resolution": [
+                "width": resolution.width,
+                "height": resolution.height],
+            "previousViews": previousViews,
+            "lastViewed": lastViewed == nil ? "null" : dateFormatter.string(from: lastViewed!),
+            "rating": rating,
+            "tags": tags
+        ])
+    }
+    
+    internal func makeJSONString() -> String {
+        return makeJSON().rawString() ?? "{}"
+    }
+    
+    func save(fileURL: URL) {
+        let jsonString = makeJSONString()
+        
+        // TODO: Save to fileURL
+        
+        print("\(jsonString)")
+    }
 }
