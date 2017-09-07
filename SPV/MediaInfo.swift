@@ -35,21 +35,17 @@ class MediaInfo {
     }
     
     init?(jsonString: String) {
-        if let dataFromString = jsonString.data(using: .utf8,
-                                                allowLossyConversion: false) {
-            let json = JSON(data: dataFromString,
-                            options: .allowFragments)
-            
+        if let json = JSONHelper.ToJSON(fromString: jsonString) {
             self.title = json["title"].stringValue
-            self.id = UUID(uuidString: json["id"].stringValue)
+            self.id = JSONHelper.ToUUID(string: json["id"].stringValue)
             self.source = json["source"].stringValue
-            self.importDate = JSONHelper.ISOStringToDate(json["importDate"].stringValue)
-            self.creationDate = JSONHelper.ISOStringToDate(json["creationDate"].stringValue)
+            self.importDate = JSONHelper.ToDate(string: json["importDate"].stringValue)
+            self.creationDate = JSONHelper.ToDate(string: json["creationDate"].stringValue)
             self.fileSize = json["fileSize"].int64Value
             self.resolution.width = json["resolution"]["width"].intValue
             self.resolution.height = json["resolution"]["height"].intValue
             self.previousViews = json["previousViews"].intValue
-            self.lastViewed = JSONHelper.ISOStringToDate(json["lastViewed"].stringValue)
+            self.lastViewed = JSONHelper.ToDate(string: json["lastViewed"].stringValue)
             self.rating = json["rating"].intValue
             self.tags = JSONHelper.StringArray(json: json, key:"tags")
         } else {
@@ -58,20 +54,18 @@ class MediaInfo {
     }
     
     internal func makeJSON() -> JSON {
-        let dateFormatter = ISO8601DateFormatter()
-        
         return JSON([
             "title": title,
-            "id": id == nil ? "null" : String(describing: id!),
+            "id": JSONHelper.ToString(uuid: id),
             "source": source,
-            "importDate": importDate == nil ? "null" : dateFormatter.string(from: importDate!),
-            "creationDate": creationDate == nil ? "null" : dateFormatter.string(from: creationDate!),
+            "importDate": JSONHelper.ToString(date: importDate),
+            "creationDate": JSONHelper.ToString(date: creationDate),
             "fileSize": fileSize,
             "resolution": [
                 "width": resolution.width,
                 "height": resolution.height],
             "previousViews": previousViews,
-            "lastViewed": lastViewed == nil ? "null" : dateFormatter.string(from: lastViewed!),
+            "lastViewed": JSONHelper.ToString(date: lastViewed),
             "rating": rating,
             "tags": tags
         ])
@@ -81,11 +75,16 @@ class MediaInfo {
         return makeJSON().rawString() ?? "{}"
     }
     
-    func save(fileURL: URL) {
-        let jsonString = makeJSONString()
-        
-        // TODO: Save to fileURL
-        
-        print("\(jsonString)")
+    class func load(fileURL: URL) throws -> MediaInfo? {
+        if let jsonString = try JSONHelper.Load(fromURL: fileURL) {
+            return MediaInfo(jsonString: jsonString)
+        } else {
+            return nil
+        }
+    }
+    
+    func save(fileURL: URL) throws {
+        try JSONHelper.Save(toURL: fileURL,
+                            jsonString: makeJSONString())
     }
 }
