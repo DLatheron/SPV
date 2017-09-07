@@ -38,6 +38,10 @@ class Media {
         }
     }
     
+    func infoExists() -> Bool {
+        return FileManager.default.fileExists(atPath: infoURL.absoluteString)
+    }
+    
     func saveInfo(info: MediaInfo) {
         do {
             try info.save(toURL: infoURL)

@@ -30,7 +30,12 @@ class MediaManager {
                                         withExtensions: extensions)
         for filename in filenames {
             let fileURL = basePath.appendingPathComponent(filename)
-            _ = addMedia(url: fileURL)
+            let index = addMedia(url: fileURL)
+            let media = getMedia(at: index)
+            
+            if !media.infoExists() {
+                // Create a new media object and save it.
+            }
         }
     }
     
@@ -48,31 +53,11 @@ class MediaManager {
         return UIImage(contentsOfFile: getMedia(at: index).fileURL.absoluteString)
     }
     
-    
-    // TODO: 
-    // - Proper photo class underneath this manager;
-    //   - Name and other info (populated on-demand???);
-    // - Caching of images;
-    // - Caching of photo paths (if necessary?);
-    
-//    func getPhotoName(at index: Int) -> String {
-//        return photos[index]
-//    }
-    
-//    func getPhotoPath(at index: Int) -> String {
-//        return ((basePath!) as NSString).appendingPathComponent(photos[index])
-//    }
-    
-//    func getPhotoImage(at index: Int) -> UIImage? {
-//        return UIImage(contentsOfFile: getPhotoPath(at: index))
-//    }
-    
     public var count: Int {
         get {
             return media.count
         }
     }
-    
     
     // Based on: https://stackoverflow.com/a/41979088/1176581
     private func extractAllFiles(atPath path: String,
