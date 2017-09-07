@@ -12,6 +12,6 @@ import UIKit
 class PhotoCell : UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     
-    var filePath: String = ""
+    var filePath: URL? = nil
     var indexPath: IndexPath? = nil
 }

@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         copyTestResources()
-        
-        MediaManager.shared.addMedia(rootDirectory: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])
+    
+        MediaManager.shared.scanForMedia(atPath: URL(string: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])!)
         
         // Override point for customization after application launch.
         return true

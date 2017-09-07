@@ -43,7 +43,7 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! PhotoCell
-        cell.filePath = MediaManager.shared.getPhotoPath(at: indexPath.row)
+        cell.filePath = MediaManager.shared.getMedia(at: indexPath.row).fileURL
         cell.indexPath = indexPath
         cell.imageView.image = MediaManager.shared.getPhotoImage(at: indexPath.row)
         

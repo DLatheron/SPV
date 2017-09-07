@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class MediaManager {
-    static var shared = MediaManager()
+    static var shared: MediaManager = MediaManager()
     
     let extensions = [
         "jpg",
@@ -19,26 +19,33 @@ class MediaManager {
         "bmp",
         "gif"
     ]
-    var basePath: String? = nil
-    var photos: [String] = []
-    
+
     var media: [Media] = []
     
     init() {
     }
     
-    func addMedia(rootDirectory: String) {
-        basePath = rootDirectory as String
-        photos = extractAllFiles(atPath: basePath!,
-                                 withExtensions: extensions)
+    func scanForMedia(atPath basePath: URL) {
+        let filenames = extractAllFiles(atPath: basePath.absoluteString,
+                                        withExtensions: extensions)
+        for filename in filenames {
+            let fileURL = basePath.appendingPathComponent(filename)
+            _ = addMedia(url: fileURL)
+        }
     }
     
-    func addMedia(url: URL) -> Int {
-        let filename = url.lastPathComponent
-        
-        photos.append(filename)
+    func addMedia(url fileURL: URL) -> Int {
+        media.append(Media(fileURL: fileURL))
         
         return count - 1
+    }
+    
+    func getMedia(at index: Int) -> Media {
+        return media[index]
+    }
+    
+    func getPhotoImage(at index: Int) -> UIImage? {
+        return UIImage(contentsOfFile: getMedia(at: index).fileURL.absoluteString)
     }
     
     
@@ -48,23 +55,24 @@ class MediaManager {
     // - Caching of images;
     // - Caching of photo paths (if necessary?);
     
-    func getPhotoName(at index: Int) -> String {
-        return photos[index]
-    }
+//    func getPhotoName(at index: Int) -> String {
+//        return photos[index]
+//    }
     
-    func getPhotoPath(at index: Int) -> String {
-        return ((basePath!) as NSString).appendingPathComponent(photos[index])
-    }
+//    func getPhotoPath(at index: Int) -> String {
+//        return ((basePath!) as NSString).appendingPathComponent(photos[index])
+//    }
     
-    func getPhotoImage(at index: Int) -> UIImage? {
-        return UIImage(contentsOfFile: getPhotoPath(at: index))
-    }
+//    func getPhotoImage(at index: Int) -> UIImage? {
+//        return UIImage(contentsOfFile: getPhotoPath(at: index))
+//    }
     
     public var count: Int {
         get {
-            return photos.count
+            return media.count
         }
     }
+    
     
     // Based on: https://stackoverflow.com/a/41979088/1176581
     private func extractAllFiles(atPath path: String,

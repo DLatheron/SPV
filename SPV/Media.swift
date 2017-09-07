@@ -12,6 +12,13 @@ class Media {
     static var mediaInfoExtension = "info"
     
     var fileURL: URL
+    
+    var filename: String {
+        get {
+            return fileURL.lastPathComponent
+        }
+    }
+    
     var infoURL: URL {
         get {
             return fileURL.appendingPathExtension(Media.mediaInfoExtension)

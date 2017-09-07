@@ -32,7 +32,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
                                      forImage: self.image,
                                      fullscreen: self)
         
-        title = MediaManager.shared.getPhotoName(at: index)
+        title = MediaManager.shared.getMedia(at: index).filename
 
         setupGestureRecognizers()
         
@@ -168,7 +168,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         newScrollView.setNeedsLayout()
         newScrollView.setNeedsDisplay()
         
-        let newImageName = MediaManager.shared.getPhotoName(at: newImageIndex)
+        let newImageName = MediaManager.shared.getMedia(at: newImageIndex).filename
         
         UIView.animate(withDuration: 0.4,
                        delay: 0.0,
