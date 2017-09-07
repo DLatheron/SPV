@@ -75,7 +75,7 @@ class MediaInfo {
         return makeJSON().rawString() ?? "{}"
     }
     
-    class func load(fileURL: URL) throws -> MediaInfo? {
+    class func load(fromURL fileURL: URL) throws -> MediaInfo? {
         if let jsonString = try JSONHelper.Load(fromURL: fileURL) {
             return MediaInfo(jsonString: jsonString)
         } else {
@@ -83,7 +83,7 @@ class MediaInfo {
         }
     }
     
-    func save(fileURL: URL) throws {
+    func save(toURL fileURL: URL) throws {
         try JSONHelper.Save(toURL: fileURL,
                             jsonString: makeJSONString())
     }

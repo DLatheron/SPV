@@ -22,6 +22,8 @@ class MediaManager {
     var basePath: String? = nil
     var photos: [String] = []
     
+    var media: [Media] = []
+    
     init() {
     }
     
