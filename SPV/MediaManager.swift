@@ -44,22 +44,34 @@ class MediaManager {
         
         media.append(newMedia)
         
-        let mediaInfo : MediaInfo;
-        
         // TODO: Create the info file (if not already created, but at least ensure that it is up to date.
         // TODO: Separate function...
+        let _ = getOrCreateMediaInfo(for: newMedia)
+
+        
+        return count - 1
+    }
+    
+    internal func getOrCreateMediaInfo(for media: Media) -> MediaInfo {
+        // TODO: On the media class???
+        let mediaInfo : MediaInfo;
+        
         do {
-            mediaInfo = try MediaInfo.load(fromURL: newMedia.infoURL)!
+            mediaInfo = try MediaInfo.load(fromURL: media.infoURL)!
         } catch {
             mediaInfo = MediaInfo()
             mediaInfo.fileSize = 1234
             
             // TODO: More stuff...
             
-            mediaInfo.save(toURL: newMedia.infoURL)
+            do {
+                try mediaInfo.save(toURL: media.infoURL)
+            } catch {
+                // Not sure what to do here.
+            }
         }
         
-        return count - 1
+        return mediaInfo
     }
     
     func getMedia(at index: Int) -> Media {
