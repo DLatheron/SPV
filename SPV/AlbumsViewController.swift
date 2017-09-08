@@ -45,7 +45,7 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
                                                       for: indexPath) as! PhotoCell
         cell.filePath = MediaManager.shared.getMedia(at: indexPath.row).fileURL
         cell.indexPath = indexPath
-        cell.imageView.image = MediaManager.shared.getPhotoImage(at: indexPath.row)
+        cell.imageView.image = MediaManager.shared.getImage(at: indexPath.row)
         
         return cell
     }

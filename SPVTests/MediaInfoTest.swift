@@ -77,4 +77,6 @@ class MediaInfoTest: XCTestCase {
         
         validateDefault(mediaInfo: newMediaInfo)
     }
+    
+    // TODO: Unit test for modified flag - especially resolution structure.
 }

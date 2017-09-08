@@ -22,16 +22,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SPV/MediaInfo.swift"
-            timestampString = "526460225.76464"
+            filePath = "SPV/MediaManager.swift"
+            timestampString = "526546793.724373"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "load(fromURL:)"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "addMedia(url:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

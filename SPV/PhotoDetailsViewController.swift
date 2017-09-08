@@ -157,7 +157,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
             newImageIndex = 0
         }
         
-        let image = (MediaManager.shared.getPhotoImage(at: newImageIndex))!
+        let image = (MediaManager.shared.getImage(at: newImageIndex))!
         let newScrollView = PhotoScrollView(parentView: self.view,
                                             forImage: image,
                                             fullscreen: self)

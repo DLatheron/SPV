@@ -40,7 +40,24 @@ class MediaManager {
     }
     
     func addMedia(url fileURL: URL) -> Int {
-        media.append(Media(fileURL: fileURL))
+        let newMedia = Media(fileURL: fileURL)
+        
+        media.append(newMedia)
+        
+        let mediaInfo : MediaInfo;
+        
+        // TODO: Create the info file (if not already created, but at least ensure that it is up to date.
+        // TODO: Separate function...
+        do {
+            mediaInfo = try MediaInfo.load(fromURL: newMedia.infoURL)!
+        } catch {
+            mediaInfo = MediaInfo()
+            mediaInfo.fileSize = 1234
+            
+            // TODO: More stuff...
+            
+            mediaInfo.save(toURL: newMedia.infoURL)
+        }
         
         return count - 1
     }
@@ -49,7 +66,7 @@ class MediaManager {
         return media[index]
     }
     
-    func getPhotoImage(at index: Int) -> UIImage? {
+    func getImage(at index: Int) -> UIImage? {
         return UIImage(contentsOfFile: getMedia(at: index).fileURL.absoluteString)
     }
     

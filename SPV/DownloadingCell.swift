@@ -60,7 +60,7 @@ class DownloadingCell : UITableViewCell {
         
         status.text = "Size: \(size), Time: \(time)"
         
-        downloadedImageView.image = MediaManager.shared.getPhotoImage(at: download.index!)
+        downloadedImageView.image = MediaManager.shared.getImage(at: download.index!)
         
         downloadedImageView.isHidden = false
         pauseResumeButton.isHidden = true
