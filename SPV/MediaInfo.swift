@@ -11,6 +11,8 @@ import UIKit
 import SwiftyJSON
 
 class MediaInfo {
+    let mediaInfoVersion = 1
+    
     struct MediaSize : Equatable {
         var width: Int {
             didSet {
@@ -56,6 +58,8 @@ class MediaInfo {
         }
     }
     
+    private(set) var version: Int
+    
     var title: String {
         didSet {
             if title != oldValue {
@@ -88,7 +92,7 @@ class MediaInfo {
         }
     }
     
-    var fileSize: Int64 {
+    var fileSize: UInt64 {
         didSet {
             if fileSize != oldValue {
                 modified = true
@@ -154,6 +158,7 @@ class MediaInfo {
     
     init() {
         self.id = UUID()
+        self.version = mediaInfoVersion
         self.title = ""
         self.source = ""
         self.importDate = Date()
@@ -172,11 +177,12 @@ class MediaInfo {
     init?(jsonString: String) {
         if let json = JSONHelper.ToJSON(fromString: jsonString) {
             self.id = JSONHelper.ToUUID(string: json["id"].stringValue)!
+            self.version = json["version"].intValue
             self.title = json["title"].stringValue
             self.source = json["source"].stringValue
             self.importDate = JSONHelper.ToDate(string: json["importDate"].stringValue)!
             self.creationDate = JSONHelper.ToDate(string: json["creationDate"].stringValue)!
-            self.fileSize = json["fileSize"].int64Value
+            self.fileSize = json["fileSize"].uInt64 ?? 0
             self.resolution.width = json["resolution"]["width"].intValue
             self.resolution.height = json["resolution"]["height"].intValue
             self.previousViews = json["previousViews"].intValue
@@ -193,9 +199,11 @@ class MediaInfo {
     
     internal func makeJSON() -> JSON {
         return JSON([
-            "title": title,
             "id": JSONHelper.ToString(uuid: id),
+            "version": version,
+            "title": title,
             "source": source,
+            "dateDownloaded": JSONHelper.ToString(date: dateDownloaded),
             "importDate": JSONHelper.ToString(date: importDate),
             "creationDate": JSONHelper.ToString(date: creationDate),
             "fileSize": fileSize,
@@ -221,7 +229,12 @@ class MediaInfo {
         }
     }
     
-    func save(toURL fileURL: URL) throws {
+    func save(toURL fileURL: URL,
+              evenIfUnchanged force: Bool) throws {
+        if !force && !modified {
+            return
+        }
+        
         try JSONHelper.Save(toURL: fileURL,
                             jsonString: makeJSONString())
         modified = false

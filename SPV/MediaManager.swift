@@ -31,11 +31,7 @@ class MediaManager {
         for filename in filenames {
             let fileURL = basePath.appendingPathComponent(filename)
             let index = addMedia(url: fileURL)
-            let media = getMedia(at: index)
-            
-            if !media.infoExists() {
-                // Create a new media object and save it.
-            }
+            _ = getMedia(at: index)
         }
     }
     
@@ -46,32 +42,8 @@ class MediaManager {
         
         // TODO: Create the info file (if not already created, but at least ensure that it is up to date.
         // TODO: Separate function...
-        let _ = getOrCreateMediaInfo(for: newMedia)
-
         
         return count - 1
-    }
-    
-    internal func getOrCreateMediaInfo(for media: Media) -> MediaInfo {
-        // TODO: On the media class???
-        let mediaInfo : MediaInfo;
-        
-        do {
-            mediaInfo = try MediaInfo.load(fromURL: media.infoURL)!
-        } catch {
-            mediaInfo = MediaInfo()
-            mediaInfo.fileSize = 1234
-            
-            // TODO: More stuff...
-            
-            do {
-                try mediaInfo.save(toURL: media.infoURL)
-            } catch {
-                // Not sure what to do here.
-            }
-        }
-        
-        return mediaInfo
     }
     
     func getMedia(at index: Int) -> Media {
