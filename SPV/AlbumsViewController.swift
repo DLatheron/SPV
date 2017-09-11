@@ -8,7 +8,11 @@
 
 import UIKit
 
-class AlbumsViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class AlbumsViewController: UICollectionViewController {
+    
+    var media: [Media] = []
+    
+    let mediaManager: MediaManager
     
     // MARK: - Properties
     fileprivate let reuseIdentifier = "PhotoCellId"
@@ -16,6 +20,8 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
     
    
     required init(coder aDecoder: NSCoder) {
+        mediaManager = MediaManager.shared
+        
         super.init(coder: aDecoder)!
     }
 
@@ -39,13 +45,17 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
         return MediaManager.shared.count
     }
     
+        func getImage(at index: Int) -> UIImage? {
+            return UIImage(contentsOfFile: media[index].fileURL.absoluteString)
+        }
+    
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! PhotoCell
-        cell.filePath = MediaManager.shared.getMedia(at: indexPath.row).fileURL
+        cell.filePath = self.media[indexPath.row].fileURL
         cell.indexPath = indexPath
-        cell.imageView.image = MediaManager.shared.getImage(at: indexPath.row)
+        cell.imageView.image = getImage(at: indexPath.row)
         
         return cell
     }
@@ -57,6 +67,28 @@ class AlbumsViewController: UICollectionViewController, UICollectionViewDelegate
             photoDetailsVC.index = (photoCell.indexPath?.row)!
             photoDetailsVC.image = photoCell.imageView.image
         }
+    }
+}
+
+extension AlbumsViewController : UICollectionViewDelegateFlowLayout {
+    
+}
+
+extension AlbumsViewController : MediaManagerChangedProtocol {
+//    func getIndexPath(of media: Media) -> IndexPath? {
+//        return IndexPath(row: self.media.index(of: media),
+//                         section: 0)
+//    }
+    func added(media: Media) {
+        
+    }
+    
+    func changed(media: Media) {
+        
+    }
+    
+    func deleted(media: Media) {
+        
     }
 }
 

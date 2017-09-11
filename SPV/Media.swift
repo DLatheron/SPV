@@ -14,6 +14,12 @@ class Media {
     private(set) var fileURL: URL
     private(set) var mediaInfo: MediaInfo
     
+    var id: UUID {
+        get {
+            return mediaInfo.id
+        }
+    }
+    
     var filename: String {
         get {
             return fileURL.lastPathComponent

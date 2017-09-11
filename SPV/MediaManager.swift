@@ -9,8 +9,16 @@
 import Foundation
 import UIKit
 
+protocol MediaManagerChangedProtocol: class {
+    func added(media: Media)
+    func changed(media: Media)
+    func deleted(media: Media)
+}
+
 class MediaManager {
     static var shared: MediaManager = MediaManager()
+    
+    weak var delegate: MediaManagerChangedProtocol?
     
     let extensions = [
         "jpg",
@@ -22,6 +30,8 @@ class MediaManager {
 
     var media: [Media] = []
     
+    var idToMedia: [UUID: Media] = [:]
+    
     init() {
     }
     
@@ -30,28 +40,35 @@ class MediaManager {
                                         withExtensions: extensions)
         for filename in filenames {
             let fileURL = basePath.appendingPathComponent(filename)
-            let index = addMedia(url: fileURL)
-            _ = getMedia(at: index)
+            _ = addMedia(url: fileURL)
         }
     }
     
-    func addMedia(url fileURL: URL) -> Int {
+    func addMedia(url fileURL: URL) -> UUID {
         let newMedia = Media(fileURL: fileURL)
         
         media.append(newMedia)
+        idToMedia[newMedia.id] = newMedia
         
-        // TODO: Create the info file (if not already created, but at least ensure that it is up to date.
-        // TODO: Separate function...
+        delegate?.added(media: newMedia)
         
-        return count - 1
+        return newMedia.id
     }
     
-    func getMedia(at index: Int) -> Media {
-        return media[index]
+//    func getMedia(at index: Int) -> Media {
+//        return media[index]
+//    }
+    
+    func getMedia(byId id: UUID) -> Media {
+        return idToMedia[id]!
     }
     
-    func getImage(at index: Int) -> UIImage? {
-        return UIImage(contentsOfFile: getMedia(at: index).fileURL.absoluteString)
+//    func getImage(at index: Int) -> UIImage? {
+//        return UIImage(contentsOfFile: getMedia(at: index).fileURL.absoluteString)
+//    }
+    
+    func getImage(byId id: UUID) -> UIImage? {
+        return UIImage(contentsOfFile: getMedia(byId: id).fileURL.absoluteString)
     }
     
     public var count: Int {
