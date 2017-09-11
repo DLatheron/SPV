@@ -135,7 +135,8 @@ extension DownloadsViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadingCell", for: indexPath) as? DownloadingCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadingCell",
+                                                    for: indexPath) as? DownloadingCell {
             let download = getDownload(for: indexPath)
             
             cell.configure(withDownload: download)
@@ -217,7 +218,7 @@ extension DownloadsViewController : DownloadChangedProtocol {
     }
     
     func completed(download: Download) {
-        assert(download.index != nil)
+        assert(download.media != nil)
         
         DispatchQueue.main.async {
             if let srcIndexPath = self.getIndexPath(of: download) {

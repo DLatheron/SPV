@@ -86,10 +86,10 @@ extension DownloadManager : URLSessionDelegate {
         
         let index = indexOfDownload(byRemoteURL: remoteURL)!
         let download = downloads[index]
-        let mediaIndex = MediaManager.shared.addMedia(url: localURL)
+        let media = MediaManager.shared.addMedia(url: localURL)
         
         completed(download: download,
-                  mediaIndex: mediaIndex)
+                  media: media)
     }
     
     func urlSession(_ session: URLSession,

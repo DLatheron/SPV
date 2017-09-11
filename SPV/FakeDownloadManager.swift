@@ -32,9 +32,11 @@ class FakeDownloadManager : DownloadManagerBase {
                         download.bytesDownloaded += 5
                         update(download: download)
                     }
-                } else if (download.bytesDownloaded >= download.totalSizeInBytes) {
+                } else if (download.bytesDownloaded >=
+                    download.totalSizeInBytes) {
+                    let fakeMedia = MediaManager.shared.media[0]
                     completed(download: download,
-                              mediaIndex: 0)
+                              media: fakeMedia)
                 }
             }
         }

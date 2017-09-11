@@ -116,9 +116,10 @@ class DownloadTest: XCTestCase {
     
     func test_complete_true() {
         let download = Download(remoteURL: remoteURL)
+        let media = Media(fileURL: URL(string: "file://image.jpg")!)
         
         download.resume()
-        download.completed(withMediaIndex: 0)
+        download.completed(withMedia: media)
         
         XCTAssertEqual(download.complete, true)
     }
@@ -136,12 +137,13 @@ class DownloadTest: XCTestCase {
     // MARK:- completed
     func test_completed() {
         let download = Download(remoteURL: remoteURL)
+        let media = Media(fileURL: URL(string: "file://image.jpg")!)
         
         download.resume()
-        download.completed(withMediaIndex: 5)
+        download.completed(withMedia: media)
         
         XCTAssertEqual(download.complete, true)
-        XCTAssertEqual(download.index, 5)
+        XCTAssertEqual(download.media, media)
     }
     
     // MARK:- pause
@@ -193,9 +195,10 @@ class DownloadTest: XCTestCase {
     func test_totalDurationInSeconds_complete() {
         let date = Date()
         let download = Download(remoteURL: remoteURL)
+        let media = Media(fileURL: URL(string: "file://image.jpg")!)
         
         download.resume(at: date)
-        download.completed(withMediaIndex: 0,
+        download.completed(withMedia: media,
                            at: date.addingTimeInterval(10))
         
         XCTAssertEqual(download.totalDurationInSeconds(), 10.0)
@@ -230,11 +233,12 @@ class DownloadTest: XCTestCase {
     func test_durationInSeconds_complete() {
         let date = Date()
         let download = Download(remoteURL: remoteURL)
+        let media = Media(fileURL: URL(string: "file://image.jpg")!)
         
         download.resume(at: date)
         download.totalSizeInBytes = 1_000
         download.bytesDownloaded = 1_000
-        download.completed(withMediaIndex: 0,
+        download.completed(withMedia: media,
                            at: date.addingTimeInterval(20))
         
         XCTAssertEqual(download.durationInSeconds(at: date.addingTimeInterval(60)), 20)

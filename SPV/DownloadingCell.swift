@@ -42,7 +42,7 @@ class DownloadingCell : UITableViewCell {
     }
     
     func configure(withDownload download: Download) {
-        if download.index != nil {
+        if download.media != nil {
             configureCompleteCell(for: download)
         } else {
             configureActiveCell(for: download)
@@ -60,7 +60,7 @@ class DownloadingCell : UITableViewCell {
         
         status.text = "Size: \(size), Time: \(time)"
         
-        downloadedImageView.image = MediaManager.shared.getImage(at: download.index!)
+        downloadedImageView.image = download.media?.getImage()
         
         downloadedImageView.isHidden = false
         pauseResumeButton.isHidden = true

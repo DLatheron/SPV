@@ -9,10 +9,16 @@
 import Foundation
 import UIKit
 
+protocol MediaEnumerator: class {
+    func nextMedia(media: Media) -> Media
+    func prevMedia(media: Media) -> Media
+}
+
 class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fullscreen {
     var scrollView: PhotoScrollView!
+    var delegate: MediaEnumerator?
     
-    var index: Int = 0
+    var media: Media? = nil
     var image: UIImage! = nil
     
     var singleTap: UITapGestureRecognizer? = nil
@@ -32,7 +38,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
                                      forImage: self.image,
                                      fullscreen: self)
         
-        title = MediaManager.shared.getMedia(at: index).filename
+        title = media?.filename
 
         setupGestureRecognizers()
         
@@ -138,37 +144,27 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
     }
     
     func handleSwipe(forDirection: SwipeDirection) {
-        //let tempFrame = self.scrollView.frame
-        var newImageIndex = index
-        var xOffset: CGFloat = 0;
+        var newMedia: Media
+        var xOffset: CGFloat = 0
         
         if forDirection == .left {
             xOffset = CGFloat(self.scrollView.frame.width);
-            newImageIndex += 1
+            newMedia = (delegate?.nextMedia(media: media!))!
         } else {
             xOffset = CGFloat(-self.scrollView.frame.width);
-            newImageIndex -= 1
+            newMedia = (delegate?.prevMedia(media: media!))!
         }
         
-        let lastPhotoIndex = MediaManager.shared.count - 1
-        if (newImageIndex < 0) {
-            newImageIndex = lastPhotoIndex
-        } else if (newImageIndex > lastPhotoIndex) {
-            newImageIndex = 0
-        }
-        
-        let image = (MediaManager.shared.getImage(at: newImageIndex))!
+        let image = newMedia.getImage()
         let newScrollView = PhotoScrollView(parentView: self.view,
                                             forImage: image,
                                             fullscreen: self)
         newScrollView.center.x += xOffset
         
-        //newScrollView.framePhoto()
-
         newScrollView.setNeedsLayout()
         newScrollView.setNeedsDisplay()
-        
-        let newImageName = MediaManager.shared.getMedia(at: newImageIndex).filename
+    
+        let newImageName = newMedia.filename
         
         UIView.animate(withDuration: 0.4,
                        delay: 0.0,
@@ -179,7 +175,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
             if (finished) {
                 self.scrollView.removeFromSuperview()
                 self.scrollView = newScrollView
-                self.index = newImageIndex
+                self.media = newMedia
                 self.title = newImageName
                 self.scrollView.backgroundColor = UIColor.white
             }

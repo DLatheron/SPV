@@ -71,8 +71,8 @@ class DownloadManagerBase : NSObject {
     }
     
     func completed(download: Download,
-                   mediaIndex: Int) {
-        download.completed(withMediaIndex: mediaIndex)
+                   media: Media) {
+        download.completed(withMedia: media)
         
         downloads.remove(at: (downloads.index(of: download)!))
         completed.insert(download, at: 0)

@@ -25,7 +25,7 @@ class Download : NSObject {
     internal var bytesSinceResume: Int64 = 0
 
     internal(set) var totalSizeInBytes: Int64 = 0
-    internal(set) var index: Int? = nil
+    internal(set) var media: Media? = nil
     internal(set) var isPaused: Bool = true
     
     internal(set) var bytesDownloaded: Int64 = 0 {
@@ -54,7 +54,7 @@ class Download : NSObject {
     
     var complete: Bool {
         get {
-            if index != nil {
+            if media != nil {
                 return bytesDownloaded >= totalSizeInBytes
             } else {
                 return false
@@ -76,9 +76,9 @@ class Download : NSObject {
         self.task = task
     }
     
-    func completed(withMediaIndex index: Int,
+    func completed(withMedia media: Media,
                    at date: Date = Date()) {
-        self.index = index
+        self.media = media
         
         accumulateTimeSinceLastResumed(date: date)
     }

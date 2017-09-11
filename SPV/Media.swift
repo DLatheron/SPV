@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import UIKit
 
-class Media {
+class Media : NSObject {
     static var mediaInfoExtension = "info"
     
     private(set) var fileURL: URL
@@ -35,6 +36,10 @@ class Media {
     init(fileURL: URL) {
         self.fileURL = fileURL
         self.mediaInfo = Media.loadOrCreateMediaInfo(forFileURL: fileURL)
+    }
+    
+    func getImage() -> UIImage {
+        return UIImage(contentsOfFile: fileURL.absoluteString)!
     }
     
     func saveInfo(info: MediaInfo) {

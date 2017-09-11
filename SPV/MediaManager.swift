@@ -44,7 +44,7 @@ class MediaManager {
         }
     }
     
-    func addMedia(url fileURL: URL) -> UUID {
+    func addMedia(url fileURL: URL) -> Media {
         let newMedia = Media(fileURL: fileURL)
         
         media.append(newMedia)
@@ -52,7 +52,7 @@ class MediaManager {
         
         delegate?.added(media: newMedia)
         
-        return newMedia.id
+        return newMedia
     }
     
 //    func getMedia(at index: Int) -> Media {
@@ -67,9 +67,9 @@ class MediaManager {
 //        return UIImage(contentsOfFile: getMedia(at: index).fileURL.absoluteString)
 //    }
     
-    func getImage(byId id: UUID) -> UIImage? {
-        return UIImage(contentsOfFile: getMedia(byId: id).fileURL.absoluteString)
-    }
+//    func getImage(byId id: UUID) -> UIImage? {
+//        return UIImage(contentsOfFile: getMedia(byId: id).fileURL.absoluteString)
+//    }
     
     public var count: Int {
         get {
