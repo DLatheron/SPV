@@ -66,7 +66,10 @@ class AlbumsViewController: UICollectionViewController {
         if (segue.identifier == "PhotoDetails") {
             let photoCell = sender as! PhotoCell
             let photoDetailsVC = segue.destination as! PhotoDetailsViewController
-            photoDetailsVC.media = photoCell.media!
+            let indexPath = collectionView?.indexPath(for: photoCell)
+            let media = getMedia(forIndexPath: indexPath!)
+            
+            photoDetailsVC.media = media
             photoDetailsVC.image = photoCell.imageView.image
             photoDetailsVC.delegate = self
         }
@@ -98,6 +101,10 @@ class AlbumsViewController: UICollectionViewController {
         } else {
             return nil
         }
+    }
+    
+    func getMedia(forIndexPath indexPath: IndexPath) -> Media {
+        return self.media[indexPath.row]
     }
 }
 
