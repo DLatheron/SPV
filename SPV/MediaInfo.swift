@@ -92,7 +92,7 @@ class MediaInfo {
         }
     }
     
-    var fileSize: UInt64 {
+    var fileSize: Int64 {
         didSet {
             if fileSize != oldValue {
                 modified = true
@@ -182,7 +182,7 @@ class MediaInfo {
             self.source = json["source"].stringValue
             self.importDate = JSONHelper.ToDate(string: json["importDate"].stringValue)!
             self.creationDate = JSONHelper.ToDate(string: json["creationDate"].stringValue)!
-            self.fileSize = json["fileSize"].uInt64 ?? 0
+            self.fileSize = json["fileSize"].int64 ?? 0
             self.resolution.width = json["resolution"]["width"].intValue
             self.resolution.height = json["resolution"]["height"].intValue
             self.previousViews = json["previousViews"].intValue

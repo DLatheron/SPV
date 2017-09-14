@@ -71,8 +71,20 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         return UIStatusBarAnimation.slide
     }
     
+    override func prepare(for segue: UIStoryboardSegue,
+                          sender: Any!) {
+        if (segue.identifier == "MediaInfo") {
+            let media = sender as! Media
+            let mediaInfoVC = segue.destination as? MediaInfoViewController
+            
+            mediaInfoVC?.media = media
+        }
+    }
+
+    
     func showInfo() {
-        
+        self.performSegue(withIdentifier: "MediaInfo",
+                          sender: media!)
     }
     
     
