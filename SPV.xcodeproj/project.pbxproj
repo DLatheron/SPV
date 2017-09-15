@@ -31,6 +31,7 @@
 		F969ACA21F55C9D4005C7F8D /* HumanReadableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */; };
 		F973F8051F601A4200A5813B /* JSONTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8041F601A4200A5813B /* JSONTestHelper.swift */; };
 		F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8061F601AD600A5813B /* JSONHelper.swift */; };
+		F97943AE1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */; };
 		F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAA91F28F92F00000D9B /* AppDelegate.swift */; };
 		F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */; };
 		F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAAD1F28F92F00000D9B /* BrowserViewController.swift */; };
@@ -109,6 +110,7 @@
 		F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadableTest.swift; sourceTree = "<group>"; };
 		F973F8041F601A4200A5813B /* JSONTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTestHelper.swift; sourceTree = "<group>"; };
 		F973F8061F601AD600A5813B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
+		F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoSubHeadingCell.swift; sourceTree = "<group>"; };
 		F9BABAA61F28F92F00000D9B /* SPV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9BABAA91F28F92F00000D9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				F9F5D0071F683BD100E16DAA /* MediaInfoViewController.swift */,
 				F919C7AC1F699325008372F6 /* MediaInfoCell.swift */,
 				F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */,
+				F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */,
 			);
 			path = SPV;
 			sourceTree = "<group>";
@@ -629,6 +632,7 @@
 				F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
 				639DBDB71F5B1D4700BDD48E /* DownloadManagerBase.swift in Sources */,
+				F97943AE1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift in Sources */,
 				F914D4F51F38C33A00B9042E /* MediaManager.swift in Sources */,
 				F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */,
 				F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */,
