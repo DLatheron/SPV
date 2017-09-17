@@ -58,7 +58,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527150395.628229"
+                  timestampString = "527360217.353967"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "125"
@@ -73,7 +73,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527150395.630625"
+                  timestampString = "527360217.356468"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "126"
@@ -106,7 +106,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527150395.635254"
+                  timestampString = "527360217.374563"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "134"
@@ -121,7 +121,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527150395.637063"
+                  timestampString = "527360217.380998"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "135"
@@ -129,6 +129,22 @@
                   offsetFromSymbolStart = "26">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SPV/Media.swift"
+            timestampString = "527360129.885806"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "sizeForImage(at:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

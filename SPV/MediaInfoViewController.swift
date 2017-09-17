@@ -17,6 +17,9 @@ class MediaInfoViewController : UIViewController {
     
     let infoMapping: [(title: String, formatValue: ValueFormatter?)] = [
         ("Creation", nil),
+        ("Source", { media in
+            return media.mediaInfo.source
+        }),
         ("Created", { media in
             return ThisClass.FormatDate(date: media.mediaInfo.creationDate)
         }),
@@ -38,12 +41,13 @@ class MediaInfoViewController : UIViewController {
         
         ("View", nil),
         ("Last View", { media in
-            return ThisClass.FormatDate(date: media.mediaInfo.lastViewed)
+            return ThisClass.FormatDate(date: media.mediaInfo.lastViewed,
+                                        noDateString: "Never")
         }),
         ("Views", { media in
             return ThisClass.FormatNumber(int: media.mediaInfo.previousViews)
         }),
-        
+        ("Tags", nil)
     ]
     
     var media: Media? = nil
@@ -79,13 +83,16 @@ extension MediaInfoViewController {
         return numberFormatter.string(from: NSNumber(value: number)) ?? "-"
     }
 
-    class func FormatDate(date: Date?) -> String {
+    class func FormatDate(date: Date?,
+                          noDateString: String = "-") -> String {
         let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
         
         if let date = date {
             return dateFormatter.string(from: date)
         } else {
-            return "-"
+            return noDateString
         }
     }
     
@@ -108,7 +115,7 @@ extension MediaInfoViewController {
 extension MediaInfoViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForHeaderInSection section: Int) -> CGFloat {
-        return 144
+        return 160
     }
     
     func tableView(_ tableView: UITableView,
@@ -136,23 +143,6 @@ extension MediaInfoViewController : UITableViewDataSource {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header") as! MediaInfoHeaderCell
         
         headerCell.configure(withMedia: media!)
-        
-//        let blurEffect = UIBlurEffect(style: .dark)
-//        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
-//        let vibrancyEffectView = UIVisualEffectView(effect: vibrancyEffect)
-//        vibrancyEffectView.frame = CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: 40)
-//        vibrancyEffectView.autoresizingMask = .flexibleWidth
-//        
-//        //Create header label
-//        let vibrantLabel = UILabel()
-//        vibrantLabel.frame = vibrancyEffectView.frame
-//        vibrantLabel.autoresizingMask = .flexibleWidth
-//        vibrantLabel.text = "testing"
-//        vibrantLabel.font = UIFont.systemFont(ofSize: 16)
-//        vibrantLabel.textColor = UIColor(white: 0.64, alpha: 1)
-//        
-//        vibrancyEffectView.contentView.addSubview(vibrantLabel)
-//        return vibrancyEffectView
         
         return headerCell
     }

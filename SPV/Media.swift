@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ImageIO
 import UIKit
 
 class Media : NSObject {
@@ -51,6 +52,10 @@ class Media : NSObject {
         }
     }
     
+    func save() {
+        saveInfo(info: mediaInfo)
+    }
+    
     private class func makeInfoURL(fileURL: URL) -> URL {
         return URL(fileURLWithPath: fileURL.appendingPathExtension(Media.mediaInfoExtension).absoluteString)
     }
@@ -73,8 +78,11 @@ class Media : NSObject {
                 print("Failed to get filesize because: \(error)")
                 mediaInfo.fileSize = 0
             }
-            mediaInfo.resolution.width = 123
-            mediaInfo.resolution.height = 456
+            
+            if let size = sizeForImage(at: fileURL) {
+                mediaInfo.resolution.width = Int(size.width)
+                mediaInfo.resolution.height = Int(size.height)
+            }
             
             do {
                 try mediaInfo.save(toURL: infoURL,
@@ -86,5 +94,27 @@ class Media : NSObject {
         }
         
         return mediaInfo
+    }
+    
+    private class func sizeForImage(at url: URL) -> CGSize? {
+        guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil)
+            , let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? [AnyHashable: Any]
+            , let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as String]
+            , let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as String]
+            , let orientationNumber = imageProperties[kCGImagePropertyOrientation as String]
+            else {
+                return nil
+        }
+        
+        var width: CGFloat = 0, height: CGFloat = 0, orientation: Int = 0
+        
+        CFNumberGetValue(pixelWidth as! CFNumber, .cgFloatType, &width)
+        CFNumberGetValue(pixelHeight as! CFNumber, .cgFloatType, &height)
+        CFNumberGetValue(orientationNumber as! CFNumber, .intType, &orientation)
+        
+        // Check orientation and flip size if required
+        if orientation > 4 { let temp = width; width = height; height = temp }
+        
+        return CGSize(width: width, height: height)
     }
 }

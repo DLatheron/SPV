@@ -40,11 +40,15 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         
         title = media?.filename
 
-        setupGestureRecognizers()
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .plain, target: self, action: #selector(showInfo))
         
         navigationController?.isNavigationBarHidden = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        setupGestureRecognizers()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
