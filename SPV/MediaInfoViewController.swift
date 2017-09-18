@@ -59,9 +59,9 @@ class MediaInfoViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = media?.filename
         infoTableView.allowsSelection = false
         infoTableView.sectionIndexMinimumDisplayRowCount = 99
-        
     }
     
     @IBAction func returnToPhotoViewController(_ sender: Any) {

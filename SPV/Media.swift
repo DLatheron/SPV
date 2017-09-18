@@ -79,10 +79,19 @@ class Media : NSObject {
                 mediaInfo.fileSize = 0
             }
             
-            if let size = sizeForImage(at: fileURL) {
-                mediaInfo.resolution.width = Int(size.width)
-                mediaInfo.resolution.height = Int(size.height)
+            if let image = UIImage(contentsOfFile: fileURL.absoluteString) {
+                mediaInfo.resolution.width = Int(image.size.width)
+                mediaInfo.resolution.height = Int(image.size.height)
             }
+            
+            if let creationDate = fileCreationDate(for: fileURL) {
+                mediaInfo.creationDate = creationDate
+            }
+            
+//            if let size = sizeForImage(at: fileURL) {
+//                mediaInfo.resolution.width = Int(size.width)
+//                mediaInfo.resolution.height = Int(size.height)
+//            }
             
             do {
                 try mediaInfo.save(toURL: infoURL,
@@ -96,25 +105,36 @@ class Media : NSObject {
         return mediaInfo
     }
     
-    private class func sizeForImage(at url: URL) -> CGSize? {
-        guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil)
-            , let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? [AnyHashable: Any]
-            , let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as String]
-            , let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as String]
-            , let orientationNumber = imageProperties[kCGImagePropertyOrientation as String]
-            else {
-                return nil
+    private class func fileCreationDate(for url: URL) -> Date? {
+        do {
+            let attrs = try FileManager.default.attributesOfItem(atPath: url.absoluteString) as NSDictionary
+            return attrs.fileCreationDate()
+        } catch {
+            return nil
         }
-        
-        var width: CGFloat = 0, height: CGFloat = 0, orientation: Int = 0
-        
-        CFNumberGetValue(pixelWidth as! CFNumber, .cgFloatType, &width)
-        CFNumberGetValue(pixelHeight as! CFNumber, .cgFloatType, &height)
-        CFNumberGetValue(orientationNumber as! CFNumber, .intType, &orientation)
-        
-        // Check orientation and flip size if required
-        if orientation > 4 { let temp = width; width = height; height = temp }
-        
-        return CGSize(width: width, height: height)
     }
+    
+//    private class func sizeForImage(at url: URL) -> CGSize? {
+//        guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil)
+//            , let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? [AnyHashable: Any]
+//            , let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as String]
+//            , let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as String]
+//            , let orientationNumber = imageProperties[kCGImagePropertyOrientation as String]
+//            else {
+//                return nil
+//        }
+//        
+//        var width: CGFloat = 0
+//        var height: CGFloat = 0
+//        var orientation: Int = 0
+//        
+//        CFNumberGetValue(pixelWidth as! CFNumber, .cgFloatType, &width)
+//        CFNumberGetValue(pixelHeight as! CFNumber, .cgFloatType, &height)
+//        CFNumberGetValue(orientationNumber as! CFNumber, .intType, &orientation)
+//        
+//        // Check orientation and flip size if required
+//        if orientation > 4 { let temp = width; width = height; height = temp }
+//        
+//        return CGSize(width: width, height: height)
+//    }
 }

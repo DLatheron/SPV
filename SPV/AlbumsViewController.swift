@@ -68,6 +68,9 @@ class AlbumsViewController: UICollectionViewController {
             let photoDetailsVC = segue.destination as! PhotoDetailsViewController
             let indexPath = collectionView?.indexPath(for: photoCell)
             let media = getMedia(forIndexPath: indexPath!)
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            navigationItem.backBarButtonItem = backItem
             
             photoDetailsVC.media = media
             photoDetailsVC.image = photoCell.imageView.image

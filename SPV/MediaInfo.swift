@@ -76,7 +76,7 @@ class MediaInfo {
         }
     }
     
-    var importDate: Date {
+    var importDate: Date? {
         didSet {
             if importDate != oldValue {
                 modified = true
@@ -132,7 +132,7 @@ class MediaInfo {
         }
     }
     
-    var dateDownloaded: Date {
+    var dateDownloaded: Date? {
         didSet {
             if dateDownloaded != oldValue {
                 modified = true
@@ -166,9 +166,9 @@ class MediaInfo {
         self.fileSize = 0
         self.resolution = MediaSize()
         self.previousViews = 0
-        self.lastViewed = Date()
+        self.lastViewed = nil
         self.rating = 3
-        self.dateDownloaded = Date()
+        self.dateDownloaded = nil
         self.tags = []
         
         self.modified = false
@@ -180,7 +180,7 @@ class MediaInfo {
             self.version = json["version"].intValue
             self.title = json["title"].stringValue
             self.source = json["source"].stringValue
-            self.importDate = JSONHelper.ToDate(string: json["importDate"].stringValue)!
+            self.importDate = JSONHelper.ToDate(string: json["importDate"].stringValue)
             self.creationDate = JSONHelper.ToDate(string: json["creationDate"].stringValue)!
             self.fileSize = json["fileSize"].int64 ?? 0
             self.resolution.width = json["resolution"]["width"].intValue
@@ -188,7 +188,7 @@ class MediaInfo {
             self.previousViews = json["previousViews"].intValue
             self.lastViewed = JSONHelper.ToDate(string: json["lastViewed"].stringValue)
             self.rating = json["rating"].intValue
-            self.dateDownloaded = JSONHelper.ToDate(string: json["dateDownloaded"].stringValue)!
+            self.dateDownloaded = JSONHelper.ToDate(string: json["dateDownloaded"].stringValue)
             self.tags = JSONHelper.StringArray(json: json, key:"tags")
             
             self.modified = false

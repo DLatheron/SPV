@@ -40,7 +40,12 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         
         title = media?.filename
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .plain, target: self, action: #selector(showInfo))
+        let infoButton = UIButton.init(type: .infoLight)
+        infoButton.addTarget(self, action: #selector(showInfo), for: UIControlEvents.touchUpInside)
+        let barButton = UIBarButtonItem(customView: infoButton)
+        navigationItem.rightBarButtonItem = barButton
+        
+        //navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .plain, target: self, action: #selector(showInfo))
         
         navigationController?.isNavigationBarHidden = false
     }
@@ -80,6 +85,9 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         if (segue.identifier == "MediaInfo") {
             let media = sender as! Media
             let mediaInfoVC = segue.destination as? MediaInfoViewController
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            navigationItem.backBarButtonItem = backItem
             
             mediaInfoVC?.media = media
         }
