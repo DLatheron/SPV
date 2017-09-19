@@ -242,24 +242,27 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKV-Kw-zHz">
-                                                    <rect key="frame" x="16" y="12" width="34.5" height="19.5"/>
+                                                    <rect key="frame" x="16" y="12" width="128" height="19.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="128" id="oLT-gl-gmw"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UFk-2m-oqM">
-                                                    <rect key="frame" x="66.5" y="12" width="292.5" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UFk-2m-oqM">
+                                                    <rect key="frame" x="152" y="12" width="223" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="leadingMargin" secondItem="bKV-Kw-zHz" secondAttribute="leading" constant="-8" id="DQW-Wm-Uih"/>
-                                                <constraint firstItem="UFk-2m-oqM" firstAttribute="centerY" secondItem="51v-61-Jds" secondAttribute="centerY" id="I0o-h8-Rfx"/>
-                                                <constraint firstItem="UFk-2m-oqM" firstAttribute="leading" secondItem="bKV-Kw-zHz" secondAttribute="trailing" constant="16" id="YMF-5O-7yV"/>
-                                                <constraint firstItem="bKV-Kw-zHz" firstAttribute="centerY" secondItem="51v-61-Jds" secondAttribute="centerY" id="mMO-h8-Sfa"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="UFk-2m-oqM" secondAttribute="trailing" constant="8" id="mP2-z3-IZt"/>
+                                                <constraint firstItem="UFk-2m-oqM" firstAttribute="centerY" secondItem="51v-61-Jds" secondAttribute="centerY" id="QwK-go-T4b"/>
+                                                <constraint firstItem="UFk-2m-oqM" firstAttribute="leading" secondItem="bKV-Kw-zHz" secondAttribute="trailing" constant="8" id="RCd-SK-Mdm"/>
+                                                <constraint firstItem="bKV-Kw-zHz" firstAttribute="leading" secondItem="51v-61-Jds" secondAttribute="leading" constant="16" id="Wc1-2h-gq2"/>
+                                                <constraint firstAttribute="trailing" secondItem="UFk-2m-oqM" secondAttribute="trailing" id="b5p-EI-fUm"/>
+                                                <constraint firstItem="bKV-Kw-zHz" firstAttribute="centerY" secondItem="51v-61-Jds" secondAttribute="centerY" id="rlN-w6-Ibl"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -576,7 +579,7 @@
                                 </connections>
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qx4-AK-ax4">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="dhZ-JP-rQ6"/>
                                 </constraints>
@@ -595,7 +598,7 @@
                                 </items>
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloads" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8j-xc-XMp">
-                                <rect key="frame" x="139" y="30" width="97.5" height="24"/>
+                                <rect key="frame" x="139" y="50" width="97.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
