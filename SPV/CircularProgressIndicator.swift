@@ -133,7 +133,7 @@ public class CircularProgressIndicator: UIView, CAAnimationDelegate {
         }
     }
     
-    @IBInspectable public var glowMode: CircularProgressIndicatorGlowMode = .forward {
+    public var glowMode: CircularProgressIndicatorGlowMode = .forward {
         didSet {
             progressLayer.glowMode = glowMode
         }

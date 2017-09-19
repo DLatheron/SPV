@@ -94,7 +94,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
     }
 
     
-    func showInfo() {
+    @objc func showInfo() {
         self.performSegue(withIdentifier: "MediaInfo",
                           sender: media!)
     }
@@ -132,7 +132,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         self.view.removeGestureRecognizer(swipeRight!)
     }
     
-    func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
         let currentState = navigationController?.isNavigationBarHidden == false
         
         navigationController?.setNavigationBarHidden(currentState, animated: true)
@@ -141,7 +141,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         scrollView.centreImage()
     }
     
-    func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
         // TODO: Also zoom into the point tapped...
         // TODO: Multistage zoom - based on the size of the picture... no more than about 3 stages...
         // TODO: Move into PhotoScrollView
@@ -152,12 +152,12 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         }
     }
     
-    func handleSwipeLeft(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleSwipeLeft(_ recognizer: UITapGestureRecognizer) {
         print("Swipe left")
         handleSwipe(forDirection: .left)
     }
     
-    func handleSwipeRight(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleSwipeRight(_ recognizer: UITapGestureRecognizer) {
         print("Swipe right")
         handleSwipe(forDirection: .right)
     }

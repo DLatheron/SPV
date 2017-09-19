@@ -15,39 +15,43 @@ class MediaInfoViewController : UIViewController {
     typealias ValueFormatter = (Media) -> String
     typealias ThisClass = MediaInfoViewController
     
-    let infoMapping: [(title: String, formatValue: ValueFormatter?)] = [
-        ("Creation", nil),
-        ("Source", { media in
+    enum CellType {
+        case SubHeader
+        case Metadata
+    }
+    
+    var infoMapping: [(type: CellType, title: String, formatValue: ValueFormatter?)] = [
+        (.SubHeader, "Creation", nil),
+        (.Metadata, "Source", { media in
             return media.mediaInfo.source
         }),
-        ("Created", { media in
+        (.Metadata, "Created", { media in
             return ThisClass.FormatDate(date: media.mediaInfo.creationDate)
         }),
-        ("Imported", { media in
+        (.Metadata, "Imported", { media in
             return ThisClass.FormatDate(date: media.mediaInfo.importDate)
         }),
-        ("Downloaded", { media in
+        (.Metadata, "Downloaded", { media in
             return ThisClass.FormatDate(date: media.mediaInfo.dateDownloaded)
         }),
         
-        ("Sizes", nil),
-        ("File Size", { media in
+        (.SubHeader, "Sizes", nil),
+        (.Metadata, "File Size", { media in
             return ThisClass.FormatBytes(bytes: media.mediaInfo.fileSize)
         }),
         
-        ("Resolution", { media in
+        (.Metadata, "Resolution", { media in
             return ThisClass.FormatMediaSize(mediaSize: media.mediaInfo.resolution)
         }),
         
-        ("View", nil),
-        ("Last View", { media in
+        (.SubHeader, "View", nil),
+        (.Metadata, "Last View", { media in
             return ThisClass.FormatDate(date: media.mediaInfo.lastViewed,
                                         noDateString: "Never")
         }),
-        ("Views", { media in
+        (.Metadata, "Views", { media in
             return ThisClass.FormatNumber(int: media.mediaInfo.previousViews)
-        }),
-        ("Tags", nil)
+        })
     ]
     
     var media: Media? = nil
@@ -100,7 +104,6 @@ extension MediaInfoViewController {
         return HumanReadable.bytes(bytes: bytes,
                                    units: .bytes,
                                    space: true)
-        
     }
     
     class func FormatMediaSize(mediaSize: MediaInfo.MediaSize) -> String {
@@ -115,7 +118,11 @@ extension MediaInfoViewController {
 extension MediaInfoViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForHeaderInSection section: Int) -> CGFloat {
-        return 160
+        if (section == 0) {
+            return 160
+        } else {
+            return 44
+        }
     }
     
     func tableView(_ tableView: UITableView,
@@ -126,25 +133,36 @@ extension MediaInfoViewController : UITableViewDelegate {
 
 extension MediaInfoViewController : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return [ "Section" ]
+        return [ "Section", "Tags" ]
     }
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return infoMapping.count;
+        if section == 0 {
+            return infoMapping.count;
+        } else {
+            let tagCount = media?.mediaInfo.tags.count ?? 0
+            return tagCount + 1
+        }
     }
     
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
-        let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header") as! MediaInfoHeaderCell
-        
-        headerCell.configure(withMedia: media!)
-        
-        return headerCell
+        if section == 0 {
+            let headerCell = tableView.dequeueReusableCell(withIdentifier: "Header") as! MediaInfoHeaderCell
+            
+            headerCell.configure(withMedia: media!)
+            
+            return headerCell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SubHeading") as! MediaInfoSubHeadingCell
+            cell.configure(withTitle: "Tags")
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView,
@@ -153,17 +171,41 @@ extension MediaInfoViewController : UITableViewDataSource {
         let mapping = infoMapping[row]
         let title = mapping.title
         
-        if let formatValue = infoMapping[row].formatValue {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Info",
-                                                     for: indexPath) as!MediaInfoCell
-            let value = formatValue(media!);
-            cell.configure(withTitle: title,
-                           andValue: value)
-            return cell
+        if indexPath.section == 0 {
+            switch infoMapping[row].type {
+            case .SubHeader:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "SubHeading", for: indexPath) as! MediaInfoSubHeadingCell
+                cell.configure(withTitle: title)
+                return cell
+                
+            case .Metadata:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "Info",
+                                                         for: indexPath) as!MediaInfoCell
+                if let formatValue = infoMapping[row].formatValue {
+                    let value = formatValue(media!);
+                    cell.configure(withTitle: title,
+                                   andValue: value)
+                }
+                
+                return cell
+            }
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SubHeading", for: indexPath) as! MediaInfoSubHeadingCell
-            cell.configure(withTitle: title)            
-            return cell
+            let tagCount = media!.mediaInfo.tags.count
+            
+            if indexPath.row == tagCount {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "AddTag",
+                                                         for: indexPath) as! MediaAddTagCell
+                
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "Tag",
+                                                         for: indexPath) as! MediaTagCell
+                let tag = media!.mediaInfo.tags[indexPath.row];
+            
+                cell.configure(withTag: tag)
+            
+                return cell
+            }
         }
     }
 }

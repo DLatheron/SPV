@@ -72,7 +72,7 @@ class Media : NSObject {
                 let fileAttribute = try FileManager.default.attributesOfItem(atPath: fileURL.path)
                 
                 if let fileNumberSize: NSNumber = fileAttribute[FileAttributeKey.size] as? NSNumber {
-                    mediaInfo.fileSize = Int64(fileNumberSize)
+                    mediaInfo.fileSize = Int64(truncating: fileNumberSize)
                 }
             } catch {
                 print("Failed to get filesize because: \(error)")
