@@ -93,12 +93,10 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         }
     }
 
-    
     @objc func showInfo() {
         self.performSegue(withIdentifier: "MediaInfo",
                           sender: media!)
     }
-    
     
     //MARK: - Gesture recognition
     func setupGestureRecognizers() {
@@ -201,7 +199,6 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
                 self.scrollView = newScrollView
                 self.media = newMedia
                 self.title = newImageName
-                self.scrollView.backgroundColor = UIColor.white
             }
         }
     }

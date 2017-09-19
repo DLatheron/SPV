@@ -73,7 +73,7 @@ class PhotoScrollView : UIScrollView, UIScrollViewDelegate {
         
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
         let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
-        
+
         contentInset = UIEdgeInsets(top: max(verticalPadding, fullscreen.isFullscreen ? 0 : 64),
                                     left: horizontalPadding,
                                     bottom: max(verticalPadding, fullscreen.isFullscreen ? 0 : 44),
