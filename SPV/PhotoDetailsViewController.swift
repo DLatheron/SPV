@@ -14,7 +14,7 @@ protocol MediaEnumerator: class {
     func prevMedia(media: Media) -> Media
 }
 
-class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fullscreen {
+class PhotoDetailsViewController : UIViewController, Fullscreen {
     var scrollView: PhotoScrollView!
     var delegate: MediaEnumerator?
     
@@ -26,6 +26,8 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
     var swipeLeft: UISwipeGestureRecognizer? = nil
     var swipeRight: UISwipeGestureRecognizer? = nil
     
+    @IBOutlet var imageScrollView: UIScrollView!
+    @IBOutlet weak var imageView: UIImageView!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -34,9 +36,11 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        scrollView = PhotoScrollView(parentView: self.view,
-                                     forImage: self.image,
-                                     fullscreen: self)
+        imageView.image = self.image
+        imageView.sizeToFit()
+        
+        centreImage()
+        setZoomScale()
         
         title = media?.filename
 
@@ -63,7 +67,7 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
     }
     
     override func viewWillLayoutSubviews() {
-        scrollView.framePhoto()
+//        scrollView.framePhoto()
     }
     
     var isFullscreen: Bool {
@@ -136,17 +140,17 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
         navigationController?.setNavigationBarHidden(currentState, animated: true)
         setTabBarVisible(visible: !currentState, animated: true)
         
-        scrollView.centreImage()
+        centreImage()
     }
     
     @objc func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
         // TODO: Also zoom into the point tapped...
         // TODO: Multistage zoom - based on the size of the picture... no more than about 3 stages...
         // TODO: Move into PhotoScrollView
-        if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale) {
-            self.scrollView.setZoomScale(self.scrollView.minimumZoomScale, animated: true)
+        if (self.imageScrollView.zoomScale > self.imageScrollView.minimumZoomScale) {
+            self.imageScrollView.setZoomScale(self.imageScrollView.minimumZoomScale, animated: true)
         } else {
-            self.scrollView.setZoomScale(self.scrollView.maximumZoomScale, animated: true)
+            self.imageScrollView.setZoomScale(self.imageScrollView.maximumZoomScale, animated: true)
         }
     }
     
@@ -226,5 +230,54 @@ class PhotoDetailsViewController : UIViewController, UIScrollViewDelegate, Fulls
     
     func tabBarIsVisible() ->Bool {
         return (self.tabBarController?.tabBar.frame.origin.y)! < self.view.frame.maxY
+    }
+    
+    func setZoomScale() {
+        let imageViewSize = imageView.bounds.size
+        let scrollViewSize = imageScrollView.bounds.size
+        let widthScale = scrollViewSize.width / imageViewSize.width
+        let heightScale = scrollViewSize.height / imageViewSize.height
+        
+        imageScrollView.minimumZoomScale = min(widthScale, heightScale)
+        imageScrollView.zoomScale = min(widthScale, heightScale)
+    }
+    
+    func centreImage() {
+        let imageViewSize = imageView.frame.size
+        let scrollViewSize = imageScrollView.frame.size
+        
+        let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
+        let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
+        
+        let bottomOffset = CGFloat(isFullscreen ? -50 : 0)
+        
+        imageScrollView.contentInset
+            = UIEdgeInsets(top: verticalPadding,
+                           left: horizontalPadding,
+                           bottom: verticalPadding + bottomOffset,
+                           right: horizontalPadding)
+        
+        imageScrollView.scrollIndicatorInsets
+            = UIEdgeInsets(top: 0,
+                           left: 0,
+                           bottom: bottomOffset,
+                           right: 0)
+    }
+}
+
+extension PhotoDetailsViewController : UIScrollViewDelegate {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        centreImage()
+    }
+    
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.imageView
+    }
+    
+    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+        print("\(scrollView.contentInset)")
     }
 }

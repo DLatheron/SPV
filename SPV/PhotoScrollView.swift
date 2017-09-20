@@ -15,8 +15,7 @@ protocol Fullscreen {
     }
 }
 
-
-class PhotoScrollView : UIScrollView, UIScrollViewDelegate {
+class PhotoScrollView : UIScrollView {
     var fullscreen: Fullscreen
     var imageView: UIImageView
     
@@ -79,9 +78,9 @@ class PhotoScrollView : UIScrollView, UIScrollViewDelegate {
                                     bottom: max(verticalPadding, fullscreen.isFullscreen ? 0 : 44),
                                     right: horizontalPadding)
     }
+}
     
-    
-    //MARK: - UIScrollViewDelegate
+extension PhotoScrollView : UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centreImage()
     }
@@ -91,5 +90,9 @@ class PhotoScrollView : UIScrollView, UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
+    }
+    
+    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+        print("\(scrollView.contentInset)")
     }
 }

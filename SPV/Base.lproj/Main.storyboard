@@ -63,20 +63,29 @@
         <!--Media Viewer-->
         <scene sceneID="DNg-va-s7F">
             <objects>
-                <viewController title="Media Viewer" id="ciT-K2-RIX" customClass="PhotoDetailsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Media Viewer" extendedLayoutIncludesOpaqueBars="YES" id="ciT-K2-RIX" customClass="PhotoDetailsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="i0n-wr-heX"/>
                         <viewControllerLayoutGuide type="bottom" id="EQv-xo-CYW"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="aiN-xH-0Nc">
+                    <scrollView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" ambiguous="YES" contentInsetAdjustmentBehavior="scrollableAxes" maximumZoomScale="6" id="ndu-hL-lL5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
+                        <subviews>
+                            <imageView verifyAmbiguity="ignoreSizes" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xv-bs-QTU">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.99564432780000001" blue="0.26293172469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <connections>
+                            <outlet property="delegate" destination="ciT-K2-RIX" id="Yey-DD-huZ"/>
+                        </connections>
+                    </scrollView>
                     <toolbarItems/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="imageScrollView" destination="ndu-hL-lL5" id="J0P-iN-dTc"/>
+                        <outlet property="imageView" destination="2xv-bs-QTU" id="Oee-Fu-8Rk"/>
                         <segue destination="yyw-rA-egK" kind="show" identifier="MediaInfo" id="Q49-oW-YDb"/>
                     </connections>
                 </viewController>
