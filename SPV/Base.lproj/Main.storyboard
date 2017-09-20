@@ -225,19 +225,15 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sub Heading" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zSC-H0-8Qc">
-                                                    <rect key="frame" x="16" y="17" width="343" height="21.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sub Heading" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zSC-H0-8Qc">
+                                                    <rect key="frame" x="16" y="17" width="110" height="21.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="zSC-H0-8Qc" secondAttribute="trailing" constant="8" id="0Jk-se-PjK"/>
-                                                <constraint firstAttribute="leadingMargin" secondItem="zSC-H0-8Qc" secondAttribute="leading" constant="-8" id="fWH-G5-U6i"/>
-                                                <constraint firstItem="zSC-H0-8Qc" firstAttribute="centerY" secondItem="yKO-3L-2nZ" secondAttribute="centerY" constant="6" id="vQQ-fk-4aF"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="titleLabel" destination="zSC-H0-8Qc" id="uC1-BP-py6"/>
@@ -255,7 +251,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="128" id="oLT-gl-gmw"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -286,23 +282,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JJr-US-alK">
+                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JJr-US-alK">
                                                     <rect key="frame" x="16" y="11" width="22" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add New Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byy-V5-HbM">
-                                                    <rect key="frame" x="46" y="12" width="102" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HhK-5P-2XI">
+                                                    <rect key="frame" x="46" y="6" width="321" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Add New Tag"/>
+                                                </button>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="byy-V5-HbM" secondAttribute="trailing" constant="20" symbolic="YES" id="2Vg-u5-hWa"/>
-                                                <constraint firstItem="byy-V5-HbM" firstAttribute="centerY" secondItem="JJr-US-alK" secondAttribute="centerY" id="4uq-ax-0pj"/>
-                                                <constraint firstItem="byy-V5-HbM" firstAttribute="leading" secondItem="JJr-US-alK" secondAttribute="trailing" constant="8" id="DFq-UU-Y5X"/>
-                                                <constraint firstItem="JJr-US-alK" firstAttribute="leading" secondItem="J6p-1z-euh" secondAttribute="leadingMargin" constant="8" id="j8J-tN-LKI"/>
-                                                <constraint firstItem="JJr-US-alK" firstAttribute="centerY" secondItem="J6p-1z-euh" secondAttribute="centerY" id="nBa-iz-WSD"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Tag" rowHeight="44" id="MEL-9M-hqE" userLabel="Tag" customClass="MediaTagCell" customModule="SPV" customModuleProvider="target">
@@ -312,18 +301,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9qL-lO-O4g" userLabel="Tag Value">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tag Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9qL-lO-O4g" userLabel="Tag Value">
                                                     <rect key="frame" x="16" y="12" width="77" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="9qL-lO-O4g" firstAttribute="centerY" secondItem="MKK-Pc-yMS" secondAttribute="centerY" id="3n8-ao-QZe"/>
-                                                <constraint firstItem="9qL-lO-O4g" firstAttribute="leading" secondItem="MKK-Pc-yMS" secondAttribute="leadingMargin" constant="8" id="ePg-4D-i1d"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9qL-lO-O4g" secondAttribute="trailingMargin" id="nLe-cA-rMl"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="tagValue" destination="9qL-lO-O4g" id="RV4-Ms-x7X"/>
@@ -588,7 +573,7 @@
                                 </connections>
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qx4-AK-ax4">
-                                <rect key="frame" x="0.0" y="20" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="dhZ-JP-rQ6"/>
                                 </constraints>
@@ -607,7 +592,7 @@
                                 </items>
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloads" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8j-xc-XMp">
-                                <rect key="frame" x="139" y="50" width="97.5" height="24"/>
+                                <rect key="frame" x="139" y="30" width="97.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
