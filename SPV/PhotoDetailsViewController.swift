@@ -15,19 +15,16 @@ protocol MediaEnumerator: class {
 }
 
 class PhotoDetailsViewController : UIViewController, Fullscreen {
-    var scrollView: PhotoScrollView!
     var delegate: MediaEnumerator?
+    var scrollView: PhotoScrollView?
     
-    var media: Media? = nil
+    var media: Media! = nil
     var image: UIImage! = nil
     
     var singleTap: UITapGestureRecognizer? = nil
     var doubleTap: UITapGestureRecognizer? = nil
     var swipeLeft: UISwipeGestureRecognizer? = nil
     var swipeRight: UISwipeGestureRecognizer? = nil
-    
-    @IBOutlet var imageScrollView: UIScrollView!
-    @IBOutlet weak var imageView: UIImageView!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -36,22 +33,20 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView.image = self.image
-        imageView.sizeToFit()
-        
-        centreImage()
-        setZoomScale()
-        
-        title = media?.filename
+        self.view.backgroundColor = UIColor.green
 
         let infoButton = UIButton.init(type: .infoLight)
         infoButton.addTarget(self, action: #selector(showInfo), for: UIControlEvents.touchUpInside)
         let barButton = UIBarButtonItem(customView: infoButton)
         navigationItem.rightBarButtonItem = barButton
         
-        //navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Info", style: .plain, target: self, action: #selector(showInfo))
+        navigationController?.isNavigationBarHidden = false // This????
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        navigationController?.isNavigationBarHidden = false
+        animateOnToScreen(forMedia: media)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,7 +62,7 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     }
     
     override func viewWillLayoutSubviews() {
-//        scrollView.framePhoto()
+//        scrollView.centreImage()
     }
     
     var isFullscreen: Bool {
@@ -135,22 +130,24 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     }
     
     @objc func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
+        
         let currentState = navigationController?.isNavigationBarHidden == false
         
         navigationController?.setNavigationBarHidden(currentState, animated: true)
         setTabBarVisible(visible: !currentState, animated: true)
         
-        centreImage()
+        // TODO: Would be best to do this AFTER the animation, or all in one
+        scrollView!.centreImage()
     }
     
     @objc func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
         // TODO: Also zoom into the point tapped...
         // TODO: Multistage zoom - based on the size of the picture... no more than about 3 stages...
         // TODO: Move into PhotoScrollView
-        if (self.imageScrollView.zoomScale > self.imageScrollView.minimumZoomScale) {
-            self.imageScrollView.setZoomScale(self.imageScrollView.minimumZoomScale, animated: true)
+        if (self.scrollView!.zoomScale > self.scrollView!.minimumZoomScale) {
+            self.scrollView!.setZoomScale(self.scrollView!.minimumZoomScale, animated: true)
         } else {
-            self.imageScrollView.setZoomScale(self.imageScrollView.maximumZoomScale, animated: true)
+            self.scrollView!.setZoomScale(self.scrollView!.maximumZoomScale, animated: true)
         }
     }
     
@@ -169,42 +166,51 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         case right
     }
     
-    func handleSwipe(forDirection: SwipeDirection) {
-        var newMedia: Media
-        var xOffset: CGFloat = 0
-        
-        if forDirection == .left {
-            xOffset = CGFloat(self.scrollView.frame.width);
-            newMedia = (delegate?.nextMedia(media: media!))!
-        } else {
-            xOffset = CGFloat(-self.scrollView.frame.width);
-            newMedia = (delegate?.prevMedia(media: media!))!
-        }
-        
+    func animateOnToScreen(forMedia newMedia: Media,
+                           from xOffset: CGFloat = 0.0,
+                           over duration: TimeInterval = 0.0) {
         let image = newMedia.getImage()
         let newScrollView = PhotoScrollView(parentView: self.view,
                                             forImage: image,
                                             fullscreen: self)
         newScrollView.center.x += xOffset
+        self.view.addSubview(newScrollView)
         
         newScrollView.setNeedsLayout()
         newScrollView.setNeedsDisplay()
-    
+        
         let newImageName = newMedia.filename
         
-        UIView.animate(withDuration: 0.4,
+        UIView.animate(withDuration: 0.3,
                        delay: 0.0,
                        options: .curveEaseOut,
                        animations: {
-            newScrollView.center.x -= xOffset
+                        newScrollView.center.x -= xOffset
         }) { (finished) in
             if (finished) {
-                self.scrollView.removeFromSuperview()
+                self.scrollView?.removeFromSuperview()
                 self.scrollView = newScrollView
                 self.media = newMedia
                 self.title = newImageName
             }
         }
+    }
+    
+    func handleSwipe(forDirection: SwipeDirection) {
+        var newMedia: Media
+        var xOffset: CGFloat = 0
+        
+        if forDirection == .left {
+            xOffset = CGFloat(self.scrollView!.frame.width);
+            newMedia = (delegate?.nextMedia(media: media!))!
+        } else {
+            xOffset = CGFloat(-self.scrollView!.frame.width);
+            newMedia = (delegate?.prevMedia(media: media!))!
+        }
+        
+        animateOnToScreen(forMedia: newMedia,
+                          from: xOffset,
+                          over: 0.3)
     }
     
     //MARK: - Tab bar hiding
@@ -230,54 +236,5 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     
     func tabBarIsVisible() ->Bool {
         return (self.tabBarController?.tabBar.frame.origin.y)! < self.view.frame.maxY
-    }
-    
-    func setZoomScale() {
-        let imageViewSize = imageView.bounds.size
-        let scrollViewSize = imageScrollView.bounds.size
-        let widthScale = scrollViewSize.width / imageViewSize.width
-        let heightScale = scrollViewSize.height / imageViewSize.height
-        
-        imageScrollView.minimumZoomScale = min(widthScale, heightScale)
-        imageScrollView.zoomScale = min(widthScale, heightScale)
-    }
-    
-    func centreImage() {
-        let imageViewSize = imageView.frame.size
-        let scrollViewSize = imageScrollView.frame.size
-        
-        let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
-        let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
-        
-        let bottomOffset = CGFloat(isFullscreen ? -50 : 0)
-        
-        imageScrollView.contentInset
-            = UIEdgeInsets(top: verticalPadding,
-                           left: horizontalPadding,
-                           bottom: verticalPadding + bottomOffset,
-                           right: horizontalPadding)
-        
-        imageScrollView.scrollIndicatorInsets
-            = UIEdgeInsets(top: 0,
-                           left: 0,
-                           bottom: bottomOffset,
-                           right: 0)
-    }
-}
-
-extension PhotoDetailsViewController : UIScrollViewDelegate {
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centreImage()
-    }
-    
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-    }
-    
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.imageView
-    }
-    
-    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
-        print("\(scrollView.contentInset)")
     }
 }

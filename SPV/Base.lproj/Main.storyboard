@@ -63,29 +63,18 @@
         <!--Media Viewer-->
         <scene sceneID="DNg-va-s7F">
             <objects>
-                <viewController title="Media Viewer" extendedLayoutIncludesOpaqueBars="YES" id="ciT-K2-RIX" customClass="PhotoDetailsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController autoresizesArchivedViewToFullSize="NO" title="Media Viewer" automaticallyAdjustsScrollViewInsets="NO" id="ciT-K2-RIX" customClass="PhotoDetailsViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="i0n-wr-heX"/>
                         <viewControllerLayoutGuide type="bottom" id="EQv-xo-CYW"/>
                     </layoutGuides>
-                    <scrollView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" ambiguous="YES" contentInsetAdjustmentBehavior="scrollableAxes" maximumZoomScale="6" id="ndu-hL-lL5">
+                    <view key="view" contentMode="scaleAspectFit" id="VA1-AO-IOb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <imageView verifyAmbiguity="ignoreSizes" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2xv-bs-QTU">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="0.99564432780000001" blue="0.26293172469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <connections>
-                            <outlet property="delegate" destination="ciT-K2-RIX" id="Yey-DD-huZ"/>
-                        </connections>
-                    </scrollView>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                     <toolbarItems/>
                     <connections>
-                        <outlet property="imageScrollView" destination="ndu-hL-lL5" id="J0P-iN-dTc"/>
-                        <outlet property="imageView" destination="2xv-bs-QTU" id="Oee-Fu-8Rk"/>
                         <segue destination="yyw-rA-egK" kind="show" identifier="MediaInfo" id="Q49-oW-YDb"/>
                     </connections>
                 </viewController>
@@ -573,7 +562,7 @@
                                 </connections>
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qx4-AK-ax4">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="dhZ-JP-rQ6"/>
                                 </constraints>
@@ -592,7 +581,7 @@
                                 </items>
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloads" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8j-xc-XMp">
-                                <rect key="frame" x="139" y="30" width="97.5" height="24"/>
+                                <rect key="frame" x="139" y="50" width="97.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

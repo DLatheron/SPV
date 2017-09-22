@@ -30,11 +30,11 @@ class PhotoScrollView : UIScrollView {
         self.fullscreen = fullscreen
         self.imageView = imageView
         
-        super.init(frame: parentView.bounds)
+        super.init(frame: UIScreen.main.bounds)
         
-        backgroundColor = UIColor.white
+        backgroundColor = UIColor.yellow
         contentSize = imageView.bounds.size
-        autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
         
         delegate = self
         minimumZoomScale = 1.0
@@ -42,7 +42,7 @@ class PhotoScrollView : UIScrollView {
         zoomScale = 1.0
         
         addSubview(imageView)
-        parentView.addSubview(self)
+        //parentView.addSubview(self)
         
         framePhoto()
     }
@@ -62,21 +62,32 @@ class PhotoScrollView : UIScrollView {
         let widthScale = scrollViewSize.width / imageViewSize.width
         let heightScale = scrollViewSize.height / imageViewSize.height
         
-        minimumZoomScale = min(widthScale, heightScale)
-        zoomScale = min(widthScale, heightScale)
+        minimumZoomScale = min(min(widthScale, heightScale), 1.0)
+        zoomScale = min(min(widthScale, heightScale), 1.0)
     }
     
     func centreImage() {
         let imageViewSize = imageView.frame.size
-        let scrollViewSize = bounds.size
+        let scrollViewSize = frame.size
         
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
         let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
-
-        contentInset = UIEdgeInsets(top: max(verticalPadding, fullscreen.isFullscreen ? 0 : 64),
+        
+        let bottomOffset = CGFloat(fullscreen.isFullscreen ? -50 : 0)
+        
+        contentInset = UIEdgeInsets(top: verticalPadding,
                                     left: horizontalPadding,
-                                    bottom: max(verticalPadding, fullscreen.isFullscreen ? 0 : 44),
+                                    bottom: verticalPadding + bottomOffset,
                                     right: horizontalPadding)
+        
+        scrollIndicatorInsets = UIEdgeInsets(top: 0,
+                                             left: 0,
+                                             bottom: bottomOffset,
+                                             right: 0)
+//        contentInset = UIEdgeInsets(top: max(verticalPadding, fullscreen.isFullscreen ? 0 : 64),
+//                                    left: horizontalPadding,
+//                                    bottom: max(verticalPadding, fullscreen.isFullscreen ? 0 : 44),
+//                                    right: horizontalPadding)
     }
 }
     

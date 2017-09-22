@@ -58,7 +58,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527638137.947589"
+                  timestampString = "527789069.212746"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "128"
@@ -73,7 +73,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527638137.951525"
+                  timestampString = "527789069.216062"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "129"
@@ -106,7 +106,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527638137.987696"
+                  timestampString = "527789069.223852"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "137"
@@ -121,7 +121,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527638137.991525"
+                  timestampString = "527789069.231539"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
@@ -144,6 +144,38 @@
             startingLineNumber = "72"
             endingLineNumber = "72"
             landmarkName = "returnToPhotoViewController(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SPV/PhotoScrollView.swift"
+            timestampString = "527789069.017768"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
+            landmarkName = "centreImage()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SPV/PhotoScrollView.swift"
+            timestampString = "527789069.018267"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "centreImage()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
