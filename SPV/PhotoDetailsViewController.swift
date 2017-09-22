@@ -33,7 +33,7 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor.green
+        self.view.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
 
         let infoButton = UIButton.init(type: .infoLight)
         infoButton.addTarget(self, action: #selector(showInfo), for: UIControlEvents.touchUpInside)
@@ -61,8 +61,23 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         removeGestureRecognizers()
     }
     
-    override func viewWillLayoutSubviews() {
-//        scrollView.centreImage()
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size,
+                                 with: coordinator)
+
+        let currentState = navigationController?.isNavigationBarHidden == false
+        setTabBarVisible(visible: currentState, animated: false)
+
+        coordinator.animate(alongsideTransition: { (context:UIViewControllerTransitionCoordinatorContext) in
+            self.scrollView?.centreImage()
+            self.scrollView?.calcZoomScale()
+            self.setTabBarVisible(visible: currentState, animated: false)
+        }) { (context:UIViewControllerTransitionCoordinatorContext) in
+            self.scrollView?.centreImage()
+            self.scrollView?.calcZoomScale()
+            self.setTabBarVisible(visible: currentState, animated: false)
+        }
     }
     
     var isFullscreen: Bool {
@@ -147,6 +162,7 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         if (self.scrollView!.zoomScale > self.scrollView!.minimumZoomScale) {
             self.scrollView!.setZoomScale(self.scrollView!.minimumZoomScale, animated: true)
         } else {
+            self.scrollView!.setZoomScale()
             self.scrollView!.setZoomScale(self.scrollView!.maximumZoomScale, animated: true)
         }
     }
@@ -214,27 +230,39 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     }
     
     //MARK: - Tab bar hiding
-    func setTabBarVisible(visible:Bool, animated:Bool) {
+    func setTabBarVisible(visible:Bool,
+                          animated:Bool) {
         if (tabBarIsVisible() == visible) { return }
         
-        // Get a frame calculation ready
-        let frame = self.tabBarController?.tabBar.frame
-        let height = frame?.size.height
-        let offsetY = (visible ? -height! : height)
+        let bar = self.tabBarController!.tabBar
         
-        // Zero duration means no animation
-        let duration:TimeInterval = (animated ? 0.3 : 0.0)
+        let frame = bar.frame
+        let height = frame.size.height
+        let onScreenCentreY = UIScreen.main.bounds.height - height / 2
+        let offScreenCentreY = UIScreen.main.bounds.height + height / 2
+        let duration = (animated ? 0.3 : 0.0)
         
-        // Animate the tab bar
-        if frame != nil {
-            UIView.animate(withDuration: duration) {
-                self.tabBarController?.tabBar.frame = frame!.offsetBy(dx: 0, dy: offsetY!)
-                return
-            }
+        if (visible) {
+            bar.isHidden = false;
+            bar.center.y = offScreenCentreY
+            UIView.animate(withDuration: duration,
+                           animations: {
+                bar.center.y = onScreenCentreY
+            })
+        } else {
+            bar.center.y = onScreenCentreY
+            UIView.animate(withDuration: duration,
+                           animations: {
+                bar.center.y = offScreenCentreY
+            }, completion: { (completed) in
+                if completed {
+                    bar.isHidden = true
+                }
+            })
         }
     }
     
-    func tabBarIsVisible() ->Bool {
-        return (self.tabBarController?.tabBar.frame.origin.y)! < self.view.frame.maxY
+    func tabBarIsVisible() -> Bool {
+        return !self.tabBarController!.tabBar.isHidden
     }
 }

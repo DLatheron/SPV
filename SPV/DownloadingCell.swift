@@ -17,7 +17,7 @@ class DownloadingCell : UITableViewCell {
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var pauseResumeButton: UIButton!
     
-    weak var delegate: DownloadPauseResumeProtocol?
+    weak var delegate: DownloadPauseResumeProtocol!
     
     @IBAction func pauseOrResumeDownload(_ sender: Any) {
         let button: UIButton = sender as! UIButton
@@ -28,17 +28,17 @@ class DownloadingCell : UITableViewCell {
     func downloadPropertyChanged(_ propertyChanged: String) {
         print("PropertyChanged \(propertyChanged) - refresh this cell")
         
-        // TODO: Tell the owning tabl
+        // TODO: Tell the owning table
     }
     
     func pauseDownload() {
         pauseResumeButton.isSelected = true
-        delegate?.pauseDownload(forCell: self)
+        delegate.pauseDownload(forCell: self)
     }
     
     func resumeDownload() {
         pauseResumeButton.isSelected = false
-        delegate?.resumeDownload(forCell: self)
+        delegate.resumeDownload(forCell: self)
     }
     
     func configure(withDownload download: Download) {

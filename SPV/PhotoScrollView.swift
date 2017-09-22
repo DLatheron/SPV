@@ -32,7 +32,7 @@ class PhotoScrollView : UIScrollView {
         
         super.init(frame: UIScreen.main.bounds)
         
-        backgroundColor = UIColor.yellow
+        backgroundColor = UIColor.white
         contentSize = imageView.bounds.size
         autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
         
@@ -42,7 +42,6 @@ class PhotoScrollView : UIScrollView {
         zoomScale = 1.0
         
         addSubview(imageView)
-        //parentView.addSubview(self)
         
         framePhoto()
     }
@@ -53,17 +52,30 @@ class PhotoScrollView : UIScrollView {
     
     func framePhoto() {
         centreImage()
+        calcZoomScale()
         setZoomScale()
     }
     
     func setZoomScale() {
+        calcZoomScale()
+        
+        zoomScale = minimumZoomScale
+    }
+    
+    func calcZoomScale() {
         let imageViewSize = imageView.bounds.size
         let scrollViewSize = bounds.size
         let widthScale = scrollViewSize.width / imageViewSize.width
         let heightScale = scrollViewSize.height / imageViewSize.height
         
         minimumZoomScale = min(min(widthScale, heightScale), 1.0)
-        zoomScale = min(min(widthScale, heightScale), 1.0)
+        maximumZoomScale = 6
+        
+        if zoomScale < minimumZoomScale {
+            zoomScale = minimumZoomScale
+        } else if zoomScale > maximumZoomScale {
+            zoomScale = maximumZoomScale
+        }
     }
     
     func centreImage() {
@@ -84,10 +96,6 @@ class PhotoScrollView : UIScrollView {
                                              left: 0,
                                              bottom: bottomOffset,
                                              right: 0)
-//        contentInset = UIEdgeInsets(top: max(verticalPadding, fullscreen.isFullscreen ? 0 : 64),
-//                                    left: horizontalPadding,
-//                                    bottom: max(verticalPadding, fullscreen.isFullscreen ? 0 : 44),
-//                                    right: horizontalPadding)
     }
 }
     
@@ -101,9 +109,5 @@ extension PhotoScrollView : UIScrollViewDelegate {
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return self.imageView
-    }
-    
-    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
-        print("\(scrollView.contentInset)")
     }
 }
