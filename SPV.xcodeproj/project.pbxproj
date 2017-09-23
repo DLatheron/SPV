@@ -229,6 +229,109 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F98B8C331F767D2D00719CA6 /* Media Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				F98B8C341F767D6100719CA6 /* VCs */,
+				F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */,
+				F98B8C351F767D7200719CA6 /* Cells */,
+			);
+			name = "Media Viewer";
+			sourceTree = "<group>";
+		};
+		F98B8C341F767D6100719CA6 /* VCs */ = {
+			isa = PBXGroup;
+			children = (
+				F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */,
+				639170071F376001001E5ABE /* PhotoDetailsViewController.swift */,
+				F9F5D0071F683BD100E16DAA /* MediaInfoViewController.swift */,
+			);
+			name = VCs;
+			sourceTree = "<group>";
+		};
+		F98B8C351F767D7200719CA6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F914D4F21F34D4BA00B9042E /* PhotoCell.swift */,
+				F919C7AC1F699325008372F6 /* MediaInfoCell.swift */,
+				F97943AF1F6FA96600739030 /* MediaTagCell.swift */,
+				F97943B11F702F6F00739030 /* MediaAddTagCell.swift */,
+				F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */,
+				F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		F98B8C361F767DD000719CA6 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				63396F0A1F40ED42000E5F3E /* JS */,
+				63D026E41F4F4E6B00006275 /* Download.swift */,
+				F98B8C381F767DE900719CA6 /* Cells */,
+				F98B8C371F767DE200719CA6 /* VCs */,
+			);
+			name = Browser;
+			sourceTree = "<group>";
+		};
+		F98B8C371F767DE200719CA6 /* VCs */ = {
+			isa = PBXGroup;
+			children = (
+				F9BABAAD1F28F92F00000D9B /* BrowserViewController.swift */,
+				F9F2D3D31F42CE0200FD6F78 /* DownloadsViewController.swift */,
+			);
+			name = VCs;
+			sourceTree = "<group>";
+		};
+		F98B8C381F767DE900719CA6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F9F2D3D51F42D3B200FD6F78 /* DownloadingCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		F98B8C391F767E2300719CA6 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				F9F2D3D91F44201A00FD6F78 /* Controls */,
+				F98B8C3A1F767E4300719CA6 /* Helpers */,
+				F914D4F41F38C33A00B9042E /* MediaManager.swift */,
+				63396F0D1F40FB30000E5F3E /* DownloadManager.swift */,
+				F9C50C071F59376000EE79E5 /* FakeDownloadManager.swift */,
+				639DBDB61F5B1D4700BDD48E /* DownloadManagerBase.swift */,
+				F9C50C091F5E7EEF00EE79E5 /* Media.swift */,
+				F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */,
+				F9C50C0D1F5E7F2900EE79E5 /* Video.swift */,
+				F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		F98B8C3A1F767E4300719CA6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */,
+				F973F8061F601AD600A5813B /* JSONHelper.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		F98B8C3B1F767E6400719CA6 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F98B8C3C1F767E8500719CA6 /* VCs */,
+				F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		F98B8C3C1F767E8500719CA6 /* VCs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = VCs;
+			sourceTree = "<group>";
+		};
 		F9BABA9D1F28F92F00000D9B = {
 			isa = PBXGroup;
 			children = (
@@ -257,40 +360,17 @@
 		F9BABAA81F28F92F00000D9B /* SPV */ = {
 			isa = PBXGroup;
 			children = (
-				F9F2D3D91F44201A00FD6F78 /* Controls */,
-				63396F0A1F40ED42000E5F3E /* JS */,
+				F98B8C391F767E2300719CA6 /* Common */,
+				F98B8C331F767D2D00719CA6 /* Media Viewer */,
+				F98B8C361F767DD000719CA6 /* Browser */,
+				F98B8C3B1F767E6400719CA6 /* Settings */,
 				F92FBF491F2B9D4600E99589 /* Helpful.js */,
 				F9BABAA91F28F92F00000D9B /* AppDelegate.swift */,
-				F9BABAAB1F28F92F00000D9B /* AlbumsViewController.swift */,
-				F9BABAAD1F28F92F00000D9B /* BrowserViewController.swift */,
 				F9BABAAF1F28F92F00000D9B /* Main.storyboard */,
 				F9BABAB21F28F92F00000D9B /* Assets.xcassets */,
 				F9BABAB41F28F92F00000D9B /* LaunchScreen.storyboard */,
 				F9BABAB71F28F92F00000D9B /* Info.plist */,
-				F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */,
 				F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */,
-				F914D4F21F34D4BA00B9042E /* PhotoCell.swift */,
-				639170071F376001001E5ABE /* PhotoDetailsViewController.swift */,
-				F914D4F41F38C33A00B9042E /* MediaManager.swift */,
-				F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */,
-				63396F0D1F40FB30000E5F3E /* DownloadManager.swift */,
-				F9C50C071F59376000EE79E5 /* FakeDownloadManager.swift */,
-				F9F2D3D31F42CE0200FD6F78 /* DownloadsViewController.swift */,
-				F9F2D3D51F42D3B200FD6F78 /* DownloadingCell.swift */,
-				63D026E41F4F4E6B00006275 /* Download.swift */,
-				F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */,
-				639DBDB61F5B1D4700BDD48E /* DownloadManagerBase.swift */,
-				F9C50C091F5E7EEF00EE79E5 /* Media.swift */,
-				F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */,
-				F9C50C0D1F5E7F2900EE79E5 /* Video.swift */,
-				F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */,
-				F973F8061F601AD600A5813B /* JSONHelper.swift */,
-				F9F5D0071F683BD100E16DAA /* MediaInfoViewController.swift */,
-				F919C7AC1F699325008372F6 /* MediaInfoCell.swift */,
-				F97943AF1F6FA96600739030 /* MediaTagCell.swift */,
-				F97943B11F702F6F00739030 /* MediaAddTagCell.swift */,
-				F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */,
-				F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */,
 			);
 			path = SPV;
 			sourceTree = "<group>";
