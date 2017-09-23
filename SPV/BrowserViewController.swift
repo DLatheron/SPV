@@ -9,12 +9,13 @@
 import UIKit
 import WebKit
 
-class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate, UISearchResultsUpdating, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate {
+class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate, UISearchResultsUpdating {
     
     //let initialPageUrl = "http://arstechnica.co.uk"
 //    let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
     //let initialPageUrl = "http://www.smartcc365.com/group/landscape-image/"
     let initialPageUrl = "https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_1280.jpg"
+    
     let statusBarHeight = CGFloat.init(20)
     let urlBarHeight = CGFloat.init(44)
     let topBarHeight = CGFloat.init(20 + 44)
@@ -23,7 +24,15 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     var webView: WKWebView!
     var searchController: UISearchController!
     
-    var data = ["San Francisco","New York","San Jose","Chicago","Los Angeles","Austin","Seattle"]
+    var data = [
+        "San Francisco",
+        "New York",
+        "San Jose",
+        "Chicago",
+        "Los Angeles",
+        "Austin",
+        "Seattle"
+    ]
     var filteredData:[String] = []
     var shouldShowSearchResults: Bool = false
     
@@ -50,7 +59,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.allowsInlineMediaPlayback = true;
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        searchController = UISearchController(searchResultsController: nil)
+        searchController = UISearchController(searchResultsController: nil) // <-- TODO: This will need to be populated.
         
         let bundle = Bundle.main
         let path = bundle.path(forResource: "GetImage", ofType: "js")
@@ -65,7 +74,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         
         super.init(coder: aDecoder)!
         
-        
 //        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
 //        let documentsURL = paths[0] as URL
 //        
@@ -77,34 +85,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
 //        }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Search controller and bar.
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = true
-        searchController.searchBar.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
-        searchController.searchBar.delegate = self
-        searchController.searchBar.sizeToFit()
-        searchController.searchBar.frame = CGRect(x: 0, y: 20, width: barView.frame.width, height: 44)
-        //searchController.searchBar.backgroundColor = UIColor.clear
-        searchController.searchBar.subviews[0].subviews[0].removeFromSuperview()
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.enablesReturnKeyAutomatically = true
-        searchController.searchBar.keyboardType = .URL
-        
-        // Hide the search icon.
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
-        
-        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as! UITextField
-        textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
-        
-        searchController.searchBar.text = initialPageUrl
-        
-        barView.insertSubview(searchController.searchBar, at: 0)
-        
-        // Web view
+    private func configureWebView() {
         webView.uiDelegate = self
         webView.navigationDelegate = self
         
@@ -126,8 +107,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
                                        multiplier: 1,
                                        constant: 0)
         view.addConstraints([height, width])
-
-        webView.scrollView.contentInset = UIEdgeInsetsMake(topBarHeight, 0, 0, 0)
+        
         webView.scrollView.delegate = self;
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoBack), options: .new, context: nil)
@@ -149,19 +129,54 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         // then we can't navigate to links...
         //webView.scrollView.subviews[0].isUserInteractionEnabled = false
         
+        updateContentInsets()
+    }
+    
+    private func configureSearchController() {
+        // Search controller and bar.
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = NSLocalizedString("Search or enter website name",
+                                                                   comment: "Placeholder text displayed in browser search/url field")
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.frame = barView.bounds
+        searchController.searchBar.autoresizingMask = [ .flexibleWidth ]
+        //searchController.searchBar.backgroundColor = UIColor.clear
+        //searchController.searchBar.subviews[0].subviews[0].removeFromSuperview()
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.enablesReturnKeyAutomatically = true
+        searchController.searchBar.keyboardType = .URL
+        
+        // Hide the search icon.
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
+        
+        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as! UITextField
+        textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
+        
+        searchController.searchBar.text = initialPageUrl
+        
+        barView.insertSubview(searchController.searchBar, at: 0)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureSearchController()
+        configureWebView()
+        
         navigateTo(url: searchController.searchBar.text!)
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offset = max(min(-topBarHeight - scrollView.contentOffset.y, 0), -topBarHeight)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        barView.frame = CGRect(x: 0,
-                               y: statusBarHeight + offset,
-                               width: barView.frame.width,
-                               height: barView.frame.height)
+        updateScrollInsets()
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                           shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
@@ -191,7 +206,6 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         js = js.replacingOccurrences(of: "{x}", with: location.x.description) as NSString
         js = js.replacingOccurrences(of: "{y}", with: location.y.description) as NSString
         
-    
         webView.evaluateJavaScript(js as String, completionHandler: {
             (result, error) -> Void in
             if error != nil {
@@ -282,43 +296,40 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         webView.load(myRequest)
     }
     
-    //MARK:- UITextFieldDelegate
+    func updateScrollInsets() {
+        let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
+        let topInset = max(barView.frame.origin.y + barView.frame.height, 0)
+        let bottomInset = max(UIScreen.main.bounds.height - toolbar.frame.origin.y, 0) - self.tabBarController!.tabBar.frame.size.height
+        
+        let insets = UIEdgeInsets(top: topInset - statusBarOffset,
+                                  left: 0,
+                                  bottom: bottomInset,
+                                  right: 0)
+        
+        webView.scrollView.scrollIndicatorInsets = insets
+    }
+    
+    func updateContentInsets() {
+        let bottomInset = max(UIScreen.main.bounds.height - toolbar.frame.origin.y, 0) - self.tabBarController!.tabBar.frame.size.height
+        
+        webView.scrollView.contentInset = UIEdgeInsets(top: barView.frame.size.height,
+                                                       left: 0,
+                                                       bottom: bottomInset,
+                                                       right: 0)
+    }
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController : UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchController.searchBar.resignFirstResponder()
         self.navigateTo(url: searchController.searchBar.text!)
         return false
     }
-    
-    //MARK:- WKNavigationDelegate
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if let urlStr = navigationAction.request.url?.absoluteString {
-            searchController.searchBar.text = urlStr
-        }
-        decisionHandler(.allow)
-    }
-    
-    func webView(_ webView: WKWebView,
-                 didFailProvisionalNavigation navigation: WKNavigation!,
-                 withError error: Error) {
-        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-        print(error.localizedDescription)
-    }
-    
-    func webView(_ webView: WKWebView,
-                 didStartProvisionalNavigation navigation: WKNavigation!) {
-        print("Navigating to page")
-    }
-    
-    func webView(_ webView: WKWebView,
-                 didFinish navigation: WKNavigation!) {
-        print("Page loaded")
-    }
-    
-    //MARK:- UISearchBarDelegate
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         shouldShowSearchResults = true
         searchResultsTable.reloadData()
@@ -365,8 +376,24 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         // Reload the tableview.
         searchResultsTable.reloadData()
     }
-    
-    //MARK:- UITableViewDelegate
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController : UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offset = max(min(-urlBarHeight - scrollView.contentOffset.y, 0), -urlBarHeight)
+        let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
+
+        barView.frame = CGRect(x: 0,
+                               y: statusBarOffset + offset,
+                               width: barView.frame.width,
+                               height: barView.frame.height)
+        updateScrollInsets()
+    }
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController : UITableViewDelegate {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // Proposed sections:
         // - Bookmarks
@@ -379,7 +406,7 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
         return filteredData.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {        
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!;
         cell.textLabel?.text = filteredData[indexPath.row]
         
@@ -387,3 +414,53 @@ class BrowserViewController: UIViewController, WKNavigationDelegate, WKUIDelegat
     }
 }
 
+//-----------------------------------------------------------------
+extension BrowserViewController : UITableViewDataSource {
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController : WKNavigationDelegate {
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let urlStr = navigationAction.request.url?.absoluteString {
+            searchController.searchBar.text = urlStr
+        }
+        decisionHandler(.allow)
+    }
+    
+    func webView(_ webView: WKWebView,
+                 didFailProvisionalNavigation navigation: WKNavigation!,
+                 withError error: Error) {
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+        print(error.localizedDescription)
+    }
+    
+    func webView(_ webView: WKWebView,
+                 didStartProvisionalNavigation navigation: WKNavigation!) {
+        print("Navigating to page")
+    }
+    
+    func webView(_ webView: WKWebView,
+                 didFinish navigation: WKNavigation!) {
+        print("Page loaded")
+    }
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size,
+                                 with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
+            self.view.layer.shouldRasterize = true
+        }) { (context: UIViewControllerTransitionCoordinatorContext) in
+            self.view.layer.shouldRasterize = false
+            self.updateContentInsets()
+        }
+    }
+}

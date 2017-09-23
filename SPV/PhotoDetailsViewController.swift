@@ -69,11 +69,11 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         let currentState = navigationController?.isNavigationBarHidden == false
         setTabBarVisible(visible: currentState, animated: false)
 
-        coordinator.animate(alongsideTransition: { (context:UIViewControllerTransitionCoordinatorContext) in
+        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
             self.scrollView?.centreImage()
             self.scrollView?.calcZoomScale()
             self.setTabBarVisible(visible: currentState, animated: false)
-        }) { (context:UIViewControllerTransitionCoordinatorContext) in
+        }) { (context: UIViewControllerTransitionCoordinatorContext) in
             self.scrollView?.centreImage()
             self.scrollView?.calcZoomScale()
             self.setTabBarVisible(visible: currentState, animated: false)
