@@ -17,7 +17,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     let initialPageUrl = "https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_1280.jpg"
     
     let statusBarHeight = CGFloat.init(20)
-    let urlBarHeight = CGFloat.init(44)
+    let urlBarHeight = CGFloat.init(56)
     let topBarHeight = CGFloat.init(20 + 44)
     let barViewAnimationSpeed = 0.25
 
@@ -73,16 +73,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         }
         
         super.init(coder: aDecoder)!
-        
-//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        let documentsURL = paths[0] as URL
-//        
-//        let testUrl: URL = URL(string: "https://static.pexels.com/photos/132037/pexels-photo-132037.jpeg")!
-//        let localUrl: URL = documentsURL.appendingPathComponent("TestDownload.jpg")
-//        
-//        DownloadManager.download(url: testUrl, to: localUrl) { 
-//            print("Download completed")
-//        }
     }
 
     private func configureWebView() {
@@ -125,15 +115,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         webView.addGestureRecognizer(longPressGesture)
         webView.allowsBackForwardNavigationGestures = true
         webView.allowsLinkPreview = false
-        // Correctly disables interaction with the underlying view - but
-        // then we can't navigate to links...
-        //webView.scrollView.subviews[0].isUserInteractionEnabled = false
         
         updateContentInsets()
     }
     
     private func configureSearchController() {
-        // Search controller and bar.
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = NSLocalizedString("Search or enter website name",
@@ -142,8 +128,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         searchController.searchBar.sizeToFit()
         searchController.searchBar.frame = barView.bounds
         searchController.searchBar.autoresizingMask = [ .flexibleWidth ]
-        //searchController.searchBar.backgroundColor = UIColor.clear
-        //searchController.searchBar.subviews[0].subviews[0].removeFromSuperview()
+        searchController.searchBar.barTintColor = UIColor(white: 0.9, alpha: 1.0)
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.enablesReturnKeyAutomatically = true
@@ -157,7 +142,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         searchController.searchBar.text = initialPageUrl
         
-        barView.insertSubview(searchController.searchBar, at: 0)
+        barView.insertSubview(searchController.searchBar,
+                              at: 0)
     }
     
     override func viewDidLoad() {
@@ -381,8 +367,8 @@ extension BrowserViewController : UISearchBarDelegate {
 //-----------------------------------------------------------------
 extension BrowserViewController : UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let offset = max(min(-urlBarHeight - scrollView.contentOffset.y, 0), -urlBarHeight)
         let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
+        let offset = max(min(-urlBarHeight - (scrollView.contentOffset.y + statusBarOffset), 0), -urlBarHeight)
 
         barView.frame = CGRect(x: 0,
                                y: statusBarOffset + offset,

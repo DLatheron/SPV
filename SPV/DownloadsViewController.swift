@@ -36,8 +36,8 @@ class DownloadsViewController : UIViewController {
     var completed: [Download] = []
     
     required init(coder aDecoder: NSCoder) {
-        //downloadManager = DownloadManager.shared
-        downloadManager = FakeDownloadManager.shared
+        downloadManager = DownloadManager.shared
+        //downloadManager = FakeDownloadManager.shared
 
         super.init(coder: aDecoder)!
 
