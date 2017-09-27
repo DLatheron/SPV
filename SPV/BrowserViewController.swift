@@ -24,13 +24,17 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     let barViewAnimationSpeed = 0.25
 
     var webView: WKWebView!
+    var scope: SearchScope = .all // TODO: Preserve as config.
     //var searchController: UISearchController! = nil
     
     @IBOutlet weak var barHeightConstraint: NSLayoutConstraint!
     
-    typealias HistoryEntry = (url: String, category: String)
+    typealias HistoryEntry = (url: String, category: SearchScope)
     
-    var data: [HistoryEntry] = []
+    var data: [HistoryEntry] = [
+        HistoryEntry(url: "www.google.co.uk", category: .bookmarks),
+        HistoryEntry(url: "www.arstechnica.co.uk", category: .bookmarks)
+    ]
 //    [
 //        "San Francisco",
 //        "New York",
@@ -378,14 +382,15 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         return !searchBarIsEmpty() || searchBarScopeIsFiltering
     }
     
-    func filterContentsBy(searchText: String?, scope: String = "All") {
+    func filterContentsBy(searchText: String?,
+                          scope: SearchScope = .all) {
         let searchTextLowerCased = (searchText ?? "").lowercased()
         
         if searchBarIsEmpty() {
             filteredData = data
         } else {
             filteredData = data.filter({(data: HistoryEntry) -> Bool in
-                let doesCategoryMatch = (scope == "All") || (data.category == scope)
+                let doesCategoryMatch = (scope == .all) || (data.category == scope)
                 
                 if searchBarIsEmpty() {
                     return doesCategoryMatch
@@ -488,11 +493,11 @@ extension BrowserViewController : UISearchBarDelegate {
         }
     }
     
-    func searchBar(_ searchBar: UISearchBar,
-                   selectedScopeButtonIndexDidChange selectedScope: Int) {
-        filterContentsBy(searchText: searchBar.text!,
-                         scope: searchBar.scopeButtonTitles![selectedScope])
-    }
+//    func searchBar(_ searchBar: UISearchBar,
+//                   selectedScopeButtonIndexDidChange selectedScope: Int) {
+//        filterContentsBy(searchText: searchBar.text!,
+//                         scope: selectedScope)
+//    }
     
     func addHistory(forURL textURL: String, category: String = "History") {
         if let index = data.index(where: { (entryURL, entryCategory) -> Bool in
@@ -501,7 +506,7 @@ extension BrowserViewController : UISearchBarDelegate {
             data.remove(at: index)
         }
         
-        data.insert(HistoryEntry(textURL, category),
+        data.insert(HistoryEntry(textURL, .history),
                     at: 0)
     }
 }
@@ -533,9 +538,12 @@ extension BrowserViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView,
                    viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableCell(withIdentifier: "Scope")!
+        let scopeCell = tableView.dequeueReusableCell(withIdentifier: "Scope") as! SearchScopeCell
         
-        return header
+        scopeCell.delegate = self
+        scopeCell.configure(withInitialScope: scope)
+        
+        return scopeCell
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -607,6 +615,16 @@ extension BrowserViewController {
             self.view.layer.shouldRasterize = false
             self.updateContentInsets()
         }
+    }
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController : SearchScopeDelegate {
+    func changed(scope: SearchScope) {
+        self.scope = scope
+        
+        filterContentsBy(searchText: searchBar.text!,
+                         scope: scope)
     }
 }
 
