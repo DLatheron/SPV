@@ -9,36 +9,44 @@
 import UIKit
 import WebKit
 
-class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate, UISearchResultsUpdating {
+class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate {
     
     //let initialPageUrl = "http://arstechnica.co.uk"
 //    let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
     //let initialPageUrl = "http://www.smartcc365.com/group/landscape-image/"
     let initialPageUrl = "https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_1280.jpg"
+    var urlBeforeEditing: String? = nil;
     
     let statusBarHeight = CGFloat.init(20)
     let urlBarHeight = CGFloat.init(56)
+    let searchBarHeight = CGFloat.init(100)
     let topBarHeight = CGFloat.init(20 + 44)
     let barViewAnimationSpeed = 0.25
 
     var webView: WKWebView!
-    var searchController: UISearchController!
+    //var searchController: UISearchController! = nil
     
-    var data = [
-        "San Francisco",
-        "New York",
-        "San Jose",
-        "Chicago",
-        "Los Angeles",
-        "Austin",
-        "Seattle"
-    ]
-    var filteredData:[String] = []
+    @IBOutlet weak var barHeightConstraint: NSLayoutConstraint!
+    
+    typealias HistoryEntry = (url: String, category: String)
+    
+    var data: [HistoryEntry] = []
+//    [
+//        "San Francisco",
+//        "New York",
+//        "San Jose",
+//        "Chicago",
+//        "Los Angeles",
+//        "Austin",
+//        "Seattle"
+//    ]
+    var filteredData: [HistoryEntry] = []
     var shouldShowSearchResults: Bool = false
     
     let getImageJS: String;
     
     @IBOutlet weak var barView: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     @IBOutlet weak var searchResultsTable: UITableView!
     
@@ -59,7 +67,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.allowsInlineMediaPlayback = true;
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        searchController = UISearchController(searchResultsController: nil) // <-- TODO: This will need to be populated.
         
         let bundle = Bundle.main
         let path = bundle.path(forResource: "GetImage", ofType: "js")
@@ -80,7 +87,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         webView.navigationDelegate = self
         
         view.insertSubview(webView, at: 0)
-        
+        //view.addSubview(webView)
+
         webView.translatesAutoresizingMaskIntoConstraints = false
         let height = NSLayoutConstraint(item: webView,
                                         attribute: .height,
@@ -120,30 +128,75 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     }
     
     private func configureSearchController() {
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = true
-        searchController.searchBar.placeholder = NSLocalizedString("Search or enter website name",
-                                                                   comment: "Placeholder text displayed in browser search/url field")
-        searchController.searchBar.delegate = self
-        searchController.searchBar.sizeToFit()
-        searchController.searchBar.frame = barView.bounds
-        searchController.searchBar.autoresizingMask = [ .flexibleWidth ]
-        searchController.searchBar.barTintColor = UIColor(white: 0.9, alpha: 1.0)
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.enablesReturnKeyAutomatically = true
-        searchController.searchBar.keyboardType = .URL
+//        searchController = UISearchController(searchResultsController: nil) // <-- We get weird behavour if this is self.
+
+        let searchBar = self.searchBar! //searchController.searchBar
+        let progressBar = UIProgressView()
+        progressView = progressBar
+        progressView.bounds = CGRect(x: 0,
+                                     y: UIScreen.main.bounds.size.height - 2,
+                                     width: UIScreen.main.bounds.size.width,
+                                     height: 2)
+        
+        searchBar.delegate = self
+        searchBar.showsCancelButton = false
+        searchBar.showsScopeBar = false
+        searchBar.autocapitalizationType = .none
+        searchBar.autocorrectionType = .no
+        searchBar.enablesReturnKeyAutomatically = true
+        searchBar.keyboardType = .URL
+        searchBar.scopeButtonTitles = ["All", "History", "Bookmarks", "Other"]
+        //searchBar.showsScopeBar = true
+        searchBar.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
+        
+//        searchController.hidesNavigationBarDuringPresentation = false
+//        searchController.delegate = self
+//
+//        searchController.dimsBackgroundDuringPresentation = true
+//        searchController.searchResultsUpdater = self
+        //searchController.definesPresentationContext = true
+        definesPresentationContext = true
+
+        navigationItem.titleView = searchBar
+        navigationItem.titleView?.addSubview(progressView)
+        
+        
+//        searchController.searchResultsUpdater = self
+//        searchController.dimsBackgroundDuringPresentation = false
+//        searchController.definesPresentationContext = true
+//        searchController.searchBar.placeholder = NSLocalizedString("Search or enter website name",
+//                                                                   comment: "Placeholder text displayed in browser search/url field")
+//        searchController.searchBar.delegate = self
+//        searchController.searchBar.sizeToFit()
+//        searchController.searchBar.frame = barView.bounds
+//        searchController.searchBar.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
+//        //searchController.searchBar.barTintColor = UIColor(white: 0.9, alpha: 1.0)
+//        searchController.searchBar.autocapitalizationType = .none
+//        searchController.searchBar.autocorrectionType = .no
+//        searchController.searchBar.enablesReturnKeyAutomatically = true
+//        searchController.searchBar.keyboardType = .URL
+//
+//        searchController.searchBar.scopeButtonTitles = ["All", "History", "Bookmarks", "Other"]
+//        searchController.searchBar.delegate = self
+
+        let barColour = UIColor(red: (247/255),
+                                green: (247/255),
+                                blue: (247/255),
+                                alpha: 1)
+        UISearchBar.appearance().barTintColor = barColour
+        UISearchBar.appearance().tintColor = self.tabBarController!.tabBar.tintColor
+        UITextView.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = barColour
         
         // Hide the search icon.
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
+        //UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
         
-        let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as! UITextField
-        textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
+        //let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as! UITextField
+        //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
         
-        searchController.searchBar.text = initialPageUrl
+        searchBar.text = initialPageUrl
         
-        barView.insertSubview(searchController.searchBar,
-                              at: 0)
+//        barView.insertSubview(searchController.searchBar,
+//                              at: 0)
     }
     
     override func viewDidLoad() {
@@ -152,7 +205,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         configureSearchController()
         configureWebView()
         
-        navigateTo(url: searchController.searchBar.text!)
+        navigateTo(url: searchBar.text!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -273,7 +326,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         }
         
         if (modifiedUrl != url) {
-            searchController.searchBar.text = modifiedUrl
+            searchBar.text = modifiedUrl
         }
         
         let myURL = URL(string: modifiedUrl)
@@ -282,104 +335,209 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         webView.load(myRequest)
     }
     
+    func updateBarFrame() {
+//        let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
+//        let offset = max(min(-urlBarHeight - (webView.scrollView.contentOffset.y + statusBarOffset), 0), -urlBarHeight)
+//        let barHeight = shouldShowSearchResults ? searchBarHeight : urlBarHeight
+//
+//        
+//        barView.frame = CGRect(x: 0,
+//                               y: statusBarOffset + offset,
+//                               width: barView.frame.width,
+//                               height: barHeight)
+    }
+    
     func updateScrollInsets() {
-        let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
-        let topInset = max(barView.frame.origin.y + barView.frame.height, 0)
-        let bottomInset = max(UIScreen.main.bounds.height - toolbar.frame.origin.y, 0) - self.tabBarController!.tabBar.frame.size.height
-        
-        let insets = UIEdgeInsets(top: topInset - statusBarOffset,
-                                  left: 0,
-                                  bottom: bottomInset,
-                                  right: 0)
-        
-        webView.scrollView.scrollIndicatorInsets = insets
+//        let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
+//        let topInset = max(barView.frame.origin.y + barView.frame.height, 0)
+//        let bottomInset = max(UIScreen.main.bounds.height - toolbar.frame.origin.y, 0) - self.tabBarController!.tabBar.frame.size.height
+//
+//        let insets = UIEdgeInsets(top: topInset - statusBarOffset,
+//                                  left: 0,
+//                                  bottom: bottomInset,
+//                                  right: 0)
+//
+//        webView.scrollView.scrollIndicatorInsets = insets
     }
     
     func updateContentInsets() {
-        let bottomInset = max(UIScreen.main.bounds.height - toolbar.frame.origin.y, 0) - self.tabBarController!.tabBar.frame.size.height
+//        let bottomInset = max(UIScreen.main.bounds.height - toolbar.frame.origin.y, 0) - self.tabBarController!.tabBar.frame.size.height
+//
+//        webView.scrollView.contentInset = UIEdgeInsets(top: barView.frame.size.height,
+//                                                       left: 0,
+//                                                       bottom: bottomInset,
+//                                                       right: 0)
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        return searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        let searchBarScopeIsFiltering = searchBar.selectedScopeButtonIndex != 0
+        return !searchBarIsEmpty() || searchBarScopeIsFiltering
+    }
+    
+    func filterContentsBy(searchText: String?, scope: String = "All") {
+        let searchTextLowerCased = (searchText ?? "").lowercased()
         
-        webView.scrollView.contentInset = UIEdgeInsets(top: barView.frame.size.height,
-                                                       left: 0,
-                                                       bottom: bottomInset,
-                                                       right: 0)
+        if searchBarIsEmpty() {
+            filteredData = data
+        } else {
+            filteredData = data.filter({(data: HistoryEntry) -> Bool in
+                let doesCategoryMatch = (scope == "All") || (data.category == scope)
+                
+                if searchBarIsEmpty() {
+                    return doesCategoryMatch
+                } else {
+                    return doesCategoryMatch && data.url.lowercased().contains(searchTextLowerCased)
+                }
+            })
+        }
+        
+        searchResultsTable.reloadData()
     }
 }
 
 //-----------------------------------------------------------------
 extension BrowserViewController : UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        searchController.searchBar.resignFirstResponder()
-        self.navigateTo(url: searchController.searchBar.text!)
+        searchBar.resignFirstResponder()
+        self.navigateTo(url: searchBar.text!)
         return false
     }
 }
 
 //-----------------------------------------------------------------
 extension BrowserViewController : UISearchBarDelegate {
+    func activateSearch() {
+        searchBar.showsCancelButton = true
+        searchResultsTable.isHidden = false
+
+    }
+    
+    func deactivateSearch() {
+        searchBar.showsCancelButton = false
+        searchResultsTable.isHidden = true
+
+        searchBar.resignFirstResponder()
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        shouldShowSearchResults = true
-        searchResultsTable.reloadData()
-        searchResultsTable.isHidden = !shouldShowSearchResults
+        activateSearch()
+        
+//        searchBar.showsScopeBar = true
+//        navigationItem.titleView?.frame.size = CGSize(width: UIScreen.main.bounds.width,
+//                                                      height: 100)
+//
+        urlBeforeEditing = searchBar.text
+//        //shouldShowSearchResults = true
+        filterContentsBy(searchText: searchBar.text)
+//        //searchResultsTable.isHidden = false
+//        //searchController.isActive = true
+//        //barHeightConstraint.constant = searchBarHeight
+////        updateBarFrame()
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        shouldShowSearchResults = false
-        searchResultsTable.reloadData()
-        searchResultsTable.isHidden = !shouldShowSearchResults
+        deactivateSearch()
+        
+//        //searchBar.showsScopeBar = false
+
+        //shouldShowSearchResults = false
+
+        //filterContentsBy(searchText: searchController.searchBar.text)
+//        //searchController.isActive = false
+        searchBar.text = urlBeforeEditing
+//        //barHeightConstraint.constant = urlBarHeight
+////        updateBarFrame()
+//        resignFirstResponder()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        shouldShowSearchResults = false
-        searchResultsTable.reloadData()
-        searchResultsTable.isHidden = !shouldShowSearchResults
+        deactivateSearch()
+        
+//        //searchBar.showsScopeBar = false
+//        searchBar.showsCancelButton = false
+//        shouldShowSearchResults = true
+
+////        shouldShowSearchResults = false
+        //filterContentsBy(searchText: searchController.searchBar.text)
+////        searchResultsTable.isHidden = true
+////        searchController.isActive = false
+        searchBar.text = urlBeforeEditing
+//        //barHeightConstraint.constant = urlBarHeight
+////        updateBarFrame()
+//        resignFirstResponder()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if !shouldShowSearchResults {
-            searchController.isActive = true
-            searchResultsTable.isHidden = !shouldShowSearchResults
+        deactivateSearch()
+        
+        if let searchText = searchBar.text {
+//            if !shouldShowSearchResults {
+//                //searchController.isActive = true
+//                searchResultsTable.isHidden = !shouldShowSearchResults
+//            }
+            
+//            searchBar.resignFirstResponder()
+            
+            self.navigateTo(url: searchText)
+            
+            addHistory(forURL: searchText)
         }
-        
-        searchController.searchBar.resignFirstResponder()
-        
-        self.navigateTo(url: searchController.searchBar.text!)
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-        let searchString = searchController.searchBar.text
-        
-        if (searchString?.isEmpty)! {
-            filteredData = data
-        } else {
-            // Filter the data array and get only those countries that match the search text.
-            filteredData = data.filter({ (country) -> Bool in
-                let countryText: NSString = country as NSString
-                
-                return (countryText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-            })
+    func searchBar(_ searchBar: UISearchBar,
+                   selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentsBy(searchText: searchBar.text!,
+                         scope: searchBar.scopeButtonTitles![selectedScope])
+    }
+    
+    func addHistory(forURL textURL: String, category: String = "History") {
+        if let index = data.index(where: { (entryURL, entryCategory) -> Bool in
+            return entryURL == textURL
+        }) {
+            data.remove(at: index)
         }
         
-        // Reload the tableview.
-        searchResultsTable.reloadData()
+        data.insert(HistoryEntry(textURL, category),
+                    at: 0)
     }
 }
 
 //-----------------------------------------------------------------
+//extension BrowserViewController : UISearchResultsUpdating {
+//    func updateSearchResults(for searchController: UISearchController) {
+//        let searchBar = searchController.searchBar
+//        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+//
+//        filterContentsBy(searchText: searchController.searchBar.text!, scope: scope)
+//    }
+//}
+
+//-----------------------------------------------------------------
 extension BrowserViewController : UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
-        let offset = max(min(-urlBarHeight - (scrollView.contentOffset.y + statusBarOffset), 0), -urlBarHeight)
-
-        barView.frame = CGRect(x: 0,
-                               y: statusBarOffset + offset,
-                               width: barView.frame.width,
-                               height: barView.frame.height)
+        updateBarFrame()
         updateScrollInsets()
     }
 }
 
 //-----------------------------------------------------------------
 extension BrowserViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView,
+                   heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableCell(withIdentifier: "Scope")!
+        
+        return header
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // Proposed sections:
         // - Bookmarks
@@ -392,9 +550,10 @@ extension BrowserViewController : UITableViewDelegate {
         return filteredData.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!;
-        cell.textLabel?.text = filteredData[indexPath.row]
+        cell.textLabel?.text = filteredData[indexPath.row].url
         
         return cell;
     }
@@ -410,7 +569,7 @@ extension BrowserViewController : WKNavigationDelegate {
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let urlStr = navigationAction.request.url?.absoluteString {
-            searchController.searchBar.text = urlStr
+            searchBar.text = urlStr
         }
         decisionHandler(.allow)
     }
@@ -450,3 +609,14 @@ extension BrowserViewController {
         }
     }
 }
+
+//extension BrowserViewController : UISearchControllerDelegate {
+//    func didPresentSearchController(_ searchController: UISearchController) {
+//        //searchResultsTable.isHidden = false
+//    }
+//
+//    func didDismissSearchController(_ searchController: UISearchController) {
+//        //searchResultsTable.isHidden = true
+//    }
+//}
+

@@ -58,12 +58,12 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527883821.673904"
+                  timestampString = "528189650.413668"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "128"
                   endingLineNumber = "128"
-                  offsetFromSymbolStart = "24">
+                  offsetFromSymbolStart = "21">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -73,12 +73,12 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527883821.677227"
+                  timestampString = "528189650.421874"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "129"
                   endingLineNumber = "129"
-                  offsetFromSymbolStart = "32">
+                  offsetFromSymbolStart = "28">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -106,12 +106,12 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527883821.682227"
+                  timestampString = "528189650.432784"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "137"
                   endingLineNumber = "137"
-                  offsetFromSymbolStart = "24">
+                  offsetFromSymbolStart = "21">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -121,12 +121,12 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "527883821.684742"
+                  timestampString = "528189650.435698"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
                   endingLineNumber = "138"
-                  offsetFromSymbolStart = "32">
+                  offsetFromSymbolStart = "28">
                </Location>
             </Locations>
          </BreakpointContent>
