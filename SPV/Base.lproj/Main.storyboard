@@ -329,6 +329,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="B0n-h4-37L">
+                                <rect key="frame" x="0.0" y="64" width="375" height="2"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="pZa-co-qoQ"/>
+                                </constraints>
+                            </progressView>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="w49-69-Z4R" userLabel="Search Results Table">
                                 <rect key="frame" x="0.0" y="64" width="375" height="510"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -412,10 +418,13 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="YbF-5e-CmW" secondAttribute="bottom" id="0vk-XJ-3Yl"/>
+                            <constraint firstItem="B0n-h4-37L" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="3hw-Bj-CpX"/>
                             <constraint firstItem="w49-69-Z4R" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="81s-4X-OQq"/>
                             <constraint firstItem="YbF-5e-CmW" firstAttribute="top" secondItem="w49-69-Z4R" secondAttribute="bottom" id="D69-Q1-Zb1"/>
                             <constraint firstItem="w49-69-Z4R" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" id="JpN-BM-E1B"/>
+                            <constraint firstItem="B0n-h4-37L" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="Mrl-Vv-0Wc"/>
                             <constraint firstItem="w49-69-Z4R" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="TT2-X7-0pF"/>
+                            <constraint firstItem="B0n-h4-37L" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" id="Yj1-O5-sXj"/>
                             <constraint firstItem="YbF-5e-CmW" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="arr-im-HgR"/>
                             <constraint firstItem="YbF-5e-CmW" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="ira-IT-ja1"/>
                         </constraints>
@@ -443,6 +452,7 @@
                         <outlet property="barView" destination="DJM-Gj-GnJ" id="ElH-EF-641"/>
                         <outlet property="forwardButton" destination="diz-ba-Dpd" id="FNB-AG-bdv"/>
                         <outlet property="longPressGesture" destination="5UH-PY-sgg" id="Ask-4L-J1l"/>
+                        <outlet property="progressView" destination="B0n-h4-37L" id="rte-em-WuJ"/>
                         <outlet property="reloadButton" destination="NhF-P0-dJj" id="2lt-yZ-ivb"/>
                         <outlet property="searchBar" destination="ULX-XB-NvN" id="0tH-rd-Cpj"/>
                         <outlet property="searchResultsTable" destination="w49-69-Z4R" id="TcK-oe-sqx"/>

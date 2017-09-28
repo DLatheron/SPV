@@ -132,15 +132,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     }
     
     private func configureSearchController() {
-//        searchController = UISearchController(searchResultsController: nil) // <-- We get weird behavour if this is self.
-
-        let searchBar = self.searchBar! //searchController.searchBar
-        let progressBar = UIProgressView()
-        progressView = progressBar
-        progressView.bounds = CGRect(x: 0,
-                                     y: UIScreen.main.bounds.size.height - 2,
-                                     width: UIScreen.main.bounds.size.width,
-                                     height: 2)
+        let searchBar = self.searchBar!
         
         searchBar.delegate = self
         searchBar.showsCancelButton = false
@@ -149,21 +141,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         searchBar.autocorrectionType = .no
         searchBar.enablesReturnKeyAutomatically = true
         searchBar.keyboardType = .URL
-        searchBar.scopeButtonTitles = ["All", "History", "Bookmarks", "Other"]
-        //searchBar.showsScopeBar = true
         searchBar.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
         
-//        searchController.hidesNavigationBarDuringPresentation = false
-//        searchController.delegate = self
-//
-//        searchController.dimsBackgroundDuringPresentation = true
-//        searchController.searchResultsUpdater = self
-        //searchController.definesPresentationContext = true
         definesPresentationContext = true
 
         navigationItem.titleView = searchBar
-        navigationItem.titleView?.addSubview(progressView)
-        
         
 //        searchController.searchResultsUpdater = self
 //        searchController.dimsBackgroundDuringPresentation = false
@@ -198,9 +180,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
         
         searchBar.text = initialPageUrl
-        
-//        barView.insertSubview(searchController.searchBar,
-//                              at: 0)
     }
     
     override func viewDidLoad() {
@@ -428,52 +407,30 @@ extension BrowserViewController : UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
     
+    func searchBar(_ searchBar: UISearchBar,
+                   textDidChange searchText: String) {
+        filterContentsBy(searchText: searchText,
+                         scope: scope)
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         activateSearch()
         
-//        searchBar.showsScopeBar = true
-//        navigationItem.titleView?.frame.size = CGSize(width: UIScreen.main.bounds.width,
-//                                                      height: 100)
-//
         urlBeforeEditing = searchBar.text
-//        //shouldShowSearchResults = true
-        filterContentsBy(searchText: searchBar.text)
-//        //searchResultsTable.isHidden = false
-//        //searchController.isActive = true
-//        //barHeightConstraint.constant = searchBarHeight
-////        updateBarFrame()
+        filterContentsBy(searchText: searchBar.text,
+                         scope: scope)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         deactivateSearch()
         
-//        //searchBar.showsScopeBar = false
-
-        //shouldShowSearchResults = false
-
-        //filterContentsBy(searchText: searchController.searchBar.text)
-//        //searchController.isActive = false
         searchBar.text = urlBeforeEditing
-//        //barHeightConstraint.constant = urlBarHeight
-////        updateBarFrame()
-//        resignFirstResponder()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         deactivateSearch()
         
-//        //searchBar.showsScopeBar = false
-//        searchBar.showsCancelButton = false
-//        shouldShowSearchResults = true
-
-////        shouldShowSearchResults = false
-        //filterContentsBy(searchText: searchController.searchBar.text)
-////        searchResultsTable.isHidden = true
-////        searchController.isActive = false
         searchBar.text = urlBeforeEditing
-//        //barHeightConstraint.constant = urlBarHeight
-////        updateBarFrame()
-//        resignFirstResponder()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
