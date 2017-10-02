@@ -32,18 +32,14 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     typealias HistoryEntry = (url: String, category: SearchScope)
     
     var data: [HistoryEntry] = [
-        HistoryEntry(url: "www.google.co.uk", category: .bookmarks),
-        HistoryEntry(url: "www.arstechnica.co.uk", category: .bookmarks)
+        HistoryEntry(url: "www.google.co.uk",
+                     category: .bookmarks),
+        HistoryEntry(url: "www.arstechnica.co.uk",
+                     category: .bookmarks),
+        HistoryEntry(url: "https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_1280.jpg",
+                     category: .history)
     ]
-//    [
-//        "San Francisco",
-//        "New York",
-//        "San Jose",
-//        "Chicago",
-//        "Los Angeles",
-//        "Austin",
-//        "Seattle"
-//    ]
+
     var filteredData: [HistoryEntry] = []
     var shouldShowSearchResults: Bool = false
     
@@ -366,19 +362,15 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                           scope: SearchScope = .all) {
         let searchTextLowerCased = (searchText ?? "").lowercased()
         
-        if searchBarIsEmpty() {
-            filteredData = data
-        } else {
-            filteredData = data.filter({(data: HistoryEntry) -> Bool in
-                let doesCategoryMatch = (scope == .all) || (data.category == scope)
-                
-                if searchBarIsEmpty() {
-                    return doesCategoryMatch
-                } else {
-                    return doesCategoryMatch && data.url.lowercased().contains(searchTextLowerCased)
-                }
-            })
-        }
+        filteredData = data.filter({(data: HistoryEntry) -> Bool in
+            let doesCategoryMatch = (scope == .all) || (data.category == scope)
+            
+            if searchBarIsEmpty() {
+                return doesCategoryMatch
+            } else {
+                return doesCategoryMatch && data.url.lowercased().contains(searchTextLowerCased)
+            }
+        })
         
         searchResultsTable.reloadData()
     }
