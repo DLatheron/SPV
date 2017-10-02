@@ -53,6 +53,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var searchBar: UISearchBar!
     
     @IBOutlet weak var searchResultsTable: UITableView!
+    @IBOutlet weak var searchEffectsView: UIVisualEffectView!
     
     // Web Browser navigator
     @IBOutlet weak var toolbar: UIToolbar!
@@ -395,16 +396,50 @@ extension BrowserViewController : UITextFieldDelegate {
 //-----------------------------------------------------------------
 extension BrowserViewController : UISearchBarDelegate {
     func activateSearch() {
-        searchBar.showsCancelButton = true
-        searchResultsTable.isHidden = false
+        if !shouldShowSearchResults {
+            print("Activating...");
+            shouldShowSearchResults = true
 
+            // Reveal the effects via - but make it invisible so we can fade it in.
+            searchEffectsView.alpha = 0
+            searchEffectsView.isHidden = false
+
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.1,
+                           options: [ .curveEaseInOut ],
+                           animations: {
+                self.searchBar.setShowsCancelButton(true,
+                                                    animated: true)
+                self.searchEffectsView.alpha = 1
+            })
+        } else {
+            print("Already activating!")
+        }
     }
     
     func deactivateSearch() {
-        searchBar.showsCancelButton = false
-        searchResultsTable.isHidden = true
+        if (shouldShowSearchResults) {
+            print("...Deactivating");
+            shouldShowSearchResults = false
 
-        searchBar.resignFirstResponder()
+            // Dismiss the keyboard - causes a recursive call into this function.
+            searchBar.resignFirstResponder()
+
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.1,
+                           options: [ .curveEaseInOut ],
+                           animations: {
+                self.searchEffectsView.alpha = 0
+                self.searchBar.setShowsCancelButton(false,
+                                                    animated: true)
+            }) { (complete) in
+                if complete {
+                    self.searchEffectsView.isHidden = true
+                }
+            }
+        } else {
+            print("...already deactivating!")
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar,
@@ -422,20 +457,18 @@ extension BrowserViewController : UISearchBarDelegate {
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        deactivateSearch()
-        
         searchBar.text = urlBeforeEditing
+
+        deactivateSearch()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        deactivateSearch()
-        
         searchBar.text = urlBeforeEditing
+        
+        deactivateSearch()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        deactivateSearch()
-        
         if let searchText = searchBar.text {
 //            if !shouldShowSearchResults {
 //                //searchController.isActive = true
@@ -448,6 +481,8 @@ extension BrowserViewController : UISearchBarDelegate {
             
             addHistory(forURL: searchText)
         }
+
+        deactivateSearch()
     }
     
 //    func searchBar(_ searchBar: UISearchBar,
