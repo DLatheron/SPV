@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate {
+class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate {
     
     //let initialPageUrl = "http://arstechnica.co.uk"
 //    let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
@@ -47,6 +47,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     @IBOutlet weak var barView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var titleBar: UILabel!
     
     @IBOutlet weak var searchResultsTable: UITableView!
     @IBOutlet weak var searchEffectsView: UIVisualEffectView!
@@ -142,8 +143,12 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         definesPresentationContext = true
 
-        navigationItem.titleView = searchBar
+        navigationController!.navigationItem.titleView = searchBar
         
+        let titleBar = self.titleBar!
+        
+        navigationController!.navigationItem.titleView = titleBar
+
 //        searchController.searchResultsUpdater = self
 //        searchController.dimsBackgroundDuringPresentation = false
 //        searchController.definesPresentationContext = true
@@ -374,6 +379,84 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         searchResultsTable.reloadData()
     }
+    
+    var lastContentOffsetAtY : CGFloat = 0.0
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.lastContentOffsetAtY = scrollView.contentOffset.y
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if lastContentOffsetAtY < scrollView.contentOffset.y {
+            print("Bottom")
+            shrinkTheCustomNavigationBar(isShrink: true, contentOffsetY: scrollView.contentOffset.y)
+        } else if lastContentOffsetAtY > scrollView.contentOffset.y {
+            print("Top")
+            shrinkTheCustomNavigationBar(isShrink: false, contentOffsetY: scrollView.contentOffset.y)
+        }
+    }
+    
+    func shrinkTheCustomNavigationBar(isShrink:Bool,
+                                      contentOffsetY: CGFloat) {
+        print("Raw content offset Y: \(contentOffsetY)")
+        let compressedSize = CGFloat(22)
+        let uncompressedSize = CGFloat(44)
+        let rect = (self.navigationController!.navigationBar.frame)
+        
+        print("Rect is: \(rect)")
+        
+        let yOffset = max(-(contentOffsetY + 44), 0)
+        //print("Offset: \(offset)")
+//        let yOffset = rect.origin.y
+        //let yOffset = max(min(offset + 22, 44), 22)
+        
+        print("yOffset is: \(yOffset)")
+        
+        if isShrink == true {
+            if rect.size.height > compressedSize {
+                UIView.animate(withDuration: 0.1,
+                               animations: {
+                    self.navigationController?.navigationBar.frame =
+                        CGRect(x: rect.origin.x,
+                               y: yOffset,
+                               width: rect.size.width,
+                               height: rect.size.height)
+                    self.view.layoutIfNeeded()
+                    self.navigationController?.navigationItem.titleView?.frame =
+                        CGRect(x: 0,
+                               y: 0,
+                               width: rect.size.width,
+                               height: rect.size.height)
+                    self.titleBar.alpha = 1
+                    self.searchBar.alpha = 0
+                }, completion: { (completed) in
+                })
+            }
+        } else {
+            if rect.size.height < uncompressedSize {
+                UIView.animate(withDuration: 0.1,
+                               animations: {
+                    self.navigationController?.navigationBar.frame =
+                        CGRect(x: rect.origin.x,
+                               y: yOffset,
+                               width: rect.size.width,
+                               height:rect.size.height)
+                    self.view.layoutIfNeeded()
+                    self.navigationController?.navigationItem.titleView?.frame =
+                        CGRect(x: 0,
+                               y: 0,
+                               width: rect.size.width,
+                               height: rect.size.height)
+//                    self.titleBar.removeFromSuperview()
+//                    self.navigationController?.navigationItem.titleView = self.searchBar
+                                //                    self.navigationController?.navigationItem.titleView = self.searchBar
+                    self.titleBar.alpha = 0
+                    self.searchBar.alpha = 1
+                }, completion: { (completed) in
+                })
+            }
+        }
+    }
 }
 
 //-----------------------------------------------------------------
@@ -506,12 +589,12 @@ extension BrowserViewController : UISearchBarDelegate {
 //}
 
 //-----------------------------------------------------------------
-extension BrowserViewController : UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateBarFrame()
-        updateScrollInsets()
-    }
-}
+//extension BrowserViewController : UIScrollViewDelegate {
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        updateBarFrame()
+//        updateScrollInsets()
+//    }
+//}
 
 //-----------------------------------------------------------------
 extension BrowserViewController : UITableViewDelegate {
