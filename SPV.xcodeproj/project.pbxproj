@@ -51,6 +51,8 @@
 		F9C50C171F5E80F600EE79E5 /* Photo.json in Resources */ = {isa = PBXBuildFile; fileRef = F9C50C161F5E80F600EE79E5 /* Photo.json */; };
 		F9C50C1B1F5F02DF00EE79E5 /* MediaInfoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C1A1F5F02DF00EE79E5 /* MediaInfoTest.swift */; };
 		F9C50C1D1F5F50B800EE79E5 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F9C50C1C1F5F50B800EE79E5 /* Podfile */; };
+		F9C68BB51F860FF20094E5F3 /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C68BB41F860FF20094E5F3 /* URLBuilder.swift */; };
+		F9C68BB71F8613500094E5F3 /* URLBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */; };
 		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F060A81F7C030B00AF6247 /* SearchScopeCell.swift */; };
 		F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */; };
@@ -139,6 +141,8 @@
 		F9C50C161F5E80F600EE79E5 /* Photo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Photo.json; path = JSON/Photo.json; sourceTree = "<group>"; };
 		F9C50C1A1F5F02DF00EE79E5 /* MediaInfoTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoTest.swift; sourceTree = "<group>"; };
 		F9C50C1C1F5F50B800EE79E5 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		F9C68BB41F860FF20094E5F3 /* URLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilder.swift; sourceTree = "<group>"; };
+		F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilderTests.swift; sourceTree = "<group>"; };
 		F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/SPV-efrwuliddfrewpeoxhcadziytpjt/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		F9D301871F5F592900ADEEF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F9F060A81F7C030B00AF6247 /* SearchScopeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScopeCell.swift; sourceTree = "<group>"; };
@@ -315,6 +319,7 @@
 			children = (
 				F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */,
 				F973F8061F601AD600A5813B /* JSONHelper.swift */,
+				F9C68BB41F860FF20094E5F3 /* URLBuilder.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -389,6 +394,7 @@
 				F9C50C1A1F5F02DF00EE79E5 /* MediaInfoTest.swift */,
 				F973F8041F601A4200A5813B /* JSONTestHelper.swift */,
 				F9F5D0051F61283E00E16DAA /* MediaTest.swift */,
+				F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */,
 			);
 			path = SPVTests;
 			sourceTree = "<group>";
@@ -723,6 +729,7 @@
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
 				F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
+				F9C68BB51F860FF20094E5F3 /* URLBuilder.swift in Sources */,
 				F97943B21F702F6F00739030 /* MediaAddTagCell.swift in Sources */,
 				639DBDB71F5B1D4700BDD48E /* DownloadManagerBase.swift in Sources */,
 				F97943AE1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift in Sources */,
@@ -757,6 +764,7 @@
 				F9F5D0061F61283E00E16DAA /* MediaTest.swift in Sources */,
 				F9BABAC11F28F92F00000D9B /* SPVTests.swift in Sources */,
 				F973F8051F601A4200A5813B /* JSONTestHelper.swift in Sources */,
+				F9C68BB71F8613500094E5F3 /* URLBuilderTests.swift in Sources */,
 				F969ACA21F55C9D4005C7F8D /* HumanReadableTest.swift in Sources */,
 				F9F2D3DD1F504E2E00FD6F78 /* DownloadTest.swift in Sources */,
 				F9C50C1B1F5F02DF00EE79E5 /* MediaInfoTest.swift in Sources */,

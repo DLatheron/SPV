@@ -297,25 +297,27 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBAction func refresh(sender: UIBarButtonItem) {
         self.webView.reload()
     }
-
-    func navigateTo(url: String) {
-        var modifiedUrl = url
+    
+    func ensureValidProtocol(urlString: String) -> String {
+        let insecureProtocol = "http"
         
-        let secureProtocol = "https://"
-        let insecureProtocol = "http://"
-        
-        let lowercaseUrl = url.lowercased()
-        if (!lowercaseUrl.hasPrefix(secureProtocol) &&
-            !lowercaseUrl.hasPrefix(insecureProtocol)) {
-            modifiedUrl = insecureProtocol + modifiedUrl
+        if let url = URL(string: urlString) {
+            if url.scheme == nil {
+                if let url = URL(string: "\(insecureProtocol)://\(urlString)") {
+                    return url.absoluteString
+                }
+            }
         }
-        
-        if (modifiedUrl != url) {
-            searchBar.text = modifiedUrl
-        }
-        
+        return urlString
+    }
+    
+    func navigateTo(url originalURLString: String) {
+        let modifiedUrl = ensureValidProtocol(urlString: originalURLString)
         let myURL = URL(string: modifiedUrl)
         let myRequest = URLRequest(url: myURL!)
+        
+        searchBar.text = modifiedUrl
+        titleBar.text = URL(string: modifiedUrl)?.host
         
         webView.load(myRequest)
     }
@@ -334,6 +336,17 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     func updateScrollInsets() {
 //        let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
+//        let topInset = self.navigationController!.navigationBar.frame.size.height + statusBarOffset
+//        let bottomInset = UIScreen.main.bounds.height - toolbar.frame.origin.y
+        
+        let insets = UIEdgeInsets(top: 0,
+                                  left: 0,
+                                  bottom: 0,
+                                  right: 0)
+        webView.scrollView.scrollIndicatorInsets = insets
+    }
+        
+//        let statusBarOffset = CGFloat(UIApplication.shared.isStatusBarHidden ? 0 : statusBarHeight)
 //        let topInset = max(barView.frame.origin.y + barView.frame.height, 0)
 //        let bottomInset = max(UIScreen.main.bounds.height - toolbar.frame.origin.y, 0) - self.tabBarController!.tabBar.frame.size.height
 //
@@ -343,7 +356,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 //                                  right: 0)
 //
 //        webView.scrollView.scrollIndicatorInsets = insets
-    }
+//    }
     
     func updateContentInsets() {
 //        let bottomInset = max(UIScreen.main.bounds.height - toolbar.frame.origin.y, 0) - self.tabBarController!.tabBar.frame.size.height
@@ -389,72 +402,33 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if lastContentOffsetAtY < scrollView.contentOffset.y {
             print("Bottom")
-            shrinkTheCustomNavigationBar(isShrink: true, contentOffsetY: scrollView.contentOffset.y)
+            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
         } else if lastContentOffsetAtY > scrollView.contentOffset.y {
             print("Top")
-            shrinkTheCustomNavigationBar(isShrink: false, contentOffsetY: scrollView.contentOffset.y)
+            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
         }
     }
     
-    func shrinkTheCustomNavigationBar(isShrink:Bool,
-                                      contentOffsetY: CGFloat) {
-        print("Raw content offset Y: \(contentOffsetY)")
-        let compressedSize = CGFloat(22)
-        let uncompressedSize = CGFloat(44)
-        let rect = (self.navigationController!.navigationBar.frame)
+    func shrinkTheCustomNavigationBar(contentOffsetY: CGFloat) {
+        let navBar = self.navigationController!.navigationBar
+        let rect = navBar.frame
         
-        print("Rect is: \(rect)")
+        let yOffset = min(max(-(contentOffsetY + 44), 0), 20)
+        let alpha = yOffset / 20
+        let invAlpha = 1 - alpha
         
-        let yOffset = max(-(contentOffsetY + 44), 0)
-        //print("Offset: \(offset)")
-//        let yOffset = rect.origin.y
-        //let yOffset = max(min(offset + 22, 44), 22)
+        print("Offset is: \(yOffset), alpha: \(alpha), invAlpha: \(invAlpha)")
         
-        print("yOffset is: \(yOffset)")
-        
-        if isShrink == true {
-            if rect.size.height > compressedSize {
-                UIView.animate(withDuration: 0.1,
-                               animations: {
-                    self.navigationController?.navigationBar.frame =
-                        CGRect(x: rect.origin.x,
-                               y: yOffset,
-                               width: rect.size.width,
-                               height: rect.size.height)
-                    self.view.layoutIfNeeded()
-                    self.navigationController?.navigationItem.titleView?.frame =
-                        CGRect(x: 0,
-                               y: 0,
-                               width: rect.size.width,
-                               height: rect.size.height)
-                    self.titleBar.alpha = 1
-                    self.searchBar.alpha = 0
-                }, completion: { (completed) in
-                })
-            }
-        } else {
-            if rect.size.height < uncompressedSize {
-                UIView.animate(withDuration: 0.1,
-                               animations: {
-                    self.navigationController?.navigationBar.frame =
-                        CGRect(x: rect.origin.x,
-                               y: yOffset,
-                               width: rect.size.width,
-                               height:rect.size.height)
-                    self.view.layoutIfNeeded()
-                    self.navigationController?.navigationItem.titleView?.frame =
-                        CGRect(x: 0,
-                               y: 0,
-                               width: rect.size.width,
-                               height: rect.size.height)
-//                    self.titleBar.removeFromSuperview()
-//                    self.navigationController?.navigationItem.titleView = self.searchBar
-                                //                    self.navigationController?.navigationItem.titleView = self.searchBar
-                    self.titleBar.alpha = 0
-                    self.searchBar.alpha = 1
-                }, completion: { (completed) in
-                })
-            }
+        UIView.animate(withDuration: 0.1,
+                       animations: {
+            navBar.frame = CGRect(x: rect.origin.x,
+                                  y: yOffset,
+                                  width: rect.size.width,
+                                  height: rect.size.height)
+            self.titleBar.alpha = invAlpha
+            self.searchBar.alpha = alpha
+        }) { complete in
+            self.updateScrollInsets()
         }
     }
 }
@@ -533,13 +507,15 @@ extension BrowserViewController : UISearchBarDelegate {
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.text = urlBeforeEditing
+        titleBar.text = urlBeforeEditing
 
         deactivateSearch()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = urlBeforeEditing
-        
+        titleBar.text = urlBeforeEditing
+
         deactivateSearch()
     }
     
