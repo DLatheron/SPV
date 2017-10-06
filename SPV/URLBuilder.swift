@@ -52,6 +52,17 @@ class URLBuilder {
         }
     }
     
+    init() {
+        self.scheme = nil
+        self.user = nil
+        self.password = nil
+        self.host = nil
+        self.port = nil
+        self.path = nil
+        self.fragment = nil
+        self.query = nil
+    }
+    
     init(scheme: String? = nil,
          user: String? = nil,
          password: String? = nil,
@@ -61,19 +72,26 @@ class URLBuilder {
          query: String? = nil,
          fragment: String? = nil) {
         self.scheme = scheme
+        self.user = user
+        self.password = password
         self.host = host
         self.port = port
         self.path = path
         self.fragment = fragment
         self.query = query
-        self.user = user
-        self.password = password
     }
     
     convenience init?(scheme: String? = nil,
                       host: String? = nil,
                       path: String? = nil) {
-        self.init()
+        self.init(scheme: nil,
+                  user: nil,
+                  password: nil,
+                  host: nil,
+                  port: nil,
+                  path: nil,
+                  query: nil,
+                  fragment: nil)
         
         self.scheme = scheme
         self.host = host

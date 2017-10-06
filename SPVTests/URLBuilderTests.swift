@@ -35,9 +35,11 @@ class URLBuilderTests : XCTestCase {
     
     func test_init_simple() {
         let urlBuilder = URLBuilder(scheme: "http",
-                                    host: "microsoft",
+                                    host: "microsoft.co.uk",
                                     path: "/index.html")
         
         XCTAssertEqual(urlBuilder!.string, "http://microsoft.co.uk/index.html");
     }
+    
+    
 }
