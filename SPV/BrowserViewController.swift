@@ -16,11 +16,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     //let initialPageUrl = "http://www.smartcc365.com/group/landscape-image/"
     let initialPageUrl = "https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_1280.jpg"
     var urlBeforeEditing: String? = nil;
+    var url: String = ""
     
-    let statusBarHeight = CGFloat.init(20)
-    let urlBarHeight = CGFloat.init(56)
-    let searchBarHeight = CGFloat.init(100)
-    let topBarHeight = CGFloat.init(20 + 44)
+    //let statusBarHeight = CGFloat.init(20)
+    //let urlBarHeight = CGFloat.init(56)
+    //let searchBarHeight = CGFloat.init(100)
     let barViewAnimationSpeed = 0.25
 
     var webView: WKWebView!
@@ -47,6 +47,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     @IBOutlet weak var barView: UIView!
     @IBOutlet weak var searchBar: UISearchBar!
+    weak var searchTextField: UITextField!
     @IBOutlet weak var titleBar: UILabel!
     
     @IBOutlet weak var searchResultsTable: UITableView!
@@ -60,6 +61,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var tabsButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
+    @IBOutlet weak var tapOnBarGesture: UITapGestureRecognizer!
     
     @IBAction func unwindToBrowserViewController(segue:UIStoryboardSegue) {
         
@@ -80,6 +82,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
             NSLog("Failed to load javascript file")
             getImageJS = ""
         }
+        
+        url = initialPageUrl
         
         super.init(coder: aDecoder)!
     }
@@ -176,12 +180,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         UITextView.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = barColour
         
         // Hide the search icon.
-        //UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
         
-        //let textFieldInsideSearchBar = searchController.searchBar.value(forKey: "searchField") as! UITextField
-        //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
-        
-        searchBar.text = initialPageUrl
+        searchTextField = searchBar.value(forKey: "searchField") as! UITextField
+        searchTextField.leftViewMode = UITextFieldViewMode.never
+        searchTextField.textAlignment = .center
     }
     
     override func viewDidLoad() {
@@ -190,7 +193,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         configureSearchController()
         configureWebView()
         
-        navigateTo(url: searchBar.text!)
+        navigateTo(url: url)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -261,6 +264,27 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
             }
         })
     }
+    
+    @IBAction func tapOnBarDetected(_ sender: UIGestureRecognizer) {
+        if sender.state != .ended {
+            return
+        }
+        
+        let targetY: CGFloat
+        if UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height {
+            targetY = -64
+        } else {
+            targetY = -52
+        }
+        
+        // BUG: Sometimes this doesn't correctly animate the fade - because it ends up not quite at the top...
+        webView.scrollView.setContentOffset(CGPoint(x: (webView.scrollView.contentInset.left + webView.scrollView.contentInset.right) / 2,
+                                                    y: targetY),
+                                            animated: true)
+    }
+    
+    // TODO: Only show domain and lock symbol (centred) when the search is inactive.
+    // On activation display the whole thing AND left justify it (with animation).
    
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
@@ -311,13 +335,28 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         return urlString
     }
     
-    func navigateTo(url originalURLString: String) {
-        let modifiedUrl = ensureValidProtocol(urlString: originalURLString)
-        let myURL = URL(string: modifiedUrl)
-        let myRequest = URLRequest(url: myURL!)
+    func setSearchBarText(urlString: String) {
+        let closedLock = "🔒"
+        let openLock = "🔓"
         
-        searchBar.text = modifiedUrl
-        titleBar.text = URL(string: modifiedUrl)?.host
+        if let urlBuilder = URLBuilder(string: urlString) {
+            let lockState = urlBuilder.isSchemeSecure ? closedLock : openLock
+            let domainText = "\(lockState) \(urlBuilder.host ?? "")"
+            titleBar.text = domainText
+            searchBar.text = domainText
+        } else {
+            titleBar.text = nil
+            searchBar.text = nil
+        }
+    }
+    
+    func navigateTo(url newURLString: String) {
+        let modifiedNewURLString = ensureValidProtocol(urlString: newURLString)
+        let newURL = URL(string: modifiedNewURLString)
+        let myRequest = URLRequest(url: newURL!)
+        
+        url = modifiedNewURLString
+        setSearchBarText(urlString: url)
         
         webView.load(myRequest)
     }
@@ -413,7 +452,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         let navBar = self.navigationController!.navigationBar
         let rect = navBar.frame
         
-        let yOffset = min(max(-(contentOffsetY + 44), 0), 20)
+        let navBarHeight: CGFloat = UIScreen.main.bounds.size.width > UIScreen.main.bounds.height ? 32 : 44
+        
+        let yOffset = min(max(-(contentOffsetY + navBarHeight), 0), 20)
         let alpha = yOffset / 20
         let invAlpha = 1 - alpha
         
@@ -429,6 +470,37 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
             self.searchBar.alpha = alpha
         }) { complete in
             self.updateScrollInsets()
+        }
+    }
+    
+    func setPortraitLayout() {
+        let portraitFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 16, height: 44)
+        barView.frame = portraitFrame
+    }
+    
+    func setLandscapeLayout() {
+        let landscapeFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 32)
+        barView.frame = landscapeFrame
+    }
+    
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size,
+                                 with: coordinator)
+        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
+            if size.width > size.height {
+                self.setLandscapeLayout()
+            } else {
+                self.setPortraitLayout()
+            }
+            self.view.layer.shouldRasterize = true
+        }) { (context: UIViewControllerTransitionCoordinatorContext) in
+            self.view.layer.shouldRasterize = false
+            if size.width > size.height {
+                self.setLandscapeLayout()
+            } else {
+                self.setPortraitLayout()
+            }
         }
     }
 }
@@ -460,6 +532,9 @@ extension BrowserViewController : UISearchBarDelegate {
                 self.searchBar.setShowsCancelButton(true,
                                                     animated: true)
                 self.searchEffectsView.alpha = 1
+                self.searchBar.text = self.url
+                
+                self.searchTextField.textAlignment = .left
             })
         } else {
             print("Already activating!")
@@ -481,6 +556,12 @@ extension BrowserViewController : UISearchBarDelegate {
                 self.searchEffectsView.alpha = 0
                 self.searchBar.setShowsCancelButton(false,
                                                     animated: true)
+                self.setSearchBarText(urlString: self.url)
+                            
+                let textFieldInsideSearchBar = self.searchBar.value(forKey: "searchField") as! UITextField
+                textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
+                            
+                self.searchTextField.textAlignment = .center
             }) { (complete) in
                 if complete {
                     self.searchEffectsView.isHidden = true
@@ -500,22 +581,15 @@ extension BrowserViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         activateSearch()
         
-        urlBeforeEditing = searchBar.text
         filterContentsBy(searchText: searchBar.text,
                          scope: scope)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.text = urlBeforeEditing
-        titleBar.text = urlBeforeEditing
-
         deactivateSearch()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = urlBeforeEditing
-        titleBar.text = urlBeforeEditing
-
         deactivateSearch()
     }
     
@@ -620,7 +694,7 @@ extension BrowserViewController : WKNavigationDelegate {
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let urlStr = navigationAction.request.url?.absoluteString {
-            searchBar.text = urlStr
+            setSearchBarText(urlString: urlStr)
         }
         decisionHandler(.allow)
     }
@@ -646,20 +720,20 @@ extension BrowserViewController : WKNavigationDelegate {
 }
 
 //-----------------------------------------------------------------
-extension BrowserViewController {
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size,
-                                 with: coordinator)
-        
-        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.view.layer.shouldRasterize = true
-        }) { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.view.layer.shouldRasterize = false
-            self.updateContentInsets()
-        }
-    }
-}
+//extension BrowserViewController {
+//    override func viewWillTransition(to size: CGSize,
+//                                     with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size,
+//                                 with: coordinator)
+//        
+//        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
+//            self.view.layer.shouldRasterize = true
+//        }) { (context: UIViewControllerTransitionCoordinatorContext) in
+//            self.view.layer.shouldRasterize = false
+//            self.updateContentInsets()
+//        }
+//    }
+//}
 
 //-----------------------------------------------------------------
 extension BrowserViewController : SearchScopeDelegate {

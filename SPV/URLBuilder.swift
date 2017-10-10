@@ -129,3 +129,13 @@ class URLBuilder {
         return urlComponents.url
     }
 }
+
+extension URLBuilder : CustomDebugStringConvertible {
+    var debugDescription: String {
+        if isValid {
+            return "URLBuilder(\(self.string!))"
+        } else {
+            return "URLBuilder(scheme: \(self.scheme ?? "nil"), user: \(self.user ?? "nil"), password: \(self.password ?? "nil"), host: \(self.host ?? "nil"), port: \(self.port ?? 0), path: \(self.path ?? "nil"), query: \(self.query ?? "nil"), fragment: \(self.fragment ?? "nil")"
+        }
+    }
+}

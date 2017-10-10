@@ -41,5 +41,25 @@ class URLBuilderTests : XCTestCase {
         XCTAssertEqual(urlBuilder!.string, "http://microsoft.co.uk/index.html");
     }
     
+    func test_init_string() {
+        let urlBuilder = URLBuilder(string: "http://user:password@google.com:8080/account/logon?search=Holiday%20dates#title")!
+        
+        XCTAssertEqual(urlBuilder.scheme, "http")
+        XCTAssertEqual(urlBuilder.user, "user")
+        XCTAssertEqual(urlBuilder.password, "password")
+        XCTAssertEqual(urlBuilder.host, "google.com")
+        XCTAssertEqual(urlBuilder.port, 8080)
+        XCTAssertEqual(urlBuilder.path, "/account/logon")
+        XCTAssertEqual(urlBuilder.query, "search=Holiday dates")
+        XCTAssertEqual(urlBuilder.fragment, "title")
+    }
+    
+    func test_isSchemeSecure() {
+        XCTAssertEqual(URLBuilder(string: "http://www.google.co.uk/")!.isSchemeSecure, false)
+        XCTAssertEqual(URLBuilder(string: "ftp://www.google.co.uk/")!.isSchemeSecure, false)
+        XCTAssertEqual(URLBuilder(string: "https://www.google.co.uk/")!.isSchemeSecure, true)
+        XCTAssertEqual(URLBuilder(string: "sftp://www.google.co.uk/")!.isSchemeSecure, true)
+    }
+    
     
 }

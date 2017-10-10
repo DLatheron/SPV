@@ -330,7 +330,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kcv-GB-gi6">
-                                <rect key="frame" x="0.0" y="-0.5" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rTe-BH-Vu9">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -443,26 +443,31 @@
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="DJM-Gj-GnJ">
                             <rect key="frame" x="8" y="0.0" width="359" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                             <subviews>
-                                <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ULX-XB-NvN">
-                                    <rect key="frame" x="0.0" y="-6" width="360" height="56"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search or enter website name" translatesAutoresizingMaskIntoConstraints="NO" id="ULX-XB-NvN">
+                                    <rect key="frame" x="0.0" y="-5.5" width="359" height="56"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="go" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
                                 </searchBar>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello World" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kem-zE-iOm">
-                                    <rect key="frame" x="-8" y="22" width="375" height="20"/>
+                                    <rect key="frame" x="0.0" y="19" width="375.5" height="22.5"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                    <gestureRecognizers/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="B0n-h4-37L">
-                                    <rect key="frame" x="-8" y="44" width="375" height="2"/>
+                                    <rect key="frame" x="0.0" y="42" width="375" height="3"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 </progressView>
                             </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.88835609100000001" green="1" blue="0.3169890548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <gestureRecognizers/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="Uwa-iq-cqH" appends="YES" id="1yc-6Q-gi2"/>
+                            </connections>
                         </view>
                     </navigationItem>
                     <connections>
@@ -476,6 +481,7 @@
                         <outlet property="searchEffectsView" destination="Kcv-GB-gi6" id="2vv-4a-rhC"/>
                         <outlet property="searchResultsTable" destination="w49-69-Z4R" id="TcK-oe-sqx"/>
                         <outlet property="tabsButton" destination="zRA-rK-mSr" id="ilW-4a-F0n"/>
+                        <outlet property="tapOnBarGesture" destination="Uwa-iq-cqH" id="DYv-Oj-Yey"/>
                         <outlet property="titleBar" destination="kem-zE-iOm" id="3wf-uG-Jh7"/>
                         <outlet property="toolbar" destination="YbF-5e-CmW" id="bU3-o1-IUw"/>
                     </connections>
@@ -487,8 +493,14 @@
                         <outlet property="delegate" destination="8rJ-Kc-sve" id="lhz-MD-0za"/>
                     </connections>
                 </pongPressGestureRecognizer>
+                <tapGestureRecognizer id="Uwa-iq-cqH">
+                    <connections>
+                        <action selector="tapOnBarDetected:" destination="8rJ-Kc-sve" id="EfQ-Rx-yzR"/>
+                        <outlet property="delegate" destination="8rJ-Kc-sve" id="9c3-jd-C91"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1509.5999999999999" y="344.97751124437787"/>
+            <point key="canvasLocation" x="1508.9955022488757" y="344.80000000000001"/>
         </scene>
         <!--Downloads View Controller-->
         <scene sceneID="AJh-6B-p9f">
