@@ -9,6 +9,7 @@
 import UIKit
 import WebKit
 
+
 class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate {
     
     //let initialPageUrl = "http://arstechnica.co.uk"
@@ -63,6 +64,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
     @IBOutlet weak var tapOnBarGesture: UITapGestureRecognizer!
     
+    var flexibleHeightBar: FlexibleHeightBar?
+    
     @IBAction func unwindToBrowserViewController(segue:UIStoryboardSegue) {
         
     }
@@ -112,7 +115,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                        constant: 0)
         view.addConstraints([height, width])
         
-        webView.scrollView.delegate = self;
+        //webView.scrollView.delegate = self;
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoBack), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoForward), options: .new, context: nil)
@@ -133,25 +136,98 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         updateContentInsets()
     }
     
+    let statusBarHeight: CGFloat = 20.0
+    let labelBarHeight: CGFloat = 20.0
+    let searchBarHeight: CGFloat = 56.0
+
     private func configureSearchController() {
-        let searchBar = self.searchBar!
+        let minBarHeight: CGFloat = statusBarHeight + labelBarHeight
+        let maxBarHeight: CGFloat = statusBarHeight + searchBarHeight
+        let screenWidth: CGFloat = UIScreen.main.bounds.width
+        
+        let searchBar = UISearchBar()
+        
+        self.searchBar = searchBar
         
         searchBar.delegate = self
         searchBar.showsCancelButton = false
+        searchBar.showsBookmarkButton = false
         searchBar.showsScopeBar = false
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
         searchBar.enablesReturnKeyAutomatically = true
         searchBar.keyboardType = .URL
         searchBar.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
+        searchBar.frame = CGRect(x: 0.0,
+                                 y: statusBarHeight,
+                                 width: screenWidth,
+                                 height: searchBarHeight)
         
         definesPresentationContext = true
+        
+        flexibleHeightBar = FlexibleHeightBar(frame: CGRect(x: 0.0,
+                                                            y: 0.0,
+                                                            width: self.view.frame.size.width,
+                                                            height: maxBarHeight))
+        let fxView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        fxView.sizeToFit()
+        fxView.frame = CGRect(x: 0, y: -20, width: screenWidth, height: maxBarHeight)
+        flexibleHeightBar!.clipsToBounds = true
+        flexibleHeightBar!.addSubview(fxView)
+        
+        webView.scrollView.contentInset = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
+        webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
+        
+        let behaviourDefiner = FacebookBarBehaviorDefiner()
+        behaviourDefiner.thresholdNegativeDirection = 0.0
+        behaviourDefiner.thresholdFromTop = 0.0
+        behaviourDefiner.thresholdPositiveDirection = 0.0
+        flexibleHeightBar!.behaviorDefiner = behaviourDefiner
+        
+        webView.scrollView.delegate = flexibleHeightBar!.behaviorDefiner
+        
+        let titleBar = UILabel()
+        titleBar.text = ""
+        titleBar.font = UIFont.systemFont(ofSize: UIFont.systemFontSize)
+        //titleBar.textColor = UIColor.white
+        titleBar.sizeToFit()
+        
+        self.titleBar = titleBar
+        
+        
+        let progressView = UIProgressView()
+        progressView.sizeToFit()
+        self.progressView = progressView
+        
+        //searchBar.bounds = CGRect(x: 0, y: 20.0, width: flexibleHeightBar!.bounds.size.width, height: flexibleHeightBar!.bounds.size.height)
 
-        navigationController!.navigationItem.titleView = searchBar
+        //barView.removeFromSuperview()
+        //barView.isHidden = true
+        //barView.frame = CGRect(x: 0.0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: barView.frame.height)
+        flexibleHeightBar!.addSubview(searchBar)
+        flexibleHeightBar!.addSubview(titleBar)
+        flexibleHeightBar!.addSubview(progressView)
+
+        flexibleHeightBar!.minimumBarHeight = minBarHeight
+        flexibleHeightBar!.maximumBarHeight = maxBarHeight
         
-        let titleBar = self.titleBar!
+        flexibleHeightBar!.backgroundColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)//UIColor(red:0.86, green:0.25, blue:0.23, alpha:1)
+        self.view.addSubview(flexibleHeightBar!)
         
-        navigationController!.navigationItem.titleView = titleBar
+
+        setSearchBarProgressStates(searchBar,
+                                   for: flexibleHeightBar!)
+        
+        
+        
+        
+
+
+        //navigationController!.navigationItem.titleView = searchBar
+        
+        //let titleBar = self.titleBar!
+        
+        //navigationController!.navigationItem.titleView = titleBar
 
 //        searchController.searchResultsUpdater = self
 //        searchController.dimsBackgroundDuringPresentation = false
@@ -177,15 +253,66 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                 alpha: 1)
         UISearchBar.appearance().barTintColor = barColour
         UISearchBar.appearance().tintColor = self.tabBarController!.tabBar.tintColor
-        UITextView.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = barColour
+        UITextView.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.clear//barColour
         
         // Hide the search icon.
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).leftViewMode = .never
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).rightViewMode = .never
         
         searchTextField = searchBar.value(forKey: "searchField") as! UITextField
         searchTextField.leftViewMode = UITextFieldViewMode.never
         searchTextField.textAlignment = .center
     }
+    
+    func setSearchBarProgressStates(_ searchBar: UISearchBar,
+                                    for flexibleHeightBar: FlexibleHeightBar) {
+        let initialLayoutAttributes = FlexibleHeightBarSubviewLayoutAttributes()
+        initialLayoutAttributes.size = searchBar.frame.size
+        initialLayoutAttributes.center = CGPoint(x: searchBar.bounds.midX,
+                                                 y: searchBar.bounds.midY + statusBarHeight)
+        
+        flexibleHeightBar.addLayoutAttributes(initialLayoutAttributes,
+                                              forSubview: searchBar,
+                                              forProgress: 0.0)
+        
+        // Create a final set of layout attributes based on the same values as the initial layout attributes
+        let finalLayoutAttributes = FlexibleHeightBarSubviewLayoutAttributes(layoutAttributes: initialLayoutAttributes)
+        finalLayoutAttributes.alpha = 0.0
+        let translation = CGAffineTransform(translationX: 0.0,
+                                            y: -statusBarHeight)
+        let scale = CGAffineTransform(scaleX: 0.2,
+                                      y: 0.2)
+        finalLayoutAttributes.transform = scale.concatenating(translation)
+        
+        flexibleHeightBar.addLayoutAttributes(finalLayoutAttributes,
+                                              forSubview: searchBar,
+                                              forProgress: 0.25)
+    }
+    
+//    func setFXViewProgressStates(_ fxView: UIVisualEffectView,
+//                                 for flexibleHeightBar: FlexibleHeightBar) {
+//        let initialLayoutAttributes = FlexibleHeightBarSubviewLayoutAttributes()
+//        initialLayoutAttributes.size = fxView.frame.size
+//        initialLayoutAttributes.center = CGPoint(x: fxView.bounds.midX,
+//                                                 y: fxView.bounds.midY)
+//
+//        flexibleHeightBar!.addLayoutAttributes(initialLayoutAttributes,
+//                                               forSubview: fxView,
+//                                               forProgress: 0.0)
+//
+//        // Create a final set of layout attributes based on the same values as the initial layout attributes
+//        let finalLayoutAttributes = FlexibleHeightBarSubviewLayoutAttributes(layoutAttributes: initialLayoutAttributes)
+//        finalLayoutAttributes.alpha = 0.0
+//        let translation = CGAffineTransform(translationX: 0.0,
+//                                            y: -statusBarHeight)
+//        let scale = CGAffineTransform(scaleX: 0.2,
+//                                      y: 0.2)
+//        finalLayoutAttributes.transform = scale.concatenating(translation)
+//
+//        flexibleHeightBar!.addLayoutAttributes(finalLayoutAttributes,
+//                                               forSubview: searchBar,
+//                                               forProgress: 0.0)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -278,9 +405,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         }
         
         // BUG: Sometimes this doesn't correctly animate the fade - because it ends up not quite at the top...
-        webView.scrollView.setContentOffset(CGPoint(x: (webView.scrollView.contentInset.left + webView.scrollView.contentInset.right) / 2,
-                                                    y: targetY),
-                                            animated: true)
+//        webView.scrollView.setContentOffset(CGPoint(x: (webView.scrollView.contentInset.left + webView.scrollView.contentInset.right) / 2,
+//                                                    y: targetY),
+//                                             animated: true)
     }
     
     // TODO: Only show domain and lock symbol (centred) when the search is inactive.
@@ -439,22 +566,23 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if lastContentOffsetAtY < scrollView.contentOffset.y {
-            print("Bottom")
-            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
-        } else if lastContentOffsetAtY > scrollView.contentOffset.y {
-            print("Top")
-            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
-        }
+//        if lastContentOffsetAtY < scrollView.contentOffset.y {
+//            print("Bottom")
+//            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
+//        } else if lastContentOffsetAtY > scrollView.contentOffset.y {
+//            print("Top")
+//            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
+//        }
     }
     
     func shrinkTheCustomNavigationBar(contentOffsetY: CGFloat) {
+        print("ContentYOffset: \(contentOffsetY)")
         let navBar = self.navigationController!.navigationBar
         let rect = navBar.frame
         
         let navBarHeight: CGFloat = UIScreen.main.bounds.size.width > UIScreen.main.bounds.height ? 32 : 44
         
-        let yOffset = min(max(-(contentOffsetY + navBarHeight), 0), 20)
+        let yOffset = min(max(-(contentOffsetY + navBarHeight), -10), 20)
         let alpha = yOffset / 20
         let invAlpha = 1 - alpha
         

@@ -329,6 +329,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DJM-Gj-GnJ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aEH-Bu-eNv">
+                                        <rect key="frame" x="0.0" y="-20" width="375" height="76"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="HJc-5a-ZcP">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                        <blurEffect style="light"/>
+                                    </visualEffectView>
+                                    <searchBar contentMode="redraw" fixedFrame="YES" text="Hello World" placeholder="Search or enter website name" translatesAutoresizingMaskIntoConstraints="NO" id="ULX-XB-NvN">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <offsetWrapper key="searchTextPositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="go" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
+                                    </searchBar>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello World" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kem-zE-iOm">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="B0n-h4-37L">
+                                        <rect key="frame" x="0.0" y="54" width="375" height="4"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                    </progressView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Uwa-iq-cqH" appends="YES" id="1yc-6Q-gi2"/>
+                                </connections>
+                            </view>
                             <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kcv-GB-gi6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rTe-BH-Vu9">
@@ -439,37 +479,7 @@
                             <outletCollection property="gestureRecognizers" destination="5UH-PY-sgg" appends="YES" id="CG8-kc-sRh"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="WjX-IR-Iy3">
-                        <nil key="title"/>
-                        <view key="titleView" contentMode="scaleToFill" id="DJM-Gj-GnJ">
-                            <rect key="frame" x="8" y="0.0" width="359" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
-                            <subviews>
-                                <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search or enter website name" translatesAutoresizingMaskIntoConstraints="NO" id="ULX-XB-NvN">
-                                    <rect key="frame" x="0.0" y="-5.5" width="359" height="56"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="go" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
-                                </searchBar>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello World" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kem-zE-iOm">
-                                    <rect key="frame" x="0.0" y="19" width="375.5" height="22.5"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                    <gestureRecognizers/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="B0n-h4-37L">
-                                    <rect key="frame" x="0.0" y="42" width="375" height="3"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                </progressView>
-                            </subviews>
-                            <color key="backgroundColor" red="0.88835609100000001" green="1" blue="0.3169890548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <gestureRecognizers/>
-                            <connections>
-                                <outletCollection property="gestureRecognizers" destination="Uwa-iq-cqH" appends="YES" id="1yc-6Q-gi2"/>
-                            </connections>
-                        </view>
-                    </navigationItem>
+                    <tabBarItem key="tabBarItem" title="Browser" image="browser" id="iMC-d5-2Jx"/>
                     <connections>
                         <outlet property="backButton" destination="AAp-3M-c9b" id="yVR-ma-FTP"/>
                         <outlet property="barView" destination="DJM-Gj-GnJ" id="ElH-EF-641"/>
@@ -611,7 +621,7 @@
                                 </connections>
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qx4-AK-ax4">
-                                <rect key="frame" x="0.0" y="104" width="375" height="64"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="dhZ-JP-rQ6"/>
                                 </constraints>
@@ -630,7 +640,7 @@
                                 </items>
                             </toolbar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloads" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8j-xc-XMp">
-                                <rect key="frame" x="139" y="134" width="97.5" height="24"/>
+                                <rect key="frame" x="139" y="50" width="97.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -672,7 +682,7 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="a7h-Ij-PVY" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
-                        <segue destination="Q98-MA-fUx" kind="relationship" relationship="viewControllers" id="IfB-Id-y2X"/>
+                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="Isj-E1-THR"/>
                         <segue destination="Ypn-pn-ljV" kind="relationship" relationship="viewControllers" id="P6c-yo-xWo"/>
                     </connections>
                 </tabBarController>
@@ -741,24 +751,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5rh-PU-05e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="750" y="1127"/>
-        </scene>
-        <!--Browser-->
-        <scene sceneID="a8i-rc-HNB">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Q98-MA-fUx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Browser" image="browser" id="Bpi-NL-RRT"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Gaq-lz-gZk">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="rootViewController" id="Dr3-Rf-zop"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MWs-kg-ItV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="748.79999999999995" y="345.42728635682164"/>
         </scene>
     </scenes>
     <resources>

@@ -21,6 +21,12 @@
 		63D026E51F4F4E6B00006275 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D026E41F4F4E6B00006275 /* Download.swift */; };
 		71F28ACDE4A6A2675A6785C3 /* Pods_SPV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 064FA0CADD57C68A9783FC5F /* Pods_SPV.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F83143D1C156A235167784EC /* Pods_SPVUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF0ACB10349E2AD198B3392 /* Pods_SPVUITests.framework */; };
+		F902F7DB1F8FD56100AFA1C5 /* FlexibleHeightBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F902F7D41F8FD55F00AFA1C5 /* FlexibleHeightBar.swift */; };
+		F902F7DC1F8FD56100AFA1C5 /* TableViewDelegateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F902F7D51F8FD55F00AFA1C5 /* TableViewDelegateHandler.swift */; };
+		F902F7DD1F8FD56100AFA1C5 /* SquareCashBarBehaviorDefiner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F902F7D61F8FD56000AFA1C5 /* SquareCashBarBehaviorDefiner.swift */; };
+		F902F7DE1F8FD56100AFA1C5 /* FlexibleHeightBarSubviewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F902F7D71F8FD56000AFA1C5 /* FlexibleHeightBarSubviewLayoutAttributes.swift */; };
+		F902F7DF1F8FD56100AFA1C5 /* FacebookBarBehaviorDefiner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F902F7D81F8FD56000AFA1C5 /* FacebookBarBehaviorDefiner.swift */; };
+		F902F7E01F8FD56100AFA1C5 /* FlexibleHeightBarBehaviorDefiner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F902F7DA1F8FD56100AFA1C5 /* FlexibleHeightBarBehaviorDefiner.swift */; };
 		F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */; };
 		F914D4F31F34D4BA00B9042E /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F21F34D4BA00B9042E /* PhotoCell.swift */; };
 		F914D4F51F38C33A00B9042E /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F41F38C33A00B9042E /* MediaManager.swift */; };
@@ -105,6 +111,13 @@
 		BC127EBAD65730C6F23861F8 /* Pods-SPVTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPVTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SPVTests/Pods-SPVTests.release.xcconfig"; sourceTree = "<group>"; };
 		EB0A1F310F3881531D77EFA8 /* Pods_SPVTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SPVTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F06C7ADA6F4E39F46D3D4F51 /* Pods-SPVUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPVUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SPVUITests/Pods-SPVUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F902F7D31F8FD55F00AFA1C5 /* FlexibleHeightBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlexibleHeightBar.h; sourceTree = "<group>"; };
+		F902F7D41F8FD55F00AFA1C5 /* FlexibleHeightBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeightBar.swift; sourceTree = "<group>"; };
+		F902F7D51F8FD55F00AFA1C5 /* TableViewDelegateHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDelegateHandler.swift; sourceTree = "<group>"; };
+		F902F7D61F8FD56000AFA1C5 /* SquareCashBarBehaviorDefiner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareCashBarBehaviorDefiner.swift; sourceTree = "<group>"; };
+		F902F7D71F8FD56000AFA1C5 /* FlexibleHeightBarSubviewLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeightBarSubviewLayoutAttributes.swift; sourceTree = "<group>"; };
+		F902F7D81F8FD56000AFA1C5 /* FacebookBarBehaviorDefiner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookBarBehaviorDefiner.swift; sourceTree = "<group>"; };
+		F902F7DA1F8FD56100AFA1C5 /* FlexibleHeightBarBehaviorDefiner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleHeightBarBehaviorDefiner.swift; sourceTree = "<group>"; };
 		F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBBarController.swift; sourceTree = "<group>"; };
 		F914D4F21F34D4BA00B9042E /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		F914D4F41F38C33A00B9042E /* MediaManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
@@ -233,6 +246,20 @@
 				5FF0ACB10349E2AD198B3392 /* Pods_SPVUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F902F7C51F8FD45E00AFA1C5 /* FlexibleHeightBar */ = {
+			isa = PBXGroup;
+			children = (
+				F902F7D81F8FD56000AFA1C5 /* FacebookBarBehaviorDefiner.swift */,
+				F902F7D31F8FD55F00AFA1C5 /* FlexibleHeightBar.h */,
+				F902F7D41F8FD55F00AFA1C5 /* FlexibleHeightBar.swift */,
+				F902F7DA1F8FD56100AFA1C5 /* FlexibleHeightBarBehaviorDefiner.swift */,
+				F902F7D71F8FD56000AFA1C5 /* FlexibleHeightBarSubviewLayoutAttributes.swift */,
+				F902F7D61F8FD56000AFA1C5 /* SquareCashBarBehaviorDefiner.swift */,
+				F902F7D51F8FD55F00AFA1C5 /* TableViewDelegateHandler.swift */,
+			);
+			name = FlexibleHeightBar;
 			sourceTree = "<group>";
 		};
 		F98B8C331F767D2D00719CA6 /* Media Viewer */ = {
@@ -368,6 +395,7 @@
 		F9BABAA81F28F92F00000D9B /* SPV */ = {
 			isa = PBXGroup;
 			children = (
+				F902F7C51F8FD45E00AFA1C5 /* FlexibleHeightBar */,
 				F98B8C391F767E2300719CA6 /* Common */,
 				F98B8C331F767D2D00719CA6 /* Media Viewer */,
 				F98B8C361F767DD000719CA6 /* Browser */,
@@ -724,6 +752,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F902F7DE1F8FD56100AFA1C5 /* FlexibleHeightBarSubviewLayoutAttributes.swift in Sources */,
 				63396F0E1F40FB30000E5F3E /* DownloadManager.swift in Sources */,
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
@@ -738,6 +767,7 @@
 				F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */,
 				F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,
+				F902F7E01F8FD56100AFA1C5 /* FlexibleHeightBarBehaviorDefiner.swift in Sources */,
 				F919C7AD1F699325008372F6 /* MediaInfoCell.swift in Sources */,
 				F9C50C0E1F5E7F2900EE79E5 /* Video.swift in Sources */,
 				F9C50C101F5E7F6200EE79E5 /* MediaInfo.swift in Sources */,
@@ -745,15 +775,19 @@
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
 				F919C7AF1F699357008372F6 /* MediaInfoHeaderCell.swift in Sources */,
 				F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */,
+				F902F7DC1F8FD56100AFA1C5 /* TableViewDelegateHandler.swift in Sources */,
 				F9C50C0C1F5E7F0600EE79E5 /* Photo.swift in Sources */,
+				F902F7DF1F8FD56100AFA1C5 /* FacebookBarBehaviorDefiner.swift in Sources */,
 				F914D4F31F34D4BA00B9042E /* PhotoCell.swift in Sources */,
 				F9F2D3DB1F44202F00FD6F78 /* CircularProgressIndicator.swift in Sources */,
 				F9C50C0A1F5E7EEF00EE79E5 /* Media.swift in Sources */,
 				F9F5D0081F683BD100E16DAA /* MediaInfoViewController.swift in Sources */,
 				F9F2D3D61F42D3B200FD6F78 /* DownloadingCell.swift in Sources */,
+				F902F7DB1F8FD56100AFA1C5 /* FlexibleHeightBar.swift in Sources */,
 				F97943B01F6FA96600739030 /* MediaTagCell.swift in Sources */,
 				F9C50C081F59376000EE79E5 /* FakeDownloadManager.swift in Sources */,
 				F9BABADA1F28FB6D00000D9B /* SettingsViewController.swift in Sources */,
+				F902F7DD1F8FD56100AFA1C5 /* SquareCashBarBehaviorDefiner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
