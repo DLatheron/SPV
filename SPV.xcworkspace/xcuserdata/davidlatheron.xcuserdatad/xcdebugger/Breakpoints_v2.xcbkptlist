@@ -6,144 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SPV/MediaMetadata.swift"
-            timestampString = "526374196.53063"
+            filePath = "SPV/FlexibleHeightBar.swift"
+            timestampString = "529785719.344716"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "init(jsonString:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SPV/AlbumsViewController.swift"
-            timestampString = "527410782.655768"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "added(media:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SPV/AlbumsViewController.swift"
-            timestampString = "527410782.655768"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
-            landmarkName = "changed(media:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SPV.AlbumsViewController.changed(media: SPV.Media) -&gt; ()"
-                  moduleName = "SPV"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "529775488.168086"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "128"
-                  endingLineNumber = "128"
-                  offsetFromSymbolStart = "21">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in SPV.AlbumsViewController.changed(media: SPV.Media) -&gt; ()"
-                  moduleName = "SPV"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "529775488.172704"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "129"
-                  endingLineNumber = "129"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SPV/AlbumsViewController.swift"
-            timestampString = "527410782.655768"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
-            landmarkName = "deleted(media:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SPV.AlbumsViewController.deleted(media: SPV.Media) -&gt; ()"
-                  moduleName = "SPV"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "529775488.186566"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "137"
-                  endingLineNumber = "137"
-                  offsetFromSymbolStart = "21">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in SPV.AlbumsViewController.deleted(media: SPV.Media) -&gt; ()"
-                  moduleName = "SPV"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "529775488.191623"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "138"
-                  endingLineNumber = "138"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SPV/MediaInfoViewController.swift"
-            timestampString = "527446296.156964"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
-            landmarkName = "returnToPhotoViewController(_:)"
+            startingLineNumber = "366"
+            endingLineNumber = "366"
+            landmarkName = "apply(floorLayoutAttributes:ceilingLayoutAttributes:toSubview:withFloorProgress:ceilingProgress:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -153,13 +25,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SPV/FacebookBarBehaviorDefiner.swift"
-            timestampString = "529775487.937561"
+            filePath = "SPV/FlexibleHeightBar.swift"
+            timestampString = "529785719.345472"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
-            landmarkName = "scrollViewWillBeginDragging(_:)"
+            startingLineNumber = "365"
+            endingLineNumber = "365"
+            landmarkName = "apply(floorLayoutAttributes:ceilingLayoutAttributes:toSubview:withFloorProgress:ceilingProgress:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -169,13 +41,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SPV/FlexibleHeightBarBehaviorDefiner.swift"
-            timestampString = "529775487.937667"
+            filePath = "SPV/FlexibleHeightBar.swift"
+            timestampString = "529785719.345616"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
-            landmarkName = "snapToProgress(progress:scrollView:)"
+            startingLineNumber = "362"
+            endingLineNumber = "362"
+            landmarkName = "apply(floorLayoutAttributes:ceilingLayoutAttributes:toSubview:withFloorProgress:ceilingProgress:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -186,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SPV/BrowserViewController.swift"
-            timestampString = "529775487.937752"
+            timestampString = "529785719.345734"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "315"
-            endingLineNumber = "315"
-            landmarkName = "setSearchBarProgressStates(_:for:)"
+            startingLineNumber = "416"
+            endingLineNumber = "416"
+            landmarkName = "setupSearchFieldProgressStates(searchField:flexibleHeightBar:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -202,28 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SPV/BrowserViewController.swift"
-            timestampString = "529775487.941551"
+            timestampString = "529785719.349434"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "324"
-            endingLineNumber = "324"
-            landmarkName = "setSearchBarProgressStates(_:for:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SPV/BrowserViewController.swift"
-            timestampString = "529775487.944558"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "232"
-            endingLineNumber = "232"
-            landmarkName = "setupFlexibleHeightBar()"
+            startingLineNumber = "426"
+            endingLineNumber = "426"
+            landmarkName = "setupSearchFieldProgressStates(searchField:flexibleHeightBar:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

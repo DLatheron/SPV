@@ -29,6 +29,8 @@ public class FlexibleHeightBarSubviewLayoutAttributes {
     public var alpha: CGFloat = 1.0 // Possible values are between 0.0 (transparent) and 1.0 (opaque). The default is 1.0.
     public var zIndex = 0.0 // Specifies the item’s position on the z axis.
     public var hidden = false
+    public var borderAlpha: CGFloat = 1.0
+    public var backgroundAlpha: CGFloat = 1.0
    
     // MARK: - Computed Properties -
     
@@ -179,6 +181,8 @@ public class FlexibleHeightBarSubviewLayoutAttributes {
         alpha = layoutAttributes.alpha
         zIndex = layoutAttributes.zIndex
         hidden = layoutAttributes.hidden
+        borderAlpha = layoutAttributes.borderAlpha
+        backgroundAlpha = layoutAttributes.backgroundAlpha
     }
 }
 
@@ -186,7 +190,7 @@ extension FlexibleHeightBarSubviewLayoutAttributes: CustomStringConvertible {
     
     public var description: String {
         get {
-            return "FlexibleHeightBarSubviewLayoutAttributes = {\n\talpha: \(alpha)\n\tzIndex: \(zIndex)\n\thidden: \(hidden)\n\tframe: \(frame)\n\tbounds: \(bounds)\n\tcenter: \(center)\n\tsize: \(size)\n\ttransform3D: \(transform3D)\n\ttransform: \(transform)\n}"
+            return "FlexibleHeightBarSubviewLayoutAttributes = {\n\talpha: \(alpha)\n\tzIndex: \(zIndex)\n\thidden: \(hidden)\n\tframe: \(frame)\n\tbounds: \(bounds)\n\tcenter: \(center)\n\tsize: \(size)\n\ttransform3D: \(transform3D)\n\ttransform: \(transform)\n\tborderAlpha \(borderAlpha)\n\tbackgroundAlpha: \(backgroundAlpha)\n}"
         }
     }
 }

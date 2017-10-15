@@ -352,9 +352,20 @@ open class FlexibleHeightBar: UIView {
         
         // Interpolate alpha
         let alpha = interpolate(from: floorLayoutAttributes.alpha, to: ceilingLayoutAttributes.alpha, withProgress: relativeProgress)
-        
+        let borderAlpha = interpolate(from: floorLayoutAttributes.borderAlpha, to: ceilingLayoutAttributes.borderAlpha, withProgress: relativeProgress)
+        let backgroundAlpha = interpolate(from: floorLayoutAttributes.backgroundAlpha, to: ceilingLayoutAttributes.backgroundAlpha, withProgress: relativeProgress)
+
         subview.alpha = alpha
         subview.layer.zPosition = CGFloat(floorLayoutAttributes.zIndex)
+        if let borderColour = subview.layer.borderColor {
+            let newColour = UIColor(cgColor: borderColour).withAlphaComponent(borderAlpha)
+            subview.layer.borderColor = newColour.cgColor
+            subview.layer.isOpaque = false
+        }
+        if let backgroundColour = subview.backgroundColor {
+            let newColour = backgroundColour.withAlphaComponent(backgroundAlpha)
+            subview.backgroundColor = newColour
+        }
         subview.isHidden = floorLayoutAttributes.hidden
     }
     

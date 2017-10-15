@@ -48,7 +48,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     @IBOutlet weak var barView: UIView!
     weak var searchField: UITextField!
-    weak var searchFieldBorder: UIImageView!
+    weak var searchFieldBorder: UIImageView?
     
 //    @IBOutlet weak var titleBar: UILabel!
     
@@ -137,11 +137,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         updateContentInsets()
     }
     
-    let statusBarHeight: CGFloat = 20.0
+    //let statusBarHeight: CGFloat = 20.0
     let labelBarHeight: CGFloat = 20.0
     let searchBarHeight: CGFloat = 46.0
     
-    private func setupSearchBar(parentView: UIView) -> UITextField {
+    private func setupSearchField(parentView: UIView) -> UITextField {
         let searchField = UITextField()
         
         searchField.delegate = self
@@ -154,6 +154,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         searchField.textAlignment = .center
         //searchField.backgroundColor = UIColor.clear
         searchField.clearButtonMode = .whileEditing
+        searchField.backgroundColor = barColour
+        
         parentView.addSubview(searchField)
         
         searchField.bounds = CGRect(x: 8,
@@ -166,7 +168,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 //                                   height: 30)
 
         self.searchField = searchField
-        self.searchFieldBorder = searchField.subviews[0] as! UIImageView
+        self.searchFieldBorder = searchField.subviews[0] as? UIImageView
 
         return searchField
     }
@@ -185,11 +187,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     private var landscape: Bool {
         get {
-            return screenWidth < screenHeight
+            return screenWidth > screenHeight
         }
     }
     
-    private var statusBarHeigt: CGFloat {
+    private var statusBarHeight: CGFloat {
         get {
             return landscape ? 0 : 20.0
         }
@@ -263,7 +265,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         let flexibleHeightBar = setupFlexibleHeightBar()
         self.view.addSubview(flexibleHeightBar)
 
-        let searchBar = setupSearchBar(parentView: flexibleHeightBar)
+        let searchField = setupSearchField(parentView: flexibleHeightBar)
         
         webView.scrollView.contentInset = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
         webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
@@ -279,8 +281,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         //barView.frame = CGRect(x: 0.0, y: statusBarHeight, width: UIScreen.main.bounds.size.width, height: barView.frame.height)
         flexibleHeightBar.addSubview(progressView)
 
-        setSearchBarProgressStates(searchBar,
-                                   for: flexibleHeightBar)
+        setupSearchFieldProgressStates(searchField: searchField,
+                                       flexibleHeightBar: flexibleHeightBar)
 
         
         //navigationController!.navigationItem.titleView = searchBar
@@ -308,43 +310,133 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 //        searchController.searchBar.delegate = self
     }
     
-    func setSearchBarProgressStates(_ searchBar: UITextField,// UISearchBar,
-                                    for flexibleHeightBar: FlexibleHeightBar) {
-        let initialLayoutAttributes = FlexibleHeightBarSubviewLayoutAttributes()
-        initialLayoutAttributes.size = searchBar.frame.size
-        initialLayoutAttributes.center = CGPoint(x: searchBar.bounds.midX,
-                                                 y: searchBar.bounds.midY + statusBarHeight)
+    func setSearchFieldBorderProgressState(flexibleHeightBar: FlexibleHeightBar,
+                                           searchFieldBorder: UIImageView?) {
+        if let searchFieldBorder = searchFieldBorder {
+            let initialState = FlexibleHeightBarSubviewLayoutAttributes()
+            initialState.alpha = 1
+            flexibleHeightBar.addLayoutAttributes(initialState,
+                                                  forSubview: searchFieldBorder,
+                                                  forProgress: 0.0)
+            
+            let finalState = FlexibleHeightBarSubviewLayoutAttributes()
+            finalState.alpha = 0
+            flexibleHeightBar.addLayoutAttributes(finalState,
+                                                  forSubview: searchFieldBorder,
+                                                  forProgress: 0.2)
+        }
+    }
+    
+    func setupInitialLayout(_ view: UIView?,
+                            flexibleHeightBar: FlexibleHeightBar,
+                            offset: CGFloat) -> FlexibleHeightBarSubviewLayoutAttributes {
+        let layout = FlexibleHeightBarSubviewLayoutAttributes()
+
+        if let view = view {
+            layout.size = view.frame.size
+            layout.borderAlpha = 1
+            layout.backgroundAlpha = 1
+            layout.center = CGPoint(x: view.bounds.midX,
+                                    y: view.bounds.midY + offset)
+            
+            flexibleHeightBar.addLayoutAttributes(layout,
+                                                  forSubview: view,
+                                                  forProgress: 0.0)
+        }
         
-        flexibleHeightBar.addLayoutAttributes(initialLayoutAttributes,
-                                              forSubview: searchBar,
-                                              forProgress: 0.0)
+        return layout
+    }
+    
+    func setupMiddleLayout(_ view: UIView?,
+                           flexibleHeightBar: FlexibleHeightBar,
+                           previousLayout: FlexibleHeightBarSubviewLayoutAttributes,
+                           translationY: CGFloat,
+                           scale: CGFloat,
+                           alpha: CGFloat) -> FlexibleHeightBarSubviewLayoutAttributes {
+        let layout = FlexibleHeightBarSubviewLayoutAttributes(layoutAttributes: previousLayout)
+
+        if let view = view {
+            let translation = CGAffineTransform(translationX: 0.0,
+                                                y: translationY)
+            let scaleTransform = CGAffineTransform(scaleX: scale,
+                                                   y: scale)
+            layout.transform = scaleTransform.concatenating(translation)
+            layout.alpha = alpha
+            layout.borderAlpha = alpha
+            layout.backgroundAlpha = alpha
+            
+            flexibleHeightBar.addLayoutAttributes(layout,
+                                                  forSubview: view,
+                                                  forProgress: 0.25)
+        }
+        return layout
+    }
+    
+    func setupFinalLayout(_ view: UIView?,
+                          flexibleHeightBar: FlexibleHeightBar,
+                          previousLayout: FlexibleHeightBarSubviewLayoutAttributes,
+                          translationY: CGFloat,
+                          scale: CGFloat,
+                          alpha: CGFloat) -> FlexibleHeightBarSubviewLayoutAttributes {
+        let layout = FlexibleHeightBarSubviewLayoutAttributes(layoutAttributes: previousLayout)
+        
+        if let view = view {
+            let translation = CGAffineTransform(translationX: 0.0,
+                                                y: translationY)
+            let scaleTransform = CGAffineTransform(scaleX: scale,
+                                          y: scale)
+            layout.transform = scaleTransform.concatenating(translation)
+            layout.alpha = alpha
+            layout.borderAlpha = 0
+            layout.backgroundAlpha = 0
+            
+            flexibleHeightBar.addLayoutAttributes(layout,
+                                                  forSubview: view,
+                                                  forProgress: 1.0)
+        }
+        
+        return layout
+    }
+    
+    func interpolate(from fromValue: CGFloat,
+                     to toValue: CGFloat,
+                     withProgress progress: CGFloat) -> CGFloat {
+        return fromValue - ((fromValue - toValue) * progress)
+    }
+    
+    func setupSearchFieldProgressStates(searchField: UITextField,
+                                        flexibleHeightBar: FlexibleHeightBar) {
+        //let initialProgress: CGFloat = 0.0
+        let middleProgress: CGFloat = 0.20
+        let finalProgress: CGFloat = 1.0
+        
+        let translationY: CGFloat = -16.0
+        let scale: CGFloat = 0.75
+        
+        let midTranslationY = interpolate(from: 0.0, to: translationY, withProgress: middleProgress)
+        let finalTranslationY = interpolate(from: 0.0, to: translationY, withProgress: finalProgress)
+        
+        let midScale = interpolate(from: 1.0, to: scale, withProgress: middleProgress)
+        let finalScale = interpolate(from: 1.0, to: scale, withProgress: finalProgress)
+        
+        // Calculate the translation as a proportion of progress.
+        
+        var layout: FlexibleHeightBarSubviewLayoutAttributes
+        
+        layout = setupInitialLayout(searchField, flexibleHeightBar: flexibleHeightBar, offset: statusBarHeight)
+        layout = setupMiddleLayout(searchField, flexibleHeightBar: flexibleHeightBar, previousLayout: layout, translationY: midTranslationY, scale: midScale, alpha: 1.0)
+        layout = setupFinalLayout(searchField, flexibleHeightBar: flexibleHeightBar, previousLayout: layout, translationY: finalTranslationY, scale: finalScale, alpha: 1.0)
+
+        layout = setupInitialLayout(searchFieldBorder, flexibleHeightBar: flexibleHeightBar, offset: 0.0)
+        layout = setupMiddleLayout(searchFieldBorder, flexibleHeightBar: flexibleHeightBar, previousLayout: layout, translationY: 0.0, scale: 1.0, alpha: 0.0)
+        layout = setupFinalLayout(searchFieldBorder, flexibleHeightBar: flexibleHeightBar, previousLayout: layout, translationY: 0.0, scale: 1.0, alpha: 0.0)
 
         //let searchTextField = searchBar.value(forKey: "searchField") as! UITextField
-
-        let layoutAttr0 = FlexibleHeightBarSubviewLayoutAttributes()
-        layoutAttr0.alpha = 1
-        flexibleHeightBar.addLayoutAttributes(layoutAttr0,
-                                              forSubview: searchFieldBorder!,
-                                              forProgress: 0.0)
-
-        let layoutAttr1 = FlexibleHeightBarSubviewLayoutAttributes()
-        layoutAttr1.alpha = 0
-        flexibleHeightBar.addLayoutAttributes(layoutAttr1,
-                                              forSubview: searchFieldBorder!,
-                                              forProgress: 0.2)
+//        setSearchFieldBorderProgressState(flexibleHeightBar: flexibleHeightBar,
+//                                          searchFieldBorder: searchFieldBorder)
         
         // Create a final set of layout attributes based on the same values as the initial layout attributes
-        let finalLayoutAttributes = FlexibleHeightBarSubviewLayoutAttributes(layoutAttributes: initialLayoutAttributes)
-        //finalLayoutAttributes.alpha = 0.0
-        let translation = CGAffineTransform(translationX: 0.0,
-                                            y: -16.0)
-        let scale = CGAffineTransform(scaleX: 0.75,
-                                      y: 0.75)
-        finalLayoutAttributes.transform = scale.concatenating(translation)
-        
-        flexibleHeightBar.addLayoutAttributes(finalLayoutAttributes,
-                                              forSubview: searchBar,
-                                              forProgress: 1.0)
+
     }
     
 //    func setFXViewProgressStates(_ fxView: UIVisualEffectView,

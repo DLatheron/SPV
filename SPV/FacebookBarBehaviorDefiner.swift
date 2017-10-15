@@ -121,10 +121,6 @@ public class FacebookBarBehaviorDefiner: FlexibleHeightBarBehaviorDefiner {
     }
     
     public override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print("ScrollView.contentOffset: \(scrollView.contentOffset)")
-        
-        // -76 is correct for the bar + the status bar height, but the inset doesn't take the status bar into account... FUCK
-        
         super.scrollViewDidScroll(scrollView)
         if let flexHeightBar = flexibleHeightBar {
             
