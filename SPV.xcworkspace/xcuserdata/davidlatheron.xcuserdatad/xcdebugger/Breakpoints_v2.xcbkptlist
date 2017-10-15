@@ -58,7 +58,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "529677707.149596"
+                  timestampString = "529775488.168086"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "128"
@@ -73,7 +73,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "529677707.15243"
+                  timestampString = "529775488.172704"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "129"
@@ -106,7 +106,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "529677707.164317"
+                  timestampString = "529775488.186566"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "137"
@@ -121,7 +121,7 @@
                   moduleName = "SPV"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/davidlatheron/Development/Personal/SPV/SPV/AlbumsViewController.swift"
-                  timestampString = "529677707.170064"
+                  timestampString = "529775488.191623"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
@@ -153,24 +153,8 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SPV/BrowserViewController.swift"
-            timestampString = "529677706.864342"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "583"
-            endingLineNumber = "583"
-            landmarkName = "shrinkTheCustomNavigationBar(contentOffsetY:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "SPV/FacebookBarBehaviorDefiner.swift"
-            timestampString = "529677706.868586"
+            timestampString = "529775487.937561"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "78"
@@ -186,7 +170,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SPV/FlexibleHeightBarBehaviorDefiner.swift"
-            timestampString = "529677706.868692"
+            timestampString = "529775487.937667"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "97"
@@ -202,12 +186,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SPV/BrowserViewController.swift"
-            timestampString = "529677706.868778"
+            timestampString = "529775487.937752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
-            landmarkName = "configureSearchController()"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
+            landmarkName = "setSearchBarProgressStates(_:for:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -218,12 +202,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SPV/BrowserViewController.swift"
-            timestampString = "529677706.872633"
+            timestampString = "529775487.941551"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
-            landmarkName = "configureSearchController()"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
+            landmarkName = "setSearchBarProgressStates(_:for:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -234,12 +218,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SPV/BrowserViewController.swift"
-            timestampString = "529677706.877472"
+            timestampString = "529775487.944558"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "211"
-            endingLineNumber = "211"
-            landmarkName = "configureSearchController()"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
+            landmarkName = "setupFlexibleHeightBar()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

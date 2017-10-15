@@ -329,46 +329,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DJM-Gj-GnJ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aEH-Bu-eNv">
-                                        <rect key="frame" x="0.0" y="-20" width="375" height="76"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="HJc-5a-ZcP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        </view>
-                                        <blurEffect style="light"/>
-                                    </visualEffectView>
-                                    <searchBar contentMode="redraw" fixedFrame="YES" text="Hello World" placeholder="Search or enter website name" translatesAutoresizingMaskIntoConstraints="NO" id="ULX-XB-NvN">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <offsetWrapper key="searchTextPositionAdjustment" horizontal="0.0" vertical="0.0"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="go" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
-                                    </searchBar>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello World" textAlignment="center" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kem-zE-iOm">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="28"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <gestureRecognizers/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="B0n-h4-37L">
-                                        <rect key="frame" x="0.0" y="54" width="375" height="4"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                    </progressView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Uwa-iq-cqH" appends="YES" id="1yc-6Q-gi2"/>
-                                </connections>
-                            </view>
                             <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kcv-GB-gi6">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="rTe-BH-Vu9">
@@ -482,17 +442,13 @@
                     <tabBarItem key="tabBarItem" title="Browser" image="browser" id="iMC-d5-2Jx"/>
                     <connections>
                         <outlet property="backButton" destination="AAp-3M-c9b" id="yVR-ma-FTP"/>
-                        <outlet property="barView" destination="DJM-Gj-GnJ" id="ElH-EF-641"/>
                         <outlet property="forwardButton" destination="diz-ba-Dpd" id="FNB-AG-bdv"/>
                         <outlet property="longPressGesture" destination="5UH-PY-sgg" id="Ask-4L-J1l"/>
-                        <outlet property="progressView" destination="B0n-h4-37L" id="rte-em-WuJ"/>
                         <outlet property="reloadButton" destination="NhF-P0-dJj" id="2lt-yZ-ivb"/>
-                        <outlet property="searchBar" destination="ULX-XB-NvN" id="0tH-rd-Cpj"/>
                         <outlet property="searchEffectsView" destination="Kcv-GB-gi6" id="2vv-4a-rhC"/>
                         <outlet property="searchResultsTable" destination="w49-69-Z4R" id="TcK-oe-sqx"/>
                         <outlet property="tabsButton" destination="zRA-rK-mSr" id="ilW-4a-F0n"/>
                         <outlet property="tapOnBarGesture" destination="Uwa-iq-cqH" id="DYv-Oj-Yey"/>
-                        <outlet property="titleBar" destination="kem-zE-iOm" id="3wf-uG-Jh7"/>
                         <outlet property="toolbar" destination="YbF-5e-CmW" id="bU3-o1-IUw"/>
                     </connections>
                 </viewController>
