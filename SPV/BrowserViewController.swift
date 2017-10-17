@@ -63,10 +63,10 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var tabsButton: UIBarButtonItem!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
-    @IBOutlet weak var tapOnBarGesture: UITapGestureRecognizer!
     
     var flexibleHeightBar: FlexibleHeightBar?
-    
+    var tapOnBarGesture: UITapGestureRecognizer?
+
     @IBAction func unwindToBrowserViewController(segue:UIStoryboardSegue) {
         
     }
@@ -247,6 +247,15 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         webView.scrollView.delegate = flexibleHeightBar.behaviorDefiner
         
         self.flexibleHeightBar = flexibleHeightBar
+
+        // Gesture recogniser.
+        tapOnBarGesture = UITapGestureRecognizer(target: self,
+                                                 action: #selector(self.tapOnBarDetected(_:)))
+        if let tapOnBarGesture = tapOnBarGesture {
+            tapOnBarGesture.numberOfTapsRequired = 1
+            tapOnBarGesture.numberOfTouchesRequired = 1
+            flexibleHeightBar.addGestureRecognizer(tapOnBarGesture)
+        }
         
         return flexibleHeightBar
     }
@@ -555,13 +564,30 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
             return
         }
         
-        let targetY: CGFloat
-        if UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height {
-            targetY = -64
-        } else {
-            targetY = -52
+        if let flexibleHeightBar = flexibleHeightBar {
+            if let behaviourDefiner = flexibleHeightBar.behaviorDefiner {
+                // TODO: If bar is already visible then just activate it immediately.
+                flexibleHeightBar.progress = 0.0
+                behaviourDefiner.snap(with: webView.scrollView) {
+                    print("Done")
+                    // Enable interactivity.
+                    // Give focus to search field.
+                }
+                
+                // TODO: Disable interactivity when not pressed.
+                
+//                behaviourDefiner.snapToProgress(progress: 0.0,
+//                                                scrollView: webView.scrollView)
+            }
         }
-        
+//
+//        let targetY: CGFloat
+//        if UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height {
+//            targetY = -64
+//        } else {
+//            targetY = -52
+//        }
+//
         // BUG: Sometimes this doesn't correctly animate the fade - because it ends up not quite at the top...
 //        webView.scrollView.setContentOffset(CGPoint(x: (webView.scrollView.contentInset.left + webView.scrollView.contentInset.right) / 2,
 //                                                    y: targetY),

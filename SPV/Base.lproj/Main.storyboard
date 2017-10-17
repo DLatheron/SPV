@@ -448,7 +448,6 @@
                         <outlet property="searchEffectsView" destination="Kcv-GB-gi6" id="2vv-4a-rhC"/>
                         <outlet property="searchResultsTable" destination="w49-69-Z4R" id="TcK-oe-sqx"/>
                         <outlet property="tabsButton" destination="zRA-rK-mSr" id="ilW-4a-F0n"/>
-                        <outlet property="tapOnBarGesture" destination="Uwa-iq-cqH" id="DYv-Oj-Yey"/>
                         <outlet property="toolbar" destination="YbF-5e-CmW" id="bU3-o1-IUw"/>
                     </connections>
                 </viewController>
@@ -459,12 +458,6 @@
                         <outlet property="delegate" destination="8rJ-Kc-sve" id="lhz-MD-0za"/>
                     </connections>
                 </pongPressGestureRecognizer>
-                <tapGestureRecognizer id="Uwa-iq-cqH">
-                    <connections>
-                        <action selector="tapOnBarDetected:" destination="8rJ-Kc-sve" id="EfQ-Rx-yzR"/>
-                        <outlet property="delegate" destination="8rJ-Kc-sve" id="9c3-jd-C91"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1508.9955022488757" y="344.80000000000001"/>
         </scene>
