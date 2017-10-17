@@ -398,11 +398,19 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         let translationY: CGFloat = -16.0
         let scale: CGFloat = 0.75
         
-        let midTranslationY = interpolate(from: 0.0, to: translationY, withProgress: middleProgress)
-        let finalTranslationY = interpolate(from: 0.0, to: translationY, withProgress: finalProgress)
+        let midTranslationY = interpolate(from: 0.0,
+                                          to: translationY,
+                                          withProgress: middleProgress)
+        let finalTranslationY = interpolate(from: 0.0,
+                                            to: translationY,
+                                            withProgress: finalProgress)
         
-        let midScale = interpolate(from: 1.0, to: scale, withProgress: middleProgress)
-        let finalScale = interpolate(from: 1.0, to: scale, withProgress: finalProgress)
+        let midScale = interpolate(from: 1.0,
+                                   to: scale,
+                                   withProgress: middleProgress)
+        let finalScale = interpolate(from: 1.0,
+                                     to: scale,
+                                     withProgress: finalProgress)
         
         var layout: FlexibleHeightBarSubviewLayoutAttributes?
         
