@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 
 
-class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate, UIScrollViewDelegate {
+class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate {
     
     //let initialPageUrl = "http://arstechnica.co.uk"
 //    let initialPageUrl = "https://www.google.co.uk/search?q=test&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjcvMHyrqvVAhXEAsAKHfdxAu0Q_AUICygC&biw=1680&bih=882#imgrc=_"
@@ -244,7 +244,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         behaviourDefiner.thresholdFromTop = 0.0
         behaviourDefiner.thresholdPositiveDirection = 0.0
         flexibleHeightBar.behaviorDefiner = behaviourDefiner
-        webView.scrollView.delegate = flexibleHeightBar.behaviorDefiner
+        webView.scrollView.delegate = self
         
         self.flexibleHeightBar = flexibleHeightBar
 
@@ -559,39 +559,20 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         })
     }
     
-    @IBAction func tapOnBarDetected(_ sender: UIGestureRecognizer) {
+    @objc func tapOnBarDetected(_ sender: UIGestureRecognizer) {
         if sender.state != .ended {
             return
         }
         
         if let flexibleHeightBar = flexibleHeightBar {
             if let behaviourDefiner = flexibleHeightBar.behaviorDefiner {
-                // TODO: If bar is already visible then just activate it immediately.
                 flexibleHeightBar.progress = 0.0
                 behaviourDefiner.snap(with: webView.scrollView) {
-                    print("Done")
-                    // Enable interactivity.
-                    // Give focus to search field.
+                    flexibleHeightBar.enableSubviewInteractions(true)
+                    self.searchField.becomeFirstResponder()
                 }
-                
-                // TODO: Disable interactivity when not pressed.
-                
-//                behaviourDefiner.snapToProgress(progress: 0.0,
-//                                                scrollView: webView.scrollView)
             }
         }
-//
-//        let targetY: CGFloat
-//        if UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height {
-//            targetY = -64
-//        } else {
-//            targetY = -52
-//        }
-//
-        // BUG: Sometimes this doesn't correctly animate the fade - because it ends up not quite at the top...
-//        webView.scrollView.setContentOffset(CGPoint(x: (webView.scrollView.contentInset.left + webView.scrollView.contentInset.right) / 2,
-//                                                    y: targetY),
-//                                             animated: true)
     }
     
     // TODO: Only show domain and lock symbol (centred) when the search is inactive.
@@ -743,19 +724,19 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
 //    var lastContentOffsetAtY : CGFloat = 0.0
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        self.lastContentOffsetAtY = scrollView.contentOffset.y
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if lastContentOffsetAtY < scrollView.contentOffset.y {
-//            print("Bottom")
-//            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
-//        } else if lastContentOffsetAtY > scrollView.contentOffset.y {
-//            print("Top")
-//            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
-//        }
-    }
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+////        self.lastContentOffsetAtY = scrollView.contentOffset.y
+//    }
+//    
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+////        if lastContentOffsetAtY < scrollView.contentOffset.y {
+////            print("Bottom")
+////            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
+////        } else if lastContentOffsetAtY > scrollView.contentOffset.y {
+////            print("Top")
+////            shrinkTheCustomNavigationBar(contentOffsetY: scrollView.contentOffset.y)
+////        }
+//    }
     
 //    func shrinkTheCustomNavigationBar(contentOffsetY: CGFloat) {
 //        print("ContentYOffset: \(contentOffsetY)")
@@ -817,10 +798,22 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 
 //-----------------------------------------------------------------
 extension BrowserViewController : UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.text = self.url
+        return true
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        searchField.resignFirstResponder()
-        self.navigateTo(url: searchField.text!)
+        textField.resignFirstResponder()
+        flexibleHeightBar?.enableSubviewInteractions(false)
+        self.navigateTo(url: textField.text!)
         return false
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+        flexibleHeightBar?.enableSubviewInteractions(false)
+        setSearchBarText(urlString: url)
     }
 }
 
@@ -1065,3 +1058,34 @@ extension BrowserViewController : SearchScopeDelegate {
 //    }
 //}
 
+//-----------------------------------------------------------------
+extension BrowserViewController : UIScrollViewDelegate
+{
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+        delegate?.scrollViewDidEndDecelerating?(scrollView)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+        delegate?.scrollViewWillBeginDragging?(scrollView)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView,
+                                  willDecelerate decelerate: Bool) {
+        let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+        delegate?.scrollViewDidEndDragging?(scrollView,
+                                           willDecelerate: decelerate)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+        delegate?.scrollViewDidScroll?(scrollView)
+        
+        if let flexibleHeightBar = flexibleHeightBar {
+            if flexibleHeightBar.progress > 0.0 {
+                flexibleHeightBar.enableSubviewInteractions(false)
+            }
+        }
+    }
+}

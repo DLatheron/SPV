@@ -133,6 +133,8 @@ open class FlexibleHeightBarBehaviorDefiner: NSObject, UIScrollViewDelegate {
                         self.snapToProgress(progress: snapPosition, scrollView: scrollView)
                         }, completion: { flag in
                             self.currentlySnapping = false
+                            self.snappingCompleted(for: flexHeightBar,
+                                              with: scrollView)
                             onCompletion?()
                     })
                 } else {
@@ -140,6 +142,10 @@ open class FlexibleHeightBarBehaviorDefiner: NSObject, UIScrollViewDelegate {
                 }
             }
         }
+    }
+    
+    public func snappingCompleted(for flexHeightBar: FlexibleHeightBar,
+                                  with scrollView: UIScrollView) {
     }
     
     // MARK: - Scroll View Delegate -

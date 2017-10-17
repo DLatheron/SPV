@@ -133,4 +133,10 @@ public class FacebookBarBehaviorDefiner: FlexibleHeightBarBehaviorDefiner {
             }
         }
     }
+    
+    public override func snappingCompleted(for flexHeightBar: FlexibleHeightBar,
+                                           with scrollView: UIScrollView) {
+        previousYOffset = scrollView.contentOffset.y
+        previousProgress = flexHeightBar.progress
+    }
 }

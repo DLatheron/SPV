@@ -394,4 +394,10 @@ open class FlexibleHeightBar: UIView {
     private func interpolate(from fromValue: CGFloat, to toValue: CGFloat, withProgress progress: CGFloat) -> CGFloat {
         return fromValue - ((fromValue - toValue) * progress)
     }
+    
+    public func enableSubviewInteractions(_ enabled: Bool) {
+        subviews.forEach { (subview) in
+            subview.isUserInteractionEnabled = enabled
+        }
+    }
 }
