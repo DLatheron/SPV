@@ -47,8 +47,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     let getImageJS: String;
     
     @IBOutlet weak var barView: UIView!
-    weak var searchField: UITextField!
-    weak var searchFieldBorder: UIImageView?
+    weak var searchField: UISearchBar!
+    weak var searchFieldText: UITextField?
+    weak var searchFieldBorder: UIView?
     
 //    @IBOutlet weak var titleBar: UILabel!
     
@@ -141,8 +142,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     let labelBarHeight: CGFloat = 20.0
     let searchBarHeight: CGFloat = 46.0
     
-    private func setupSearchField(parentView: UIView) -> UITextField {
-        let searchField = UITextField()
+    private func setupSearchField(parentView: UIView) -> UISearchBar {
+        let searchField = UISearchBar()
         
         searchField.delegate = self
         searchField.autocapitalizationType = .none
@@ -150,26 +151,52 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         searchField.enablesReturnKeyAutomatically = true
         searchField.keyboardType = .URL
         searchField.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
-        searchField.borderStyle = .roundedRect
-        searchField.textAlignment = .center
+        //searchField.borderStyle = .roundedRect
+        //searchField.textAlignment = .center
         //searchField.backgroundColor = UIColor.clear
-        searchField.clearButtonMode = .whileEditing
-        searchField.backgroundColor = barColour
+        //searchField.clearButtonMode = .whileEditing
+        let textFieldInsideSearchBar = searchField.value(forKey: "searchField") as! UITextField
+        textFieldInsideSearchBar.textAlignment = .center
+        //searchField.backgroundColor = barColour
+        //searchField.barTintColor = UIColor.yellow
+        
+        //searchField.backgroundColor = UIColor.clear
+        //searchField.backgroundImage = UIImage()
+        //searchField.isTranslucent = true
         
         parentView.addSubview(searchField)
         
-        searchField.bounds = CGRect(x: 8,
-                                    y: 8,
-                                    width: screenWidth - 16,
-                                    height: 30)
+        searchField.bounds = CGRect(x: 0,
+                                    y: 0,
+                                    width: screenWidth,
+                                    height: 46)
 //        searchField.frame = CGRect(x: 8,
 //                                   y: 8,
 //                                   width: screenWidth - 16,
 //                                   height: 30)
 
         self.searchField = searchField
-        self.searchFieldBorder = searchField.subviews[0] as? UIImageView
-
+        self.searchFieldText = searchField.subviews[0].subviews[1] as? UITextField
+        self.searchFieldBorder = searchField.subviews[0].subviews[0] as UIView
+        
+        self.searchFieldText?.bounds = CGRect(x: 8, y: 4, width: screenWidth - 16, height: 38)
+        
+        searchFieldText?.leftViewMode = .never
+        searchFieldText?.rightViewMode = .whileEditing
+        searchFieldText?.clearButtonMode = .whileEditing
+        
+        //searchField.barTintColor = UIColor.clear
+        //searchField.backgroundColor = UIColor.clear
+        //searchField.isTranslucent = true
+        searchField.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+        //searchField.backgroundColor = UIColor.clear
+        
+        self.searchFieldText?.backgroundColor = barColour
+        self.searchFieldText?.background = UIImage()
+        
+        //self.searchFieldText?.background = nil//UIColor.green
+        //self.searchFieldBorder?.backgroundColor = UIColor.clear
+        
         return searchField
     }
     
@@ -373,7 +400,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         layout.transform = scaleTransform.concatenating(translationTransform)
         
         if let alpha = alpha {
-            layout.alpha = alpha
+            //layout.alpha = alpha
             layout.borderAlpha = alpha
             layout.backgroundAlpha = alpha
         }
@@ -398,7 +425,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         return fromValue - ((fromValue - toValue) * progress)
     }
     
-    func setupSearchFieldProgressStates(searchField: UITextField,
+    func setupSearchFieldProgressStates(searchField: UISearchBar,
                                         flexibleHeightBar: FlexibleHeightBar) {
         let initialProgress: CGFloat = 0.0
         let middleProgress: CGFloat = 0.20
@@ -439,21 +466,36 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                            withPreviousLayout: layout,
                            translationY: finalTranslationY,
                            scale: finalScale)
-
-        layout = setLayout(searchFieldBorder,
+        
+        layout = setLayout(searchFieldText,
                            forBar: flexibleHeightBar,
                            atProgress: initialProgress,
                            offset: CGPoint.zero)
-        layout = setLayout(searchFieldBorder,
+        layout = setLayout(searchFieldText,
                            forBar: flexibleHeightBar,
                            atProgress: middleProgress,
                            withPreviousLayout: layout,
                            alpha: 0.0)
-        layout = setLayout(searchFieldBorder,
+        layout = setLayout(searchFieldText,
                            forBar: flexibleHeightBar,
                            atProgress: finalProgress,
                            withPreviousLayout: layout,
                            alpha: 0.0)
+
+//        layout = setLayout(searchFieldBorder,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: initialProgress,
+//                           offset: CGPoint.zero)
+//        layout = setLayout(searchFieldBorder,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: middleProgress,
+//                           withPreviousLayout: layout,
+//                           alpha: 0.0)
+//        layout = setLayout(searchFieldBorder,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: finalProgress,
+//                           withPreviousLayout: layout,
+//                           alpha: 0.0)
     }
     
 //    func setFXViewProgressStates(_ fxView: UIVisualEffectView,
@@ -832,12 +874,15 @@ extension BrowserViewController : UISearchBarDelegate {
                            delay: 0.1,
                            options: [ .curveEaseInOut ],
                            animations: {
-//                self.searchBar.setShowsCancelButton(true,
-//                                                    animated: true)
+                self.searchField.setShowsCancelButton(true,
+                                                      animated: true)
                 self.searchEffectsView.alpha = 1
                 self.searchField.text = self.url
+                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
+                textFieldInsideSearchBar.textAlignment = .left
+
                 
-                self.searchField.textAlignment = .left
+                //self.searchField.textAlignment = .left
             })
         } else {
             print("Already activating!")
@@ -857,14 +902,15 @@ extension BrowserViewController : UISearchBarDelegate {
                            options: [ .curveEaseInOut ],
                            animations: {
                 self.searchEffectsView.alpha = 0
-//                self.searchBar.setShowsCancelButton(false,
-//                                                    animated: true)
+                self.searchField.setShowsCancelButton(false,
+                                                    animated: true)
                 self.setSearchBarText(urlString: self.url)
                             
                 let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
-                textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
+                //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
+                textFieldInsideSearchBar.textAlignment = .center
                             
-                self.searchField.textAlignment = .center
+                //self.searchField.textAlignment = .center
             }) { (complete) in
                 if complete {
                     self.searchEffectsView.isHidden = true
