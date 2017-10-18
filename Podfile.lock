@@ -1,0 +1,15 @@
+PODS:
+  - Cosmos (11.0.3)
+  - SwiftyJSON (3.1.4)
+
+DEPENDENCIES:
+  - Cosmos (~> 11.0)
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Cosmos: eb506859929f4add2d2aec822a27efb2f718a95d
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+
+PODFILE CHECKSUM: ddacab9df94a724b365a117a25c04d507ce92d5e
+
+COCOAPODS: 1.2.0
