@@ -48,8 +48,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     @IBOutlet weak var barView: UIView!
     weak var searchField: UISearchBar!
-    weak var searchFieldText: UITextField?
-    weak var searchFieldBorder: UIView?
+    weak var searchFieldText: UITextField!
+    weak var searchFieldBorder: UIImageView!
     
 //    @IBOutlet weak var titleBar: UILabel!
     
@@ -138,12 +138,13 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         updateContentInsets()
     }
     
-    //let statusBarHeight: CGFloat = 20.0
-    let labelBarHeight: CGFloat = 20.0
+    let compressedSearchBarHeight: CGFloat = 20.0
     let searchBarHeight: CGFloat = 46.0
     
     private func setupSearchField(parentView: UIView) -> UISearchBar {
         let searchField = UISearchBar()
+        let searchFieldText = searchField.value(forKey: "searchField") as! UITextField
+        let searchFieldBorder = searchField.getSubview(byType: "UISearchBarBackground") as! UIImageView
         
         searchField.delegate = self
         searchField.autocapitalizationType = .none
@@ -151,18 +152,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         searchField.enablesReturnKeyAutomatically = true
         searchField.keyboardType = .URL
         searchField.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
-        //searchField.borderStyle = .roundedRect
-        //searchField.textAlignment = .center
-        //searchField.backgroundColor = UIColor.clear
-        //searchField.clearButtonMode = .whileEditing
-        let textFieldInsideSearchBar = searchField.value(forKey: "searchField") as! UITextField
-        textFieldInsideSearchBar.textAlignment = .center
-        //searchField.backgroundColor = barColour
-        //searchField.barTintColor = UIColor.yellow
+        searchField.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
         
-        //searchField.backgroundColor = UIColor.clear
-        //searchField.backgroundImage = UIImage()
-        //searchField.isTranslucent = true
+        searchFieldText.textAlignment = .center
         
         parentView.addSubview(searchField)
         
@@ -170,32 +162,25 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                     y: 0,
                                     width: screenWidth,
                                     height: 46)
-//        searchField.frame = CGRect(x: 8,
-//                                   y: 8,
-//                                   width: screenWidth - 16,
-//                                   height: 30)
 
+        let leftRightMargin: CGFloat = 8
+        let topBottomMargin: CGFloat = 4
+        
+        searchFieldText.bounds = CGRect(x: leftRightMargin,
+                                        y: topBottomMargin,
+                                        width: screenWidth - (leftRightMargin * 2),
+                                        height: searchField.bounds.size.height - (topBottomMargin * 2))
+        
+        searchFieldText.leftViewMode = .never
+        searchFieldText.rightViewMode = .whileEditing
+        searchFieldText.clearButtonMode = .whileEditing
+        
+        searchFieldText.backgroundColor = barColour
+        searchFieldText.background = UIImage()
+        
         self.searchField = searchField
-        self.searchFieldText = searchField.subviews[0].subviews[1] as? UITextField
-        self.searchFieldBorder = searchField.subviews[0].subviews[0] as UIView
-        
-        self.searchFieldText?.bounds = CGRect(x: 8, y: 4, width: screenWidth - 16, height: 38)
-        
-        searchFieldText?.leftViewMode = .never
-        searchFieldText?.rightViewMode = .whileEditing
-        searchFieldText?.clearButtonMode = .whileEditing
-        
-        //searchField.barTintColor = UIColor.clear
-        //searchField.backgroundColor = UIColor.clear
-        //searchField.isTranslucent = true
-        searchField.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
-        //searchField.backgroundColor = UIColor.clear
-        
-        self.searchFieldText?.backgroundColor = barColour
-        self.searchFieldText?.background = UIImage()
-        
-        //self.searchFieldText?.background = nil//UIColor.green
-        //self.searchFieldBorder?.backgroundColor = UIColor.clear
+        self.searchFieldText = searchFieldText
+        self.searchFieldBorder = searchFieldBorder
         
         return searchField
     }
@@ -226,7 +211,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     private var minBarHeight: CGFloat {
         get {
-            return labelBarHeight + statusBarHeight
+            return compressedSearchBarHeight + statusBarHeight
         }
     }
     
@@ -290,7 +275,12 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     private func setupProgressView() -> UIProgressView {
         let progressView = UIProgressView()
         
-        progressView.sizeToFit()
+        let progressBarHeight: CGFloat = 2
+        
+        progressView.frame = CGRect(x: 0,
+                                    y: maxBarHeight - progressBarHeight,
+                                    width: screenWidth,
+                                    height: progressBarHeight)
         
         self.progressView = progressView
         
@@ -432,6 +422,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         let finalProgress: CGFloat = 1.0
         
         let translationY: CGFloat = -16.0
+        let progressTranslationY: CGFloat = translationY - 10.0
         let scale: CGFloat = 0.75
         
         let midTranslationY = interpolate(from: 0.0,
@@ -440,7 +431,15 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         let finalTranslationY = interpolate(from: 0.0,
                                             to: translationY,
                                             withProgress: finalProgress)
+
+        let midProgressTranslationY = interpolate(from: 0.0,
+                                                  to: progressTranslationY,
+                                                  withProgress: middleProgress)
+        let finalProgressTranslationY = interpolate(from: 0.0,
+                                                    to: progressTranslationY,
+                                                    withProgress: finalProgress)
         
+
         let midScale = interpolate(from: 1.0,
                                    to: scale,
                                    withProgress: middleProgress)
@@ -481,21 +480,21 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                            atProgress: finalProgress,
                            withPreviousLayout: layout,
                            alpha: 0.0)
-
-//        layout = setLayout(searchFieldBorder,
-//                           forBar: flexibleHeightBar,
-//                           atProgress: initialProgress,
-//                           offset: CGPoint.zero)
-//        layout = setLayout(searchFieldBorder,
-//                           forBar: flexibleHeightBar,
-//                           atProgress: middleProgress,
-//                           withPreviousLayout: layout,
-//                           alpha: 0.0)
-//        layout = setLayout(searchFieldBorder,
-//                           forBar: flexibleHeightBar,
-//                           atProgress: finalProgress,
-//                           withPreviousLayout: layout,
-//                           alpha: 0.0)
+        
+        layout = setLayout(progressView,
+                           forBar: flexibleHeightBar,
+                           atProgress: initialProgress,
+                           offset: CGPoint(x: 0.0, y: maxBarHeight - 2))
+        layout = setLayout(progressView,
+                           forBar: flexibleHeightBar,
+                           atProgress: middleProgress,
+                           withPreviousLayout: layout,
+                           translationY: midProgressTranslationY)
+        layout = setLayout(progressView,
+                           forBar: flexibleHeightBar,
+                           atProgress: finalProgress,
+                           withPreviousLayout: layout,
+                           translationY: finalProgressTranslationY)
     }
     
 //    func setFXViewProgressStates(_ fxView: UIVisualEffectView,
