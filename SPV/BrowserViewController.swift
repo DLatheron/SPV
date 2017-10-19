@@ -56,6 +56,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
     
     var flexibleHeightBar: FlexibleHeightBar?
+    var flexibleVfxView: UIVisualEffectView!
     var tapOnBarGesture: UITapGestureRecognizer?
 
     @IBAction func unwindToBrowserViewController(segue:UIStoryboardSegue) {
@@ -128,6 +129,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     let compressedSearchBarHeight: CGFloat = 20.0
     let searchBarHeight: CGFloat = 46.0
+    let progressBarHeight: CGFloat = 2
     
     private func setupSearchField(parentView: UIView) -> UISearchBar {
         let searchField = UISearchBar()
@@ -151,14 +153,14 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                     width: screenWidth,
                                     height: searchBarHeight)
 
-        let leftRightMargin: CGFloat = 8
-        let topBottomMargin: CGFloat = 4
-        
-        searchFieldText.bounds = CGRect(x: leftRightMargin,
-                                        y: topBottomMargin,
-                                        width: screenWidth - (leftRightMargin * 2),
-                                        height: searchField.bounds.size.height - (topBottomMargin * 2))
-        
+//        let leftRightMargin: CGFloat = 8
+//        let topBottomMargin: CGFloat = 4
+//
+//        searchFieldText.bounds = CGRect(x: leftRightMargin,
+//                                        y: topBottomMargin,
+//                                        width: screenWidth - (leftRightMargin * 2),
+//                                        height: searchField.bounds.size.height - (topBottomMargin * 2))
+//
         searchFieldText.leftViewMode = .never
         searchFieldText.rightViewMode = .whileEditing
         searchFieldText.clearButtonMode = .whileEditing
@@ -225,14 +227,16 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                                                 height: maxBarHeight))
         
         // Effect view.
-        let fxView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-        fxView.sizeToFit()
-        fxView.frame = CGRect(x: 0,
+        let vfxView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        //vfxView.sizeToFit()
+        vfxView.frame = CGRect(x: 0,
                               y: 0,
                               width: screenWidth,
                               height: maxBarHeight)
+        vfxView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        
         flexibleHeightBar.clipsToBounds = true
-        flexibleHeightBar.addSubview(fxView)
+        flexibleHeightBar.addSubview(vfxView)
         
         flexibleHeightBar.minimumBarHeight = minBarHeight
         flexibleHeightBar.maximumBarHeight = maxBarHeight
@@ -248,6 +252,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         webView.scrollView.delegate = self
         
         self.flexibleHeightBar = flexibleHeightBar
+        self.flexibleVfxView = vfxView
 
         // Gesture recogniser.
         tapOnBarGesture = UITapGestureRecognizer(target: self,
@@ -263,8 +268,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     private func setupProgressView() -> UIProgressView {
         let progressView = UIProgressView()
-        
-        let progressBarHeight: CGFloat = 2
         
         progressView.frame = CGRect(x: 0,
                                     y: maxBarHeight - progressBarHeight,
@@ -358,7 +361,44 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     func setupSearchBarProgressStates(searchField: UISearchBar,
                                       flexibleHeightBar: FlexibleHeightBar) {
+        let progress = flexibleHeightBar.progress
+        flexibleHeightBar.progress = 0.0
+        flexibleHeightBar.behaviorDefiner?.snap(with: webView.scrollView)
+        
         flexibleHeightBar.removeAllLayoutAttributes()
+        
+        
+        
+        
+        flexibleHeightBar.frame = CGRect(x: 0.0,
+                                         y: 0.0,
+                                         width: screenWidth,
+                                         height: maxBarHeight)
+        flexibleVfxView.frame = flexibleHeightBar.bounds
+
+        
+        progressView.frame = CGRect(x: 0,
+                                    y: maxBarHeight - progressBarHeight,
+                                    width: screenWidth,
+                                    height: progressBarHeight)
+        
+        searchField.frame = CGRect(x: 0,
+                                   y: statusBarHeight,
+                                   width: screenWidth,
+                                   height: searchBarHeight)
+        print("SearchField is now: \(searchField.frame)")
+        
+        let leftRightMargin: CGFloat = 8
+        let topBottomMargin: CGFloat = 4
+        
+        searchFieldText.bounds = CGRect(x: leftRightMargin,
+                                        y: topBottomMargin,
+                                        width: screenWidth - (leftRightMargin * 2),
+                                        height: searchField.bounds.size.height - (topBottomMargin * 2))
+        
+        
+        
+        
         
         let initialProgress: CGFloat = 0.0
         let middleProgress: CGFloat = 0.20
@@ -392,11 +432,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         var layout: FlexibleHeightBarSubviewLayoutAttributes?
         
-//        searchField.frame = CGRect(x: 0,
-//                                   y: 0,
-//                                   width: screenWidth,
-//                                   height: searchBarHeight)
-
         layout = setLayout(searchField,
                            forBar: flexibleHeightBar,
                            atProgress: initialProgress,
@@ -444,6 +479,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                            atProgress: finalProgress,
                            withPreviousLayout: layout,
                            translationY: finalProgressTranslationY)
+        
+//        flexibleHeightBar.progress = progress
+//        flexibleHeightBar.behaviorDefiner?.snap(with: webView.scrollView)
     }
     
     override func viewDidLoad() {
@@ -663,6 +701,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
+            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
+                                                                       with: self.webView.scrollView)
             self.setupSearchBarProgressStates(searchField: self.searchField,
                                               flexibleHeightBar: self.flexibleHeightBar!);
 //            if size.width > size.height {
@@ -673,6 +713,10 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
             self.view.layer.shouldRasterize = true
         }) { (context: UIViewControllerTransitionCoordinatorContext) in
             self.view.layer.shouldRasterize = false
+            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
+                                                                       with: self.webView.scrollView)
+            self.setupSearchBarProgressStates(searchField: self.searchField,
+                                              flexibleHeightBar: self.flexibleHeightBar!);
 //            if size.width > size.height {
 //                self.setLandscapeLayout()
 //            } else {
