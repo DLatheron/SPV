@@ -62,6 +62,8 @@ open class FlexibleHeightBar: UIView {
     }
     private var _minimumBarHeight: CGFloat = 20.0
     
+    public var progressDelegate: FlexibleHeightBarProgressDelegate? = nil
+
     /**
         The current progress, representing how much the bar has shrunk. *progress == 0.0* puts the bar at its maximum height. *progress == 1.0* puts the bar at its minimum height. The default value is **0.0**.
         progress is bounded between *0.0* and *1.0* inclusive unless the bar's behaviorDefiner instance has its elasticMaximumHeightAtTop set to *true*.
@@ -71,6 +73,8 @@ open class FlexibleHeightBar: UIView {
             return _progress
         }
         set (newProgress) {
+            let oldProgress = _progress
+            
             _progress = fmin(newProgress, 1.0)
             
             if let bhvrDefr = behaviorDefiner {
@@ -79,6 +83,10 @@ open class FlexibleHeightBar: UIView {
                 }
             } else {
                 _progress = fmax(_progress, 0.0)
+            }
+            
+            if oldProgress != newProgress {
+                progressDelegate?.progressChanged(progress: _progress)
             }
         }
     }
@@ -137,6 +145,10 @@ open class FlexibleHeightBar: UIView {
         let newProgress = fmax(fmin(barProgress, 1.0), 0.0)
         
         subviewLayoutAttributes[subview]![newProgress] = attributes
+    }
+    
+    public func removeAllLayoutAttributes() {
+        subviewLayoutAttributes = [UIView: [CGFloat: FlexibleHeightBarSubviewLayoutAttributes]]()
     }
     
     /**

@@ -161,8 +161,8 @@ open class FlexibleHeightBarBehaviorDefiner: NSObject, UIScrollViewDelegate {
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if let flexibleHeightBar = flexibleHeightBar {
-            scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(flexibleHeightBar.bounds.height - statusBarHeight, scrollView.scrollIndicatorInsets.left, scrollView.scrollIndicatorInsets.bottom, scrollView.scrollIndicatorInsets.right)
-        }
+//        if let flexibleHeightBar = flexibleHeightBar {
+//            scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(flexibleHeightBar.bounds.height - statusBarHeight, scrollView.scrollIndicatorInsets.left, scrollView.scrollIndicatorInsets.bottom, scrollView.scrollIndicatorInsets.right)
+//        }
     }
 }
