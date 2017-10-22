@@ -90,23 +90,29 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         view.insertSubview(webView, at: 0)
         //view.addSubview(webView)
+        
+        webView.frame = CGRect(x: 0,
+                               y: 0,
+                               width: screenWidth,
+                               height: screenHeight)
+        webView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
 
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        let height = NSLayoutConstraint(item: webView,
-                                        attribute: .height,
-                                        relatedBy: .equal,
-                                        toItem: view,
-                                        attribute: .height,
-                                        multiplier: 1,
-                                        constant: 0)
-        let width = NSLayoutConstraint(item: webView,
-                                       attribute: .width,
-                                       relatedBy: .equal,
-                                       toItem: view,
-                                       attribute: .width,
-                                       multiplier: 1,
-                                       constant: 0)
-        view.addConstraints([height, width])
+//        webView.translatesAutoresizingMaskIntoConstraints = false
+//        let height = NSLayoutConstraint(item: webView,
+//                                        attribute: .height,
+//                                        relatedBy: .equal,
+//                                        toItem: view,
+//                                        attribute: .height,
+//                                        multiplier: 1,
+//                                        constant: 0)
+//        let width = NSLayoutConstraint(item: webView,
+//                                       attribute: .width,
+//                                       relatedBy: .equal,
+//                                       toItem: view,
+//                                       attribute: .width,
+//                                       multiplier: 1,
+//                                       constant: 0)
+//        view.addConstraints([height, width])
         
         //webView.scrollView.delegate = self;
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
@@ -251,18 +257,15 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                                                 height: maxBarHeight))
         
         // Effect view.
-        let vfxView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-//        vfxView.sizeToFit()
-        vfxView.frame = CGRect(x: 0,
-                               y: 0,
-                               width: screenWidth,
-                               height: maxBarHeight)
-//        vfxView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        let flexibleVfxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+        flexibleVfxView.bounds = CGRect(x: 0,
+                                       y: -statusBarHeight,
+                                       width: screenWidth,
+                                       height: maxBarHeight)
         
-        //flexibleHeightBar.clipsToBounds = true
-        flexibleHeightBar.addSubview(vfxView)
+        flexibleHeightBar.addSubview(flexibleVfxView)
         
-        flexibleHeightBar.backgroundColor = barColour
+        flexibleHeightBar.backgroundColor = UIColor.clear
         flexibleHeightBar.progressDelegate = self
         
         // Behaviour.
@@ -274,7 +277,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         webView.scrollView.delegate = self
         
         self.flexibleHeightBar = flexibleHeightBar
-        self.flexibleVfxView = vfxView
+        self.flexibleVfxView = flexibleVfxView
 
         // Gesture recogniser.
         tapOnBarGesture = UITapGestureRecognizer(target: self,
@@ -400,11 +403,10 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                          y: 0.0,
                                          width: screenWidth,
                                          height: maxBarHeight)
-        flexibleVfxView.frame = CGRect(x: 0.0,
-                                       y: statusBarHeight,
+        flexibleVfxView.bounds = CGRect(x: 0.0,
+                                       y: -statusBarHeight,
                                        width: screenWidth,
-                                       height: searchBarHeight)
-        flexibleVfxView.setNeedsLayout()
+                                       height: maxBarHeight)
 
         progressView.frame = CGRect(x: 0,
                                     y: maxBarHeight - progressBarHeight,
@@ -761,27 +763,17 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
+            self.view.layer.shouldRasterize = true
             self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
                                                                        with: self.webView.scrollView)
             self.setupSearchBarProgressStates(searchField: self.searchField,
                                               flexibleHeightBar: self.flexibleHeightBar!);
-//            if size.width > size.height {
-//                self.setLandscapeLayout()
-//            } else {
-//                self.setPortraitLayout()
-//            }
-            self.view.layer.shouldRasterize = true
         }) { (context: UIViewControllerTransitionCoordinatorContext) in
             self.view.layer.shouldRasterize = false
             self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
                                                                        with: self.webView.scrollView)
             self.setupSearchBarProgressStates(searchField: self.searchField,
                                               flexibleHeightBar: self.flexibleHeightBar!);
-//            if size.width > size.height {
-//                self.setLandscapeLayout()
-//            } else {
-//                self.setPortraitLayout()
-//            }
         }
     }
 }
@@ -1110,3 +1102,4 @@ extension BrowserViewController : FlexibleHeightBarProgressDelegate
                                                                 right: 0)
     }
 }
+
