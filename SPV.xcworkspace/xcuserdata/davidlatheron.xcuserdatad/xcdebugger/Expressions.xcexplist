@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "PhotoScrollView.init(parentView:forImage:fullscreen:):PhotoScrollView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "PhotoDetailsViewController.viewDidLoad():PhotoDetailsViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "newScrollView.bounds">
+            </PersistentString>
+            <PersistentString
+               value = "newScrollView.center">
+            </PersistentString>
+            <PersistentString
+               value = "newScrollView.frame">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

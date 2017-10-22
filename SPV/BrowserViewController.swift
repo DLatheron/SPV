@@ -219,6 +219,30 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                            alpha: 1)
         }
     }
+ 
+    private var tabBarHeight: CGFloat {
+        get {
+            return landscape ? 32 : 49
+        }
+    }
+    
+    private var tabBarOnScreenY: CGFloat {
+        get {
+            return screenHeight - tabBarHeight
+        }
+    }
+    
+    private var toolBarHeight: CGFloat {
+        get {
+            return landscape ? 32 : 44
+        }
+    }
+    
+    private var totalBarHeights: CGFloat {
+        get {
+            return tabBarHeight + toolBarHeight
+        }
+    }
     
     private func setupFlexibleHeightBar() -> FlexibleHeightBar {
         let flexibleHeightBar = FlexibleHeightBar(frame: CGRect(x: 0.0,
@@ -381,9 +405,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                        width: screenWidth,
                                        height: searchBarHeight)
         flexibleVfxView.setNeedsLayout()
-        print("flexibleVfxView.frame is now: \(flexibleVfxView.frame)")
-        print("flexibleVfxView.bounds is now: \(flexibleVfxView.bounds)")
-
 
         progressView.frame = CGRect(x: 0,
                                     y: maxBarHeight - progressBarHeight,
@@ -395,8 +416,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                    width: screenWidth,
                                    height: searchBarHeight)
         searchField.setNeedsLayout()
-//        print("searchField.frame is now: \(searchField.frame)")
-//        print("searchField.bounds is now: \(searchField.bounds)")
 
         let leftRightMargin: CGFloat = 8
         let topBottomMargin: CGFloat = 4
@@ -406,9 +425,24 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                         width: screenWidth - (leftRightMargin * 2),
                                         height: searchField.bounds.size.height - (topBottomMargin * 2))
         
-        webView.scrollView.contentInset = UIEdgeInsetsMake(searchBarHeight, 0.0, 0.0, screenHeight - toolbar.frame.origin.y)
-
+        webView.scrollView.contentInset = UIEdgeInsetsMake(searchBarHeight, 0.0, 0.0, screenHeight - totalBarHeights)
         
+        
+        let tabBar = tabBarController!.tabBar
+        
+        let toolbarOnScreenY = tabBarOnScreenY - toolBarHeight
+        
+        tabBar.frame = CGRect(x: 0,
+                              y: tabBarOnScreenY,
+                              width: screenWidth,
+                              height: tabBarHeight)
+        tabBar.invalidateIntrinsicContentSize()
+        
+        toolbar.frame = CGRect(x: 0,
+                               y: toolbarOnScreenY,
+                               width: screenWidth,
+                               height: toolBarHeight)
+        toolbar.invalidateIntrinsicContentSize()
         
         
         let initialProgress: CGFloat = 0.0
@@ -1048,13 +1082,8 @@ extension BrowserViewController : FlexibleHeightBarProgressDelegate
     func progressChanged(progress: CGFloat) {
         // TODO: Change the positioning of the bottom bars.
         let tabBar = tabBarController!.tabBar
-        let tabBarHeight = tabBar.frame.size.height
-        let tabBarOnScreenY = screenHeight - tabBarHeight
-        
-        let toolBarHeight = toolbar.frame.size.height
+
         let toolbarOnScreenY = tabBarOnScreenY - toolBarHeight
-        
-        let totalBarHeights = tabBarHeight + toolBarHeight
         
         let tabBarOffScreenY = tabBarOnScreenY + totalBarHeights
         let toolbarOffScreenY = toolbarOnScreenY + totalBarHeights
@@ -1065,14 +1094,15 @@ extension BrowserViewController : FlexibleHeightBarProgressDelegate
         let toolbarYPosition = interpolate(from: toolbarOnScreenY,
                                            to: toolbarOffScreenY,
                                            withProgress: progress)
-        tabBar.frame = CGRect(x: tabBar.frame.origin.x,
+        tabBar.frame = CGRect(x: 0,
                               y: tabBarYPosition,
-                              width: tabBar.frame.size.width,
-                              height: tabBar.frame.size.height)
-        toolbar.frame = CGRect(x: toolbar.frame.origin.x,
+                              width: screenWidth,
+                              height: tabBarHeight)
+    
+        toolbar.frame = CGRect(x: 0,
                                y: toolbarYPosition,
-                               width: toolbar.frame.size.width,
-                               height: toolbar.frame.size.height)
+                               width: screenWidth,
+                               height: toolBarHeight)
         
         webView.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: flexibleHeightBar!.bounds.height - statusBarHeight,
                                                                 left: 0,

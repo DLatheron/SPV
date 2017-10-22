@@ -394,8 +394,9 @@
                                 </view>
                                 <blurEffect style="extraLight"/>
                             </visualEffectView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YbF-5e-CmW">
-                                <rect key="frame" x="0.0" y="574" width="375" height="44"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YbF-5e-CmW">
+                                <rect key="frame" x="0.0" y="578" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <items>
                                     <barButtonItem enabled="NO" image="back" id="AAp-3M-c9b">
                                         <connections>
@@ -427,11 +428,8 @@
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="Djb-ko-YwX" firstAttribute="top" secondItem="YbF-5e-CmW" secondAttribute="bottom" id="0vk-XJ-3Yl"/>
                             <constraint firstItem="Kcv-GB-gi6" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="2st-Df-TnF"/>
-                            <constraint firstItem="YbF-5e-CmW" firstAttribute="centerX" secondItem="QS5-Rx-YEW" secondAttribute="centerX" id="arr-im-HgR"/>
                             <constraint firstItem="Kcv-GB-gi6" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="i5t-Go-sJa"/>
-                            <constraint firstItem="YbF-5e-CmW" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="ira-IT-ja1"/>
                             <constraint firstItem="Kcv-GB-gi6" firstAttribute="height" secondItem="QS5-Rx-YEW" secondAttribute="height" id="jJR-JO-j3k"/>
                             <constraint firstItem="Kcv-GB-gi6" firstAttribute="centerY" secondItem="QS5-Rx-YEW" secondAttribute="centerY" id="oeV-w5-fe5"/>
                         </constraints>
