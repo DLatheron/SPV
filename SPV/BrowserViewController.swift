@@ -717,6 +717,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         url = modifiedNewURLString
         setSearchBarText(urlString: url)
         
+        addHistory(forURL: url)
+        
         webView.load(myRequest)
     }
     
@@ -892,8 +894,6 @@ extension BrowserViewController : UISearchBarDelegate {
 //            searchBar.resignFirstResponder()
             
             self.navigateTo(url: searchText)
-            
-            addHistory(forURL: searchText)
         }
 
         deactivateSearch()
@@ -958,10 +958,29 @@ extension BrowserViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!;
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCell") as! SearchCell;
         cell.textLabel?.text = filteredData[indexPath.row].url
+        cell.delegate = self
         
         return cell;
+    }
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController : SearchCellDelegate {
+    func tableViewCell(singleTapActionFromCell cell: SearchCell) {
+        DispatchQueue.main.async {
+            self.url = cell.textLabel!.text!
+            self.searchField.text = self.url
+        }
+    }
+    
+    func tableViewCell(doubleTapActionFromCell cell: SearchCell) {
+        DispatchQueue.main.async {
+            self.url = cell.textLabel!.text!
+            self.navigateTo(url: self.url)
+            self.deactivateSearch()
+        }
     }
 }
 
@@ -1017,7 +1036,7 @@ extension BrowserViewController : WKNavigationDelegate {
 //}
 
 //-----------------------------------------------------------------
-extension BrowserViewController : SearchScopeDelegate {
+extension BrowserViewController : SearchScopeCellDelegate {
     func changed(scope: SearchScope) {
         self.scope = scope
         
@@ -1040,29 +1059,37 @@ extension BrowserViewController : SearchScopeDelegate {
 extension BrowserViewController : UIScrollViewDelegate
 {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
-        delegate?.scrollViewDidEndDecelerating?(scrollView)
+        if !shouldShowSearchResults {
+            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+            delegate?.scrollViewDidEndDecelerating?(scrollView)
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
-        delegate?.scrollViewWillBeginDragging?(scrollView)
+        if !shouldShowSearchResults {
+            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+            delegate?.scrollViewWillBeginDragging?(scrollView)
+        }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView,
                                   willDecelerate decelerate: Bool) {
-        let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
-        delegate?.scrollViewDidEndDragging?(scrollView,
-                                            willDecelerate: decelerate)
+        if !shouldShowSearchResults {
+            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+            delegate?.scrollViewDidEndDragging?(scrollView,
+                                                willDecelerate: decelerate)
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
-        delegate?.scrollViewDidScroll?(scrollView)
-        
-        if let flexibleHeightBar = flexibleHeightBar {
-            if flexibleHeightBar.progress > 0.0 {
-                flexibleHeightBar.enableSubviewInteractions(false)
+        if !shouldShowSearchResults {
+            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+            delegate?.scrollViewDidScroll?(scrollView)
+            
+            if let flexibleHeightBar = flexibleHeightBar {
+                if flexibleHeightBar.progress > 0.0 {
+                    flexibleHeightBar.enableSubviewInteractions(false)
+                }
             }
         }
     }

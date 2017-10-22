@@ -15,14 +15,14 @@ enum SearchScope {
     case bookmarks
 }
 
-protocol SearchScopeDelegate {
+protocol SearchScopeCellDelegate {
     func changed(scope: SearchScope)
 }
 
 class SearchScopeCell : UITableViewCell {
     @IBOutlet weak var scopeButton: UISegmentedControl!
 
-    var delegate: SearchScopeDelegate! = nil
+    var delegate: SearchScopeCellDelegate! = nil
     
     func configure(withInitialScope scope: SearchScope) {
         switch scope {
