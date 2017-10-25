@@ -63,6 +63,7 @@
 		F9C68BB51F860FF20094E5F3 /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C68BB41F860FF20094E5F3 /* URLBuilder.swift */; };
 		F9C68BB71F8613500094E5F3 /* URLBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */; };
 		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */; };
 		F9E843C61F972F050075BA43 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E843C51F972F050075BA43 /* ViewExtensions.swift */; };
 		F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F060A81F7C030B00AF6247 /* SearchScopeCell.swift */; };
 		F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */; };
@@ -165,6 +166,7 @@
 		F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilderTests.swift; sourceTree = "<group>"; };
 		F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/SPV-efrwuliddfrewpeoxhcadziytpjt/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		F9D301871F5F592900ADEEF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		F9E843C51F972F050075BA43 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		F9F060A81F7C030B00AF6247 /* SearchScopeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScopeCell.swift; sourceTree = "<group>"; };
 		F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test05.jpg; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 		F942D1321F9DC3490065C31B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -809,6 +812,7 @@
 				F919C7AD1F699325008372F6 /* MediaInfoCell.swift in Sources */,
 				F9C50C0E1F5E7F2900EE79E5 /* Video.swift in Sources */,
 				F9C50C101F5E7F6200EE79E5 /* MediaInfo.swift in Sources */,
+				F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */,
 				F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */,
 				F9F2D3D41F42CE0200FD6F78 /* DownloadsViewController.swift in Sources */,
 				F96141FC1F98807F00FF447A /* ProgressDelegate.swift in Sources */,

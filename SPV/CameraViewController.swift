@@ -6,12 +6,15 @@
 //  Copyright © 2017 dlatheron. All rights reserved.
 //
 
+import AVFoundation
 import Foundation
+import Photos
 import UIKit
 
 class CameraViewController : UIViewController {
     @IBOutlet fileprivate var captureButton: UIButton!
 
+    @IBOutlet weak var capturePreviewView: UIView!
     @IBOutlet weak var flashButton: UIBarButtonItem!
     @IBOutlet weak var selfTimerButton: UIBarButtonItem!
     @IBOutlet weak var rotateCameraButton: UIBarButtonItem!
@@ -71,6 +74,16 @@ class CameraViewController : UIViewController {
             }
         }
         
+        var avFlashMode: AVCaptureDevice.FlashMode {
+            get {
+                switch self {
+                case .flashAuto: return AVCaptureDevice.FlashMode.auto
+                case .flashOn: return AVCaptureDevice.FlashMode.on
+                case .flashOff: return AVCaptureDevice.FlashMode.off
+                }
+            }
+        }
+        
         mutating func next() {
             switch self {
             case .flashAuto:
@@ -113,6 +126,15 @@ class CameraViewController : UIViewController {
             }
         }
         
+        var cameraPosition: CameraController.CameraPosition {
+            get {
+                switch self {
+                case .back: return CameraController.CameraPosition.rear
+                case .front: return CameraController.CameraPosition.front
+                }
+            }
+        }
+        
         mutating func next() {
             switch self {
             case .back:
@@ -123,6 +145,7 @@ class CameraViewController : UIViewController {
         }
     }
     
+    let cameraController = CameraController()
     var cameraMode: CameraMode = .camera
     var flashMode: FlashMode = .flashAuto
     var selfTimer: SelfTimer = .off
@@ -140,6 +163,7 @@ class CameraViewController : UIViewController {
     @IBAction func toggleFlashMode(_ sender: Any) {
         flashMode.next()
         updateFlashButton(toMode: flashMode)
+        cameraController.flashMode = flashMode.avFlashMode
     }
     
     func updateModeButton(toMode cameraMode: CameraMode) {
@@ -162,6 +186,7 @@ class CameraViewController : UIViewController {
     @IBAction func rotateCamera(_ sender: Any) {
         cameraRotation.next()
         updateRotateCameraButton(toMode: cameraRotation)
+        cameraController.currentCameraPosition = cameraRotation.cameraPosition
     }
     
     func updateRotateCameraButton(toMode cameraRotation: CameraRotation) {
@@ -174,6 +199,16 @@ class CameraViewController : UIViewController {
     
     @IBAction func capture(_ sender: Any) {
         // TODO: The capturing...
+        cameraController.captureImage { (image, error) in
+            guard let image = image else {
+                print(error ?? "Image capture error")
+                return
+            }
+            
+            try? PHPhotoLibrary.shared().performChangesAndWait {
+                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            }
+        }
     }
 }
 
@@ -189,13 +224,16 @@ extension CameraViewController {
 
 extension CameraViewController {
     override func viewDidLoad() {
-        super.viewDidLoad()
+        func configureCameraController() {
+            cameraController.prepare {(error) in
+                if let error = error {
+                    print(error)
+                }
+                
+                try? self.cameraController.displayPreview(on: self.capturePreviewView)
+            }
+        }
         
-        updateFlashButton(toMode: flashMode)
-        updateModeButton(toMode: cameraMode)
-        updateSelfTimerButton(toMode: selfTimer)
-        updateRotateCameraButton(toMode: cameraRotation)
-
         func styleCaptureButton() {
             captureButton.layer.borderColor = UIColor.black.cgColor
             captureButton.layer.borderWidth = 2
@@ -203,6 +241,13 @@ extension CameraViewController {
             captureButton.layer.cornerRadius = min(captureButton.frame.width, captureButton.frame.height) / 2
         }
         
+        super.viewDidLoad()
+        
+        updateFlashButton(toMode: flashMode)
+        updateModeButton(toMode: cameraMode)
+        updateSelfTimerButton(toMode: selfTimer)
+        updateRotateCameraButton(toMode: cameraRotation)
+
         styleCaptureButton()
         
     }

@@ -717,7 +717,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="tAS-W7-QUF">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KRW-tY-Gos">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tAS-W7-QUF">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -744,7 +749,7 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="XVM-5V-Ks0">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XVM-5V-Ks0">
                                 <rect key="frame" x="0.0" y="574" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -759,7 +764,7 @@
                                 </items>
                             </toolbar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5u-FC-jCG">
-                                <rect key="frame" x="160" y="538" width="55" height="55"/>
+                                <rect key="frame" x="160" y="547" width="55" height="55"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="55" id="2k8-ee-io4"/>
@@ -773,13 +778,14 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="a5u-FC-jCG" firstAttribute="centerX" secondItem="rVj-9U-gCy" secondAttribute="centerX" id="2n2-yE-kQz"/>
-                            <constraint firstItem="2vQ-DR-snQ" firstAttribute="top" secondItem="a5u-FC-jCG" secondAttribute="bottom" constant="25" id="Z8d-KK-KBL"/>
+                            <constraint firstItem="2vQ-DR-snQ" firstAttribute="top" secondItem="a5u-FC-jCG" secondAttribute="bottom" constant="16" id="Z8d-KK-KBL"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Camera" image="camera" landscapeImage="camera" id="Agk-0K-z1u"/>
                     <toolbarItems/>
                     <connections>
                         <outlet property="captureButton" destination="a5u-FC-jCG" id="WsA-zU-JRS"/>
+                        <outlet property="capturePreviewView" destination="KRW-tY-Gos" id="s0E-6Y-zXq"/>
                         <outlet property="flashButton" destination="vmS-TG-GTl" id="41b-m9-w2I"/>
                         <outlet property="modeButton" destination="MB2-Mf-XRo" id="1NN-o7-kHB"/>
                         <outlet property="rotateCameraButton" destination="lPB-6b-WdB" id="SK1-MZ-ybz"/>
