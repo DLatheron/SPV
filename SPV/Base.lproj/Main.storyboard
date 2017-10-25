@@ -625,12 +625,13 @@
                     </tabBar>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="defaultIndex">
-                            <integer key="value" value="1"/>
+                            <integer key="value" value="2"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="a7h-Ij-PVY" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="Isj-E1-THR"/>
+                        <segue destination="cTV-NP-fdG" kind="relationship" relationship="viewControllers" id="dbO-1M-VaD"/>
                         <segue destination="Ypn-pn-ljV" kind="relationship" relationship="viewControllers" id="P6c-yo-xWo"/>
                     </connections>
                 </tabBarController>
@@ -700,14 +701,109 @@
             </objects>
             <point key="canvasLocation" x="750" y="1127"/>
         </scene>
+        <!--Camera-->
+        <scene sceneID="emW-e5-3Fb">
+            <objects>
+                <viewController title="Camera" id="cTV-NP-fdG" customClass="CameraViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0C3-Nm-TMF"/>
+                        <viewControllerLayoutGuide type="bottom" id="2vQ-DR-snQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rVj-9U-gCy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fakeCameraBackground" translatesAutoresizingMaskIntoConstraints="NO" id="8WL-Sh-De7">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="tAS-W7-QUF">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <barButtonItem image="flashAuto" id="vmS-TG-GTl">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="toggleFlashMode:" destination="cTV-NP-fdG" id="t4N-u9-D3p"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="fpZ-BF-Rwf"/>
+                                    <barButtonItem image="timerInv" id="0Z7-Tz-Dij">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="toggleSelfTimer:" destination="cTV-NP-fdG" id="Z2b-Cf-HCn"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ROK-ti-JoB"/>
+                                    <barButtonItem image="rotateCamera" id="lPB-6b-WdB">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="rotateCamera:" destination="cTV-NP-fdG" id="jZN-EA-5Yg"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="XVM-5V-Ks0">
+                                <rect key="frame" x="0.0" y="574" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <barButtonItem image="cameraInv" id="MB2-Mf-XRo">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="toggleCameraMode:" destination="cTV-NP-fdG" id="avm-9T-Zhg"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="nwE-ZC-LeO"/>
+                                </items>
+                            </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5u-FC-jCG">
+                                <rect key="frame" x="160" y="538" width="55" height="55"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="55" id="2k8-ee-io4"/>
+                                    <constraint firstAttribute="height" constant="55" id="Rpx-YT-eyE"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="capture:" destination="cTV-NP-fdG" eventType="touchUpInside" id="bnc-wL-fHS"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="a5u-FC-jCG" firstAttribute="centerX" secondItem="rVj-9U-gCy" secondAttribute="centerX" id="2n2-yE-kQz"/>
+                            <constraint firstItem="2vQ-DR-snQ" firstAttribute="top" secondItem="a5u-FC-jCG" secondAttribute="bottom" constant="25" id="Z8d-KK-KBL"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Camera" image="camera" landscapeImage="camera" id="Agk-0K-z1u"/>
+                    <toolbarItems/>
+                    <connections>
+                        <outlet property="captureButton" destination="a5u-FC-jCG" id="WsA-zU-JRS"/>
+                        <outlet property="flashButton" destination="vmS-TG-GTl" id="41b-m9-w2I"/>
+                        <outlet property="modeButton" destination="MB2-Mf-XRo" id="1NN-o7-kHB"/>
+                        <outlet property="rotateCameraButton" destination="lPB-6b-WdB" id="SK1-MZ-ybz"/>
+                        <outlet property="selfTimerButton" destination="0Z7-Tz-Dij" id="9zv-nt-23i"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wfs-AX-cd7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="756" y="1821"/>
+        </scene>
     </scenes>
     <resources>
         <image name="albums" width="25" height="25"/>
         <image name="back" width="25" height="25"/>
         <image name="browser" width="25" height="25"/>
+        <image name="camera" width="25" height="25"/>
+        <image name="cameraInv" width="25" height="25"/>
         <image name="download" width="32" height="32"/>
+        <image name="fakeCameraBackground" width="187" height="333"/>
+        <image name="flashAuto" width="25" height="25"/>
         <image name="forward" width="25" height="25"/>
         <image name="pause" width="25" height="25"/>
+        <image name="rotateCamera" width="25" height="25"/>
         <image name="settings" width="25" height="25"/>
+        <image name="timerInv" width="25" height="25"/>
     </resources>
 </document>

@@ -34,6 +34,7 @@
 		F919C7AF1F699357008372F6 /* MediaInfoHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */; };
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
 		F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D12E1F9CE1100065C31B /* SearchCell.swift */; };
+		F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D1331F9DC3680065C31B /* CameraViewController.swift */; };
 		F96141FC1F98807F00FF447A /* ProgressDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96141FB1F98807F00FF447A /* ProgressDelegate.swift */; };
 		F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */; };
 		F969ACA21F55C9D4005C7F8D /* HumanReadableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */; };
@@ -128,6 +129,7 @@
 		F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoHeaderCell.swift; sourceTree = "<group>"; };
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
 		F942D12E1F9CE1100065C31B /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
+		F942D1331F9DC3680065C31B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F96141FB1F98807F00FF447A /* ProgressDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDelegate.swift; sourceTree = "<group>"; };
 		F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadable.swift; sourceTree = "<group>"; };
 		F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadableTest.swift; sourceTree = "<group>"; };
@@ -269,6 +271,30 @@
 			name = FlexibleHeightBar;
 			sourceTree = "<group>";
 		};
+		F942D1301F9DC3330065C31B /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				F942D1321F9DC3490065C31B /* Common */,
+				F942D1311F9DC3420065C31B /* VCs */,
+			);
+			name = Camera;
+			sourceTree = "<group>";
+		};
+		F942D1311F9DC3420065C31B /* VCs */ = {
+			isa = PBXGroup;
+			children = (
+				F942D1331F9DC3680065C31B /* CameraViewController.swift */,
+			);
+			name = VCs;
+			sourceTree = "<group>";
+		};
+		F942D1321F9DC3490065C31B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
 		F98B8C331F767D2D00719CA6 /* Media Viewer */ = {
 			isa = PBXGroup;
 			children = (
@@ -404,6 +430,7 @@
 		F9BABAA81F28F92F00000D9B /* SPV */ = {
 			isa = PBXGroup;
 			children = (
+				F942D1301F9DC3330065C31B /* Camera */,
 				F902F7C51F8FD45E00AFA1C5 /* FlexibleHeightBar */,
 				F98B8C391F767E2300719CA6 /* Common */,
 				F98B8C331F767D2D00719CA6 /* Media Viewer */,
@@ -782,6 +809,7 @@
 				F919C7AD1F699325008372F6 /* MediaInfoCell.swift in Sources */,
 				F9C50C0E1F5E7F2900EE79E5 /* Video.swift in Sources */,
 				F9C50C101F5E7F6200EE79E5 /* MediaInfo.swift in Sources */,
+				F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */,
 				F9F2D3D41F42CE0200FD6F78 /* DownloadsViewController.swift in Sources */,
 				F96141FC1F98807F00FF447A /* ProgressDelegate.swift in Sources */,
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
