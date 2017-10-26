@@ -18,6 +18,7 @@ class CameraController: NSObject {
     
     var currentCameraPosition: CameraPosition?
     
+    
     var frontCamera: AVCaptureDevice?
     var frontCameraInput: AVCaptureDeviceInput?
     

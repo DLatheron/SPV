@@ -12,13 +12,19 @@ import Photos
 import UIKit
 
 class CameraViewController : UIViewController {
-    @IBOutlet fileprivate var captureButton: UIButton!
+    @IBOutlet fileprivate weak var captureButton: UIButton!
+    @IBOutlet fileprivate weak var selfTimerCountdown: UILabel!
+    @IBOutlet fileprivate weak var selfTimerMenu: UIToolbar!
+    @IBOutlet fileprivate weak var selfTimer5Seconds: UIBarButtonItem!
+    @IBOutlet fileprivate weak var selfTimer10Seconds: UIBarButtonItem!
+    @IBOutlet fileprivate weak var selfTimer20Seconds: UIBarButtonItem!
 
-    @IBOutlet weak var capturePreviewView: UIView!
-    @IBOutlet weak var flashButton: UIBarButtonItem!
-    @IBOutlet weak var selfTimerButton: UIBarButtonItem!
-    @IBOutlet weak var rotateCameraButton: UIBarButtonItem!
-    @IBOutlet weak var modeButton: UIBarButtonItem!
+    
+    @IBOutlet fileprivate weak var capturePreviewView: UIView!
+    @IBOutlet fileprivate weak var flashButton: UIBarButtonItem!
+    @IBOutlet fileprivate weak var selfTimerButton: UIBarButtonItem!
+    @IBOutlet fileprivate weak var rotateCameraButton: UIBarButtonItem!
+    @IBOutlet fileprivate weak var modeButton: UIBarButtonItem!
     
     enum Colours {
         case selected
@@ -33,6 +39,12 @@ class CameraViewController : UIViewController {
                     return UIColor.white
                 }
             }
+        }
+        
+        static func colourIf(selected isSelected: Bool) -> UIColor {
+            return isSelected ?
+                Colours.selected.value :
+                Colours.unselected.value
         }
     }
     
@@ -150,6 +162,14 @@ class CameraViewController : UIViewController {
     var flashMode: FlashMode = .flashAuto
     var selfTimer: SelfTimer = .off
     var cameraRotation: CameraRotation = .back
+    var selfTimerMenuVisible: Bool = false
+    var selfTimerInterval: Int = 5
+    
+    class Timings {
+        static let selfTimerMenuShowDuration = 0.3
+        static let selfTimerMenuHideDuration = 0.3
+        static let selfTimerMenuHideDelay = 0.2
+    }
     
     @IBAction func toggleCameraMode(_ sender: Any) {
         cameraMode.next()
@@ -175,14 +195,83 @@ class CameraViewController : UIViewController {
         updateSelfTimerButton(toMode: selfTimer)
     }
     
-    func updateSelfTimerButton(toMode selfTimer: SelfTimer) {
-        if selfTimer.active {
-            selfTimerButton.tintColor = Colours.selected.value
-        } else {
-            selfTimerButton.tintColor = Colours.unselected.value
+    func setSelfTimerButtonState(selfTimerInterval: Int) {
+        let buttons = [
+            (interval:  5, button: selfTimer5Seconds),
+            (interval: 10, button: selfTimer10Seconds),
+            (interval: 20, button: selfTimer20Seconds),
+        ]
+        
+        for button in buttons {
+            button.button.tintColor = Colours.colourIf(selected: button.interval == selfTimerInterval)
         }
     }
     
+    func showSelfTimerMenu() {
+        if selfTimerMenuVisible {
+            return
+        }
+        
+        setSelfTimerButtonState(selfTimerInterval: selfTimerInterval)
+        
+        selfTimerMenu.alpha = 0
+        selfTimerMenu.isHidden = false
+        
+        UIView.animate(withDuration: Timings.selfTimerMenuShowDuration,
+                       animations: {
+            self.selfTimerMenu.alpha = 1.0
+        })
+        
+        selfTimerMenuVisible = true
+    }
+    
+    func hideSelfTimerMenu() {
+        if !selfTimerMenuVisible {
+            return
+        }
+        
+        UIView.animate(withDuration: Timings.selfTimerMenuHideDuration,
+                       delay: Timings.selfTimerMenuHideDelay,
+                       animations: {
+            self.selfTimerMenu.alpha = 0.0
+        }) { (completed) in
+            if completed {
+                self.selfTimerMenu.isHidden = true
+            }
+        }
+
+        selfTimerMenuVisible = false
+    }
+    
+    func updateSelfTimerButton(toMode selfTimer: SelfTimer) {
+        if selfTimer.active {
+            selfTimerButton.tintColor = Colours.selected.value
+            showSelfTimerMenu()
+        } else {
+            selfTimerButton.tintColor = Colours.unselected.value
+            hideSelfTimerMenu()
+        }
+    }
+    
+    func updateSelfTimerTimings(to seconds: Int) {
+        selfTimerInterval = seconds
+        setSelfTimerButtonState(selfTimerInterval: selfTimerInterval)
+        hideSelfTimerMenu()
+    }
+    
+    @IBAction func setSelfTimerTo5Seconds(_ sender: Any) {
+        updateSelfTimerTimings(to: 5)
+    }
+    
+    @IBAction func setSelfTimerTo10Seconds(_ sender: Any) {
+        updateSelfTimerTimings(to: 10)
+    }
+    
+    @IBAction func setSelfTimerTo20Seconds(_ sender: Any) {
+        updateSelfTimerTimings(to: 20)
+    }
+    
+
     @IBAction func rotateCamera(_ sender: Any) {
         cameraRotation.next()
         updateRotateCameraButton(toMode: cameraRotation)
@@ -198,6 +287,19 @@ class CameraViewController : UIViewController {
     }
     
     @IBAction func capture(_ sender: Any) {
+        if selfTimer.active {
+            // TODO: Begin countdown and then capture the image.
+            // TODO: Set off a timer to update count down every second.
+            // TODO: Capture image at the end of the countdown.
+            // TODO: Lock rest of UI - but allow cancelation of countdown
+            //       (by pressing the capture button again?)
+        } else {
+            captureImage()
+        }
+    }
+    
+    func captureImage() {
+        // TODO: Video capture...
         // TODO: The capturing...
         cameraController.captureImage { (image, error) in
             guard let image = image else {
