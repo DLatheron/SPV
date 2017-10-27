@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SPV/CameraViewController.swift"
-            timestampString = "530779781.970496"
+            timestampString = "530814255.555428"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "270"
-            endingLineNumber = "270"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
             landmarkName = "updateSelfTimerButton(toMode:)"
             landmarkType = "7">
          </BreakpointContent>

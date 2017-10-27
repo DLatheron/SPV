@@ -18,7 +18,6 @@ class CameraViewController : UIViewController {
     @IBOutlet fileprivate weak var selfTimer5Seconds: UIBarButtonItem!
     @IBOutlet fileprivate weak var selfTimer10Seconds: UIBarButtonItem!
     @IBOutlet fileprivate weak var selfTimer20Seconds: UIBarButtonItem!
-
     
     @IBOutlet fileprivate weak var capturePreviewView: UIView!
     @IBOutlet fileprivate weak var flashButton: UIBarButtonItem!
@@ -129,7 +128,7 @@ class CameraViewController : UIViewController {
     }
     
     enum CameraRotation {
-        case back
+        case rear
         case front
         
         var active: Bool {
@@ -141,7 +140,7 @@ class CameraViewController : UIViewController {
         var cameraPosition: CameraController.CameraPosition {
             get {
                 switch self {
-                case .back: return CameraController.CameraPosition.rear
+                case .rear: return CameraController.CameraPosition.rear
                 case .front: return CameraController.CameraPosition.front
                 }
             }
@@ -149,10 +148,10 @@ class CameraViewController : UIViewController {
         
         mutating func next() {
             switch self {
-            case .back:
+            case .rear:
                 self = .front
             case .front:
-                self = .back
+                self = .rear
             }
         }
     }
@@ -161,7 +160,7 @@ class CameraViewController : UIViewController {
     var cameraMode: CameraMode = .camera
     var flashMode: FlashMode = .flashAuto
     var selfTimer: SelfTimer = .off
-    var cameraRotation: CameraRotation = .back
+    var cameraRotation: CameraRotation = .rear
     var selfTimerMenuVisible: Bool = false
     var selfTimerInterval: Int = 5
     
@@ -211,10 +210,15 @@ class CameraViewController : UIViewController {
             return
         }
         
-        if touch.tapCount == 1 {
-            nextSelfTimerMode()
+        let forceTouchEnabled = traitCollection.forceTouchCapability == .available
+        print("Available: \(forceTouchEnabled), Force: \(touch.force)")
+        
+        if forceTouchEnabled && touch.force > 1.0 {
+            displaySelfTimerMenu()
         } else if touch.tapCount == 0 {
             displaySelfTimerMenu()
+        } else if touch.tapCount == 1 {
+            nextSelfTimerMode()
         }
     }
     
@@ -297,7 +301,13 @@ class CameraViewController : UIViewController {
     @IBAction func rotateCamera(_ sender: Any) {
         cameraRotation.next()
         updateRotateCameraButton(toMode: cameraRotation)
-        cameraController.currentCameraPosition = cameraRotation.cameraPosition
+        
+        switch cameraRotation {
+        case .front:
+            try? cameraController.switchToFrontCamera()
+        case .rear:
+            try? cameraController.switchToRearCamera()
+        }
     }
     
     func updateRotateCameraButton(toMode cameraRotation: CameraRotation) {
@@ -402,10 +412,6 @@ class CameraViewController : UIViewController {
 }
 
 extension CameraViewController {
-    
-}
-
-extension CameraViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -438,5 +444,6 @@ extension CameraViewController {
         updateRotateCameraButton(toMode: cameraRotation)
 
         styleCaptureButton()
+        configureCameraController()
     }
 }
