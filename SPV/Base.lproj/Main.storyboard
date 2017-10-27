@@ -749,7 +749,7 @@
                                     <barButtonItem image="timerInv" id="0Z7-Tz-Dij">
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
-                                            <action selector="toggleSelfTimer:" destination="cTV-NP-fdG" id="Z2b-Cf-HCn"/>
+                                            <action selector="toggleSelfTimer:forEvent:" destination="cTV-NP-fdG" id="5vy-8q-Huk"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ROK-ti-JoB"/>
@@ -839,7 +839,7 @@
                         <outlet property="selfTimer10Seconds" destination="Eqk-2t-2wB" id="dso-4I-dyQ"/>
                         <outlet property="selfTimer20Seconds" destination="QaJ-Tf-1j3" id="ugU-To-K0e"/>
                         <outlet property="selfTimer5Seconds" destination="4G7-6z-wr3" id="GKJ-ES-bfF"/>
-                        <outlet property="selfTimerButton" destination="0Z7-Tz-Dij" id="9zv-nt-23i"/>
+                        <outlet property="selfTimerButton" destination="0Z7-Tz-Dij" id="1bH-if-A4I"/>
                         <outlet property="selfTimerCountdown" destination="ekf-uI-PpV" id="PsD-8y-Kre"/>
                         <outlet property="selfTimerMenu" destination="nLv-zE-Vow" id="Mac-0F-g1e"/>
                     </connections>

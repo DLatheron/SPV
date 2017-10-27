@@ -110,19 +110,19 @@ class CameraViewController : UIViewController {
     
     enum SelfTimer {
         case off
-        case fiveSeconds
+        case on
         
         var active: Bool {
             get {
-                return self == .fiveSeconds
+                return self == .on
             }
         }
         
         mutating func next() {
             switch self {
             case .off:
-                self = .fiveSeconds
-            case .fiveSeconds:
+                self = .on
+            case .on:
                 self = .off
             }
         }
@@ -165,6 +165,9 @@ class CameraViewController : UIViewController {
     var selfTimerMenuVisible: Bool = false
     var selfTimerInterval: Int = 5
     
+    var timerCountdown: Int = 0
+    var timer: Timer? = nil
+    
     class Timings {
         static let selfTimerMenuShowDuration = 0.3
         static let selfTimerMenuHideDuration = 0.3
@@ -190,9 +193,29 @@ class CameraViewController : UIViewController {
         modeButton.image = UIImage(named: cameraMode.imageName)
     }
     
-    @IBAction func toggleSelfTimer(_ sender: Any) {
-        selfTimer.next()
-        updateSelfTimerButton(toMode: selfTimer)
+    @IBAction func toggleSelfTimer(_ sender: Any,
+                                   forEvent event: UIEvent) {
+        func nextSelfTimerMode() {
+            selfTimer.next()
+            updateSelfTimerButton(toMode: selfTimer)
+        }
+        
+        func displaySelfTimerMenu() {
+            selfTimer = .on
+            updateSelfTimerButton(toMode: selfTimer)
+            showSelfTimerMenu()
+        }
+        
+        guard let touch = event.allTouches?.first else {
+            nextSelfTimerMode()
+            return
+        }
+        
+        if touch.tapCount == 1 {
+            nextSelfTimerMode()
+        } else if touch.tapCount == 0 {
+            displaySelfTimerMenu()
+        }
     }
     
     func setSelfTimerButtonState(selfTimerInterval: Int) {
@@ -246,7 +269,6 @@ class CameraViewController : UIViewController {
     func updateSelfTimerButton(toMode selfTimer: SelfTimer) {
         if selfTimer.active {
             selfTimerButton.tintColor = Colours.selected.value
-            showSelfTimerMenu()
         } else {
             selfTimerButton.tintColor = Colours.unselected.value
             hideSelfTimerMenu()
@@ -288,19 +310,84 @@ class CameraViewController : UIViewController {
     
     @IBAction func capture(_ sender: Any) {
         if selfTimer.active {
-            // TODO: Begin countdown and then capture the image.
-            // TODO: Set off a timer to update count down every second.
-            // TODO: Capture image at the end of the countdown.
-            // TODO: Lock rest of UI - but allow cancelation of countdown
-            //       (by pressing the capture button again?)
+            if timer == nil {
+                captureImage(after: selfTimerInterval)
+            } else {
+                cancelSelfTimer()
+            }
         } else {
             captureImage()
         }
     }
     
+    func cancelSelfTimer() {
+        timer?.invalidate()
+        timer = nil
+        
+        hideTimerCountdown()
+    }
+    
+    func updateCountdown(_ countdown: Int) {
+        if countdown == 0 {
+            selfTimerCountdown.text = "Smile!"
+        } else {
+            selfTimerCountdown.text = "\(countdown)"
+        }
+    }
+    
+    func showTimerCountdown() {
+        selfTimerCountdown.alpha = 0
+        selfTimerCountdown.isHidden = false
+        
+        UIView.animate(withDuration: 0.3,
+                       animations: {
+            self.selfTimerCountdown.alpha = 1
+        }, completion: { (completed) in
+            if completed {
+                self.timer = Timer.scheduledTimer(timeInterval: 1,
+                                                  target:self,
+                                                  selector:    #selector(self.updateSelfTimerCountdown),
+                                                  userInfo: nil,
+                                                  repeats: true)
+            }
+        })
+    }
+    
+    func hideTimerCountdown() {
+        UIView.animate(withDuration: 0.3,
+                       animations: {
+                        self.selfTimerCountdown.alpha = 0
+        }, completion: { (completed) in
+            if completed {
+                self.selfTimerCountdown.isHidden = true
+                self.selfTimerCountdown.alpha = 1
+            }
+        })
+    }
+    
+    func captureImage(after seconds: Int) {
+        timerCountdown = seconds
+        updateCountdown(timerCountdown)
+        
+        showTimerCountdown()
+    }
+    
+    @objc func updateSelfTimerCountdown() {
+        timerCountdown = timerCountdown - 1
+        updateCountdown(timerCountdown)
+
+        if (timerCountdown == 0) {
+            cancelSelfTimer()
+
+            captureImage()
+        }
+    }
+    
     func captureImage() {
+        print("Capturing image")
+        
         // TODO: Video capture...
-        // TODO: The capturing...
+        // TODO: The capturing to a local file...
         cameraController.captureImage { (image, error) in
             guard let image = image else {
                 print(error ?? "Image capture error")
@@ -351,6 +438,5 @@ extension CameraViewController {
         updateRotateCameraButton(toMode: cameraRotation)
 
         styleCaptureButton()
-        
     }
 }
