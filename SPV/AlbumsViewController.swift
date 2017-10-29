@@ -48,7 +48,7 @@ class AlbumsViewController: UICollectionViewController {
     }
     
     func getImage(at index: Int) -> UIImage? {
-        return UIImage(contentsOfFile: media[index].fileURL.absoluteString)
+        return UIImage(contentsOfFile: media[index].fileURL.path)
     }
     
     override func collectionView(_ collectionView: UICollectionView,

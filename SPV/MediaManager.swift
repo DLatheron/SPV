@@ -55,6 +55,29 @@ class MediaManager {
         return newMedia
     }
     
+    func getNextFilename(basePath: String,
+                         filenamePrefix: String,
+                         numberOfDigits: Int = 6,
+                         filenamePostfix: String) -> String? {
+        // TODO: Precache the filename list rather than checking against the filesystem?
+        let formatter = NumberFormatter()
+        formatter.minimumIntegerDigits = numberOfDigits
+        
+        let maximumNumber = numberOfDigits * 10
+        
+        for number in 0..<maximumNumber {
+            let formattedNumber = formatter.string(from: NSNumber(value: number))!
+            let filename = "\(filenamePrefix)\(formattedNumber)\(filenamePostfix)"
+            let path = (basePath as NSString).appendingPathComponent(filename)
+            
+            if !FileManager.default.fileExists(atPath: path) {
+                return path
+            }
+        }
+        
+        return nil
+    }
+    
 //    func getMedia(at index: Int) -> Media {
 //        return media[index]
 //    }

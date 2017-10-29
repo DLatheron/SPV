@@ -40,7 +40,7 @@ class Media : NSObject {
     }
     
     func getImage() -> UIImage {
-        return UIImage(contentsOfFile: fileURL.absoluteString)!
+        return UIImage(contentsOfFile: fileURL.path)!
     }
     
     func saveInfo(info: MediaInfo) {
@@ -57,7 +57,7 @@ class Media : NSObject {
     }
     
     private class func makeInfoURL(fileURL: URL) -> URL {
-        return URL(fileURLWithPath: fileURL.appendingPathExtension(Media.mediaInfoExtension).absoluteString)
+        return URL(string: fileURL.appendingPathExtension(Media.mediaInfoExtension).absoluteString)!
     }
     
     private class func loadOrCreateMediaInfo(forFileURL fileURL: URL) -> MediaInfo {
@@ -79,7 +79,7 @@ class Media : NSObject {
                 mediaInfo.fileSize = 0
             }
             
-            if let image = UIImage(contentsOfFile: fileURL.absoluteString) {
+            if let image = UIImage(contentsOfFile: fileURL.path) {
                 mediaInfo.resolution.width = Int(image.size.width)
                 mediaInfo.resolution.height = Int(image.size.height)
             }

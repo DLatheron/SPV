@@ -348,7 +348,7 @@
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="NBR-qH-epd">
-                                                                <rect key="frame" x="63.5" y="7" width="248" height="29"/>
+                                                                <rect key="frame" x="63" y="7" width="249" height="29"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <segments>
@@ -713,13 +713,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fakeCameraBackground" translatesAutoresizingMaskIntoConstraints="NO" id="8WL-Sh-De7">
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fakeCameraBackground" translatesAutoresizingMaskIntoConstraints="NO" id="8WL-Sh-De7">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KRW-tY-Gos">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KRW-tY-Gos">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ekf-uI-PpV">
                                         <rect key="frame" x="177.5" y="64" width="19.5" height="58"/>
@@ -815,17 +813,25 @@
                         <constraints>
                             <constraint firstItem="tAS-W7-QUF" firstAttribute="top" secondItem="0C3-Nm-TMF" secondAttribute="bottom" id="0Wd-2m-DPQ"/>
                             <constraint firstItem="a5u-FC-jCG" firstAttribute="centerX" secondItem="rVj-9U-gCy" secondAttribute="centerX" id="2n2-yE-kQz"/>
+                            <constraint firstItem="8WL-Sh-De7" firstAttribute="centerX" secondItem="rVj-9U-gCy" secondAttribute="centerX" id="7X6-HS-Szf"/>
+                            <constraint firstItem="KRW-tY-Gos" firstAttribute="centerY" secondItem="rVj-9U-gCy" secondAttribute="centerY" id="7un-hr-D5x"/>
+                            <constraint firstItem="8WL-Sh-De7" firstAttribute="width" secondItem="rVj-9U-gCy" secondAttribute="width" id="9XM-2p-kI7"/>
                             <constraint firstItem="tAS-W7-QUF" firstAttribute="centerX" secondItem="rVj-9U-gCy" secondAttribute="centerX" id="AHJ-sD-8p6"/>
                             <constraint firstItem="nLv-zE-Vow" firstAttribute="width" secondItem="tAS-W7-QUF" secondAttribute="width" id="CMl-r6-p39"/>
                             <constraint firstItem="XVM-5V-Ks0" firstAttribute="centerX" secondItem="rVj-9U-gCy" secondAttribute="centerX" id="KMx-c7-tep"/>
+                            <constraint firstItem="KRW-tY-Gos" firstAttribute="width" secondItem="rVj-9U-gCy" secondAttribute="width" id="NgU-O3-eIf"/>
                             <constraint firstItem="ekf-uI-PpV" firstAttribute="top" secondItem="0C3-Nm-TMF" secondAttribute="bottom" constant="44" id="OJl-44-n60"/>
                             <constraint firstItem="2vQ-DR-snQ" firstAttribute="top" secondItem="XVM-5V-Ks0" secondAttribute="bottom" id="PL9-8d-Qrn"/>
                             <constraint firstItem="2vQ-DR-snQ" firstAttribute="top" secondItem="a5u-FC-jCG" secondAttribute="bottom" constant="16" id="Z8d-KK-KBL"/>
                             <constraint firstItem="XVM-5V-Ks0" firstAttribute="width" secondItem="rVj-9U-gCy" secondAttribute="width" id="dAh-2L-dxq"/>
                             <constraint firstItem="nLv-zE-Vow" firstAttribute="centerX" secondItem="tAS-W7-QUF" secondAttribute="centerX" id="f2b-5I-Jzt"/>
+                            <constraint firstItem="8WL-Sh-De7" firstAttribute="height" secondItem="rVj-9U-gCy" secondAttribute="height" id="ghw-IN-4Fv"/>
                             <constraint firstItem="ekf-uI-PpV" firstAttribute="centerX" secondItem="rVj-9U-gCy" secondAttribute="centerX" id="gjC-Hj-qNk"/>
+                            <constraint firstItem="8WL-Sh-De7" firstAttribute="centerY" secondItem="rVj-9U-gCy" secondAttribute="centerY" id="lfb-wR-auA"/>
                             <constraint firstItem="tAS-W7-QUF" firstAttribute="width" secondItem="rVj-9U-gCy" secondAttribute="width" id="nAy-jV-R1d"/>
                             <constraint firstItem="nLv-zE-Vow" firstAttribute="top" secondItem="tAS-W7-QUF" secondAttribute="bottom" id="ogg-5U-Nbn"/>
+                            <constraint firstItem="KRW-tY-Gos" firstAttribute="centerX" secondItem="rVj-9U-gCy" secondAttribute="centerX" id="pxO-rz-1xC"/>
+                            <constraint firstItem="KRW-tY-Gos" firstAttribute="height" secondItem="rVj-9U-gCy" secondAttribute="height" id="uG3-K2-ueb"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Camera" image="camera" landscapeImage="camera" id="Agk-0K-z1u"/>

@@ -86,8 +86,14 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         }
     }
     
+    var isLandscape: Bool {
+        get {
+            return UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height
+        }
+    }
+    
     override var prefersStatusBarHidden: Bool {
-        return isFullscreen
+        return isFullscreen || !isLandscape
     }
     
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {

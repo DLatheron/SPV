@@ -25,6 +25,8 @@ class CameraViewController : UIViewController {
     @IBOutlet fileprivate weak var rotateCameraButton: UIBarButtonItem!
     @IBOutlet fileprivate weak var modeButton: UIBarButtonItem!
     
+    let jpegPhotoImageQuality: CGFloat = 0.8
+    
     enum Colours {
         case selected
         case unselected
@@ -302,6 +304,9 @@ class CameraViewController : UIViewController {
         cameraRotation.next()
         updateRotateCameraButton(toMode: cameraRotation)
         
+        cameraSwitchAnimation(forView: capturePreviewView,
+                              toCameraRotation: cameraRotation)
+
         switch cameraRotation {
         case .front:
             try? cameraController.switchToFrontCamera()
@@ -393,20 +398,109 @@ class CameraViewController : UIViewController {
         }
     }
     
+    func shutterAnimation(forView view: UIView) {
+        let shutterAnimation = CATransition.init()
+        shutterAnimation.duration = 0.6
+        shutterAnimation.timingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseInEaseOut)
+        shutterAnimation.type = "cameraIris"
+        shutterAnimation.setValue("cameraIris",
+                                  forKey: "cameraIris")
+        
+        let shutterLayer = CALayer.init()
+        shutterLayer.bounds = view.bounds
+        view.layer.addSublayer(shutterLayer)
+        view.layer.add(shutterAnimation,
+                       forKey: "cameraIris")
+    }
+    
+    func cameraSwitchAnimation(forView view: UIView,
+                               toCameraRotation cameraRotation: CameraRotation) {
+        let flipAnimation = CATransition.init()
+        flipAnimation.duration = 0.5
+        flipAnimation.timingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseInEaseOut)
+        flipAnimation.type = "oglFlip";
+        
+        switch cameraRotation {
+        case .front:
+            flipAnimation.subtype = kCATransitionFromRight;
+        case .rear:
+            flipAnimation.subtype = kCATransitionFromLeft;
+        }
+        
+        let flipLayer = CALayer.init()
+        flipLayer.bounds = view.bounds
+        view.layer.addSublayer(flipLayer)
+        view.layer.add(flipAnimation,
+                       forKey: "oglFlip")
+    }
+    
+    func getURLForDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory,
+                                             in: .userDomainMask)
+        
+        return paths[0] as URL
+    }
+    
+    func createLocalFileURL(filename: String) -> URL {
+        let documentsDirectoryURL = getURLForDocumentsDirectory()
+        let localFileURL = documentsDirectoryURL.appendingPathComponent(filename);
+        
+        return localFileURL
+    }
+    
+    func saveImageToLocalFile(image: UIImage,
+                              url: URL) throws {
+        if let data = UIImageJPEGRepresentation(image, jpegPhotoImageQuality) {
+            try? data.write(to: url,
+                            options: [ .atomic, .completeFileProtection ])
+        }
+    }
+    
+    func saveImageToCameraRoll(image: UIImage) throws {
+        try? PHPhotoLibrary.shared().performChangesAndWait {
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }
+    }
+    
     func captureImage() {
         print("Capturing image")
         
+        // TODO: Improve the shutter animation.
+        shutterAnimation(forView: capturePreviewView)
+        
         // TODO: Video capture...
-        // TODO: The capturing to a local file...
         cameraController.captureImage { (image, error) in
             guard let image = image else {
                 print(error ?? "Image capture error")
                 return
             }
             
-            try? PHPhotoLibrary.shared().performChangesAndWait {
-                PHAssetChangeRequest.creationRequestForAsset(from: image)
+            if let fullPath = MediaManager.shared.getNextFilename(basePath: self.getURLForDocumentsDirectory().path,
+                                                                  filenamePrefix: "CameraPhoto-",
+                                                                  numberOfDigits: 6,
+                                                                  filenamePostfix: ".jpg") {
+                let localFileURL = URL(fileURLWithPath: fullPath, isDirectory: false)
+                try? self.saveImageToLocalFile(image: image,
+                                               url: localFileURL)
+                
+                _ = MediaManager.shared.addMedia(url: localFileURL)
+            } else {
+                print("Too many existing photos")
             }
+            //try? self.saveImageToCameraRoll(image: image)
+        }
+    }
+}
+
+extension CameraViewController {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size,
+                                 with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
+            self.cameraController.setPreviewOrientation()
+        }) { (context: UIViewControllerTransitionCoordinatorContext) in
         }
     }
 }

@@ -761,8 +761,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size,
-                                 with: coordinator)
-        
+                                 with: coordinator)        
         
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
             self.view.layer.shouldRasterize = true
