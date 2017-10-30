@@ -427,7 +427,9 @@ class CameraViewController : UIViewController {
                 try? self.cameraController.switchToRearCamera()
             }
             
-            self.setFakeCameraBackground()
+            if self.capturePreviewView.subviews.count > 0 {
+                self.setFakeCameraBackground()
+            }
         }
     }
     
