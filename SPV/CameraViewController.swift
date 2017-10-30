@@ -304,25 +304,9 @@ class CameraViewController : UIViewController {
 
     @IBAction func rotateCamera(_ sender: Any) {
         cameraRotation.next()
-        updateRotateCameraButton(toMode: cameraRotation)
         
         cameraSwitchAnimation(forView: capturePreviewView,
                               toCameraRotation: cameraRotation)
-
-        switch cameraRotation {
-        case .front:
-            try? cameraController.switchToFrontCamera()
-        case .rear:
-            try? cameraController.switchToRearCamera()
-        }
-    }
-    
-    func updateRotateCameraButton(toMode cameraRotation: CameraRotation) {
-        if cameraRotation.active {
-            rotateCameraButton.tintColor = Colours.selected.value
-        } else {
-            rotateCameraButton.tintColor = Colours.unselected.value
-        }
     }
     
     @IBAction func capture(_ sender: Any) {
@@ -434,6 +418,17 @@ class CameraViewController : UIViewController {
         view.layer.addSublayer(flipLayer)
         view.layer.add(flipAnimation,
                        forKey: "oglFlip")
+        
+        UIView.animate(withDuration: flipAnimation.duration / 2) {
+            switch cameraRotation {
+            case .front:
+                try? self.cameraController.switchToFrontCamera()
+            case .rear:
+                try? self.cameraController.switchToRearCamera()
+            }
+            
+            self.setFakeCameraBackground()
+        }
     }
     
     func getURLForDocumentsDirectory() -> URL {
@@ -549,7 +544,6 @@ extension CameraViewController {
         updateFlashButton(toMode: flashMode)
         updateModeButton(toMode: cameraMode)
         updateSelfTimerButton(toMode: selfTimer)
-        updateRotateCameraButton(toMode: cameraRotation)
 
         styleCaptureButton()
         configureCameraController()
