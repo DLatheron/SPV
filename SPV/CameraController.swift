@@ -121,12 +121,6 @@ extension CameraController {
         }
     }
     
-    var isLandscape: Bool {
-        get {
-            return UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height
-        }
-    }
-    
     func displayPreview(on view: UIView) throws {
         guard
             let captureSession = self.captureSession,
@@ -144,11 +138,23 @@ extension CameraController {
     
     func setPreviewOrientation() {
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        if self.isLandscape {
-            self.previewLayer?.connection?.videoOrientation = .landscapeLeft    // TODO: Work out which...
-        } else {
-            self.previewLayer?.connection?.videoOrientation = .portrait
+        
+        let captureOrientation: AVCaptureVideoOrientation
+        
+        switch UIScreen.main.orientation {
+        case .portrait:
+            captureOrientation = .portrait
+        case .landscapeLeft:
+            captureOrientation = .landscapeLeft
+        case .landscapeRight:
+            captureOrientation = .landscapeRight
+        case .portraitUpsideDown:
+            captureOrientation = .portraitUpsideDown
+        default:
+            captureOrientation = .portrait
         }
+        
+        self.previewLayer?.connection?.videoOrientation = captureOrientation
     }
     
     func switchToFrontCamera() throws {

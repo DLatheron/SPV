@@ -159,6 +159,8 @@ class CameraViewController : UIViewController {
     }
     
     let cameraController = CameraController()
+    let fakeCameraBackground = UIImageView()
+    
     var cameraMode: CameraMode = .camera
     var flashMode: FlashMode = .flashAuto
     var selfTimer: SelfTimer = .off
@@ -512,14 +514,26 @@ extension CameraViewController {
 }
 
 extension CameraViewController {
+    func setFakeCameraBackground() {
+        let fakeCameraImageName: String
+        switch cameraRotation {
+        case .front: fakeCameraImageName = "fakeCameraBackgroundFront"
+        case .rear: fakeCameraImageName = "fakeCameraBackgroundRear"
+        }
+        fakeCameraBackground.image = UIImage(named: fakeCameraImageName)
+    }
+    
     override func viewDidLoad() {
         func configureCameraController() {
             cameraController.prepare {(error) in
                 if let error = error {
                     print(error)
+                    self.fakeCameraBackground.frame = UIScreen.main.bounds
+                    self.capturePreviewView.addSubview(self.fakeCameraBackground)
+                    self.setFakeCameraBackground()
+                } else {
+                    try? self.cameraController.displayPreview(on: self.capturePreviewView)
                 }
-                
-                try? self.cameraController.displayPreview(on: self.capturePreviewView)
             }
         }
         
