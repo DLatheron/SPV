@@ -136,6 +136,33 @@ extension CameraController {
         self.previewLayer?.frame = view.frame
     }
     
+    var captureDevice: AVCaptureDevice? {
+        get {
+            guard
+                let captureSession = self.captureSession,
+                captureSession.isRunning
+            else {
+                return nil
+            }
+
+            switch currentCameraPosition {
+            case .front?: return frontCamera
+            case .rear?: return rearCamera
+            default: return nil
+            }
+        }
+    }
+    
+    var hasFlash: Bool {
+        get {
+            if let captureDevice = captureDevice {
+                return captureDevice.hasFlash && captureDevice.isFlashAvailable
+            } else {
+                return false
+            }
+        }
+    }
+    
     func setPreviewOrientation() {
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         
@@ -161,9 +188,9 @@ extension CameraController {
         guard
             let captureSession = self.captureSession,
             captureSession.isRunning
-            else {
-                throw CameraControllerError.captureSessionIsMissing
-            }
+        else {
+            throw CameraControllerError.captureSessionIsMissing
+        }
         
         captureSession.beginConfiguration()
         try switchToFrontCamera(inSession: captureSession)

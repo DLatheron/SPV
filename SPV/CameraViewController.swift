@@ -195,7 +195,11 @@ class CameraViewController : UIViewController {
     }
     
     func updateFlashButton(toMode flashMode: FlashMode) {
-        flashButton.image = UIImage(named: flashMode.imageName)
+        if cameraController.hasFlash {
+            flashButton.image = UIImage(named: flashMode.imageName)
+        } else {
+            flashButton.image = UIImage(named: FlashMode.flashOff.imageName)
+        }
     }
 
     @IBAction func toggleFlashMode(_ sender: Any) {
