@@ -10,6 +10,7 @@ import AVFoundation
 import Foundation
 import Photos
 import UIKit
+import MediaPlayer
 
 class CameraViewController : UIViewController {
     @IBOutlet fileprivate weak var captureButton: UIButton!
@@ -24,6 +25,13 @@ class CameraViewController : UIViewController {
     @IBOutlet fileprivate weak var selfTimerButton: UIBarButtonItem!
     @IBOutlet fileprivate weak var rotateCameraButton: UIBarButtonItem!
     @IBOutlet fileprivate weak var modeButton: UIBarButtonItem!
+    
+    @IBOutlet fileprivate weak var bottomToolbar: UIToolbar!
+    
+    @IBOutlet weak var bottomToolbarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topToolbarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var selfTimerToolbarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomToolbarYOffsetConstraint: NSLayoutConstraint!
     
     let jpegPhotoImageQuality: CGFloat = 0.8
     
@@ -160,6 +168,7 @@ class CameraViewController : UIViewController {
     
     let cameraController = CameraController()
     let fakeCameraBackground = UIImageView()
+    //let volumeView = MPVolumeView()
     
     var cameraMode: CameraMode = .camera
     var flashMode: FlashMode = .flashAuto
@@ -170,6 +179,9 @@ class CameraViewController : UIViewController {
     
     var timerCountdown: Int = 0
     var timer: Timer? = nil
+    
+    var volume: Float = 0
+
     
     class Timings {
         static let selfTimerMenuShowDuration = 0.3
@@ -250,7 +262,7 @@ class CameraViewController : UIViewController {
         
         UIView.animate(withDuration: Timings.selfTimerMenuShowDuration,
                        animations: {
-            self.selfTimerMenu.alpha = 1.0
+            self.selfTimerMenu.alpha = 0.75
         })
         
         selfTimerMenuVisible = true
@@ -357,7 +369,7 @@ class CameraViewController : UIViewController {
     func hideTimerCountdown() {
         UIView.animate(withDuration: 0.3,
                        animations: {
-                        self.selfTimerCountdown.alpha = 0
+            self.selfTimerCountdown.alpha = 0
         }, completion: { (completed) in
             if completed {
                 self.selfTimerCountdown.isHidden = true
@@ -492,14 +504,32 @@ class CameraViewController : UIViewController {
 }
 
 extension CameraViewController {
+    func positionBottomToolbar() {
+        let navBarHeight: CGFloat = UIScreen.main.isLandscape ? 30 : 44
+        let tabBarHeight: CGFloat = UIScreen.main.isLandscape ? 32 : 49
+        
+        bottomToolbarHeightConstraint.constant = navBarHeight
+        topToolbarHeightConstraint.constant = navBarHeight
+        selfTimerToolbarHeightConstraint.constant = navBarHeight
+        bottomToolbarYOffsetConstraint.constant = tabBarHeight
+        
+        self.view.setNeedsUpdateConstraints()
+        self.view.setNeedsLayout()
+        self.view.setNeedsDisplay()
+    }
+    
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size,
                                  with: coordinator)
         
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
+            self.positionBottomToolbar();
             self.cameraController.setPreviewOrientation()
+            self.view.layer.shouldRasterize = true
         }) { (context: UIViewControllerTransitionCoordinatorContext) in
+            self.view.layer.shouldRasterize = false
+            self.positionBottomToolbar();
         }
     }
 }
@@ -520,12 +550,27 @@ extension CameraViewController {
         fakeCameraBackground.image = UIImage(named: fakeCameraImageName)
     }
     
+    @objc func volumeChanged() {
+        print("volume changed")
+    }
+    
     override func viewDidLoad() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.volumeChanged),
+                                               name: Notification.Name(rawValue: "volumeChanged"),
+                                               object: nil)
+        //prevents the volume hud from showing up
+        let volView = MPVolumeView(frame: .zero)
+        view.addSubview(volView)
+        
+        
         func configureCameraController() {
             cameraController.prepare {(error) in
                 if let error = error {
                     print(error)
                     self.fakeCameraBackground.frame = UIScreen.main.bounds
+                    self.fakeCameraBackground.contentMode = .scaleAspectFill
+                    self.fakeCameraBackground.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
                     self.capturePreviewView.addSubview(self.fakeCameraBackground)
                     self.setFakeCameraBackground()
                 } else {
@@ -543,6 +588,8 @@ extension CameraViewController {
         
         super.viewDidLoad()
         
+        positionBottomToolbar()
+        
         updateFlashButton(toMode: flashMode)
         updateModeButton(toMode: cameraMode)
         updateSelfTimerButton(toMode: selfTimer)
@@ -550,4 +597,89 @@ extension CameraViewController {
         styleCaptureButton()
         configureCameraController()
     }
+}
+
+// Workaround to use the volumne buttons as shutter release buttons...
+extension CameraViewController {
+//    override func observeValue(forKeyPath keyPath: String?,
+//                               of object: Any?,
+//                               change: [NSKeyValueChangeKey : Any]?,
+//                               context: UnsafeMutableRawPointer?) {
+//        //when the user changes the volume,
+//        //prevent the output volume from changing by setting it to the default volume we specified,
+//        //so that we can continue pressing the buttons for ever
+//        (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(volume, animated: false)
+//
+//        //implement your photo-capturing function here
+//        print("volume changed")
+//    }
+    
+//    func startTrackingVolume() {
+//        let audioSession = AVAudioSession.sharedInstance()
+//        if audioSession.outputVolume == 0 {
+//            volume = audioSession.outputVolume + 0.1
+//        } else if audioSession.outputVolume == 1 {
+//            volume = audioSession.outputVolume - 0.1
+//        } else {
+//            volume = audioSession.outputVolume
+//        }
+//        try! audioSession.setActive(true)
+//        audioSession.addObserver(self,
+//                                 forKeyPath: "outputVolume",
+//                                 options: NSKeyValueObservingOptions.new,
+//                                 context: nil)
+//        //prevents the volume hud from showing up
+////        let volView = MPVolumeView(frame: .zero)
+////        view.addSubview(volView)
+//
+////        let session = AVAudioSession.sharedInstance()
+////        try? session.setCategory(AVAudioSessionCategoryPlayback,
+////                                 mode: AVAudioSessionModeMoviePlayback,
+////                                 options: [])
+////        try? session.setActive(true)
+////
+////        volumeView.frame = CGRect(x: 0, y: 0, width: 100, height: 100);
+////        if volumeView.superview == nil {
+////            view.addSubview(volumeView)
+////        }
+////
+////        NotificationCenter.default.addObserver(self,
+////                                               selector: #selector(volumeChanged),
+////                                               name: .MPMusicPlayerControllerVolumeDidChange,
+////                                               object: nil)
+//    }
+    
+//    func stopTrackingVolume() {
+//        let session = AVAudioSession.sharedInstance()
+//        try? session.setActive(false)
+//
+//        NotificationCenter.default.removeObserver(self)
+//    }
+
+//    @objc func volumeChanged(notification: Notification) {
+//        print("Take Photo")
+//    }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        startTrackingVolume()
+//        super.viewDidAppear(animated)
+//    }
+//    
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        stopTrackingVolume()
+//    }
+    
+//    func applyVolumeButtonHack() {
+//        // these 4 lines of code tell the system that "this app needs to play sound/music"
+////        AVAudioPlayer* p = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"photoshutter.wav"]] error:NULL];
+////        [p prepareToPlay];
+////        [p stop];
+////        
+////        //make MPVolumeView Offscreen
+////        CGRect frame = CGRectMake(-1000, -1000, 100, 100);
+////        MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:frame];
+////        [volumeView sizeToFit];
+////        [self.view addSubview:volumeView];
+//    }
 }
