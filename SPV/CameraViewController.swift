@@ -515,7 +515,7 @@ extension CameraViewController {
         bottomToolbarHeightConstraint.constant = navBarHeight
         topToolbarHeightConstraint.constant = navBarHeight
         selfTimerToolbarHeightConstraint.constant = navBarHeight
-        bottomToolbarYOffsetConstraint.constant = tabBarHeight
+        //bottomToolbarYOffsetConstraint.constant = tabBarHeight
         
         self.view.setNeedsUpdateConstraints()
         self.view.setNeedsLayout()

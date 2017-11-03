@@ -9,6 +9,11 @@
 import UIKit
 import WebKit
 
+/* REFACTOR THIS COMPLETELY
+ - Should be do able with auto-layout... top bar var at 88 with a flexible inset constraint
+ - Bottom should also be constraint based. Should be able to animate it out by affecting the constraint.
+ 
+ */
 
 class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizerDelegate {
     
@@ -207,13 +212,13 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     private var minBarHeight: CGFloat {
         get {
-            return compressedSearchBarHeight + statusBarHeight
+            return compressedSearchBarHeight + statusBarHeight + safeZoneTop
         }
     }
     
     private var maxBarHeight: CGFloat {
         get {
-            return searchBarHeight + statusBarHeight
+            return searchBarHeight + statusBarHeight + safeZoneTop
         }
     }
     
@@ -250,9 +255,19 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         }
     }
     
+    private var safeZoneTop: CGFloat {
+        get {
+            if true {
+                return 44.0
+            } else {
+                return 0.0
+            }
+        }
+    }
+    
     private func setupFlexibleHeightBar() -> FlexibleHeightBar {
         let flexibleHeightBar = FlexibleHeightBar(frame: CGRect(x: 0.0,
-                                                                y: 0.0,
+                                                                y: safeZoneTop,//0.0,
                                                                 width: self.view.frame.size.width,
                                                                 height: maxBarHeight))
         
@@ -434,17 +449,17 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         let toolbarOnScreenY = tabBarOnScreenY - toolBarHeight
         
-        tabBar.frame = CGRect(x: 0,
-                              y: tabBarOnScreenY,
-                              width: screenWidth,
-                              height: tabBarHeight)
-        tabBar.invalidateIntrinsicContentSize()
+//        tabBar.frame = CGRect(x: 0,
+//                              y: tabBarOnScreenY,
+//                              width: screenWidth,
+//                              height: tabBarHeight)
+//        tabBar.invalidateIntrinsicContentSize()
         
-        toolbar.frame = CGRect(x: 0,
-                               y: toolbarOnScreenY,
-                               width: screenWidth,
-                               height: toolBarHeight)
-        toolbar.invalidateIntrinsicContentSize()
+//        toolbar.frame = CGRect(x: 0,
+//                               y: toolbarOnScreenY,
+//                               width: screenWidth,
+//                               height: toolBarHeight)
+//        toolbar.invalidateIntrinsicContentSize()
         
         
         let initialProgress: CGFloat = 0.0
@@ -1099,7 +1114,7 @@ extension BrowserViewController : FlexibleHeightBarProgressDelegate
 {
     func progressChanged(progress: CGFloat) {
         // TODO: Change the positioning of the bottom bars.
-        let tabBar = tabBarController!.tabBar
+//        let tabBar = tabBarController!.tabBar
 
         let toolbarOnScreenY = tabBarOnScreenY - toolBarHeight
         
@@ -1112,15 +1127,15 @@ extension BrowserViewController : FlexibleHeightBarProgressDelegate
         let toolbarYPosition = interpolate(from: toolbarOnScreenY,
                                            to: toolbarOffScreenY,
                                            withProgress: progress)
-        tabBar.frame = CGRect(x: 0,
-                              y: tabBarYPosition,
-                              width: screenWidth,
-                              height: tabBarHeight)
+//        tabBar.frame = CGRect(x: 0,
+//                              y: tabBarYPosition,
+//                              width: screenWidth,
+//                              height: tabBarHeight)
     
-        toolbar.frame = CGRect(x: 0,
-                               y: toolbarYPosition,
-                               width: screenWidth,
-                               height: toolBarHeight)
+//        toolbar.frame = CGRect(x: 0,
+//                               y: toolbarYPosition,
+//                               width: screenWidth,
+//                               height: toolBarHeight)
         
         webView.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: flexibleHeightBar!.bounds.height - statusBarHeight,
                                                                 left: 0,
