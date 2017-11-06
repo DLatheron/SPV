@@ -524,6 +524,12 @@ extension CameraViewController {
     
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
+        guard
+            tabBarController?.selectedViewController === self
+        else {
+                return
+        }
+
         super.viewWillTransition(to: size,
                                  with: coordinator)
         

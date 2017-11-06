@@ -19,13 +19,18 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     let initialPageUrl = "https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_1280.jpg"
     
+    @IBOutlet weak var webView: WKWebView!
+    @IBOutlet weak var topBar: UIView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var searchBarBottomOffsetConstraint: NSLayoutConstraint!
+    
     var urlBeforeEditing: String? = nil;
     var url: String = ""
     
-    var webView: WKWebView!
     var scope: SearchScope = .all // TODO: Preserve as config.
     
-    @IBOutlet weak var barHeightConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var barHeightConstraint: NSLayoutConstraint!
     
     typealias HistoryEntry = (url: String, category: SearchScope)
     
@@ -43,10 +48,10 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     let getImageJS: String;
     
-    @IBOutlet weak var barView: UIView!
-    weak var searchField: UISearchBar!
-    weak var searchFieldText: UITextField!
-    weak var searchFieldBorder: UIImageView!
+//    @IBOutlet weak var barView: UIView!
+//    weak var searchField: UISearchBar!
+//    weak var searchFieldText: UITextField!
+//    weak var searchFieldBorder: UIImageView!
     
     @IBOutlet weak var searchResultsTable: UITableView!
     @IBOutlet weak var searchEffectsView: UIVisualEffectView!
@@ -57,11 +62,10 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var forwardButton: UIBarButtonItem!
     @IBOutlet weak var reloadButton: UIBarButtonItem!
     @IBOutlet weak var tabsButton: UIBarButtonItem!
-    @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var longPressGesture: UILongPressGestureRecognizer!
     
-    var flexibleHeightBar: FlexibleHeightBar?
-    var flexibleVfxView: UIVisualEffectView!
+//    var flexibleHeightBar: FlexibleHeightBar?
+//    var flexibleVfxView: UIVisualEffectView!
     var tapOnBarGesture: UITapGestureRecognizer?
 
     @IBAction func unwindToBrowserViewController(segue:UIStoryboardSegue) {
@@ -69,9 +73,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     }
     
     required init(coder aDecoder: NSCoder) {
-        let webConfiguration = WKWebViewConfiguration()
-        webConfiguration.allowsInlineMediaPlayback = true;
-        webView = WKWebView(frame: .zero, configuration: webConfiguration)
+//        let webConfiguration = WKWebViewConfiguration()
+//        webConfiguration.allowsInlineMediaPlayback = true;
+//        webView = WKWebView(frame: .zero, configuration: webConfiguration)
         
         let bundle = Bundle.main
         let path = bundle.path(forResource: "GetImage", ofType: "js")
@@ -92,99 +96,100 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     private func configureWebView() {
         webView.uiDelegate = self
         webView.navigationDelegate = self
+//
+//        view.insertSubview(webView, at: 0)
+//        //view.addSubview(webView)
+//
+//        webView.frame = CGRect(x: 0,
+//                               y: 0,
+//                               width: screenWidth,
+//                               height: screenHeight)
+//        webView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
+//
+////        webView.translatesAutoresizingMaskIntoConstraints = false
+////        let height = NSLayoutConstraint(item: webView,
+////                                        attribute: .height,
+////                                        relatedBy: .equal,
+////                                        toItem: view,
+////                                        attribute: .height,
+////                                        multiplier: 1,
+////                                        constant: 0)
+////        let width = NSLayoutConstraint(item: webView,
+////                                       attribute: .width,
+////                                       relatedBy: .equal,
+////                                       toItem: view,
+////                                       attribute: .width,
+////                                       multiplier: 1,
+////                                       constant: 0)
+////        view.addConstraints([height, width])
+//
+        webView.scrollView.delegate = self;
         
-        view.insertSubview(webView, at: 0)
-        //view.addSubview(webView)
-        
-        webView.frame = CGRect(x: 0,
-                               y: 0,
-                               width: screenWidth,
-                               height: screenHeight)
-        webView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
-
-//        webView.translatesAutoresizingMaskIntoConstraints = false
-//        let height = NSLayoutConstraint(item: webView,
-//                                        attribute: .height,
-//                                        relatedBy: .equal,
-//                                        toItem: view,
-//                                        attribute: .height,
-//                                        multiplier: 1,
-//                                        constant: 0)
-//        let width = NSLayoutConstraint(item: webView,
-//                                       attribute: .width,
-//                                       relatedBy: .equal,
-//                                       toItem: view,
-//                                       attribute: .width,
-//                                       multiplier: 1,
-//                                       constant: 0)
-//        view.addConstraints([height, width])
-        
-        //webView.scrollView.delegate = self;
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoBack), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoForward), options: .new, context: nil)
-        
+
         longPressGesture.cancelsTouchesInView = true
-        
+
         // Remove all of the web view's long press gesture recognisers.
         for recognizer in webView.scrollView.subviews[0].gestureRecognizers ?? [] {
             if recognizer is UILongPressGestureRecognizer {
                 webView.scrollView.subviews[0].removeGestureRecognizer(recognizer)
             }
         }
-        
+
         webView.addGestureRecognizer(longPressGesture)
         webView.allowsBackForwardNavigationGestures = true
         webView.allowsLinkPreview = false
     }
     
-    let compressedSearchBarHeight: CGFloat = 20.0
-    let searchBarHeight: CGFloat = 46.0
-    let progressBarHeight: CGFloat = 2
+//    let compressedSearchBarHeight: CGFloat = 20.0
+//    let searchBarHeight: CGFloat = 46.0
+//    let progressBarHeight: CGFloat = 2
     
-    private func setupSearchField(parentView: UIView) -> UISearchBar {
-        let searchField = UISearchBar()
-        let searchFieldText = searchField.value(forKey: "searchField") as! UITextField
-        let searchFieldBorder = searchField.getSubview(byType: "UISearchBarBackground") as! UIImageView
-        
-        searchField.delegate = self
-        searchField.autocapitalizationType = .none
-        searchField.autocorrectionType = .no
-        searchField.enablesReturnKeyAutomatically = true
-        searchField.keyboardType = .URL
-        searchField.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
-        searchField.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
-        
-        searchFieldText.textAlignment = .center
-        
-        parentView.addSubview(searchField)
-        
-//        searchField.bounds = CGRect(x: 0,
-//                                    y: 0,
-//                                    width: screenWidth,
-//                                    height: searchBarHeight)
-
-//        let leftRightMargin: CGFloat = 8
-//        let topBottomMargin: CGFloat = 4
+//    private func setupSearchField(parentView: UIView) -> UISearchBar {
+//        let searchField = UISearchBar()
+//        let searchFieldText = searchField.value(forKey: "searchField") as! UITextField
+//        let searchFieldBorder = searchField.getSubview(byType: "UISearchBarBackground") as! UIImageView
 //
-//        searchFieldText.bounds = CGRect(x: leftRightMargin,
-//                                        y: topBottomMargin,
-//                                        width: screenWidth - (leftRightMargin * 2),
-//                                        height: searchField.bounds.size.height - (topBottomMargin * 2))
+//        searchField.delegate = self
+//        searchField.autocapitalizationType = .none
+//        searchField.autocorrectionType = .no
+//        searchField.enablesReturnKeyAutomatically = true
+//        searchField.keyboardType = .URL
+//        searchField.placeholder = NSLocalizedString("Search or enter website name", comment: "Placeholder text displayed in browser search/url field")
+//        searchField.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
 //
-        searchFieldText.leftViewMode = .never
-        searchFieldText.rightViewMode = .whileEditing
-        searchFieldText.clearButtonMode = .whileEditing
-        
-        searchFieldText.backgroundColor = barColour
-        searchFieldText.background = UIImage()
-        
-        self.searchField = searchField
-        self.searchFieldText = searchFieldText
-        self.searchFieldBorder = searchFieldBorder
-        
-        return searchField
-    }
+//        searchFieldText.textAlignment = .center
+//
+//        parentView.addSubview(searchField)
+//
+////        searchField.bounds = CGRect(x: 0,
+////                                    y: 0,
+////                                    width: screenWidth,
+////                                    height: searchBarHeight)
+//
+////        let leftRightMargin: CGFloat = 8
+////        let topBottomMargin: CGFloat = 4
+////
+////        searchFieldText.bounds = CGRect(x: leftRightMargin,
+////                                        y: topBottomMargin,
+////                                        width: screenWidth - (leftRightMargin * 2),
+////                                        height: searchField.bounds.size.height - (topBottomMargin * 2))
+////
+//        searchFieldText.leftViewMode = .never
+//        searchFieldText.rightViewMode = .whileEditing
+//        searchFieldText.clearButtonMode = .whileEditing
+//
+//        searchFieldText.backgroundColor = barColour
+//        searchFieldText.background = UIImage()
+//
+//        self.searchField = searchField
+//        self.searchFieldText = searchFieldText
+//        self.searchFieldBorder = searchFieldBorder
+//
+//        return searchField
+//    }
     
     private var screenWidth: CGFloat {
         get {
@@ -198,29 +203,29 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         }
     }
     
-    private var landscape: Bool {
-        get {
-            return screenWidth > screenHeight
-        }
-    }
+//    private var landscape: Bool {
+//        get {
+//            return screenWidth > screenHeight
+//        }
+//    }
     
     private var statusBarHeight: CGFloat {
         get {
-            return landscape ? 0 : 20.0
+            return UIScreen.main.isLandscape ? 0 : 20.0
         }
     }
     
-    private var minBarHeight: CGFloat {
-        get {
-            return compressedSearchBarHeight + statusBarHeight + safeZoneTop
-        }
-    }
-    
-    private var maxBarHeight: CGFloat {
-        get {
-            return searchBarHeight + statusBarHeight + safeZoneTop
-        }
-    }
+//    private var minBarHeight: CGFloat {
+//        get {
+//            return compressedSearchBarHeight + statusBarHeight + safeZoneTop
+//        }
+//    }
+//
+//    private var maxBarHeight: CGFloat {
+//        get {
+//            return searchBarHeight + statusBarHeight + safeZoneTop
+//        }
+//    }
     
     private var barColour: UIColor {
         get {
@@ -233,7 +238,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
  
     private var tabBarHeight: CGFloat {
         get {
-            return landscape ? 32 : 49
+            return UIScreen.main.isLandscape ? 32 : 49
         }
     }
     
@@ -245,7 +250,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     private var toolBarHeight: CGFloat {
         get {
-            return landscape ? 32 : 44
+            return UIScreen.main.isLandscape ? 32 : 44
         }
     }
     
@@ -265,133 +270,133 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         }
     }
     
-    private func setupFlexibleHeightBar() -> FlexibleHeightBar {
-        let flexibleHeightBar = FlexibleHeightBar(frame: CGRect(x: 0.0,
-                                                                y: safeZoneTop,//0.0,
-                                                                width: self.view.frame.size.width,
-                                                                height: maxBarHeight))
-        
-        // Effect view.
-        let flexibleVfxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
-        flexibleVfxView.bounds = CGRect(x: 0,
-                                       y: -statusBarHeight,
-                                       width: screenWidth,
-                                       height: maxBarHeight)
-        
-        flexibleHeightBar.addSubview(flexibleVfxView)
-        
-        flexibleHeightBar.backgroundColor = UIColor.clear
-        flexibleHeightBar.progressDelegate = self
-        
-        // Behaviour.
-        let behaviourDefiner = FacebookBarBehaviorDefiner()
-        behaviourDefiner.thresholdNegativeDirection = 0.0
-        behaviourDefiner.thresholdFromTop = 0.0
-        behaviourDefiner.thresholdPositiveDirection = 0.0
-        flexibleHeightBar.behaviorDefiner = behaviourDefiner
-        webView.scrollView.delegate = self
-        
-        self.flexibleHeightBar = flexibleHeightBar
-        self.flexibleVfxView = flexibleVfxView
-
-        // Gesture recogniser.
-        tapOnBarGesture = UITapGestureRecognizer(target: self,
-                                                 action: #selector(self.tapOnBarDetected(_:)))
-        if let tapOnBarGesture = tapOnBarGesture {
-            tapOnBarGesture.numberOfTapsRequired = 1
-            tapOnBarGesture.numberOfTouchesRequired = 1
-            flexibleHeightBar.addGestureRecognizer(tapOnBarGesture)
-        }
-        
-        return flexibleHeightBar
-    }
+//    private func setupFlexibleHeightBar() -> FlexibleHeightBar {
+//        let flexibleHeightBar = FlexibleHeightBar(frame: CGRect(x: 0.0,
+//                                                                y: safeZoneTop,//0.0,
+//                                                                width: self.view.frame.size.width,
+//                                                                height: maxBarHeight))
+//        
+//        // Effect view.
+//        let flexibleVfxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+//        flexibleVfxView.bounds = CGRect(x: 0,
+//                                       y: -statusBarHeight,
+//                                       width: screenWidth,
+//                                       height: maxBarHeight)
+//        
+//        flexibleHeightBar.addSubview(flexibleVfxView)
+//        
+//        flexibleHeightBar.backgroundColor = UIColor.clear
+//        flexibleHeightBar.progressDelegate = self
+//        
+//        // Behaviour.
+//        let behaviourDefiner = FacebookBarBehaviorDefiner()
+//        behaviourDefiner.thresholdNegativeDirection = 0.0
+//        behaviourDefiner.thresholdFromTop = 0.0
+//        behaviourDefiner.thresholdPositiveDirection = 0.0
+//        flexibleHeightBar.behaviorDefiner = behaviourDefiner
+//        webView.scrollView.delegate = self
+//        
+//        self.flexibleHeightBar = flexibleHeightBar
+//        self.flexibleVfxView = flexibleVfxView
+//
+//        // Gesture recogniser.
+//        tapOnBarGesture = UITapGestureRecognizer(target: self,
+//                                                 action: #selector(self.tapOnBarDetected(_:)))
+//        if let tapOnBarGesture = tapOnBarGesture {
+//            tapOnBarGesture.numberOfTapsRequired = 1
+//            tapOnBarGesture.numberOfTouchesRequired = 1
+//            flexibleHeightBar.addGestureRecognizer(tapOnBarGesture)
+//        }
+//        
+//        return flexibleHeightBar
+//    }
     
-    private func setupProgressView() -> UIProgressView {
-        let progressView = UIProgressView()
-        
-        progressView.frame = CGRect(x: 0,
-                                    y: maxBarHeight - progressBarHeight,
-                                    width: screenWidth,
-                                    height: progressBarHeight)
-        
-        self.progressView = progressView
-        
-        return progressView
-    }
+//    private func setupProgressView() -> UIProgressView {
+//        let progressView = UIProgressView()
+//
+//        progressView.frame = CGRect(x: 0,
+//                                    y: maxBarHeight - progressBarHeight,
+//                                    width: screenWidth,
+//                                    height: progressBarHeight)
+//
+//        self.progressView = progressView
+//
+//        return progressView
+//    }
 
-    private func configureSearchController() {
-        let flexibleHeightBar = setupFlexibleHeightBar()
-        self.view.addSubview(flexibleHeightBar)
-
-        let searchField = setupSearchField(parentView: flexibleHeightBar)
-        
-//        webView.scrollView.contentInset = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
-//        webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
-        
-        definesPresentationContext = true
-        
-        let progressView = setupProgressView()
-        flexibleHeightBar.addSubview(progressView)
-
-        setupSearchBarProgressStates(searchField: searchField,
-                                     flexibleHeightBar: flexibleHeightBar)
-    }
+//    private func configureSearchController() {
+//        let flexibleHeightBar = setupFlexibleHeightBar()
+//        self.view.addSubview(flexibleHeightBar)
+//
+//        let searchField = setupSearchField(parentView: flexibleHeightBar)
+//
+////        webView.scrollView.contentInset = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
+////        webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
+//
+//        definesPresentationContext = true
+//
+//        let progressView = setupProgressView()
+//        flexibleHeightBar.addSubview(progressView)
+//
+//        setupSearchBarProgressStates(searchField: searchField,
+//                                     flexibleHeightBar: flexibleHeightBar)
+//    }
     
-    func setLayout(_ view: UIView?,
-                   forBar flexibleHeightBar: FlexibleHeightBar,
-                   atProgress progress: CGFloat,
-                   withPreviousLayout previousLayout: FlexibleHeightBarSubviewLayoutAttributes? = nil,
-                   offset: CGPoint? = nil,
-                   translationY: CGFloat? = nil,
-                   scale: CGFloat? = nil,
-                   alpha: CGFloat? = nil) -> FlexibleHeightBarSubviewLayoutAttributes? {
-        let layout: FlexibleHeightBarSubviewLayoutAttributes
-        if let previousLayout = previousLayout {
-            layout = FlexibleHeightBarSubviewLayoutAttributes(layoutAttributes: previousLayout)
-        } else {
-            layout = FlexibleHeightBarSubviewLayoutAttributes()
-            if let view = view {
-                layout.size = view.frame.size
-            }
-        }
-        
-        let translationTransform: CGAffineTransform
-        if let translationY = translationY {
-            translationTransform = CGAffineTransform(translationX: 0.0,
-                                                     y: translationY)
-        } else {
-            translationTransform = CGAffineTransform.identity
-        }
-        
-        let scaleTransform: CGAffineTransform
-        if let scale = scale {
-            scaleTransform = CGAffineTransform(scaleX: scale,
-                                               y: scale)
-        } else {
-            scaleTransform = CGAffineTransform.identity
-        }
-        
-        layout.transform = scaleTransform.concatenating(translationTransform)
-        
-        if let alpha = alpha {
-            //layout.alpha = alpha
-            layout.borderAlpha = alpha
-            layout.backgroundAlpha = alpha
-        }
-        
-        if let view = view {
-            if let offset = offset {
-                layout.center = CGPoint(x: view.bounds.midX + offset.x,
-                                        y: view.bounds.midY + offset.y)
-            }
-            
-            flexibleHeightBar.addLayoutAttributes(layout,
-                                                  forSubview: view,
-                                                  forProgress: progress)
-        }
-        
-        return layout
-    }
+//    func setLayout(_ view: UIView?,
+//                   forBar flexibleHeightBar: FlexibleHeightBar,
+//                   atProgress progress: CGFloat,
+//                   withPreviousLayout previousLayout: FlexibleHeightBarSubviewLayoutAttributes? = nil,
+//                   offset: CGPoint? = nil,
+//                   translationY: CGFloat? = nil,
+//                   scale: CGFloat? = nil,
+//                   alpha: CGFloat? = nil) -> FlexibleHeightBarSubviewLayoutAttributes? {
+//        let layout: FlexibleHeightBarSubviewLayoutAttributes
+//        if let previousLayout = previousLayout {
+//            layout = FlexibleHeightBarSubviewLayoutAttributes(layoutAttributes: previousLayout)
+//        } else {
+//            layout = FlexibleHeightBarSubviewLayoutAttributes()
+//            if let view = view {
+//                layout.size = view.frame.size
+//            }
+//        }
+//
+//        let translationTransform: CGAffineTransform
+//        if let translationY = translationY {
+//            translationTransform = CGAffineTransform(translationX: 0.0,
+//                                                     y: translationY)
+//        } else {
+//            translationTransform = CGAffineTransform.identity
+//        }
+//
+//        let scaleTransform: CGAffineTransform
+//        if let scale = scale {
+//            scaleTransform = CGAffineTransform(scaleX: scale,
+//                                               y: scale)
+//        } else {
+//            scaleTransform = CGAffineTransform.identity
+//        }
+//
+//        layout.transform = scaleTransform.concatenating(translationTransform)
+//
+//        if let alpha = alpha {
+//            //layout.alpha = alpha
+//            layout.borderAlpha = alpha
+//            layout.backgroundAlpha = alpha
+//        }
+//
+//        if let view = view {
+//            if let offset = offset {
+//                layout.center = CGPoint(x: view.bounds.midX + offset.x,
+//                                        y: view.bounds.midY + offset.y)
+//            }
+//
+//            flexibleHeightBar.addLayoutAttributes(layout,
+//                                                  forSubview: view,
+//                                                  forProgress: progress)
+//        }
+//
+//        return layout
+//    }
     
     func interpolate(from fromValue: CGFloat,
                      to toValue: CGFloat,
@@ -399,173 +404,176 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         return fromValue - ((fromValue - toValue) * progress)
     }
     
-    func setupSearchBarProgressStates(searchField: UISearchBar,
-                                      flexibleHeightBar: FlexibleHeightBar) {
-        //let progress = flexibleHeightBar.progress
-        flexibleHeightBar.progress = 0.0
-        flexibleHeightBar.behaviorDefiner?.snap(with: webView.scrollView)
-        
-        flexibleHeightBar.removeAllLayoutAttributes()
-        
-        
-        
-        
-        
-        flexibleHeightBar.minimumBarHeight = minBarHeight
-        flexibleHeightBar.maximumBarHeight = maxBarHeight
-        
-        flexibleHeightBar.frame = CGRect(x: 0.0,
-                                         y: 0.0,
-                                         width: screenWidth,
-                                         height: maxBarHeight)
-        flexibleVfxView.bounds = CGRect(x: 0.0,
-                                       y: -statusBarHeight,
-                                       width: screenWidth,
-                                       height: maxBarHeight)
-
-        progressView.frame = CGRect(x: 0,
-                                    y: maxBarHeight - progressBarHeight,
-                                    width: screenWidth,
-                                    height: progressBarHeight)
-        
-        searchField.frame = CGRect(x: 0,
-                                   y: statusBarHeight,
-                                   width: screenWidth,
-                                   height: searchBarHeight)
-        searchField.setNeedsLayout()
-
-        let leftRightMargin: CGFloat = 8
-        let topBottomMargin: CGFloat = 4
-        
-        searchFieldText.bounds = CGRect(x: leftRightMargin,
-                                        y: topBottomMargin,
-                                        width: screenWidth - (leftRightMargin * 2),
-                                        height: searchField.bounds.size.height - (topBottomMargin * 2))
-        
-        webView.scrollView.contentInset = UIEdgeInsetsMake(searchBarHeight, 0.0, 0.0, screenHeight - totalBarHeights)
-        
-        
-        let tabBar = tabBarController!.tabBar
-        
-        let toolbarOnScreenY = tabBarOnScreenY - toolBarHeight
-        
-//        tabBar.frame = CGRect(x: 0,
-//                              y: tabBarOnScreenY,
-//                              width: screenWidth,
-//                              height: tabBarHeight)
-//        tabBar.invalidateIntrinsicContentSize()
-        
-//        toolbar.frame = CGRect(x: 0,
-//                               y: toolbarOnScreenY,
-//                               width: screenWidth,
-//                               height: toolBarHeight)
-//        toolbar.invalidateIntrinsicContentSize()
-        
-        
-        let initialProgress: CGFloat = 0.0
-        let middleProgress: CGFloat = 0.20
-        let finalProgress: CGFloat = 1.0
-        
-        let translationY: CGFloat = landscape ? -14.0 : -16.0
-        let progressTranslationY: CGFloat = -(searchBarHeight - compressedSearchBarHeight)
-        let scale: CGFloat = 0.75
-        
-        let midTranslationY = interpolate(from: 0.0,
-                                          to: translationY,
-                                          withProgress: middleProgress)
-        let finalTranslationY = interpolate(from: 0.0,
-                                            to: translationY,
-                                            withProgress: finalProgress)
-
-        let midProgressTranslationY = interpolate(from: 0.0,
-                                                  to: progressTranslationY,
-                                                  withProgress: middleProgress)
-        let finalProgressTranslationY = interpolate(from: 0.0,
-                                                    to: progressTranslationY,
-                                                    withProgress: finalProgress)
-        
-
-        let midScale = interpolate(from: 1.0,
-                                   to: scale,
-                                   withProgress: middleProgress)
-        let finalScale = interpolate(from: 1.0,
-                                     to: scale,
-                                     withProgress: finalProgress)
-        
-        var layout: FlexibleHeightBarSubviewLayoutAttributes?
-        
-        layout = setLayout(searchField,
-                           forBar: flexibleHeightBar,
-                           atProgress: initialProgress,
-                           offset: CGPoint(x: 0.0, y: statusBarHeight))
-        layout = setLayout(searchField,
-                           forBar: flexibleHeightBar,
-                           atProgress: middleProgress,
-                           withPreviousLayout: layout,
-                           translationY: midTranslationY,
-                           scale: midScale)
-        layout = setLayout(searchField,
-                           forBar: flexibleHeightBar,
-                           atProgress: finalProgress,
-                           withPreviousLayout: layout,
-                           translationY: finalTranslationY,
-                           scale: finalScale)
-        
-        layout = setLayout(flexibleVfxView,
-                           forBar: flexibleHeightBar,
-                           atProgress: initialProgress,
-                           offset: CGPoint(x: 0.0, y: statusBarHeight))
-        layout = setLayout(flexibleVfxView,
-                           forBar: flexibleHeightBar,
-                           atProgress: middleProgress,
-                           withPreviousLayout: layout,
-                           translationY: midProgressTranslationY)
-        layout = setLayout(flexibleVfxView,
-                           forBar: flexibleHeightBar,
-                           atProgress: finalProgress,
-                           withPreviousLayout: layout,
-                           translationY: finalProgressTranslationY)
-        
-        layout = setLayout(searchFieldText,
-                           forBar: flexibleHeightBar,
-                           atProgress: initialProgress,
-                           offset: CGPoint.zero)
-        layout = setLayout(searchFieldText,
-                           forBar: flexibleHeightBar,
-                           atProgress: middleProgress,
-                           withPreviousLayout: layout,
-                           alpha: 0.0)
-        layout = setLayout(searchFieldText,
-                           forBar: flexibleHeightBar,
-                           atProgress: finalProgress,
-                           withPreviousLayout: layout,
-                           alpha: 0.0)
-        
-        layout = setLayout(progressView,
-                           forBar: flexibleHeightBar,
-                           atProgress: initialProgress,
-                           offset: CGPoint(x: 0.0,
-                                           y: maxBarHeight - progressView.frame.size.height))
-        layout = setLayout(progressView,
-                           forBar: flexibleHeightBar,
-                           atProgress: middleProgress,
-                           withPreviousLayout: layout,
-                           translationY: midProgressTranslationY)
-        layout = setLayout(progressView,
-                           forBar: flexibleHeightBar,
-                           atProgress: finalProgress,
-                           withPreviousLayout: layout,
-                           translationY: finalProgressTranslationY)
-        
-//        flexibleHeightBar.progress = progress
+//    func setupSearchBarProgressStates(searchField: UISearchBar,
+//                                      flexibleHeightBar: FlexibleHeightBar) {
+//        //let progress = flexibleHeightBar.progress
+//        flexibleHeightBar.progress = 0.0
 //        flexibleHeightBar.behaviorDefiner?.snap(with: webView.scrollView)
-    }
+//
+//        flexibleHeightBar.removeAllLayoutAttributes()
+//
+//
+//
+//
+//
+//        flexibleHeightBar.minimumBarHeight = minBarHeight
+//        flexibleHeightBar.maximumBarHeight = maxBarHeight
+//
+//        flexibleHeightBar.frame = CGRect(x: 0.0,
+//                                         y: 0.0,
+//                                         width: screenWidth,
+//                                         height: maxBarHeight)
+//        flexibleVfxView.bounds = CGRect(x: 0.0,
+//                                       y: -statusBarHeight,
+//                                       width: screenWidth,
+//                                       height: maxBarHeight)
+//
+//        progressView.frame = CGRect(x: 0,
+//                                    y: maxBarHeight - progressBarHeight,
+//                                    width: screenWidth,
+//                                    height: progressBarHeight)
+//
+//        searchField.frame = CGRect(x: 0,
+//                                   y: statusBarHeight,
+//                                   width: screenWidth,
+//                                   height: searchBarHeight)
+//        searchField.setNeedsLayout()
+//
+//        let leftRightMargin: CGFloat = 8
+//        let topBottomMargin: CGFloat = 4
+//
+//        searchFieldText.bounds = CGRect(x: leftRightMargin,
+//                                        y: topBottomMargin,
+//                                        width: screenWidth - (leftRightMargin * 2),
+//                                        height: searchField.bounds.size.height - (topBottomMargin * 2))
+//
+//        webView.scrollView.contentInset = UIEdgeInsetsMake(searchBarHeight, 0.0, 0.0, screenHeight - totalBarHeights)
+//
+//
+//        let tabBar = tabBarController!.tabBar
+//
+//        let toolbarOnScreenY = tabBarOnScreenY - toolBarHeight
+//
+////        tabBar.frame = CGRect(x: 0,
+////                              y: tabBarOnScreenY,
+////                              width: screenWidth,
+////                              height: tabBarHeight)
+////        tabBar.invalidateIntrinsicContentSize()
+//
+////        toolbar.frame = CGRect(x: 0,
+////                               y: toolbarOnScreenY,
+////                               width: screenWidth,
+////                               height: toolBarHeight)
+////        toolbar.invalidateIntrinsicContentSize()
+//
+//
+//        let initialProgress: CGFloat = 0.0
+//        let middleProgress: CGFloat = 0.20
+//        let finalProgress: CGFloat = 1.0
+//
+//        let translationY: CGFloat = landscape ? -14.0 : -16.0
+//        let progressTranslationY: CGFloat = -(searchBarHeight - compressedSearchBarHeight)
+//        let scale: CGFloat = 0.75
+//
+//        let midTranslationY = interpolate(from: 0.0,
+//                                          to: translationY,
+//                                          withProgress: middleProgress)
+//        let finalTranslationY = interpolate(from: 0.0,
+//                                            to: translationY,
+//                                            withProgress: finalProgress)
+//
+//        let midProgressTranslationY = interpolate(from: 0.0,
+//                                                  to: progressTranslationY,
+//                                                  withProgress: middleProgress)
+//        let finalProgressTranslationY = interpolate(from: 0.0,
+//                                                    to: progressTranslationY,
+//                                                    withProgress: finalProgress)
+//
+//
+//        let midScale = interpolate(from: 1.0,
+//                                   to: scale,
+//                                   withProgress: middleProgress)
+//        let finalScale = interpolate(from: 1.0,
+//                                     to: scale,
+//                                     withProgress: finalProgress)
+//
+//        var layout: FlexibleHeightBarSubviewLayoutAttributes?
+//
+//        layout = setLayout(searchField,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: initialProgress,
+//                           offset: CGPoint(x: 0.0, y: statusBarHeight))
+//        layout = setLayout(searchField,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: middleProgress,
+//                           withPreviousLayout: layout,
+//                           translationY: midTranslationY,
+//                           scale: midScale)
+//        layout = setLayout(searchField,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: finalProgress,
+//                           withPreviousLayout: layout,
+//                           translationY: finalTranslationY,
+//                           scale: finalScale)
+//
+//        layout = setLayout(flexibleVfxView,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: initialProgress,
+//                           offset: CGPoint(x: 0.0, y: statusBarHeight))
+//        layout = setLayout(flexibleVfxView,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: middleProgress,
+//                           withPreviousLayout: layout,
+//                           translationY: midProgressTranslationY)
+//        layout = setLayout(flexibleVfxView,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: finalProgress,
+//                           withPreviousLayout: layout,
+//                           translationY: finalProgressTranslationY)
+//
+//        layout = setLayout(searchFieldText,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: initialProgress,
+//                           offset: CGPoint.zero)
+//        layout = setLayout(searchFieldText,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: middleProgress,
+//                           withPreviousLayout: layout,
+//                           alpha: 0.0)
+//        layout = setLayout(searchFieldText,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: finalProgress,
+//                           withPreviousLayout: layout,
+//                           alpha: 0.0)
+//
+//        layout = setLayout(progressView,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: initialProgress,
+//                           offset: CGPoint(x: 0.0,
+//                                           y: maxBarHeight - progressView.frame.size.height))
+//        layout = setLayout(progressView,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: middleProgress,
+//                           withPreviousLayout: layout,
+//                           translationY: midProgressTranslationY)
+//        layout = setLayout(progressView,
+//                           forBar: flexibleHeightBar,
+//                           atProgress: finalProgress,
+//                           withPreviousLayout: layout,
+//                           translationY: finalProgressTranslationY)
+//
+////        flexibleHeightBar.progress = progress
+////        flexibleHeightBar.behaviorDefiner?.snap(with: webView.scrollView)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureSearchController()
         configureWebView()
+        //configureSearchController()
+        //configureWebView()
+        
+        updateConstraints()
         
         navigateTo(url: url)
     }
@@ -642,21 +650,21 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
             return
         }
         
-        if let flexibleHeightBar = flexibleHeightBar {
-            if let behaviourDefiner = flexibleHeightBar.behaviorDefiner {
-                UIView.animate(withDuration: 0.15,
-                               animations: {
-                    self.progressChanged(progress: 0.0)
-                })
-                
-                flexibleHeightBar.progress = 0.0
-                
-                behaviourDefiner.snap(with: webView.scrollView) {
-                    flexibleHeightBar.enableSubviewInteractions(true)
-                    self.searchField.becomeFirstResponder()
-                }
-            }
-        }
+//        if let flexibleHeightBar = flexibleHeightBar {
+//            if let behaviourDefiner = flexibleHeightBar.behaviorDefiner {
+//                UIView.animate(withDuration: 0.15,
+//                               animations: {
+//                    self.progressChanged(progress: 0.0)
+//                })
+//
+//                flexibleHeightBar.progress = 0.0
+//
+//                behaviourDefiner.snap(with: webView.scrollView) {
+//                    flexibleHeightBar.enableSubviewInteractions(true)
+//                    self.searchField.becomeFirstResponder()
+//                }
+//            }
+//        }
     }
     
     // TODO: Only show domain and lock symbol (centred) when the search is inactive.
@@ -718,9 +726,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         if let urlBuilder = URLBuilder(string: urlString) {
             let lockState = urlBuilder.isSchemeSecure ? closedLock : openLock
             let domainText = "\(lockState) \(urlBuilder.host ?? "")"
-            searchField.text = domainText
+//            searchField.text = domainText
         } else {
-            searchField.text = nil
+//            searchField.text = nil
         }
     }
     
@@ -738,7 +746,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     }
     
     func searchBarIsEmpty() -> Bool {
-        return searchField.text?.isEmpty ?? true
+        return /*searchField.text?.isEmpty ?? */true
     }
     
     func isFiltering() -> Bool {
@@ -763,33 +771,48 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         searchResultsTable.reloadData()
     }
     
-    func setPortraitLayout() {
-        let portraitFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 16, height: 44)
-        barView.frame = portraitFrame
-    }
+//    func setPortraitLayout() {
+//        let portraitFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 16, height: 44)
+//        barView.frame = portraitFrame
+//    }
     
-    func setLandscapeLayout() {
-        let landscapeFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 32)
-        barView.frame = landscapeFrame
+//    func setLandscapeLayout() {
+//        let landscapeFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 32)
+//        barView.frame = landscapeFrame
+//    }
+    
+    func updateConstraints() {
+        let searchBarBottomOffset: CGFloat = UIScreen.main.isLandscape ? -6 : 0
+        
+        searchBarBottomOffsetConstraint.constant = searchBarBottomOffset
+        toolbar.invalidateIntrinsicContentSize()
     }
     
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
+        guard
+            tabBarController?.selectedViewController === self
+        else {
+            return
+        }
+        
         super.viewWillTransition(to: size,
                                  with: coordinator)        
-        
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
             self.view.layer.shouldRasterize = true
-            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
-                                                                       with: self.webView.scrollView)
-            self.setupSearchBarProgressStates(searchField: self.searchField,
-                                              flexibleHeightBar: self.flexibleHeightBar!);
+
+            self.updateConstraints()
+            
+//            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
+//                                                                       with: self.webView.scrollView)
+//            self.setupSearchBarProgressStates(searchField: self.searchField,
+//                                              flexibleHeightBar: self.flexibleHeightBar!);
         }) { (context: UIViewControllerTransitionCoordinatorContext) in
             self.view.layer.shouldRasterize = false
-            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
-                                                                       with: self.webView.scrollView)
-            self.setupSearchBarProgressStates(searchField: self.searchField,
-                                              flexibleHeightBar: self.flexibleHeightBar!);
+//            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
+//                                                                       with: self.webView.scrollView)
+//            self.setupSearchBarProgressStates(searchField: self.searchField,
+//                                              flexibleHeightBar: self.flexibleHeightBar!);
         }
     }
 }
@@ -823,19 +846,19 @@ extension BrowserViewController : UISearchBarDelegate {
             shouldShowSearchResults = true
 
             // Reveal the effects via - but make it invisible so we can fade it in.
-            searchEffectsView.alpha = 0
-            searchEffectsView.isHidden = false
+//            searchEffectsView.alpha = 0
+//            searchEffectsView.isHidden = false
 
             UIView.animate(withDuration: 0.3,
                            delay: 0.1,
                            options: [ .curveEaseInOut ],
                            animations: {
-                self.searchField.setShowsCancelButton(true,
-                                                      animated: true)
-                self.searchEffectsView.alpha = 1
-                self.searchField.text = self.url
-                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
-                textFieldInsideSearchBar.textAlignment = .left
+//                self.searchField.setShowsCancelButton(true,
+//                                                      animated: true)
+//                self.searchEffectsView.alpha = 1
+//                self.searchField.text = self.url
+//                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
+//                textFieldInsideSearchBar.textAlignment = .left
 
                 
                 //self.searchField.textAlignment = .left
@@ -851,25 +874,25 @@ extension BrowserViewController : UISearchBarDelegate {
             shouldShowSearchResults = false
 
             // Dismiss the keyboard - causes a recursive call into this function.
-            searchField.resignFirstResponder()
+//            searchField.resignFirstResponder()
 
             UIView.animate(withDuration: 0.3,
                            delay: 0.1,
                            options: [ .curveEaseInOut ],
                            animations: {
-                self.searchEffectsView.alpha = 0
-                self.searchField.setShowsCancelButton(false,
-                                                    animated: true)
-                self.setSearchBarText(urlString: self.url)
-                            
-                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
-                //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
-                textFieldInsideSearchBar.textAlignment = .center
+//                self.searchEffectsView.alpha = 0
+//                self.searchField.setShowsCancelButton(false,
+//                                                    animated: true)
+//                self.setSearchBarText(urlString: self.url)
+//
+//                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
+//                //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
+//                textFieldInsideSearchBar.textAlignment = .center
                             
                 //self.searchField.textAlignment = .center
             }) { (complete) in
                 if complete {
-                    self.searchEffectsView.isHidden = true
+//                    self.searchEffectsView.isHidden = true
                 }
             }
         } else {
@@ -985,7 +1008,7 @@ extension BrowserViewController : SearchCellDelegate {
     func tableViewCell(singleTapActionFromCell cell: SearchCell) {
         DispatchQueue.main.async {
             self.url = cell.textLabel!.text!
-            self.searchField.text = self.url
+//            self.searchField.text = self.url
         }
     }
     
@@ -1054,7 +1077,7 @@ extension BrowserViewController : SearchScopeCellDelegate {
     func changed(scope: SearchScope) {
         self.scope = scope
         
-        filterContentsBy(searchText: searchField.text!,
+        filterContentsBy(searchText: ""/*searchField.text!*/,
                          scope: scope)
     }
 }
@@ -1073,38 +1096,38 @@ extension BrowserViewController : SearchScopeCellDelegate {
 extension BrowserViewController : UIScrollViewDelegate
 {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if !shouldShowSearchResults {
-            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
-            delegate?.scrollViewDidEndDecelerating?(scrollView)
-        }
+//        if !shouldShowSearchResults {
+//            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+//            delegate?.scrollViewDidEndDecelerating?(scrollView)
+//        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if !shouldShowSearchResults {
-            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
-            delegate?.scrollViewWillBeginDragging?(scrollView)
-        }
+//        if !shouldShowSearchResults {
+//            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+//            delegate?.scrollViewWillBeginDragging?(scrollView)
+//        }
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView,
                                   willDecelerate decelerate: Bool) {
-        if !shouldShowSearchResults {
-            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
-            delegate?.scrollViewDidEndDragging?(scrollView,
-                                                willDecelerate: decelerate)
-        }
+//        if !shouldShowSearchResults {
+//            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+//            delegate?.scrollViewDidEndDragging?(scrollView,
+//                                                willDecelerate: decelerate)
+//        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if !shouldShowSearchResults {
-            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
-            delegate?.scrollViewDidScroll?(scrollView)
-            
-            if let flexibleHeightBar = flexibleHeightBar {
-                if flexibleHeightBar.progress > 0.0 {
-                    flexibleHeightBar.enableSubviewInteractions(false)
-                }
-            }
+//            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
+//            delegate?.scrollViewDidScroll?(scrollView)
+//
+//            if let flexibleHeightBar = flexibleHeightBar {
+//                if flexibleHeightBar.progress > 0.0 {
+//                    flexibleHeightBar.enableSubviewInteractions(false)
+//                }
+//            }
         }
     }
 }
@@ -1116,17 +1139,17 @@ extension BrowserViewController : FlexibleHeightBarProgressDelegate
         // TODO: Change the positioning of the bottom bars.
 //        let tabBar = tabBarController!.tabBar
 
-        let toolbarOnScreenY = tabBarOnScreenY - toolBarHeight
-        
-        let tabBarOffScreenY = tabBarOnScreenY + totalBarHeights
-        let toolbarOffScreenY = toolbarOnScreenY + totalBarHeights
-        
-        let tabBarYPosition = interpolate(from: tabBarOnScreenY,
-                                          to: tabBarOffScreenY,
-                                          withProgress: progress)
-        let toolbarYPosition = interpolate(from: toolbarOnScreenY,
-                                           to: toolbarOffScreenY,
-                                           withProgress: progress)
+//        let toolbarOnScreenY = tabBarOnScreenY - toolBarHeight
+//        
+//        let tabBarOffScreenY = tabBarOnScreenY + totalBarHeights
+//        let toolbarOffScreenY = toolbarOnScreenY + totalBarHeights
+//        
+//        let tabBarYPosition = interpolate(from: tabBarOnScreenY,
+//                                          to: tabBarOffScreenY,
+//                                          withProgress: progress)
+//        let toolbarYPosition = interpolate(from: toolbarOnScreenY,
+//                                           to: toolbarOffScreenY,
+//                                           withProgress: progress)
 //        tabBar.frame = CGRect(x: 0,
 //                              y: tabBarYPosition,
 //                              width: screenWidth,
@@ -1137,10 +1160,10 @@ extension BrowserViewController : FlexibleHeightBarProgressDelegate
 //                               width: screenWidth,
 //                               height: toolBarHeight)
         
-        webView.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: flexibleHeightBar!.bounds.height - statusBarHeight,
-                                                                left: 0,
-                                                                bottom: screenHeight - tabBarYPosition,
-                                                                right: 0)
+//        webView.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: flexibleHeightBar!.bounds.height - statusBarHeight,
+//                                                                left: 0,
+//                                                                bottom: screenHeight - tabBarYPosition,
+//                                                                right: 0)
     }
 }
 
