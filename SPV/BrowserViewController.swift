@@ -21,7 +21,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var topBar: UIView!
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar: CollapsibleSearchBar!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var searchBarBottomOffsetConstraint: NSLayoutConstraint!
     @IBOutlet weak var topBarHeightConstraint: NSLayoutConstraint!
@@ -360,13 +360,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     }
     
     func calcSearchBarHeight(at interpolant: CGFloat) -> CGFloat {
-        let collapsedHeight: CGFloat = 60.0
-        let expandedHeight: CGFloat = 88.0
-        let height = interpolate(from: expandedHeight,
-                                 to: collapsedHeight,
-                                 withProgress: interpolant)
-        print("Height is \(height)")
-        return height
+        searchBar.interpolant = interpolant
+        return 44 + searchBar.bounds.size.height
     }
     
 //    func setLayout(_ view: UIView?,
