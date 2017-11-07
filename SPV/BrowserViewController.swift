@@ -50,7 +50,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
 //    @IBOutlet weak var barView: UIView!
 //    weak var searchField: UISearchBar!
-//    weak var searchFieldText: UITextField!
+    weak var searchFieldText: UITextField!
 //    weak var searchFieldBorder: UIImageView!
     
     @IBOutlet weak var searchResultsTable: UITableView!
@@ -96,6 +96,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     private func configureWebView() {
         webView.uiDelegate = self
         webView.navigationDelegate = self
+        
+        webView.scrollView.contentInset = UIEdgeInsets(top: 44,
+                                                       left: 0,
+                                                       bottom: 88,
+                                                       right: 0)
 //
 //        view.insertSubview(webView, at: 0)
 //        //view.addSubview(webView)
@@ -324,10 +329,18 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 //        return progressView
 //    }
 
-//    private func configureSearchController() {
-//        let flexibleHeightBar = setupFlexibleHeightBar()
-//        self.view.addSubview(flexibleHeightBar)
-//
+    private func configureSearchController() {
+        searchFieldText = searchBar.value(forKey: "searchField") as! UITextField
+        searchFieldText.leftViewMode = .never
+        searchFieldText.rightViewMode = .whileEditing
+        searchFieldText.clearButtonMode = .whileEditing
+        searchFieldText.textAlignment = .center
+        
+        //
+        //        searchFieldText.backgroundColor = barColour
+        //        searchFieldText.background = UIImage()
+
+
 //        let searchField = setupSearchField(parentView: flexibleHeightBar)
 //
 ////        webView.scrollView.contentInset = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
@@ -340,7 +353,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 //
 //        setupSearchBarProgressStates(searchField: searchField,
 //                                     flexibleHeightBar: flexibleHeightBar)
-//    }
+    }
     
 //    func setLayout(_ view: UIView?,
 //                   forBar flexibleHeightBar: FlexibleHeightBar,
@@ -570,7 +583,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         super.viewDidLoad()
         
         configureWebView()
-        //configureSearchController()
+        configureSearchController()
         //configureWebView()
         
         updateConstraints()
@@ -726,8 +739,10 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         if let urlBuilder = URLBuilder(string: urlString) {
             let lockState = urlBuilder.isSchemeSecure ? closedLock : openLock
             let domainText = "\(lockState) \(urlBuilder.host ?? "")"
+            searchBar.text = domainText
 //            searchField.text = domainText
         } else {
+            searchBar.text = nil
 //            searchField.text = nil
         }
     }
@@ -818,25 +833,25 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 }
 
 //-----------------------------------------------------------------
-//extension BrowserViewController : UITextFieldDelegate {
-//    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        textField.text = self.url
-//        return true
-//    }
-//
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        flexibleHeightBar?.enableSubviewInteractions(false)
-//        self.navigateTo(url: textField.text!)
-//        return false
-//    }
-//
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        textField.resignFirstResponder()
-//        flexibleHeightBar?.enableSubviewInteractions(false)
-//        setSearchBarText(urlString: url)
-//    }
-//}
+extension BrowserViewController : UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.text = self.url
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        //flexibleHeightBar?.enableSubviewInteractions(false)
+        self.navigateTo(url: textField.text!)
+        return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+        //flexibleHeightBar?.enableSubviewInteractions(false)
+        setSearchBarText(urlString: url)
+    }
+}
 
 //-----------------------------------------------------------------
 extension BrowserViewController : UISearchBarDelegate {
@@ -846,22 +861,18 @@ extension BrowserViewController : UISearchBarDelegate {
             shouldShowSearchResults = true
 
             // Reveal the effects via - but make it invisible so we can fade it in.
-//            searchEffectsView.alpha = 0
-//            searchEffectsView.isHidden = false
+            searchEffectsView.alpha = 0
+            searchEffectsView.isHidden = false
 
             UIView.animate(withDuration: 0.3,
                            delay: 0.1,
                            options: [ .curveEaseInOut ],
                            animations: {
-//                self.searchField.setShowsCancelButton(true,
-//                                                      animated: true)
-//                self.searchEffectsView.alpha = 1
-//                self.searchField.text = self.url
-//                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
-//                textFieldInsideSearchBar.textAlignment = .left
-
-                
-                //self.searchField.textAlignment = .left
+                self.searchBar.setShowsCancelButton(true,
+                                                    animated: true)
+                self.searchEffectsView.alpha = 1
+                self.searchBar.text = self.url
+                self.searchFieldText.textAlignment = .left
             })
         } else {
             print("Already activating!")
@@ -874,25 +885,25 @@ extension BrowserViewController : UISearchBarDelegate {
             shouldShowSearchResults = false
 
             // Dismiss the keyboard - causes a recursive call into this function.
-//            searchField.resignFirstResponder()
+            searchBar.resignFirstResponder()
 
             UIView.animate(withDuration: 0.3,
                            delay: 0.1,
                            options: [ .curveEaseInOut ],
                            animations: {
-//                self.searchEffectsView.alpha = 0
-//                self.searchField.setShowsCancelButton(false,
-//                                                    animated: true)
-//                self.setSearchBarText(urlString: self.url)
+                self.searchEffectsView.alpha = 0
+                self.searchBar.setShowsCancelButton(false,
+                                                    animated: true)
+                self.setSearchBarText(urlString: self.url)
 //
 //                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
 //                //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
 //                textFieldInsideSearchBar.textAlignment = .center
                             
-                //self.searchField.textAlignment = .center
+                self.searchFieldText.textAlignment = .center
             }) { (complete) in
                 if complete {
-//                    self.searchEffectsView.isHidden = true
+                    self.searchEffectsView.isHidden = true
                 }
             }
         } else {
