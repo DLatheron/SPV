@@ -478,7 +478,7 @@
                             <constraint firstItem="kMz-wr-Ki8" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="1gD-1r-s1Q"/>
                             <constraint firstItem="YbF-5e-CmW" firstAttribute="centerX" secondItem="sD5-J4-3d5" secondAttribute="centerX" id="NfY-53-MC9"/>
                             <constraint firstItem="YbF-5e-CmW" firstAttribute="width" secondItem="QS5-Rx-YEW" secondAttribute="width" id="OaY-Zk-M35"/>
-                            <constraint firstItem="sD5-J4-3d5" firstAttribute="top" secondItem="kMz-wr-Ki8" secondAttribute="bottom" constant="-44" id="Wxt-RQ-QHZ"/>
+                            <constraint firstItem="sD5-J4-3d5" firstAttribute="top" secondItem="kMz-wr-Ki8" secondAttribute="top" constant="44" id="Wxt-RQ-QHZ"/>
                             <constraint firstItem="kMz-wr-Ki8" firstAttribute="centerX" secondItem="sD5-J4-3d5" secondAttribute="centerX" id="a09-ej-QQ8"/>
                             <constraint firstItem="YbF-5e-CmW" firstAttribute="bottom" secondItem="sD5-J4-3d5" secondAttribute="bottom" id="hcv-dU-dSk"/>
                         </constraints>
@@ -501,6 +501,7 @@
                         <outlet property="tabsButton" destination="zRA-rK-mSr" id="ilW-4a-F0n"/>
                         <outlet property="toolbar" destination="YbF-5e-CmW" id="bU3-o1-IUw"/>
                         <outlet property="topBar" destination="kMz-wr-Ki8" id="gaS-U1-jTU"/>
+                        <outlet property="topBarHeightConstraint" destination="4II-Gw-aT4" id="7bM-3o-7Ke"/>
                         <outlet property="webView" destination="Q1s-AI-hsh" id="Bw8-Wj-ZpB"/>
                     </connections>
                 </viewController>

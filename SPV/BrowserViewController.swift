@@ -24,6 +24,10 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var searchBarBottomOffsetConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topBarHeightConstraint: NSLayoutConstraint!
+    
+    var scrollOffsetStart: CGFloat = 0
+    var scrolling: Bool = false
     
     var urlBeforeEditing: String? = nil;
     var url: String = ""
@@ -355,6 +359,16 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 //                                     flexibleHeightBar: flexibleHeightBar)
     }
     
+    func calcSearchBarHeight(at interpolant: CGFloat) -> CGFloat {
+        let collapsedHeight: CGFloat = 60.0
+        let expandedHeight: CGFloat = 88.0
+        let height = interpolate(from: expandedHeight,
+                                 to: collapsedHeight,
+                                 withProgress: interpolant)
+        print("Height is \(height)")
+        return height
+    }
+    
 //    func setLayout(_ view: UIView?,
 //                   forBar flexibleHeightBar: FlexibleHeightBar,
 //                   atProgress progress: CGFloat,
@@ -414,7 +428,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     func interpolate(from fromValue: CGFloat,
                      to toValue: CGFloat,
                      withProgress progress: CGFloat) -> CGFloat {
-        return fromValue - ((fromValue - toValue) * progress)
+        let clampedProgress = max(min(progress, 1), 0)
+        
+        return fromValue - ((fromValue - toValue) * clampedProgress)
     }
     
 //    func setupSearchBarProgressStates(searchField: UISearchBar,
@@ -1114,6 +1130,10 @@ extension BrowserViewController : UIScrollViewDelegate
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if !scrolling {
+            scrollOffsetStart = scrollView.contentOffset.y
+            scrolling = true
+        }
 //        if !shouldShowSearchResults {
 //            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
 //            delegate?.scrollViewWillBeginDragging?(scrollView)
@@ -1122,6 +1142,7 @@ extension BrowserViewController : UIScrollViewDelegate
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView,
                                   willDecelerate decelerate: Bool) {
+        scrolling = false
 //        if !shouldShowSearchResults {
 //            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
 //            delegate?.scrollViewDidEndDragging?(scrollView,
@@ -1130,6 +1151,13 @@ extension BrowserViewController : UIScrollViewDelegate
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrolling {
+            let offset = scrollView.contentOffset.y - scrollOffsetStart
+            let interpolant = offset / 40
+            
+            topBarHeightConstraint.constant = calcSearchBarHeight(at: interpolant)
+        }
+        
         if !shouldShowSearchResults {
 //            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
 //            delegate?.scrollViewDidScroll?(scrollView)
