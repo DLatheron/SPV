@@ -829,6 +829,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 
             self.updateConstraints()
             
+            self.searchBar.recalculate()
+            
 //            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
 //                                                                       with: self.webView.scrollView)
 //            self.setupSearchBarProgressStates(searchField: self.searchField,

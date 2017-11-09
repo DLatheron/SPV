@@ -10,8 +10,12 @@ import Foundation
 import UIKit
 
 class CollapsibleSearchBar : UISearchBar {
-    @IBInspectable var collapsedHeight: CGFloat = 26
+    @IBInspectable var collapsedHeight: CGFloat = 20
     @IBInspectable var expandedHeight: CGFloat = 44
+    @IBInspectable var expandedScale: CGFloat = 1
+    @IBInspectable var collapsedScale: CGFloat = 0.75
+    @IBInspectable var expandedYOffset: CGFloat = 0
+    @IBInspectable var collapsedYOffset: CGFloat = 11
     
     private var textField: UITextField!
     private var textFieldBackground: UIView!
@@ -21,8 +25,7 @@ class CollapsibleSearchBar : UISearchBar {
         set {
             _interpolant = max(min(newValue, 1.0), 0.0)
 
-            recalculateBounds()
-            recalculateTextFieldAlpha()
+            recalculate()
         }
         
         get {
@@ -46,40 +49,49 @@ extension CollapsibleSearchBar {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        recalculateBounds()
-        recalculateTextFieldAlpha()
+        recalculate()
+        
+        print("layoutSubViews")
     }
 }
 
 extension CollapsibleSearchBar {
-    private func recalculateBounds() {
+    private func calculateValues(interpolant: CGFloat) -> (height: CGFloat, alpha: CGFloat, scale: CGFloat, yOffset: CGFloat) {
         let height = CollapsibleSearchBar.interpolate(from: expandedHeight,
                                                       to: collapsedHeight,
                                                       withProgress: interpolant)
-        bounds = CGRect(x: bounds.origin.x,
-                        y: bounds.origin.y,
-                        width: bounds.size.width,
-                        height: height)
-    }
-    
-    private func recalculateTextFieldAlpha() {
         let alpha = CollapsibleSearchBar.interpolate(from: 1.0,
                                                      to: 0.0,
                                                      withProgress: interpolant,
                                                      minProgress: 0.0,
                                                      maxProgress: 0.2)
-        textFieldBackground.alpha = alpha
-//        . .alpha = 0.0
-//        textField.background.isOpaque = false
-//        if let colour = textField.textColor {
-//            let newColour = colour.withAlphaComponent(alpha)
-//            textField.textColor = newColour
-//            textField.isOpaque = false
-//        }
-//        if let backgroundColour = subview.backgroundColor {
-//            let newColour = backgroundColour.withAlphaComponent(backgroundAlpha)
-//            subview.backgroundColor = newColour
-//        }
+        let scale = CollapsibleSearchBar.interpolate(from: expandedScale,
+                                                     to: collapsedScale,
+                                                     withProgress: interpolant)
+        let yOffset = CollapsibleSearchBar.interpolate(from: expandedYOffset,
+                                                       to: collapsedYOffset,
+                                                       withProgress: interpolant)
+        
+        return (
+            height: height,
+            alpha: alpha,
+            scale: scale,
+            yOffset: yOffset
+        )
+    }
+    
+    func recalculate() {
+        let values = calculateValues(interpolant: interpolant)
+        
+        bounds = CGRect(x: bounds.origin.x,
+                        y: bounds.origin.y,
+                        width: bounds.size.width,
+                        height: values.height)
+        
+        textFieldBackground.alpha = values.alpha
+
+        transform = CGAffineTransform(scaleX: values.scale, y: values.scale)
+            .concatenating(CGAffineTransform(translationX: 0.0, y: values.yOffset))
     }
     
     static func interpolate(from fromValue: CGFloat,
