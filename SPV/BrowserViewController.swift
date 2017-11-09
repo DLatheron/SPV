@@ -29,8 +29,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     var scrollOffsetStart: CGFloat = 0
     var scrolling: Bool = false
     
-    var urlBeforeEditing: String? = nil;
-    var url: String = ""
+//    var urlBeforeEditing: String? = nil;
+//    var url: String = ""
     
     var scope: SearchScope = .all // TODO: Preserve as config.
     
@@ -92,7 +92,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
             getImageJS = ""
         }
         
-        url = initialPageUrl
+        //url = initialPageUrl
+        //searchBar.urlString = initialPageUrl
         
         super.init(coder: aDecoder)!
     }
@@ -333,31 +334,31 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 //        return progressView
 //    }
 
-    private func configureSearchController() {
-        searchFieldText = searchBar.value(forKey: "searchField") as! UITextField
-        searchFieldText.leftViewMode = .never
-        searchFieldText.rightViewMode = .whileEditing
-        searchFieldText.clearButtonMode = .whileEditing
-        searchFieldText.textAlignment = .center
-        
-        //
-        //        searchFieldText.backgroundColor = barColour
-        //        searchFieldText.background = UIImage()
-
-
-//        let searchField = setupSearchField(parentView: flexibleHeightBar)
+//    private func configureSearchController() {
+//        searchFieldText = searchBar.value(forKey: "searchField") as! UITextField
+//        searchFieldText.leftViewMode = .never
+//        searchFieldText.rightViewMode = .whileEditing
+//        searchFieldText.clearButtonMode = .whileEditing
+//        searchFieldText.textAlignment = .center
 //
-////        webView.scrollView.contentInset = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
-////        webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
+//        //
+//        //        searchFieldText.backgroundColor = barColour
+//        //        searchFieldText.background = UIImage()
 //
-//        definesPresentationContext = true
 //
-//        let progressView = setupProgressView()
-//        flexibleHeightBar.addSubview(progressView)
-//
-//        setupSearchBarProgressStates(searchField: searchField,
-//                                     flexibleHeightBar: flexibleHeightBar)
-    }
+////        let searchField = setupSearchField(parentView: flexibleHeightBar)
+////
+//////        webView.scrollView.contentInset = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
+//////        webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(maxBarHeight - statusBarHeight, 0.0, 0.0, 0.0)
+////
+////        definesPresentationContext = true
+////
+////        let progressView = setupProgressView()
+////        flexibleHeightBar.addSubview(progressView)
+////
+////        setupSearchBarProgressStates(searchField: searchField,
+////                                     flexibleHeightBar: flexibleHeightBar)
+//    }
     
     func calcSearchBarHeight(at interpolant: CGFloat) -> CGFloat {
         searchBar.interpolant = interpolant
@@ -594,12 +595,12 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         super.viewDidLoad()
         
         configureWebView()
-        configureSearchController()
+        //configureSearchController()
         //configureWebView()
         
         updateConstraints()
         
-        navigateTo(url: url)
+        navigateTo(url: initialPageUrl)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -758,17 +759,18 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         }
     }
     
-    func navigateTo(url newURLString: String) {
-        let modifiedNewURLString = ensureValidProtocol(urlString: newURLString)
-        let newURL = URL(string: modifiedNewURLString)
-        let myRequest = URLRequest(url: newURL!)
-        
-        url = modifiedNewURLString
-        setSearchBarText(urlString: url)
-        
-        addHistory(forURL: url)
-        
-        webView.load(myRequest)
+    func navigateTo(url newURLString: String?) {
+        if let newURLString = newURLString {
+            let modifiedNewURLString = ensureValidProtocol(urlString: newURLString)
+            let newURL = URL(string: modifiedNewURLString)
+            let myRequest = URLRequest(url: newURL!)
+            
+            searchBar.urlString = modifiedNewURLString
+            
+            addHistory(forURL: modifiedNewURLString)
+            
+            webView.load(myRequest)
+        }
     }
     
     func searchBarIsEmpty() -> Bool {
@@ -814,6 +816,11 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         toolbar.invalidateIntrinsicContentSize()
     }
     
+    func changeOrientation() {
+        updateConstraints()
+        searchBar.changeOrientation()
+    }
+    
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         guard
@@ -825,22 +832,9 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         super.viewWillTransition(to: size,
                                  with: coordinator)        
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.view.layer.shouldRasterize = true
-
-            self.updateConstraints()
-            
-            self.searchBar.recalculate()
-            
-//            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
-//                                                                       with: self.webView.scrollView)
-//            self.setupSearchBarProgressStates(searchField: self.searchField,
-//                                              flexibleHeightBar: self.flexibleHeightBar!);
+            self.changeOrientation()
         }) { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.view.layer.shouldRasterize = false
-//            self.flexibleHeightBar?.behaviorDefiner?.snappingCompleted(for: self.flexibleHeightBar!,
-//                                                                       with: self.webView.scrollView)
-//            self.setupSearchBarProgressStates(searchField: self.searchField,
-//                                              flexibleHeightBar: self.flexibleHeightBar!);
+            self.changeOrientation()
         }
     }
 }
@@ -848,7 +842,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 //-----------------------------------------------------------------
 extension BrowserViewController : UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.text = self.url
+//        textField.text = self.url
         return true
     }
 
@@ -862,7 +856,7 @@ extension BrowserViewController : UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
         //flexibleHeightBar?.enableSubviewInteractions(false)
-        setSearchBarText(urlString: url)
+        //setSearchBarText(urlString: url)
     }
 }
 
@@ -881,11 +875,12 @@ extension BrowserViewController : UISearchBarDelegate {
                            delay: 0.1,
                            options: [ .curveEaseInOut ],
                            animations: {
-                self.searchBar.setShowsCancelButton(true,
-                                                    animated: true)
+                self.searchBar.activate()
+//                self.searchBar.setShowsCancelButton(true,
+//                                                    animated: true)
                 self.searchEffectsView.alpha = 1
-                self.searchBar.text = self.url
-                self.searchFieldText.textAlignment = .left
+//                self.searchBar.urlString = self.url
+//                self.searchFieldText.textAlignment = .left
             })
         } else {
             print("Already activating!")
@@ -905,15 +900,16 @@ extension BrowserViewController : UISearchBarDelegate {
                            options: [ .curveEaseInOut ],
                            animations: {
                 self.searchEffectsView.alpha = 0
-                self.searchBar.setShowsCancelButton(false,
-                                                    animated: true)
-                self.setSearchBarText(urlString: self.url)
+                self.searchBar.deactivate();
+//                self.searchBar.setShowsCancelButton(false,
+//                                                    animated: true)
+//                self.setSearchBarText(urlString: self.url)
 //
 //                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
 //                //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
 //                textFieldInsideSearchBar.textAlignment = .center
                             
-                self.searchFieldText.textAlignment = .center
+//                self.searchFieldText.textAlignment = .center
             }) { (complete) in
                 if complete {
                     self.searchEffectsView.isHidden = true
@@ -933,7 +929,7 @@ extension BrowserViewController : UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         activateSearch()
         
-        filterContentsBy(searchText: searchBar.text,
+        filterContentsBy(searchText: self.searchBar.urlString,
                          scope: scope)
     }
     
@@ -946,7 +942,7 @@ extension BrowserViewController : UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text {
+        if let searchText = self.searchBar.urlString {
 //            if !shouldShowSearchResults {
 //                //searchController.isActive = true
 //                searchResultsTable.isHidden = !shouldShowSearchResults
@@ -1031,15 +1027,13 @@ extension BrowserViewController : UITableViewDelegate {
 extension BrowserViewController : SearchCellDelegate {
     func tableViewCell(singleTapActionFromCell cell: SearchCell) {
         DispatchQueue.main.async {
-            self.url = cell.textLabel!.text!
-//            self.searchField.text = self.url
+            self.searchBar.urlString = cell.textLabel!.text!
         }
     }
     
     func tableViewCell(doubleTapActionFromCell cell: SearchCell) {
         DispatchQueue.main.async {
-            self.url = cell.textLabel!.text!
-            self.navigateTo(url: self.url)
+            self.navigateTo(url: cell.textLabel!.text!)
             self.deactivateSearch()
         }
     }

@@ -20,6 +20,17 @@ class CollapsibleSearchBar : UISearchBar {
     private var textField: UITextField!
     private var textFieldBackground: UIView!
     
+    private var editing: Bool = false {
+        didSet {
+            _urlStringUpdated()
+        }
+    }
+    var urlString: String? = nil {
+        didSet {
+            _urlStringUpdated()
+        }
+    }
+    
     private var _interpolant: CGFloat = 0.0
     @IBInspectable var interpolant: CGFloat {
         set {
@@ -42,6 +53,7 @@ class CollapsibleSearchBar : UISearchBar {
         
         textField = value(forKey: "searchField") as! UITextField
         textFieldBackground = textField.subviews[0]
+        _urlStringUpdated()
     }
 }
 
@@ -94,6 +106,10 @@ extension CollapsibleSearchBar {
             .concatenating(CGAffineTransform(translationX: 0.0, y: values.yOffset))
     }
     
+    func changeOrientation() {
+        setNeedsLayout()
+    }
+    
     static func interpolate(from fromValue: CGFloat,
                             to toValue: CGFloat,
                             withProgress progress: CGFloat,
@@ -103,5 +119,59 @@ extension CollapsibleSearchBar {
         let clampedProgress = max(min(rangeProgress, 1), 0)
         
         return fromValue - ((fromValue - toValue) * clampedProgress)
+    }
+}
+
+extension CollapsibleSearchBar {
+    func activate() {
+        setShowsCancelButton(true,
+                             animated: true)
+        editing = true
+    }
+    
+    func deactivate() {
+        setShowsCancelButton(false,
+                             animated: true)
+        editing = false
+    }
+}
+
+extension CollapsibleSearchBar {
+    var url: URL? {
+        get {
+            if let urlString = urlString {
+                return URL(string: urlString)
+            } else {
+                return nil
+            }
+        }
+        
+        set {
+            urlString = newValue?.absoluteString
+        }
+    }
+    
+    private func _urlStringUpdated() {
+        if editing {
+            textField.textAlignment = .left
+            text = urlString
+        } else {
+            textField.textAlignment = .center
+
+            if let urlString = urlString {
+                let closedLock = "🔒"
+                let openLock = "🔓"
+                
+                if let urlBuilder = URLBuilder(string: urlString) {
+                    let lockState = urlBuilder.isSchemeSecure ? closedLock : openLock
+                    let domainText = "\(lockState) \(urlBuilder.host ?? "")"
+                    text = domainText
+                } else {
+                    text = nil
+                }
+            } else {
+                text = nil
+            }
+        }
     }
 }
