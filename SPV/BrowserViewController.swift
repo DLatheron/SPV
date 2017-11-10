@@ -48,7 +48,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     ]
 
     var filteredData: [HistoryEntry] = []
-    var shouldShowSearchResults: Bool = false
     
     let getImageJS: String;
     
@@ -863,9 +862,9 @@ extension BrowserViewController : UITextFieldDelegate {
 //-----------------------------------------------------------------
 extension BrowserViewController : UISearchBarDelegate {
     func activateSearch() {
-        if !shouldShowSearchResults {
+        if !searchBar.editing {
             print("Activating...");
-            shouldShowSearchResults = true
+            searchBar.activate()
 
             // Reveal the effects via - but make it invisible so we can fade it in.
             searchEffectsView.alpha = 0
@@ -875,12 +874,7 @@ extension BrowserViewController : UISearchBarDelegate {
                            delay: 0.1,
                            options: [ .curveEaseInOut ],
                            animations: {
-                self.searchBar.activate()
-//                self.searchBar.setShowsCancelButton(true,
-//                                                    animated: true)
                 self.searchEffectsView.alpha = 1
-//                self.searchBar.urlString = self.url
-//                self.searchFieldText.textAlignment = .left
             })
         } else {
             print("Already activating!")
@@ -888,28 +882,15 @@ extension BrowserViewController : UISearchBarDelegate {
     }
     
     func deactivateSearch() {
-        if (shouldShowSearchResults) {
+        if searchBar.editing {
             print("...Deactivating");
-            shouldShowSearchResults = false
-
-            // Dismiss the keyboard - causes a recursive call into this function.
-            searchBar.resignFirstResponder()
+            searchBar.deactivate();
 
             UIView.animate(withDuration: 0.3,
                            delay: 0.1,
                            options: [ .curveEaseInOut ],
                            animations: {
                 self.searchEffectsView.alpha = 0
-                self.searchBar.deactivate();
-//                self.searchBar.setShowsCancelButton(false,
-//                                                    animated: true)
-//                self.setSearchBarText(urlString: self.url)
-//
-//                let textFieldInsideSearchBar = self.searchField.value(forKey: "searchField") as! UITextField
-//                //textFieldInsideSearchBar.leftViewMode = UITextFieldViewMode.never
-//                textFieldInsideSearchBar.textAlignment = .center
-                            
-//                self.searchFieldText.textAlignment = .center
             }) { (complete) in
                 if complete {
                     self.searchEffectsView.isHidden = true
@@ -1149,7 +1130,7 @@ extension BrowserViewController : UIScrollViewDelegate
             topBarHeightConstraint.constant = calcSearchBarHeight(at: interpolant)
         }
         
-        if !shouldShowSearchResults {
+//        if !shouldShowSearchResults {
 //            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
 //            delegate?.scrollViewDidScroll?(scrollView)
 //
@@ -1158,7 +1139,7 @@ extension BrowserViewController : UIScrollViewDelegate
 //                    flexibleHeightBar.enableSubviewInteractions(false)
 //                }
 //            }
-        }
+//        }
     }
 }
 

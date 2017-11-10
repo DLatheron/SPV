@@ -20,7 +20,7 @@ class CollapsibleSearchBar : UISearchBar {
     private var textField: UITextField!
     private var textFieldBackground: UIView!
     
-    private var editing: Bool = false {
+    private (set) var editing: Bool = false {
         didSet {
             _urlStringUpdated()
         }
@@ -130,6 +130,7 @@ extension CollapsibleSearchBar {
     }
     
     func deactivate() {
+        resignFirstResponder()
         setShowsCancelButton(false,
                              animated: true)
         editing = false

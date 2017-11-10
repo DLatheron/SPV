@@ -15,16 +15,16 @@ import MediaPlayer
 class CameraViewController : UIViewController {
     @IBOutlet fileprivate weak var captureButton: UIButton!
     @IBOutlet fileprivate weak var selfTimerCountdown: UILabel!
-    @IBOutlet fileprivate weak var selfTimerMenu: UIToolbar!
-    @IBOutlet fileprivate weak var selfTimer5Seconds: UIBarButtonItem!
-    @IBOutlet fileprivate weak var selfTimer10Seconds: UIBarButtonItem!
-    @IBOutlet fileprivate weak var selfTimer20Seconds: UIBarButtonItem!
+    @IBOutlet fileprivate weak var selfTimerMenu: UIView!
+    @IBOutlet fileprivate weak var selfTimer5Seconds: UIButton!
+    @IBOutlet fileprivate weak var selfTimer10Seconds: UIButton!
+    @IBOutlet fileprivate weak var selfTimer20Seconds: UIButton!
     
     @IBOutlet fileprivate weak var capturePreviewView: UIView!
-    @IBOutlet fileprivate weak var flashButton: UIBarButtonItem!
-    @IBOutlet fileprivate weak var selfTimerButton: UIBarButtonItem!
-    @IBOutlet fileprivate weak var rotateCameraButton: UIBarButtonItem!
-    @IBOutlet fileprivate weak var modeButton: UIBarButtonItem!
+    @IBOutlet fileprivate weak var flashButton: UIButton!
+    @IBOutlet fileprivate weak var selfTimerButton: UIButton!
+    @IBOutlet fileprivate weak var rotateCameraButton: UIButton!
+    @IBOutlet fileprivate weak var modeButton: UIButton!
     
     @IBOutlet fileprivate weak var bottomToolbar: UIToolbar!
     
@@ -43,7 +43,7 @@ class CameraViewController : UIViewController {
             get {
                 switch self {
                 case .selected:
-                    return UIColor(red: 0x99/255, green: 0xcc/255, blue: 1, alpha: 1)
+                    return UIColor(red: 0x44/255, green: 0x55/255, blue: 1, alpha: 1)
                 case .unselected:
                     return UIColor.white
                 }
@@ -196,9 +196,11 @@ class CameraViewController : UIViewController {
     
     func updateFlashButton(toMode flashMode: FlashMode) {
         if cameraController.hasFlash {
-            flashButton.image = UIImage(named: flashMode.imageName)
+            flashButton.setImage(UIImage(named: flashMode.imageName),
+                                 for: .normal)
         } else {
-            flashButton.image = UIImage(named: FlashMode.flashOff.imageName)
+            flashButton.setImage(UIImage(named: FlashMode.flashOff.imageName),
+                                 for: .normal)
         }
     }
 
@@ -209,7 +211,7 @@ class CameraViewController : UIViewController {
     }
     
     func updateModeButton(toMode cameraMode: CameraMode) {
-        modeButton.image = UIImage(named: cameraMode.imageName)
+        modeButton.setImage(UIImage(named: cameraMode.imageName), for: .normal)
     }
     
     @IBAction func toggleSelfTimer(_ sender: Any,
@@ -266,7 +268,7 @@ class CameraViewController : UIViewController {
         
         UIView.animate(withDuration: Timings.selfTimerMenuShowDuration,
                        animations: {
-            self.selfTimerMenu.alpha = 0.75
+            self.selfTimerMenu.alpha = 1
         })
         
         selfTimerMenuVisible = true
@@ -292,11 +294,17 @@ class CameraViewController : UIViewController {
     
     func updateSelfTimerButton(toMode selfTimer: SelfTimer) {
         if selfTimer.active {
-            selfTimerButton.tintColor = Colours.selected.value
+            selfTimerButton.isSelected = true
         } else {
-            selfTimerButton.tintColor = Colours.unselected.value
-            hideSelfTimerMenu()
+            selfTimerButton.isSelected = false
         }
+//        if selfTimer.active {
+//            selfTimerButton.tintColor = Colours.selected.value
+//            selfTimerButton.setImage(UIImage(named: 'timerInv'), for: .selected)
+//        } else {
+//            selfTimerButton.tintColor = Colours.unselected.value
+//            hideSelfTimerMenu()
+//        }
     }
     
     func updateSelfTimerTimings(to seconds: Int) {
@@ -513,7 +521,7 @@ extension CameraViewController {
         let tabBarHeight: CGFloat = UIScreen.main.isLandscape ? 32 : 49
         
         bottomToolbarHeightConstraint.constant = navBarHeight
-        topToolbarHeightConstraint.constant = navBarHeight
+        topToolbarHeightConstraint.constant = UIScreen.main.isLandscape ? 78 : 68
         selfTimerToolbarHeightConstraint.constant = navBarHeight
         //bottomToolbarYOffsetConstraint.constant = tabBarHeight
         
