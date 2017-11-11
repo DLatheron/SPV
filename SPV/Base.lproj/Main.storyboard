@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -777,16 +776,16 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8X9-Az-Lj1">
-                                <rect key="frame" x="0.0" y="636" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="620" width="375" height="60"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YAF-Ko-vRX">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="16" width="375" height="44"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="wey-0A-rs1">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0k3-eh-cLF" userLabel="Mode Button">
-                                                    <rect key="frame" x="20" y="10" width="25" height="25"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0k3-eh-cLF" userLabel="Mode Button">
+                                                    <rect key="frame" x="20" y="9.6666666666666288" width="25" height="25"/>
                                                     <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <state key="normal" image="camera"/>
                                                     <connections>
@@ -801,27 +800,27 @@
                                         </view>
                                         <blurEffect style="extraLight"/>
                                     </visualEffectView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5u-FC-jCG">
-                                        <rect key="frame" x="160" y="-27" width="55" height="55"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5u-FC-jCG">
+                                        <rect key="frame" x="163.66666666666666" y="0.0" width="48" height="48"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="STs-Vz-m22"/>
-                                            <constraint firstAttribute="width" constant="55" id="ngT-Bs-eRY"/>
+                                            <constraint firstAttribute="height" constant="48" id="STs-Vz-m22"/>
+                                            <constraint firstAttribute="width" constant="48" id="ngT-Bs-eRY"/>
                                         </constraints>
                                         <connections>
                                             <action selector="capture:" destination="cTV-NP-fdG" eventType="touchUpInside" id="bnc-wL-fHS"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="YAF-Ko-vRX" firstAttribute="centerY" secondItem="8X9-Az-Lj1" secondAttribute="centerY" id="0DX-R9-ezD"/>
                                     <constraint firstItem="a5u-FC-jCG" firstAttribute="centerX" secondItem="8X9-Az-Lj1" secondAttribute="centerX" id="47M-mg-Y4S"/>
                                     <constraint firstItem="YAF-Ko-vRX" firstAttribute="centerX" secondItem="8X9-Az-Lj1" secondAttribute="centerX" id="Ph5-7J-Wh2"/>
-                                    <constraint firstAttribute="height" constant="44" id="Uo6-hj-gln"/>
+                                    <constraint firstAttribute="height" constant="60" id="Uo6-hj-gln"/>
                                     <constraint firstItem="YAF-Ko-vRX" firstAttribute="width" secondItem="8X9-Az-Lj1" secondAttribute="width" id="V5w-6T-xg6"/>
-                                    <constraint firstItem="YAF-Ko-vRX" firstAttribute="height" secondItem="8X9-Az-Lj1" secondAttribute="height" id="aXk-7y-ieV"/>
-                                    <constraint firstItem="a5u-FC-jCG" firstAttribute="centerY" secondItem="8X9-Az-Lj1" secondAttribute="top" id="dkE-AV-e9t"/>
+                                    <constraint firstItem="a5u-FC-jCG" firstAttribute="top" secondItem="8X9-Az-Lj1" secondAttribute="top" id="bKb-l0-urp"/>
+                                    <constraint firstItem="YAF-Ko-vRX" firstAttribute="top" secondItem="8X9-Az-Lj1" secondAttribute="top" constant="16" id="hhg-ab-TsJ"/>
+                                    <constraint firstAttribute="bottom" secondItem="YAF-Ko-vRX" secondAttribute="bottom" id="odV-cS-61a"/>
                                 </constraints>
                             </view>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FEY-oc-xr0" userLabel="Top Toolbar">
@@ -833,29 +832,37 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BNV-xf-LZ5" userLabel="Flash Button">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BNV-xf-LZ5" userLabel="Flash Button">
                                                     <rect key="frame" x="20" y="55" width="25" height="25"/>
-                                                    <state key="normal" image="flashAuto"/>
+                                                    <state key="normal" image="flashAuto">
+                                                        <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
                                                     <connections>
                                                         <action selector="toggleFlashMode:" destination="cTV-NP-fdG" eventType="touchUpInside" id="SHO-vw-JoB"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rHI-8z-c3V" userLabel="Self Timer Button">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rHI-8z-c3V" userLabel="Self Timer Button">
                                                     <rect key="frame" x="175" y="55" width="25" height="25"/>
                                                     <state key="normal" image="timer"/>
-                                                    <state key="selected" image="timer"/>
+                                                    <state key="selected" image="timer">
+                                                        <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
                                                     <connections>
                                                         <action selector="toggleSelfTimer:forEvent:" destination="cTV-NP-fdG" eventType="touchUpInside" id="Fp9-5v-Lt7"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWA-4K-72S" userLabel="Rotate Camera Button">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dWA-4K-72S" userLabel="Rotate Camera Button">
                                                     <rect key="frame" x="330" y="55" width="25" height="25"/>
                                                     <state key="normal" image="rotateCamera"/>
+                                                    <state key="selected">
+                                                        <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
                                                     <connections>
                                                         <action selector="rotateCamera:" destination="cTV-NP-fdG" eventType="touchUpInside" id="pyf-eR-9Kg"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="BNV-xf-LZ5" secondAttribute="bottom" constant="8" id="Fcw-mG-Or9"/>
                                                 <constraint firstItem="rHI-8z-c3V" firstAttribute="centerX" secondItem="FKm-Zh-S75" secondAttribute="centerX" id="PFZ-Jh-TwQ"/>
@@ -865,6 +872,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="dWA-4K-72S" secondAttribute="trailing" constant="20" id="yh6-Ou-w5f"/>
                                             </constraints>
                                         </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <blurEffect style="extraLight"/>
                                     </visualEffectView>
                                 </subviews>

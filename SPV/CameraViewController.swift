@@ -520,7 +520,7 @@ extension CameraViewController {
         let navBarHeight: CGFloat = UIScreen.main.isLandscape ? 30 : 44
         let tabBarHeight: CGFloat = UIScreen.main.isLandscape ? 32 : 49
         
-        bottomToolbarHeightConstraint.constant = navBarHeight
+        bottomToolbarHeightConstraint.constant = UIScreen.main.isLandscape ? 32 + 16 : 44 + 16
         topToolbarHeightConstraint.constant = UIScreen.main.isLandscape ? 78 : 68
         selfTimerToolbarHeightConstraint.constant = navBarHeight
         //bottomToolbarYOffsetConstraint.constant = tabBarHeight
@@ -589,7 +589,7 @@ extension CameraViewController {
                     self.fakeCameraBackground.frame = UIScreen.main.bounds
                     self.fakeCameraBackground.contentMode = .scaleAspectFill
                     self.fakeCameraBackground.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
-                    self.capturePreviewView.addSubview(self.fakeCameraBackground)
+                    self.capturePreviewView.insertSubview(self.fakeCameraBackground, at: 0)
                     self.setFakeCameraBackground()
                 } else {
                     try? self.cameraController.displayPreview(on: self.capturePreviewView)
