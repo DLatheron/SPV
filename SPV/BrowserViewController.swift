@@ -26,8 +26,8 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var searchBarBottomOffsetConstraint: NSLayoutConstraint!
     @IBOutlet weak var topBarHeightConstraint: NSLayoutConstraint!
     
-    var scrollOffsetStart: CGFloat = 0
-    var scrolling: Bool = false
+    var scrollOffsetStart: CGFloat? = nil
+    var canCollapse: Bool = false
 
     var scope: SearchScope = .all // TODO: Preserve as config.
     
@@ -112,6 +112,18 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 
     func calcSearchBarHeight(at interpolant: CGFloat) -> CGFloat {
         searchBar.interpolant = interpolant
+        let topBarHeight = searchBar.bounds.origin.y + searchBar.bounds.size.height
+        let bottomBarHeight: CGFloat = 44//UIScreen.main.bounds.height - toolbar.bounds.origin.y
+        
+        webView.scrollView.contentInset = UIEdgeInsets(top: topBarHeight,
+                                                       left: 0,
+                                                       bottom: bottomBarHeight,
+                                                       right: 0)
+        webView.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: topBarHeight,
+                                                                left: 0,
+                                                                bottom: bottomBarHeight,
+                                                                right: 0)
+        
         return 44 + searchBar.bounds.size.height
     }
     
@@ -599,9 +611,14 @@ extension BrowserViewController : UIScrollViewDelegate
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if !scrolling {
+        if scrollOffsetStart == nil {
             scrollOffsetStart = scrollView.contentOffset.y
-            scrolling = true
+            if searchBar.interpolant == 1 {
+                // View is fully collapsed.
+            } else if searchBar.interpolant == 0 {
+                // View is fully expanded.
+                canCollapse = true
+            }
         }
 //        if !shouldShowSearchResults {
 //            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
@@ -611,7 +628,11 @@ extension BrowserViewController : UIScrollViewDelegate
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView,
                                   willDecelerate decelerate: Bool) {
-        scrolling = false
+        canCollapse = false
+        scrollOffsetStart = nil
+        
+        //topBarHeightConstraint.constant = calcSearchBarHeight(at: searchBar.snap())
+
 //        if !shouldShowSearchResults {
 //            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
 //            delegate?.scrollViewDidEndDragging?(scrollView,
@@ -620,12 +641,21 @@ extension BrowserViewController : UIScrollViewDelegate
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrolling {
+        if let scrollOffsetStart = scrollOffsetStart {
             let offset = scrollView.contentOffset.y - scrollOffsetStart
-            let interpolant = offset / 40
             
-            topBarHeightConstraint.constant = calcSearchBarHeight(at: interpolant)
-        }
+            if canCollapse && offset > 0 {
+                let interpolant = offset / 40
+                
+                topBarHeightConstraint.constant = calcSearchBarHeight(at: interpolant)
+                
+                // TODO: Update scroll content inset...
+            } else if scrollView.contentOffset.y < -88 + 40 {
+                let interpolant = offset / 40
+                
+                topBarHeightConstraint.constant = calcSearchBarHeight(at: interpolant)
+            }
+        
         
 //        if !shouldShowSearchResults {
 //            let delegate: UIScrollViewDelegate? = flexibleHeightBar?.behaviorDefiner
@@ -637,5 +667,6 @@ extension BrowserViewController : UIScrollViewDelegate
 //                }
 //            }
 //        }
+        }
     }
 }

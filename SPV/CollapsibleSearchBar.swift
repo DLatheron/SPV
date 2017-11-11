@@ -16,6 +16,7 @@ class CollapsibleSearchBar : UISearchBar {
     @IBInspectable var collapsedScale: CGFloat = 0.75
     @IBInspectable var expandedYOffset: CGFloat = 0
     @IBInspectable var collapsedYOffset: CGFloat = 11
+    @IBInspectable var snapThreshold: CGFloat = 0.5
     
     private var textField: UITextField!
     private var textFieldBackground: UIView!
@@ -53,6 +54,11 @@ class CollapsibleSearchBar : UISearchBar {
         
         textField = value(forKey: "searchField") as! UITextField
         textFieldBackground = textField.subviews[0]
+
+        textField.leftViewMode = .never
+        textField.clearButtonMode = .whileEditing
+        textField.rightViewMode = .whileEditing
+        
         _urlStringUpdated()
     }
 }
@@ -161,7 +167,7 @@ extension CollapsibleSearchBar {
 
             if let urlString = urlString {
                 let closedLock = "🔒"
-                let openLock = "🔓"
+                let openLock = ""
                 
                 if let urlBuilder = URLBuilder(string: urlString) {
                     let lockState = urlBuilder.isSchemeSecure ? closedLock : openLock
@@ -173,6 +179,16 @@ extension CollapsibleSearchBar {
             } else {
                 text = nil
             }
+        }
+    }
+}
+
+extension CollapsibleSearchBar {
+    func snap() -> CGFloat {
+        if interpolant <= snapThreshold {
+            return 0.0
+        } else {
+            return 1.0
         }
     }
 }
