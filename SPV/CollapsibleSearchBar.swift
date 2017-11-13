@@ -68,8 +68,6 @@ extension CollapsibleSearchBar {
         super.layoutSubviews()
         
         recalculate()
-        
-        print("layoutSubViews")
     }
 }
 
