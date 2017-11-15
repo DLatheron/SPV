@@ -8,33 +8,8 @@
 
 import UIKit
 
-protocol Setting {
-    var name: String { get }
-    var cellId: String { get }
-}
-
-class SettingT<T> : Setting {
-    var name: String
-    var value: T
-    
-    var cellId: String {
-        get {
-            return "BoolCell"
-        }
-    }
-    
-    
-    init(name: String,
-         value: T) {
-        self.name = name
-        self.value = value
-    }
-}
-
 class SettingsViewController: UIViewController {
-    var settings: [Setting] = [
-        SettingT<Bool>(name: "Test One", value: true)
-    ]
+    var settings: Settings = Settings.shared
 }
 
 extension SettingsViewController {
@@ -51,7 +26,7 @@ extension SettingsViewController {
 
 extension SettingsViewController {
     func settingAt(indexPath: IndexPath) -> Setting {
-        return settings[indexPath.row]
+        return settings.settings[indexPath.row]
     }
 }
 
@@ -66,20 +41,26 @@ extension SettingsViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return settings.count
+        return settings.settings.count
     }
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let setting = settingAt(indexPath: indexPath)
         let cell = tableView.dequeueReusableCell(withIdentifier: setting.cellId,
-                                                 for: indexPath) as! SettingsCell
-        cell.configure(setting: setting)
+                                                 for: indexPath) as! SettingsCellDelegate
+        cell.configure(setting: setting,
+                       delegate: self)
         
         return cell as! UITableViewCell
     }
 }
 
 extension SettingsViewController : UITableViewDelegate {
-    
+}
+
+extension SettingsViewController : SettingChangedDelegate {
+    func changed(setting: Setting) {
+        try? Settings.shared.save(toFileURL: Settings.defaultURL)
+    }
 }

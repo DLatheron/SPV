@@ -21,6 +21,7 @@
 		63D026E51F4F4E6B00006275 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D026E41F4F4E6B00006275 /* Download.swift */; };
 		71F28ACDE4A6A2675A6785C3 /* Pods_SPV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 064FA0CADD57C68A9783FC5F /* Pods_SPV.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F83143D1C156A235167784EC /* Pods_SPVUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF0ACB10349E2AD198B3392 /* Pods_SPVUITests.framework */; };
+		F911A18E1FBA06A1009EF02C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F911A18D1FBA06A1009EF02C /* Setting.swift */; };
 		F912DE131FB9834800037ABF /* BoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F912DE121FB9834800037ABF /* BoolCell.swift */; };
 		F912DE151FB9856700037ABF /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F912DE141FB9856700037ABF /* SettingsCell.swift */; };
 		F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */; };
@@ -113,6 +114,7 @@
 		BC127EBAD65730C6F23861F8 /* Pods-SPVTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPVTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SPVTests/Pods-SPVTests.release.xcconfig"; sourceTree = "<group>"; };
 		EB0A1F310F3881531D77EFA8 /* Pods_SPVTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SPVTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F06C7ADA6F4E39F46D3D4F51 /* Pods-SPVUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPVUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SPVUITests/Pods-SPVUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F911A18D1FBA06A1009EF02C /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		F912DE121FB9834800037ABF /* BoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolCell.swift; sourceTree = "<group>"; };
 		F912DE141FB9856700037ABF /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		F914D4F01F30E46200B9042E /* BaseTabBBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTabBBarController.swift; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 		F98B8C3B1F767E6400719CA6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				F911A18D1FBA06A1009EF02C /* Setting.swift */,
 				F912DE111FB9832A00037ABF /* Cells */,
 				F98B8C3C1F767E8500719CA6 /* VCs */,
 				F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */,
@@ -797,6 +800,7 @@
 				F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */,
 				F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */,
 				F912DE151FB9856700037ABF /* SettingsCell.swift in Sources */,
+				F911A18E1FBA06A1009EF02C /* Setting.swift in Sources */,
 				F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */,
 				F93E26F11FB1A833001D0DAE /* CollapsibleSearchBar.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,

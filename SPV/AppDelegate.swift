@@ -23,10 +23,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions:
         [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let documentsURL = URL(string: documentsDirectory)!
+
+        do {
+            try Settings.shared.load(fromFileURL: Settings.defaultURL)
+        } catch {
+            try? Settings.shared.save(toFileURL: Settings.defaultURL)
+        }
         
         copyTestResources()
     
-        MediaManager.shared.scanForMedia(atPath: URL(string: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])!)
+        MediaManager.shared.scanForMedia(atPath: documentsURL)
         
         // Override point for customization after application launch.
         return true

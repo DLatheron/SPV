@@ -6,8 +6,26 @@
 //  Copyright © 2017 dlatheron. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-protocol SettingsCell {
-    func configure(setting: Setting)
+protocol SettingChangedDelegate {
+    func changed(setting: Setting)
+}
+
+protocol SettingsCellDelegate {
+    func configure(setting: Setting,
+                   delegate: SettingChangedDelegate)
+}
+
+class SettingsCell : UITableViewCell {
+    public var delegate: SettingChangedDelegate? = nil
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style,
+                   reuseIdentifier: reuseIdentifier)
+    }
 }
