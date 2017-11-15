@@ -22,11 +22,8 @@ extension BoolCell : SettingsCellDelegate {
         self.delegate = delegate
         self.setting = setting as! SettingT<Bool>
         
-        nameLabel.text = setting.name
-        
-        if let boolSetting = setting as? SettingT<Bool> {
-            boolButton.isOn = boolSetting.value
-        }
+        nameLabel.text = self.setting.name
+        boolButton.isOn = self.setting.value
     }
     
     @IBAction func changeSwitch(_ sender: Any) {

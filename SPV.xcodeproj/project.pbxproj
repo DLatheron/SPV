@@ -36,6 +36,9 @@
 		F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D1331F9DC3680065C31B /* CameraViewController.swift */; };
 		F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */; };
 		F969ACA21F55C9D4005C7F8D /* HumanReadableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */; };
+		F96D37B01FBCA8E100DD2F76 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */; };
+		F96D37B21FBCABE100DD2F76 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B11FBCABE100DD2F76 /* Settings.swift */; };
+		F96D37B41FBCAC0C00DD2F76 /* SettingT.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */; };
 		F973F8051F601A4200A5813B /* JSONTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8041F601A4200A5813B /* JSONTestHelper.swift */; };
 		F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8061F601AD600A5813B /* JSONHelper.swift */; };
 		F97943AE1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */; };
@@ -129,6 +132,9 @@
 		F942D1331F9DC3680065C31B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadable.swift; sourceTree = "<group>"; };
 		F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadableTest.swift; sourceTree = "<group>"; };
+		F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
+		F96D37B11FBCABE100DD2F76 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingT.swift; sourceTree = "<group>"; };
 		F973F8041F601A4200A5813B /* JSONTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTestHelper.swift; sourceTree = "<group>"; };
 		F973F8061F601AD600A5813B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoSubHeadingCell.swift; sourceTree = "<group>"; };
@@ -258,6 +264,7 @@
 			children = (
 				F912DE121FB9834800037ABF /* BoolCell.swift */,
 				F912DE141FB9856700037ABF /* SettingsCell.swift */,
+				F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -363,6 +370,9 @@
 				F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */,
 				F9C50C0D1F5E7F2900EE79E5 /* Video.swift */,
 				F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */,
+				F96D37B11FBCABE100DD2F76 /* Settings.swift */,
+				F911A18D1FBA06A1009EF02C /* Setting.swift */,
+				F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -382,7 +392,6 @@
 		F98B8C3B1F767E6400719CA6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				F911A18D1FBA06A1009EF02C /* Setting.swift */,
 				F912DE111FB9832A00037ABF /* Cells */,
 				F98B8C3C1F767E8500719CA6 /* VCs */,
 				F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */,
@@ -802,6 +811,7 @@
 				F912DE151FB9856700037ABF /* SettingsCell.swift in Sources */,
 				F911A18E1FBA06A1009EF02C /* Setting.swift in Sources */,
 				F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */,
+				F96D37B21FBCABE100DD2F76 /* Settings.swift in Sources */,
 				F93E26F11FB1A833001D0DAE /* CollapsibleSearchBar.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,
 				F919C7AD1F699325008372F6 /* MediaInfoCell.swift in Sources */,
@@ -813,7 +823,9 @@
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
 				F919C7AF1F699357008372F6 /* MediaInfoHeaderCell.swift in Sources */,
 				F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */,
+				F96D37B01FBCA8E100DD2F76 /* TextCell.swift in Sources */,
 				F9C50C0C1F5E7F0600EE79E5 /* Photo.swift in Sources */,
+				F96D37B41FBCAC0C00DD2F76 /* SettingT.swift in Sources */,
 				F914D4F31F34D4BA00B9042E /* PhotoCell.swift in Sources */,
 				F9F2D3DB1F44202F00FD6F78 /* CircularProgressIndicator.swift in Sources */,
 				F9C50C0A1F5E7EEF00EE79E5 /* Media.swift in Sources */,

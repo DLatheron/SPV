@@ -47,7 +47,7 @@ extension SettingsViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let setting = settingAt(indexPath: indexPath)
-        let cell = tableView.dequeueReusableCell(withIdentifier: setting.cellId,
+        let cell = tableView.dequeueReusableCell(withIdentifier: setting.editor,
                                                  for: indexPath) as! SettingsCellDelegate
         cell.configure(setting: setting,
                        delegate: self)
