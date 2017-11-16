@@ -39,6 +39,7 @@
 		F96D37B01FBCA8E100DD2F76 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */; };
 		F96D37B21FBCABE100DD2F76 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B11FBCABE100DD2F76 /* Settings.swift */; };
 		F96D37B41FBCAC0C00DD2F76 /* SettingT.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */; };
+		F96D37B61FBDFDE600DD2F76 /* ConstDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B51FBDFDE600DD2F76 /* ConstDataCell.swift */; };
 		F973F8051F601A4200A5813B /* JSONTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8041F601A4200A5813B /* JSONTestHelper.swift */; };
 		F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8061F601AD600A5813B /* JSONHelper.swift */; };
 		F97943AE1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */; };
@@ -135,6 +136,7 @@
 		F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		F96D37B11FBCABE100DD2F76 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingT.swift; sourceTree = "<group>"; };
+		F96D37B51FBDFDE600DD2F76 /* ConstDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstDataCell.swift; sourceTree = "<group>"; };
 		F973F8041F601A4200A5813B /* JSONTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTestHelper.swift; sourceTree = "<group>"; };
 		F973F8061F601AD600A5813B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoSubHeadingCell.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				F912DE121FB9834800037ABF /* BoolCell.swift */,
 				F912DE141FB9856700037ABF /* SettingsCell.swift */,
 				F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */,
+				F96D37B51FBDFDE600DD2F76 /* ConstDataCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -805,6 +808,7 @@
 				F936CCA01FA70F3300813F2E /* UIScreenExtensions.swift in Sources */,
 				F914D4F51F38C33A00B9042E /* MediaManager.swift in Sources */,
 				F912DE131FB9834800037ABF /* BoolCell.swift in Sources */,
+				F96D37B61FBDFDE600DD2F76 /* ConstDataCell.swift in Sources */,
 				F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */,
 				F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */,
 				F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */,

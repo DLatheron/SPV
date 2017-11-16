@@ -750,10 +750,10 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8tZ-a7-6LT">
-                                                    <rect key="frame" x="122" y="6" width="253" height="30"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" adjustsFontForContentSizeCategory="YES" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8tZ-a7-6LT">
+                                                    <rect key="frame" x="122" y="11.666666666666664" width="253" height="21"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="TO7-FP-Sdu" id="7d1-Gq-ynk"/>
@@ -772,6 +772,39 @@
                                         <connections>
                                             <outlet property="nameLabel" destination="2eo-jC-5Fg" id="zpR-DU-ncb"/>
                                             <outlet property="textBox" destination="8tZ-a7-6LT" id="0go-Xj-QIf"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ConstDataCell" id="Rb1-lw-TUa" customClass="ConstDataCell" customModule="SPV" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="116" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rb1-lw-TUa" id="2ok-Yb-qHK">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GyB-MW-m0d">
+                                                    <rect key="frame" x="16" y="11" width="381.33333333333331" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epV-1b-LD2">
+                                                    <rect key="frame" x="333.33333333333331" y="11" width="41.666666666666686" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="GyB-MW-m0d" firstAttribute="leading" secondItem="2ok-Yb-qHK" secondAttribute="leading" constant="16" id="664-zq-aDO"/>
+                                                <constraint firstItem="GyB-MW-m0d" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="epV-1b-LD2" secondAttribute="leading" constant="64" id="FEh-UX-8Fs"/>
+                                                <constraint firstItem="GyB-MW-m0d" firstAttribute="centerY" secondItem="2ok-Yb-qHK" secondAttribute="centerY" id="el4-ZE-M9p"/>
+                                                <constraint firstItem="epV-1b-LD2" firstAttribute="centerY" secondItem="2ok-Yb-qHK" secondAttribute="centerY" id="rz3-v9-Mv7"/>
+                                                <constraint firstItem="epV-1b-LD2" firstAttribute="trailing" secondItem="2ok-Yb-qHK" secondAttribute="trailing" id="zJq-oS-oHt"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dataLabel" destination="epV-1b-LD2" id="zOb-WG-QAm"/>
+                                            <outlet property="nameLabel" destination="GyB-MW-m0d" id="d2L-2H-yOS"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

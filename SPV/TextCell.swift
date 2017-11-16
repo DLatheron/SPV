@@ -31,11 +31,15 @@ extension TextCell : UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
-        // TODO: Validation...
+        textField.resignFirstResponder()
         
-        resignFirstResponder()
-        
+        setting.value = textField.text ?? ""
         delegate?.changed(setting: setting)
     }
 }
