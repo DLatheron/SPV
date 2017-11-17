@@ -10,12 +10,18 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     var settings: Settings = Settings.shared
+    var settingsBlock: SettingsBlock!
+    
+    required init?(coder aDecoder: NSCoder) {
+        settingsBlock = settings.settingsBlock
+
+        super.init(coder: aDecoder)
+    }
 }
 
 extension SettingsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func didReceiveMemoryWarning() {
@@ -26,7 +32,7 @@ extension SettingsViewController {
 
 extension SettingsViewController {
     func settingAt(indexPath: IndexPath) -> Setting {
-        return settings.settings[indexPath.row]
+        return settingsBlock.settings[indexPath.row]
     }
 }
 
@@ -41,7 +47,7 @@ extension SettingsViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return settings.settings.count
+        return settingsBlock.settings.count
     }
     
     func tableView(_ tableView: UITableView,
@@ -57,6 +63,25 @@ extension SettingsViewController : UITableViewDataSource {
 }
 
 extension SettingsViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
+        let settings = settingAt(indexPath: indexPath)
+        if let settings = settings as? SettingsSubMenu {
+            // How do we push a submenu into this controller???
+            let subSettingsVC = storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+            subSettingsVC.settingsBlock = settings.settingsBlock
+            subSettingsVC.title = settings.settingsBlock.name
+            
+            self.navigationController!.pushViewController(subSettingsVC,
+                                                          animated: true)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue,
+                          sender: Any?) {
+        if segue.identifier == "SettingsViewController" {
+        }
+    }
 }
 
 extension SettingsViewController : SettingChangedDelegate {
@@ -64,3 +89,4 @@ extension SettingsViewController : SettingChangedDelegate {
         try? Settings.shared.save(toFileURL: Settings.defaultURL)
     }
 }
+

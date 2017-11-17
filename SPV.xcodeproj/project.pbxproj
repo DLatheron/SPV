@@ -21,6 +21,7 @@
 		63D026E51F4F4E6B00006275 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D026E41F4F4E6B00006275 /* Download.swift */; };
 		71F28ACDE4A6A2675A6785C3 /* Pods_SPV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 064FA0CADD57C68A9783FC5F /* Pods_SPV.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F83143D1C156A235167784EC /* Pods_SPVUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF0ACB10349E2AD198B3392 /* Pods_SPVUITests.framework */; };
+		F90FFFE81FBF560F00D2C304 /* TextBlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90FFFE71FBF560F00D2C304 /* TextBlockCell.swift */; };
 		F911A18E1FBA06A1009EF02C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F911A18D1FBA06A1009EF02C /* Setting.swift */; };
 		F912DE131FB9834800037ABF /* BoolCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F912DE121FB9834800037ABF /* BoolCell.swift */; };
 		F912DE151FB9856700037ABF /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F912DE141FB9856700037ABF /* SettingsCell.swift */; };
@@ -40,6 +41,8 @@
 		F96D37B21FBCABE100DD2F76 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B11FBCABE100DD2F76 /* Settings.swift */; };
 		F96D37B41FBCAC0C00DD2F76 /* SettingT.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */; };
 		F96D37B61FBDFDE600DD2F76 /* ConstDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B51FBDFDE600DD2F76 /* ConstDataCell.swift */; };
+		F96D37B81FBECAE200DD2F76 /* SettingsSubMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B71FBECAE200DD2F76 /* SettingsSubMenu.swift */; };
+		F96D37BA1FBECC5400DD2F76 /* SubMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37B91FBECC5400DD2F76 /* SubMenuCell.swift */; };
 		F973F8051F601A4200A5813B /* JSONTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8041F601A4200A5813B /* JSONTestHelper.swift */; };
 		F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F973F8061F601AD600A5813B /* JSONHelper.swift */; };
 		F97943AE1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */; };
@@ -118,6 +121,7 @@
 		BC127EBAD65730C6F23861F8 /* Pods-SPVTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPVTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SPVTests/Pods-SPVTests.release.xcconfig"; sourceTree = "<group>"; };
 		EB0A1F310F3881531D77EFA8 /* Pods_SPVTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SPVTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F06C7ADA6F4E39F46D3D4F51 /* Pods-SPVUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPVUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SPVUITests/Pods-SPVUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F90FFFE71FBF560F00D2C304 /* TextBlockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBlockCell.swift; sourceTree = "<group>"; };
 		F911A18D1FBA06A1009EF02C /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		F912DE121FB9834800037ABF /* BoolCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoolCell.swift; sourceTree = "<group>"; };
 		F912DE141FB9856700037ABF /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 		F96D37B11FBCABE100DD2F76 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingT.swift; sourceTree = "<group>"; };
 		F96D37B51FBDFDE600DD2F76 /* ConstDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstDataCell.swift; sourceTree = "<group>"; };
+		F96D37B71FBECAE200DD2F76 /* SettingsSubMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSubMenu.swift; sourceTree = "<group>"; };
+		F96D37B91FBECC5400DD2F76 /* SubMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubMenuCell.swift; sourceTree = "<group>"; };
 		F973F8041F601A4200A5813B /* JSONTestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTestHelper.swift; sourceTree = "<group>"; };
 		F973F8061F601AD600A5813B /* JSONHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelper.swift; sourceTree = "<group>"; };
 		F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoSubHeadingCell.swift; sourceTree = "<group>"; };
@@ -268,6 +274,8 @@
 				F912DE141FB9856700037ABF /* SettingsCell.swift */,
 				F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */,
 				F96D37B51FBDFDE600DD2F76 /* ConstDataCell.swift */,
+				F96D37B91FBECC5400DD2F76 /* SubMenuCell.swift */,
+				F90FFFE71FBF560F00D2C304 /* TextBlockCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -376,6 +384,7 @@
 				F96D37B11FBCABE100DD2F76 /* Settings.swift */,
 				F911A18D1FBA06A1009EF02C /* Setting.swift */,
 				F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */,
+				F96D37B71FBECAE200DD2F76 /* SettingsSubMenu.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -799,6 +808,7 @@
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
 				F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */,
+				F90FFFE81FBF560F00D2C304 /* TextBlockCell.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
 				F9C68BB51F860FF20094E5F3 /* URLBuilder.swift in Sources */,
 				F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */,
@@ -817,6 +827,7 @@
 				F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */,
 				F96D37B21FBCABE100DD2F76 /* Settings.swift in Sources */,
 				F93E26F11FB1A833001D0DAE /* CollapsibleSearchBar.swift in Sources */,
+				F96D37BA1FBECC5400DD2F76 /* SubMenuCell.swift in Sources */,
 				F9BABAAE1F28F92F00000D9B /* BrowserViewController.swift in Sources */,
 				F919C7AD1F699325008372F6 /* MediaInfoCell.swift in Sources */,
 				F9C50C0E1F5E7F2900EE79E5 /* Video.swift in Sources */,
@@ -831,6 +842,7 @@
 				F9C50C0C1F5E7F0600EE79E5 /* Photo.swift in Sources */,
 				F96D37B41FBCAC0C00DD2F76 /* SettingT.swift in Sources */,
 				F914D4F31F34D4BA00B9042E /* PhotoCell.swift in Sources */,
+				F96D37B81FBECAE200DD2F76 /* SettingsSubMenu.swift in Sources */,
 				F9F2D3DB1F44202F00FD6F78 /* CircularProgressIndicator.swift in Sources */,
 				F9C50C0A1F5E7EEF00EE79E5 /* Media.swift in Sources */,
 				F9F5D0081F683BD100E16DAA /* MediaInfoViewController.swift in Sources */,

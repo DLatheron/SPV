@@ -15,9 +15,9 @@ import MediaPlayer
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var volume: Float = 0.5
-    let audioSession = AVAudioSession.sharedInstance()
-    var volumeObserver: NSKeyValueObservation? = nil
+//    var volume: Float = 0.5
+//    let audioSession = AVAudioSession.sharedInstance()
+//    var volumeObserver: NSKeyValueObservation? = nil
     
 
     func application(_ application: UIApplication,
@@ -123,17 +123,17 @@ extension AppDelegate  {
 //        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "volumeChanged")))
 //    }
     
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        try! audioSession.setActive(true)
-        volume = audioSession.outputVolume
-        if volume == 0 { volume += 0.1 } else if volume == 1 { volume -= 0.1 }
-        volumeObserver = audioSession.observe(\.outputVolume) { (av, change) in
-           print("volume \(av.outputVolume)")
-        }
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-        //audioSession.removeObserver(self, forKeyPath: "outputVolume")
-        volumeObserver = nil
-    }
+//    func applicationDidBecomeActive(_ application: UIApplication) {
+//        try! audioSession.setActive(true)
+//        volume = audioSession.outputVolume
+//        if volume == 0 { volume += 0.1 } else if volume == 1 { volume -= 0.1 }
+//        volumeObserver = audioSession.observe(\.outputVolume) { (av, change) in
+//           print("volume \(av.outputVolume)")
+//        }
+//    }
+//    
+//    func applicationWillResignActive(_ application: UIApplication) {
+//        //audioSession.removeObserver(self, forKeyPath: "outputVolume")
+//        volumeObserver = nil
+//    }
 }
