@@ -9,6 +9,8 @@
 import UIKit
 
 class SettingsViewController: UIViewController {
+    @IBOutlet weak var settingsTableView: UITableView!
+    
     var settings: Settings = Settings.shared
     var settingsBlock: SettingsBlock!
     
@@ -22,6 +24,8 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -54,33 +58,22 @@ extension SettingsViewController : UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let setting = settingAt(indexPath: indexPath)
         let cell = tableView.dequeueReusableCell(withIdentifier: setting.editor,
-                                                 for: indexPath) as! SettingsCellDelegate
-        cell.configure(setting: setting,
-                       delegate: self)
+                                                 for: indexPath)
+        cell.selectionStyle = .none
+
+        let cellDelegate = cell as! SettingsCellDelegate
+        cellDelegate.configure(setting: setting,
+                               delegate: self)
         
-        return cell as! UITableViewCell
+        return cell
     }
 }
 
 extension SettingsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-        let settings = settingAt(indexPath: indexPath)
-        if let settings = settings as? SettingsSubMenu {
-            // How do we push a submenu into this controller???
-            let subSettingsVC = storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
-            subSettingsVC.settingsBlock = settings.settingsBlock
-            subSettingsVC.title = settings.settingsBlock.name
-            
-            self.navigationController!.pushViewController(subSettingsVC,
-                                                          animated: true)
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue,
-                          sender: Any?) {
-        if segue.identifier == "SettingsViewController" {
-        }
+        let cell = tableView.cellForRow(at: indexPath) as! SettingsCellDelegate
+        cell.onClicked(viewController: self)
     }
 }
 

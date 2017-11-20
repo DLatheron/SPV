@@ -24,4 +24,7 @@ extension ConstDataCell : SettingsCellDelegate {
         nameLabel.text = self.setting.name
         dataLabel.text = "\(self.setting.value)"
     }
+    
+    func onClicked(viewController: SettingsViewController) {
+    }
 }

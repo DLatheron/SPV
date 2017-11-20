@@ -23,4 +23,7 @@ extension TextBlockCell : SettingsCellDelegate {
         
         textBox.text = self.setting.value
     }
+    
+    func onClicked(viewController: SettingsViewController) {
+    }
 }

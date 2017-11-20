@@ -23,4 +23,13 @@ extension SubMenuCell : SettingsCellDelegate {
         
         nameLabel.text = self.setting.name
     }
+    
+    func onClicked(viewController: SettingsViewController) {
+        let subSettingsVC = viewController.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        subSettingsVC.settingsBlock = self.setting.settingsBlock
+        subSettingsVC.title = self.setting.settingsBlock.name
+        
+        viewController.navigationController!.pushViewController(subSettingsVC,
+                                                                animated: true)
+    }
 }

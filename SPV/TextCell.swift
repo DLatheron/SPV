@@ -25,6 +25,10 @@ extension TextCell : SettingsCellDelegate {
         nameLabel.text = self.setting.name
         textBox.text = self.setting.value
     }
+    
+    func onClicked(viewController: SettingsViewController) {
+        textBox.becomeFirstResponder()
+    }
 }
 
 extension TextCell : UITextFieldDelegate {

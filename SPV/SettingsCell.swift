@@ -15,6 +15,8 @@ protocol SettingChangedDelegate {
 protocol SettingsCellDelegate {
     func configure(setting: Setting,
                    delegate: SettingChangedDelegate)
+    
+    func onClicked(viewController: SettingsViewController)
 }
 
 class SettingsCell : UITableViewCell {

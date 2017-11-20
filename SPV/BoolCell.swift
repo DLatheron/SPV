@@ -26,6 +26,12 @@ extension BoolCell : SettingsCellDelegate {
         boolButton.isOn = self.setting.value
     }
     
+    func onClicked(viewController: SettingsViewController) {
+        boolButton.setOn(!boolButton.isOn,
+                         animated: true)
+        changeSwitch(self)
+    }
+    
     @IBAction func changeSwitch(_ sender: Any) {
         setting.value = boolButton.isOn
         delegate?.changed(setting: setting)
