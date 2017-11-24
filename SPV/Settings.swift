@@ -29,6 +29,7 @@ class Settings {
     let testName = SettingT<String>(name: "Test Name", value: "Nothing")
     let testConstData0 = SettingT<Any>(name: "Const Data #0", value: "Const Data", editor: "ConstDataCell")
     let testConstData1 = SettingT<Any>(name: "Const Data #1", value: 12, editor: "ConstDataCell")
+    let setPIN = SettingT<String>(name: "Set PIN", value: "SetPIN", editor: "ButtonCell")
     
     let textLegalBlurb = SettingT<String>(name: "Legal Blurb", value:
 """
@@ -38,6 +39,7 @@ It occupies quite a few lines of space.
 
 But still appears correctly - even if there are really long lines of text
 """, editor: "TextBlockCell")
+    let pin = SettingT<String>(name: "PIN", value: "", editor: nil)
     
     let settingsBlock: SettingsBlock
     let legalSettingsBlock: SettingsBlock
@@ -57,7 +59,8 @@ But still appears correctly - even if there are really long lines of text
             testName,
             testConstData0,
             testConstData1,
-            testLegalSubMenu
+            testLegalSubMenu,
+            setPIN
         ])
     }
     
@@ -80,6 +83,9 @@ But still appears correctly - even if there are really long lines of text
         if !json["testConstData1"].isEmpty {
             testConstData1.value = json["testConstData1"].rawValue
         }
+        if !json["pin"].isEmpty {
+            pin.value = json["pin"].stringValue
+        }
     }
     
     internal func writeAsJSON() -> JSON {
@@ -88,7 +94,8 @@ But still appears correctly - even if there are really long lines of text
             "testTwo": testTwo.value,
             "testName": testName.value,
             "testConstData0": testConstData0.value,
-            "testConstData1": testConstData1.value
+            "testConstData1": testConstData1.value,
+            "pin": pin.value
         ])
     }
     

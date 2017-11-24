@@ -30,7 +30,7 @@ class URLBuilderTests : XCTestCase {
                                     query: "search=hello world",
                                     fragment: "fragment")
         
-        XCTAssertEqual(urlBuilder.string, "https://user:secret@google.co.uk:80/default.html?search=hello%20world#fragment");
+        XCTAssertEqual(urlBuilder.string, "https://user:secret@google.co.uk:80/default.html?search=hello%20world#fragment")
     }
     
     func test_init_simple() {
@@ -38,7 +38,7 @@ class URLBuilderTests : XCTestCase {
                                     host: "microsoft.co.uk",
                                     path: "/index.html")
         
-        XCTAssertEqual(urlBuilder!.string, "http://microsoft.co.uk/index.html");
+        XCTAssertEqual(urlBuilder!.string, "http://microsoft.co.uk/index.html")
     }
     
     func test_init_string() {

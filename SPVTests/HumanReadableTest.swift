@@ -80,7 +80,7 @@ class HumanReadableTest: XCTestCase {
         let bytes: Int64?
         
         init(expectedOutput: String, bytes: Int64?) {
-            self.expectedOutput = expectedOutput;
+            self.expectedOutput = expectedOutput
             self.bytes = bytes
         }
     }
@@ -103,7 +103,7 @@ class HumanReadableTest: XCTestCase {
         
         // Spaces.
         tests.forEach { test in
-            XCTAssertEqual(
+            /Users/davidlatheron/Development/Personal/SPV/SPVTests/HumanReadableTest.swiftXCTAssertEqual(
                 HumanReadable.bytes(bytes: test.bytes,
                                     units: bytesUnits,
                                     space: true

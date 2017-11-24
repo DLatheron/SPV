@@ -64,17 +64,17 @@ class HumanReadable {
             
             if (bytes < Int64(scaler)) {
                 let formattedNumber = numberFormatter.string(from: NSNumber(value: bytes))
-                return formattedNumber! + spacing + units[0];
+                return formattedNumber! + spacing + units[0]
             } else {
-                let exp = Int(log(Double(bytes)) / log(scaler));
-                let suffix = units[exp];
+                let exp = Int(log(Double(bytes)) / log(scaler))
+                let suffix = units[exp]
                 
                 numberFormatter.minimumFractionDigits = 1
                 numberFormatter.maximumFractionDigits = 1
                 
                 let formattedNumber = numberFormatter.string(from: NSNumber(value: Double(bytes) / pow(scaler, Double(exp))))
                 
-                return formattedNumber! + spacing + suffix;
+                return formattedNumber! + spacing + suffix
             }
         } else {
             return "-"
@@ -123,14 +123,14 @@ class HumanReadable {
             if (bytesPerSecond < scaler) {
                 let formattedNumber = numberFormatter.string(from: NSNumber(value: bytesPerSecond))
                 
-                return formattedNumber! + spacing + units[0];
+                return formattedNumber! + spacing + units[0]
             } else {
-                let exp = Int(log(bytesPerSecond) / log(scaler));
-                let suffix = units[exp];
+                let exp = Int(log(bytesPerSecond) / log(scaler))
+                let suffix = units[exp]
                 
                 let formattedNumber = numberFormatter.string(from: NSNumber(value: Double(bytesPerSecond) / pow(scaler, Double(exp))))
                 
-                return formattedNumber! + spacing + suffix;
+                return formattedNumber! + spacing + suffix
             }
         } else {
             return "-"

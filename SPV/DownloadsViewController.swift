@@ -182,7 +182,7 @@ extension DownloadsViewController : DownloadChangedProtocol {
             } else {
                 let indexPath = IndexPath(row: 0,
                                           section: Sections.downloads.rawValue)
-                self.downloads.insert(download, at: Sections.downloads.rawValue);
+                self.downloads.insert(download, at: Sections.downloads.rawValue)
                 self.downloadsTableView.insertRows(at: [indexPath], with: .automatic)
             }
         }

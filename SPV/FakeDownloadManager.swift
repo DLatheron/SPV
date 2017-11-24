@@ -19,7 +19,7 @@ class FakeDownloadManager : DownloadManagerBase {
 
     func timerTick(timer: Timer) {
         if downloads.count == 0 {
-            let interval = timer.fireDate.timeIntervalSince1970;
+            let interval = timer.fireDate.timeIntervalSince1970
             
             add(download: Download(remoteURL: URL(string: "http://nowhere.co.uk/image-\(interval).jpg")!))
         } else {

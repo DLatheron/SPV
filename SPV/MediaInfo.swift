@@ -151,7 +151,7 @@ class MediaInfo {
     private(set) var modified: Bool = false
     var hasChanged: Bool {
         get {
-            return modified || resolution.modified;
+            return modified || resolution.modified
         }
     }
     

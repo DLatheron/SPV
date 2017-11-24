@@ -143,7 +143,7 @@ extension MediaInfoViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return infoMapping.count;
+            return infoMapping.count
         } else {
             let tagCount = media?.mediaInfo.tags.count ?? 0
             return tagCount + 1
@@ -182,7 +182,7 @@ extension MediaInfoViewController : UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Info",
                                                          for: indexPath) as!MediaInfoCell
                 if let formatValue = infoMapping[row].formatValue {
-                    let value = formatValue(media!);
+                    let value = formatValue(media!)
                     cell.configure(withTitle: title,
                                    andValue: value)
                 }
@@ -200,7 +200,7 @@ extension MediaInfoViewController : UITableViewDataSource {
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Tag",
                                                          for: indexPath) as! MediaTagCell
-                let tag = media!.mediaInfo.tags[indexPath.row];
+                let tag = media!.mediaInfo.tags[indexPath.row]
             
                 cell.configure(withTag: tag)
             

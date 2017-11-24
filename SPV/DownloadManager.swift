@@ -61,7 +61,7 @@ class DownloadManager : DownloadManagerBase {
     func makeFileDownloadURL(downloadURL: URL) -> URL {
         let originalFilename = downloadURL.lastPathComponent
         let documentsDirectoryURL = getURLForDocumentsDirectory()
-        let localFileURL = documentsDirectoryURL.appendingPathComponent(originalFilename);
+        let localFileURL = documentsDirectoryURL.appendingPathComponent(originalFilename)
         
         return localFileURL
     }

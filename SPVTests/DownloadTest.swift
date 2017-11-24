@@ -151,7 +151,7 @@ class DownloadTest: XCTestCase {
         let download = Download(remoteURL: remoteURL)
         
         download.resume()
-        download.pause();
+        download.pause()
         
         XCTAssertEqual(download.isPaused, true)
     }
@@ -161,8 +161,8 @@ class DownloadTest: XCTestCase {
         let download = Download(remoteURL: remoteURL)
         
         download.resume()
-        download.pause();
-        download.resume();
+        download.pause()
+        download.resume()
         
         XCTAssertEqual(download.isPaused, false)
     }

@@ -91,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           ofType srcType: String,
                           toPath dstPath: NSString) {
         let fileManger = FileManager.default
-        var destinationPath = dstPath.appendingPathComponent(srcFilename) as NSString;
+        var destinationPath = dstPath.appendingPathComponent(srcFilename) as NSString
         destinationPath = destinationPath.appendingPathExtension(srcType)! as NSString
         
         let srcPath = Bundle.main.path(forResource: srcFilename, ofType: srcType)

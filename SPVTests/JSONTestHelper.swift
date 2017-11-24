@@ -12,6 +12,6 @@ class JSONTestHelper {
     class func BuildJSON(_ lines: [String]) -> String {
         return lines.joined(separator: "")
             .replacingOccurrences(of: "'",
-                                  with: "\"");
+                                  with: "\"")
     }
 }

@@ -62,7 +62,7 @@ class Media : NSObject {
     
     private class func loadOrCreateMediaInfo(forFileURL fileURL: URL) -> MediaInfo {
         let infoURL = makeInfoURL(fileURL: fileURL)
-        let mediaInfo : MediaInfo;
+        let mediaInfo : MediaInfo
         
         do {
             mediaInfo = try MediaInfo.load(fromURL: infoURL)!

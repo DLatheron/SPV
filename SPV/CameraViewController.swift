@@ -428,13 +428,13 @@ class CameraViewController : UIViewController {
         let flipAnimation = CATransition.init()
         flipAnimation.duration = 0.5
         flipAnimation.timingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseInEaseOut)
-        flipAnimation.type = "oglFlip";
+        flipAnimation.type = "oglFlip"
         
         switch cameraRotation {
         case .front:
-            flipAnimation.subtype = kCATransitionFromRight;
+            flipAnimation.subtype = kCATransitionFromRight
         case .rear:
-            flipAnimation.subtype = kCATransitionFromLeft;
+            flipAnimation.subtype = kCATransitionFromLeft
         }
         
         let flipLayer = CALayer.init()
@@ -466,7 +466,7 @@ class CameraViewController : UIViewController {
     
     func createLocalFileURL(filename: String) -> URL {
         let documentsDirectoryURL = getURLForDocumentsDirectory()
-        let localFileURL = documentsDirectoryURL.appendingPathComponent(filename);
+        let localFileURL = documentsDirectoryURL.appendingPathComponent(filename)
         
         return localFileURL
     }
@@ -518,7 +518,7 @@ class CameraViewController : UIViewController {
 extension CameraViewController {
     func positionBottomToolbar() {
         let navBarHeight: CGFloat = UIScreen.main.isLandscape ? 30 : 44
-        let tabBarHeight: CGFloat = UIScreen.main.isLandscape ? 32 : 49
+        //let tabBarHeight: CGFloat = UIScreen.main.isLandscape ? 32 : 49
         
         bottomToolbarHeightConstraint.constant = UIScreen.main.isLandscape ? 32 + 16 : 44 + 16
         topToolbarHeightConstraint.constant = UIScreen.main.isLandscape ? 78 : 68
@@ -542,12 +542,12 @@ extension CameraViewController {
                                  with: coordinator)
         
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.positionBottomToolbar();
+            self.positionBottomToolbar()
             self.cameraController.setPreviewOrientation()
             self.view.layer.shouldRasterize = true
         }) { (context: UIViewControllerTransitionCoordinatorContext) in
             self.view.layer.shouldRasterize = false
-            self.positionBottomToolbar();
+            self.positionBottomToolbar()
         }
     }
 }
@@ -656,7 +656,7 @@ extension CameraViewController {
 ////                                 options: [])
 ////        try? session.setActive(true)
 ////
-////        volumeView.frame = CGRect(x: 0, y: 0, width: 100, height: 100);
+////        volumeView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
 ////        if volumeView.superview == nil {
 ////            view.addSubview(volumeView)
 ////        }
@@ -690,14 +690,14 @@ extension CameraViewController {
     
 //    func applyVolumeButtonHack() {
 //        // these 4 lines of code tell the system that "this app needs to play sound/music"
-////        AVAudioPlayer* p = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"photoshutter.wav"]] error:NULL];
-////        [p prepareToPlay];
-////        [p stop];
+////        AVAudioPlayer* p = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"photoshutter.wav"]] error:NULL]
+////        [p prepareToPlay]
+////        [p stop]
 ////        
 ////        //make MPVolumeView Offscreen
-////        CGRect frame = CGRectMake(-1000, -1000, 100, 100);
-////        MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:frame];
-////        [volumeView sizeToFit];
-////        [self.view addSubview:volumeView];
+////        CGRect frame = CGRectMake(-1000, -1000, 100, 100)
+////        MPVolumeView *volumeView = [[MPVolumeView alloc] initWithFrame:frame]
+////        [volumeView sizeToFit]
+////        [self.view addSubview:volumeView]
 //    }
 }

@@ -44,7 +44,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
 
     var filteredData: [HistoryEntry] = []
     
-    let getImageJS: String;
+    let getImageJS: String
     
     @IBOutlet weak var searchResultsTable: UITableView!
     @IBOutlet weak var searchEffectsView: UIVisualEffectView!
@@ -65,7 +65,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     
     required init(coder aDecoder: NSCoder) {
 //        let webConfiguration = WKWebViewConfiguration()
-//        webConfiguration.allowsInlineMediaPlayback = true;
+//        webConfiguration.allowsInlineMediaPlayback = true
 //        webView = WKWebView(frame: .zero, configuration: webConfiguration)
         
         let bundle = Bundle.main
@@ -90,7 +90,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                                        left: 0,
                                                        bottom: 88,
                                                        right: 0)
-        webView.scrollView.delegate = self;
+        webView.scrollView.delegate = self
         
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.canGoBack), options: .new, context: nil)
@@ -156,7 +156,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     func makeFileDownloadURL(downloadURL: NSString) -> URL {
         let originalFilename = downloadURL.lastPathComponent
         let documentsDirectoryURL = getURLForDocumentsDirectory()
-        let localFileURL = documentsDirectoryURL.appendingPathComponent(originalFilename);
+        let localFileURL = documentsDirectoryURL.appendingPathComponent(originalFilename)
         
         return localFileURL!
     }
@@ -166,7 +166,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
             return
         }
         
-        let location = longPressGesture.location(in: webView);
+        let location = longPressGesture.location(in: webView)
         var js = getImageJS as NSString
         
         js = js.replacingOccurrences(of: "{x}", with: location.x.description) as NSString
@@ -388,7 +388,7 @@ extension BrowserViewController : UITextFieldDelegate {
 extension BrowserViewController : UISearchBarDelegate {
     func activateSearch() {
         if !searchBar.editing {
-            print("Activating...");
+            print("Activating...")
             searchBar.activate()
 
             // Reveal the effects via - but make it invisible so we can fade it in.
@@ -408,8 +408,8 @@ extension BrowserViewController : UISearchBarDelegate {
     
     func deactivateSearch() {
         if searchBar.editing {
-            print("...Deactivating");
-            searchBar.deactivate();
+            print("...Deactivating")
+            searchBar.deactivate()
 
             UIView.animate(withDuration: 0.3,
                            delay: 0.1,
@@ -521,11 +521,11 @@ extension BrowserViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCell") as! SearchCell;
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCell") as! SearchCell
         cell.textLabel?.text = filteredData[indexPath.row].url
         cell.delegate = self
         
-        return cell;
+        return cell
     }
 }
 

@@ -31,7 +31,7 @@ class MediaInfoTest: XCTestCase {
         "     'Tag2'",
         "  ]",
         "}"
-    ]);
+    ])
     
     func validateDefault(mediaInfo: MediaInfo?) {
         let dateFormatter = ISO8601DateFormatter()

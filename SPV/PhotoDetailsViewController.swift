@@ -217,10 +217,10 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         var xOffset: CGFloat = 0
         
         if forDirection == .left {
-            xOffset = CGFloat(self.scrollView!.frame.width);
+            xOffset = CGFloat(self.scrollView!.frame.width)
             newMedia = (delegate?.nextMedia(media: media!))!
         } else {
-            xOffset = CGFloat(-self.scrollView!.frame.width);
+            xOffset = CGFloat(-self.scrollView!.frame.width)
             newMedia = (delegate?.prevMedia(media: media!))!
         }
         
@@ -243,7 +243,7 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         let duration = (animated ? 0.3 : 0.0)
         
         if (visible) {
-            bar.isHidden = false;
+            bar.isHidden = false
             bar.center.y = offScreenCentreY
             UIView.animate(withDuration: duration,
                            animations: {

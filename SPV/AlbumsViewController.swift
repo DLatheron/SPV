@@ -87,7 +87,7 @@ class AlbumsViewController: UICollectionViewController {
     }
     
     func clampIndex(index: Int) -> Int {
-        let upperBound = self.media.count - 1;
+        let upperBound = self.media.count - 1
         if index < 0 {
             return upperBound
         } else if index > upperBound {

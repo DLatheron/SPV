@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Symbol.ttf">
+            <string>Symbol</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Media-->
         <scene sceneID="E6Z-rP-3a9">
@@ -843,7 +848,7 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <attributedString key="attributedText">
                                                         <fragment>
-                                                            <mutableString key="content">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                                            <string key="content">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                             <attributes>
                                                                 <color key="NSColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <font key="NSFont" size="13" name=".AppleSystemUIFont"/>
@@ -865,6 +870,31 @@
                                             <outlet property="textBox" destination="gM1-ki-0es" id="N3m-So-pll"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ButtonCell" rowHeight="-1" id="SXW-iP-OuB" userLabel="ButtonCell" customClass="ButtonCell" customModule="SPV" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="248" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SXW-iP-OuB" id="TEe-Wn-ICZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFL-B0-UC4">
+                                                    <rect key="frame" x="-0.66666666666665719" y="6" width="375.33333333333326" height="30"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <connections>
+                                                        <action selector="clickButton:" destination="SXW-iP-OuB" eventType="touchUpInside" id="N7t-IL-7eG"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="bFL-B0-UC4" firstAttribute="centerY" secondItem="TEe-Wn-ICZ" secondAttribute="centerY" id="ZGO-zi-HW6"/>
+                                                <constraint firstItem="bFL-B0-UC4" firstAttribute="centerX" secondItem="TEe-Wn-ICZ" secondAttribute="centerX" id="hjl-MT-LuP"/>
+                                                <constraint firstItem="bFL-B0-UC4" firstAttribute="width" secondItem="TEe-Wn-ICZ" secondAttribute="width" id="mBB-fm-0Es"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="button" destination="bFL-B0-UC4" id="Lgu-ud-OVq"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="MxJ-HZ-gaM" id="QvD-G4-was"/>
@@ -878,11 +908,102 @@
                     <navigationItem key="navigationItem" title="Settings" id="mWK-vR-FI2"/>
                     <connections>
                         <outlet property="settingsTableView" destination="lBJ-Tn-ygH" id="Oo7-7t-EMn"/>
+                        <segue destination="20H-E2-WZd" kind="presentation" identifier="SetPIN" id="V6R-hG-SKr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zsc-2H-cTS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1509.5999999999999" y="1126.8472906403942"/>
+        </scene>
+        <!--Entry View Controller-->
+        <scene sceneID="6tV-1q-peO">
+            <objects>
+                <viewController id="20H-E2-WZd" customClass="PINEntryViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QwO-wp-Rly">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqJ-cm-4Wt" userLabel="Top Bar">
+                                <rect key="frame" x="-0.66666666666665719" y="0.0" width="375.33333333333326" height="88"/>
+                                <subviews>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kyh-Mm-Osd">
+                                        <rect key="frame" x="0.0" y="0.0" width="375.33333333333331" height="88"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="qif-1Y-T80">
+                                            <rect key="frame" x="0.0" y="0.0" width="375.33333333333331" height="88"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                        <blurEffect style="extraLight"/>
+                                    </visualEffectView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="kyh-Mm-Osd" firstAttribute="width" secondItem="kqJ-cm-4Wt" secondAttribute="width" id="7Ny-D6-J02"/>
+                                    <constraint firstAttribute="height" constant="88" id="G4O-pB-CGg"/>
+                                    <constraint firstItem="kyh-Mm-Osd" firstAttribute="height" secondItem="kqJ-cm-4Wt" secondAttribute="height" id="QiT-6V-IvZ"/>
+                                    <constraint firstItem="kyh-Mm-Osd" firstAttribute="centerX" secondItem="kqJ-cm-4Wt" secondAttribute="centerX" id="WXf-on-MBT"/>
+                                    <constraint firstItem="kyh-Mm-Osd" firstAttribute="centerY" secondItem="kqJ-cm-4Wt" secondAttribute="centerY" id="ghh-vK-wfV"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a PIN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDR-Sl-A2p">
+                                <rect key="frame" x="70.666666666666686" y="310.33333333333331" width="233" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="⚪︎⚪︎⚪︎⚪︎" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="50" translatesAutoresizingMaskIntoConstraints="NO" id="3fs-Rp-UOH" userLabel="Pin Digits">
+                                <rect key="frame" x="101.66666666666667" y="385.66666666666669" width="171.66666666666663" height="50"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="Symbol" family="Symbol" pointSize="50"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <connections>
+                                    <outlet property="delegate" destination="20H-E2-WZd" id="9Bx-Ta-dgC"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sCt-GL-TEk">
+                                <rect key="frame" x="65.666666666666686" y="455.66666666666669" width="244" height="76.000000000000057"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" verticalHuggingPriority="249" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biy-bE-2XS">
+                                        <rect key="frame" x="8" y="8" width="228" height="60"/>
+                                        <string key="text">Incorrect PIN
+3 attempts remaining</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.1105378496" blue="0.05821101125" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="biy-bE-2XS" firstAttribute="top" secondItem="sCt-GL-TEk" secondAttribute="top" constant="8" id="7OA-f9-SVJ"/>
+                                    <constraint firstItem="biy-bE-2XS" firstAttribute="leading" secondItem="sCt-GL-TEk" secondAttribute="leading" constant="8" id="Lv7-Fr-k3H"/>
+                                    <constraint firstAttribute="trailing" secondItem="biy-bE-2XS" secondAttribute="trailing" constant="8" id="d0W-VQ-AQr"/>
+                                    <constraint firstAttribute="bottom" secondItem="biy-bE-2XS" secondAttribute="bottom" constant="8" id="s84-4U-akk"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="kqJ-cm-4Wt" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="GNv-zU-M2d"/>
+                            <constraint firstItem="kqJ-cm-4Wt" firstAttribute="width" secondItem="ttQ-DZ-lGG" secondAttribute="width" id="Iw7-To-HDi"/>
+                            <constraint firstItem="sCt-GL-TEk" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="Ntl-DV-hdE"/>
+                            <constraint firstItem="3fs-Rp-UOH" firstAttribute="centerY" secondItem="ttQ-DZ-lGG" secondAttribute="centerY" id="OMx-s9-gsA"/>
+                            <constraint firstItem="sCt-GL-TEk" firstAttribute="top" secondItem="3fs-Rp-UOH" secondAttribute="bottom" constant="20" id="Pb4-GZ-JUN"/>
+                            <constraint firstItem="VDR-Sl-A2p" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="TBd-uh-V5u"/>
+                            <constraint firstItem="kqJ-cm-4Wt" firstAttribute="top" secondItem="ttQ-DZ-lGG" secondAttribute="top" constant="-44" id="ePa-Pe-ckp"/>
+                            <constraint firstItem="3fs-Rp-UOH" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="hAU-1f-drA"/>
+                            <constraint firstItem="3fs-Rp-UOH" firstAttribute="top" secondItem="VDR-Sl-A2p" secondAttribute="bottom" constant="40" id="pJw-Iw-OB0"/>
+                            <constraint firstItem="biy-bE-2XS" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="vge-Bv-Ihu"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ttQ-DZ-lGG"/>
+                    </view>
+                    <connections>
+                        <outlet property="label" destination="VDR-Sl-A2p" id="pWu-w4-ZyM"/>
+                        <outlet property="pinDigits" destination="3fs-Rp-UOH" id="5z2-h5-5Pa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cIW-LA-o5v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2300" y="1126.8472906403942"/>
         </scene>
         <!--Albums-->
         <scene sceneID="j6c-eh-FdY">

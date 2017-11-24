@@ -10,6 +10,7 @@ import UIKit
 
 protocol SettingChangedDelegate {
     func changed(setting: Setting)
+    func clicked(setting: SettingT<String>)
 }
 
 protocol SettingsCellDelegate {

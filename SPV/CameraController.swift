@@ -268,7 +268,10 @@ extension CameraController {
     }
     
     func captureImage(completion: @escaping (UIImage?, Error?) -> Void) {
-        guard let captureSession = captureSession, captureSession.isRunning else { completion(nil, CameraControllerError.captureSessionIsMissing); return }
+        guard let captureSession = captureSession, captureSession.isRunning else {
+                completion(nil,  CameraControllerError.captureSessionIsMissing)
+                return
+            }
         
         let settings = AVCapturePhotoSettings()
         settings.flashMode = self.flashMode
