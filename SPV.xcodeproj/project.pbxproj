@@ -33,6 +33,7 @@
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
 		F936CCA01FA70F3300813F2E /* UIScreenExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */; };
 		F93E26F11FB1A833001D0DAE /* CollapsibleSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93E26F01FB1A833001D0DAE /* CollapsibleSearchBar.swift */; };
+		F93EE1521FCC002900363333 /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93EE1511FCC002900363333 /* Dispatch.swift */; };
 		F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D12E1F9CE1100065C31B /* SearchCell.swift */; };
 		F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D1331F9DC3680065C31B /* CameraViewController.swift */; };
 		F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */; };
@@ -136,6 +137,7 @@
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
 		F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreenExtensions.swift; sourceTree = "<group>"; };
 		F93E26F01FB1A833001D0DAE /* CollapsibleSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSearchBar.swift; sourceTree = "<group>"; };
+		F93EE1511FCC002900363333 /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		F942D12E1F9CE1100065C31B /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		F942D1331F9DC3680065C31B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadable.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				F9C68BB41F860FF20094E5F3 /* URLBuilder.swift */,
 				F9E843C51F972F050075BA43 /* UIViewExtensions.swift */,
 				F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */,
+				F93EE1511FCC002900363333 /* Dispatch.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -860,6 +863,7 @@
 				F9F5D0081F683BD100E16DAA /* MediaInfoViewController.swift in Sources */,
 				F9F2D3D61F42D3B200FD6F78 /* DownloadingCell.swift in Sources */,
 				F97943B01F6FA96600739030 /* MediaTagCell.swift in Sources */,
+				F93EE1521FCC002900363333 /* Dispatch.swift in Sources */,
 				F9C50C081F59376000EE79E5 /* FakeDownloadManager.swift in Sources */,
 				F9BABADA1F28FB6D00000D9B /* SettingsViewController.swift in Sources */,
 			);

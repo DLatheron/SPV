@@ -108,34 +108,24 @@ extension PINEntryViewController : UITextFieldDelegate {
             if activePIN.complete {
                 print("PIN \(entryMode) set as \(activePIN.asString)")
                 
-                var complete = false
+                //pinDigits.resignFirstResponder()
                 
                 switch entryMode {
                 case .pin:
                     if pin == confirmPIN {
-                        complete = true
+                        completeTransition()
                     } else {
-                        self.wrongPIN(lockout: defaultLockoutPeriod)
+                        wrongPIN(lockout: defaultLockoutPeriod)
                     }
                     
                 case .setPIN:
-                    entryMode = .confirmPIN
-                    refreshUI()
+                    confirmTransition()
                     
                 case .confirmPIN:
                     if pin == confirmPIN {
-                        complete = true
+                        completeTransition()
                     } else {
-                        activePIN.reset()
-                        entryMode = .setPIN
-                        activePIN.reset()
-                        self.wrongPIN()
-                    }
-                }
-                
-                if complete {
-                    self.dismiss(animated: true) {
-                        self.completionBlock?(self.pin)
+                        resetTransition()
                     }
                 }
             }
@@ -148,9 +138,37 @@ extension PINEntryViewController : UITextFieldDelegate {
 }
 
 extension PINEntryViewController {
+    func confirmTransition() {
+        Dispatch.delay(callOf: {
+            self.entryMode = .confirmPIN
+            self.refreshUI()
+        },
+                       for: 0.6)
+    }
+    
+    func resetTransition() {
+        Dispatch.delay(callOf: {
+            self.activePIN.reset()
+            self.entryMode = .setPIN
+            self.activePIN.reset()
+            self.wrongPIN()
+        },
+                       for: 0.6)
+    }
+        
+    func completeTransition() {
+        Dispatch.delay(callOf: {
+            self.dismiss(animated: true) {
+                self.completionBlock?(self.pin)
+            }
+        },
+                       for: 0.6)
+    }
+    
     func wrongPIN(lockout: TimeInterval = 0) {
         view.shake {
-            self.reset()
+            Dispatch.delay(callOf: self.reset,
+                           for: 0.6)
         }
     }
 }
