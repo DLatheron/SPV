@@ -921,18 +921,37 @@
                 <viewController id="20H-E2-WZd" customClass="PINEntryViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QwO-wp-Rly">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kqJ-cm-4Wt" userLabel="Top Bar">
                                 <rect key="frame" x="-0.66666666666665719" y="0.0" width="375.33333333333326" height="88"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kyh-Mm-Osd">
                                         <rect key="frame" x="0.0" y="0.0" width="375.33333333333331" height="88"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="qif-1Y-T80">
+                                        <view key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="qif-1Y-T80">
                                             <rect key="frame" x="0.0" y="0.0" width="375.33333333333331" height="88"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W53-AO-lT5">
+                                                    <rect key="frame" x="0.0" y="39" width="376" height="49"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <items>
+                                                        <barButtonItem style="plain" systemItem="flexibleSpace" id="OvD-st-9dd"/>
+                                                        <barButtonItem style="plain" systemItem="cancel" id="SjB-RI-IOG">
+                                                            <connections>
+                                                                <action selector="cancel:" destination="20H-E2-WZd" id="cWe-c0-BKs"/>
+                                                            </connections>
+                                                        </barButtonItem>
+                                                    </items>
+                                                </toolbar>
+                                            </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="W53-AO-lT5" firstAttribute="width" secondItem="kyh-Mm-Osd" secondAttribute="width" id="8P2-33-TIY"/>
+                                            <constraint firstAttribute="bottom" secondItem="W53-AO-lT5" secondAttribute="bottom" id="Mwx-BW-IAz"/>
+                                            <constraint firstItem="W53-AO-lT5" firstAttribute="centerX" secondItem="kyh-Mm-Osd" secondAttribute="centerX" id="mGS-Wv-WHz"/>
+                                        </constraints>
                                         <blurEffect style="extraLight"/>
                                     </visualEffectView>
                                 </subviews>
@@ -945,60 +964,79 @@
                                     <constraint firstItem="kyh-Mm-Osd" firstAttribute="centerY" secondItem="kqJ-cm-4Wt" secondAttribute="centerY" id="ghh-vK-wfV"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a PIN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDR-Sl-A2p">
-                                <rect key="frame" x="70.666666666666686" y="310.33333333333331" width="233" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="⚪︎⚪︎⚪︎⚪︎" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="50" translatesAutoresizingMaskIntoConstraints="NO" id="3fs-Rp-UOH" userLabel="Pin Digits">
-                                <rect key="frame" x="101.66666666666667" y="385.66666666666669" width="171.66666666666663" height="50"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" name="Symbol" family="Symbol" pointSize="50"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                <connections>
-                                    <outlet property="delegate" destination="20H-E2-WZd" id="9Bx-Ta-dgC"/>
-                                </connections>
-                            </textField>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sCt-GL-TEk">
-                                <rect key="frame" x="65.666666666666686" y="455.66666666666669" width="244" height="76.000000000000057"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BB0-DQ-7tg">
+                                <rect key="frame" x="0.0" y="280" width="375" height="262"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" verticalHuggingPriority="249" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biy-bE-2XS">
-                                        <rect key="frame" x="8" y="8" width="228" height="60"/>
-                                        <string key="text">Incorrect PIN
-3 attempts remaining</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter a PIN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDR-Sl-A2p">
+                                        <rect key="frame" x="71" y="10" width="233" height="66"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                        <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <textField opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="⚪︎⚪︎⚪︎⚪︎" textAlignment="center" adjustsFontSizeToFit="NO" minimumFontSize="50" translatesAutoresizingMaskIntoConstraints="NO" id="3fs-Rp-UOH" userLabel="Pin Digits">
+                                        <rect key="frame" x="100.99999999999999" y="106" width="171.66666666666663" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="5XQ-lN-yvs"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" name="Symbol" family="Symbol" pointSize="50"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="20H-E2-WZd" id="9Bx-Ta-dgC"/>
+                                        </connections>
+                                    </textField>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sCt-GL-TEk">
+                                        <rect key="frame" x="65" y="176" width="244" height="76"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" verticalHuggingPriority="249" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biy-bE-2XS">
+                                                <rect key="frame" x="8" y="8" width="228" height="60"/>
+                                                <string key="text">Incorrect PIN
+3 attempts remaining</string>
+                                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="0.1105378496" blue="0.05821101125" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="biy-bE-2XS" firstAttribute="top" secondItem="sCt-GL-TEk" secondAttribute="top" constant="8" id="7OA-f9-SVJ"/>
+                                            <constraint firstItem="biy-bE-2XS" firstAttribute="leading" secondItem="sCt-GL-TEk" secondAttribute="leading" constant="8" id="Lv7-Fr-k3H"/>
+                                            <constraint firstAttribute="trailing" secondItem="biy-bE-2XS" secondAttribute="trailing" constant="8" id="d0W-VQ-AQr"/>
+                                            <constraint firstAttribute="bottom" secondItem="biy-bE-2XS" secondAttribute="bottom" constant="8" id="s84-4U-akk"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
-                                <color key="backgroundColor" red="1" green="0.1105378496" blue="0.05821101125" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="biy-bE-2XS" firstAttribute="top" secondItem="sCt-GL-TEk" secondAttribute="top" constant="8" id="7OA-f9-SVJ"/>
-                                    <constraint firstItem="biy-bE-2XS" firstAttribute="leading" secondItem="sCt-GL-TEk" secondAttribute="leading" constant="8" id="Lv7-Fr-k3H"/>
-                                    <constraint firstAttribute="trailing" secondItem="biy-bE-2XS" secondAttribute="trailing" constant="8" id="d0W-VQ-AQr"/>
-                                    <constraint firstAttribute="bottom" secondItem="biy-bE-2XS" secondAttribute="bottom" constant="8" id="s84-4U-akk"/>
+                                    <constraint firstItem="sCt-GL-TEk" firstAttribute="centerX" secondItem="BB0-DQ-7tg" secondAttribute="centerX" id="2e3-13-LC2"/>
+                                    <constraint firstItem="sCt-GL-TEk" firstAttribute="top" secondItem="3fs-Rp-UOH" secondAttribute="bottom" constant="20" id="9l5-4J-6fk"/>
+                                    <constraint firstItem="3fs-Rp-UOH" firstAttribute="centerY" secondItem="BB0-DQ-7tg" secondAttribute="centerY" id="Cm9-QH-Vph"/>
+                                    <constraint firstItem="VDR-Sl-A2p" firstAttribute="centerX" secondItem="BB0-DQ-7tg" secondAttribute="centerX" id="ETL-o4-f7G"/>
+                                    <constraint firstAttribute="bottom" secondItem="sCt-GL-TEk" secondAttribute="bottom" constant="10" id="GbF-Sq-zG1"/>
+                                    <constraint firstItem="VDR-Sl-A2p" firstAttribute="top" secondItem="BB0-DQ-7tg" secondAttribute="top" constant="10" id="WDk-Pr-xTE"/>
+                                    <constraint firstItem="3fs-Rp-UOH" firstAttribute="top" secondItem="VDR-Sl-A2p" secondAttribute="bottom" constant="30" id="pC3-0v-oxf"/>
+                                    <constraint firstItem="3fs-Rp-UOH" firstAttribute="centerX" secondItem="BB0-DQ-7tg" secondAttribute="centerX" id="zOj-6E-Jlc"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="BB0-DQ-7tg" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="3ex-CF-7et"/>
                             <constraint firstItem="kqJ-cm-4Wt" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="GNv-zU-M2d"/>
+                            <constraint firstItem="BB0-DQ-7tg" firstAttribute="width" secondItem="QwO-wp-Rly" secondAttribute="width" id="I4K-i7-415"/>
                             <constraint firstItem="kqJ-cm-4Wt" firstAttribute="width" secondItem="ttQ-DZ-lGG" secondAttribute="width" id="Iw7-To-HDi"/>
-                            <constraint firstItem="sCt-GL-TEk" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="Ntl-DV-hdE"/>
-                            <constraint firstItem="3fs-Rp-UOH" firstAttribute="centerY" secondItem="ttQ-DZ-lGG" secondAttribute="centerY" id="OMx-s9-gsA"/>
-                            <constraint firstItem="sCt-GL-TEk" firstAttribute="top" secondItem="3fs-Rp-UOH" secondAttribute="bottom" constant="20" id="Pb4-GZ-JUN"/>
-                            <constraint firstItem="VDR-Sl-A2p" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="TBd-uh-V5u"/>
                             <constraint firstItem="kqJ-cm-4Wt" firstAttribute="top" secondItem="ttQ-DZ-lGG" secondAttribute="top" constant="-44" id="ePa-Pe-ckp"/>
-                            <constraint firstItem="3fs-Rp-UOH" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="hAU-1f-drA"/>
-                            <constraint firstItem="3fs-Rp-UOH" firstAttribute="top" secondItem="VDR-Sl-A2p" secondAttribute="bottom" constant="40" id="pJw-Iw-OB0"/>
-                            <constraint firstItem="biy-bE-2XS" firstAttribute="centerX" secondItem="ttQ-DZ-lGG" secondAttribute="centerX" id="vge-Bv-Ihu"/>
+                            <constraint firstItem="BB0-DQ-7tg" firstAttribute="centerY" secondItem="ttQ-DZ-lGG" secondAttribute="centerY" id="hAH-Dj-aah"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ttQ-DZ-lGG"/>
                     </view>
                     <connections>
+                        <outlet property="contentView" destination="BB0-DQ-7tg" id="FgV-5b-gIp"/>
+                        <outlet property="contentViewCentreYConstraint" destination="hAH-Dj-aah" id="3qw-pH-VBm"/>
+                        <outlet property="errorLabel" destination="biy-bE-2XS" id="arO-C6-lrk"/>
+                        <outlet property="errorView" destination="sCt-GL-TEk" id="UKD-DJ-ivL"/>
                         <outlet property="label" destination="VDR-Sl-A2p" id="pWu-w4-ZyM"/>
                         <outlet property="pinDigits" destination="3fs-Rp-UOH" id="5z2-h5-5Pa"/>
+                        <outlet property="topToolbarView" destination="W53-AO-lT5" id="mBA-n7-oLO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cIW-LA-o5v" userLabel="First Responder" sceneMemberID="firstResponder"/>

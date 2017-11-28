@@ -34,7 +34,7 @@ extension UIView {
         let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         animation.duration = 0.6
-        animation.values = [ -20, 20, -20, 20, -10, 10, -5, 5, 0 ]
+        animation.values = [ -30, 30, -30, 30, -20, 20, -10, 10, -5, 5, 0 ]
         self.layer.add(animation,
                        forKey:"shake")
         CATransaction.commit()
