@@ -19,7 +19,7 @@
 		639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639170071F376001001E5ABE /* PhotoDetailsViewController.swift */; };
 		639DBDB71F5B1D4700BDD48E /* DownloadManagerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639DBDB61F5B1D4700BDD48E /* DownloadManagerBase.swift */; };
 		63D026E51F4F4E6B00006275 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D026E41F4F4E6B00006275 /* Download.swift */; };
-		71F28ACDE4A6A2675A6785C3 /* Pods_SPV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 064FA0CADD57C68A9783FC5F /* Pods_SPV.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		71F28ACDE4A6A2675A6785C3 /* Pods_SPV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 064FA0CADD57C68A9783FC5F /* Pods_SPV.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F83143D1C156A235167784EC /* Pods_SPVUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF0ACB10349E2AD198B3392 /* Pods_SPVUITests.framework */; };
 		F90FFFE81FBF560F00D2C304 /* TextBlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90FFFE71FBF560F00D2C304 /* TextBlockCell.swift */; };
 		F911A18E1FBA06A1009EF02C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F911A18D1FBA06A1009EF02C /* Setting.swift */; };
@@ -34,6 +34,7 @@
 		F936CCA01FA70F3300813F2E /* UIScreenExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */; };
 		F93E26F11FB1A833001D0DAE /* CollapsibleSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93E26F01FB1A833001D0DAE /* CollapsibleSearchBar.swift */; };
 		F93EE1521FCC002900363333 /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93EE1511FCC002900363333 /* Dispatch.swift */; };
+		F93EE1531FCE9E5D00363333 /* BCryptSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F93EE1541FCE9E5D00363333 /* BCryptSwift.framework */; };
 		F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D12E1F9CE1100065C31B /* SearchCell.swift */; };
 		F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D1331F9DC3680065C31B /* CameraViewController.swift */; };
 		F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */; };
@@ -68,7 +69,11 @@
 		F9C50C1D1F5F50B800EE79E5 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F9C50C1C1F5F50B800EE79E5 /* Podfile */; };
 		F9C68BB51F860FF20094E5F3 /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C68BB41F860FF20094E5F3 /* URLBuilder.swift */; };
 		F9C68BB71F8613500094E5F3 /* URLBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */; };
-		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F9C8DA311FCF1F92002BB2D5 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9C8DA301FCF1F92002BB2D5 /* Authentication.storyboard */; };
+		F9C8DA351FCF371B002BB2D5 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA341FCF371B002BB2D5 /* AuthenticationViewController.swift */; };
+		F9C8DA371FCF3B30002BB2D5 /* PINButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA361FCF3B30002BB2D5 /* PINButton.swift */; };
+		F9C8DA3A1FCF3BB2002BB2D5 /* PINDigit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA391FCF3BB2002BB2D5 /* PINDigit.swift */; };
+		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */; };
 		F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E843C51F972F050075BA43 /* UIViewExtensions.swift */; };
 		F9E8DE8F1FC3405100FDAAB9 /* PINEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE8E1FC3405100FDAAB9 /* PINEntryViewController.swift */; };
@@ -138,6 +143,7 @@
 		F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreenExtensions.swift; sourceTree = "<group>"; };
 		F93E26F01FB1A833001D0DAE /* CollapsibleSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSearchBar.swift; sourceTree = "<group>"; };
 		F93EE1511FCC002900363333 /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
+		F93EE1541FCE9E5D00363333 /* BCryptSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BCryptSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F942D12E1F9CE1100065C31B /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		F942D1331F9DC3680065C31B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadable.swift; sourceTree = "<group>"; };
@@ -178,6 +184,10 @@
 		F9C50C1C1F5F50B800EE79E5 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		F9C68BB41F860FF20094E5F3 /* URLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilder.swift; sourceTree = "<group>"; };
 		F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilderTests.swift; sourceTree = "<group>"; };
+		F9C8DA301FCF1F92002BB2D5 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
+		F9C8DA341FCF371B002BB2D5 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
+		F9C8DA361FCF3B30002BB2D5 /* PINButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINButton.swift; sourceTree = "<group>"; };
+		F9C8DA391FCF3BB2002BB2D5 /* PINDigit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINDigit.swift; sourceTree = "<group>"; };
 		F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/SPV-efrwuliddfrewpeoxhcadziytpjt/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		F9D301871F5F592900ADEEF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -203,6 +213,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F93EE1531FCE9E5D00363333 /* BCryptSwift.framework in Frameworks */,
 				F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */,
 				71F28ACDE4A6A2675A6785C3 /* Pods_SPV.framework in Frameworks */,
 			);
@@ -266,6 +277,7 @@
 		BE4F0069430F43FF449A6BE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F93EE1541FCE9E5D00363333 /* BCryptSwift.framework */,
 				F9D301871F5F592900ADEEF8 /* Foundation.framework */,
 				F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */,
 				064FA0CADD57C68A9783FC5F /* Pods_SPV.framework */,
@@ -458,6 +470,8 @@
 		F9BABAA81F28F92F00000D9B /* SPV */ = {
 			isa = PBXGroup;
 			children = (
+				F9C8DA321FCF36D8002BB2D5 /* Authentication */,
+				F9C8DA301FCF1F92002BB2D5 /* Authentication.storyboard */,
 				F942D1301F9DC3330065C31B /* Camera */,
 				F98B8C391F767E2300719CA6 /* Common */,
 				F98B8C331F767D2D00719CA6 /* Media Viewer */,
@@ -505,6 +519,32 @@
 				F9C50C161F5E80F600EE79E5 /* Photo.json */,
 			);
 			name = JSON;
+			sourceTree = "<group>";
+		};
+		F9C8DA321FCF36D8002BB2D5 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				F9C8DA381FCF3B37002BB2D5 /* Controls */,
+				F9C8DA331FCF36E4002BB2D5 /* VCs */,
+			);
+			name = Authentication;
+			sourceTree = "<group>";
+		};
+		F9C8DA331FCF36E4002BB2D5 /* VCs */ = {
+			isa = PBXGroup;
+			children = (
+				F9C8DA341FCF371B002BB2D5 /* AuthenticationViewController.swift */,
+			);
+			name = VCs;
+			sourceTree = "<group>";
+		};
+		F9C8DA381FCF3B37002BB2D5 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				F9C8DA361FCF3B30002BB2D5 /* PINButton.swift */,
+				F9C8DA391FCF3BB2002BB2D5 /* PINDigit.swift */,
+			);
+			name = Controls;
 			sourceTree = "<group>";
 		};
 		F9F2D3D91F44201A00FD6F78 /* Controls */ = {
@@ -643,6 +683,7 @@
 				63396F0C1F40ED58000E5F3E /* GetImage.js in Resources */,
 				639170051F374E15001E5ABE /* Test03.jpg in Resources */,
 				639170061F374E15001E5ABE /* Test04.png in Resources */,
+				F9C8DA311FCF1F92002BB2D5 /* Authentication.storyboard in Resources */,
 				F9BABAB61F28F92F00000D9B /* LaunchScreen.storyboard in Resources */,
 				F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */,
 				F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */,
@@ -833,6 +874,7 @@
 				F912DE131FB9834800037ABF /* BoolCell.swift in Sources */,
 				F96D37B61FBDFDE600DD2F76 /* ConstDataCell.swift in Sources */,
 				F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */,
+				F9C8DA371FCF3B30002BB2D5 /* PINButton.swift in Sources */,
 				F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */,
 				F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */,
 				F912DE151FB9856700037ABF /* SettingsCell.swift in Sources */,
@@ -856,6 +898,7 @@
 				F96D37B01FBCA8E100DD2F76 /* TextCell.swift in Sources */,
 				F9C50C0C1F5E7F0600EE79E5 /* Photo.swift in Sources */,
 				F96D37B41FBCAC0C00DD2F76 /* SettingT.swift in Sources */,
+				F9C8DA3A1FCF3BB2002BB2D5 /* PINDigit.swift in Sources */,
 				F914D4F31F34D4BA00B9042E /* PhotoCell.swift in Sources */,
 				F96D37B81FBECAE200DD2F76 /* SettingsSubMenu.swift in Sources */,
 				F9F2D3DB1F44202F00FD6F78 /* CircularProgressIndicator.swift in Sources */,
@@ -865,6 +908,7 @@
 				F97943B01F6FA96600739030 /* MediaTagCell.swift in Sources */,
 				F93EE1521FCC002900363333 /* Dispatch.swift in Sources */,
 				F9C50C081F59376000EE79E5 /* FakeDownloadManager.swift in Sources */,
+				F9C8DA351FCF371B002BB2D5 /* AuthenticationViewController.swift in Sources */,
 				F9BABADA1F28FB6D00000D9B /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

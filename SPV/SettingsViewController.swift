@@ -83,10 +83,18 @@ extension SettingsViewController {
         switch segue.identifier {
         case "SetPIN"?:
             let destVC = segue.destination as! PINEntryViewController
+            destVC.entryMode = .setPIN
             destVC.completionBlock = { pin in
                 print("Returned PIN was \(pin.asString)")
-                self.settings.pin.value = pin.asString
+                self.settings.pin.value = pin.hash
                 try? self.settings.save(toFileURL: Settings.defaultURL)
+            }
+        case "EnterPIN"?:
+            let destVC = segue.destination as! PINEntryViewController
+            destVC.entryMode = .pin
+            destVC.expectedPINHash = self.settings.pin.value
+            destVC.completionBlock = { pin in
+                print("PIN has been successfully validated")
             }
             
         default:
@@ -101,9 +109,15 @@ extension SettingsViewController : SettingChangedDelegate {
     }
     
     func clicked(setting: SettingT<String>) {
-        if setting.value == "SetPIN" {
+        switch setting.value {
+        case "SetPIN":
             self.performSegue(withIdentifier: "SetPIN",
                               sender: self)
+        case "EnterPIN":
+            self.performSegue(withIdentifier: "EnterPIN",
+                              sender: self)
+        default:
+            fatalError("Unknown button value: \(setting.value)")
         }
     }
 }

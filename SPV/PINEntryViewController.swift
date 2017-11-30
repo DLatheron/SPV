@@ -41,6 +41,8 @@ class PINEntryViewController : UIViewController {
     
     var pin = PIN()
     var confirmPIN = PIN()
+    var expectedPINHash: String = ""
+    
     var entryMode: PINEntryMode = .setPIN
     var completionBlock: ((PIN) -> Void)? = nil
     var attemptsRemaining = 3
@@ -135,7 +137,7 @@ extension PINEntryViewController : UITextFieldDelegate {
                     
                     switch entryMode {
                     case .pin:
-                        if pin == confirmPIN {
+                        if pin.verifyPIN(hash: expectedPINHash) {
                             completeTransition()
                         } else {
                             wrongPIN(lockout: defaultLockoutPeriod)

@@ -909,6 +909,7 @@
                     <connections>
                         <outlet property="settingsTableView" destination="lBJ-Tn-ygH" id="Oo7-7t-EMn"/>
                         <segue destination="20H-E2-WZd" kind="presentation" identifier="SetPIN" id="V6R-hG-SKr"/>
+                        <segue destination="20H-E2-WZd" kind="presentation" identifier="EnterPIN" id="pTc-DI-rCD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zsc-2H-cTS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1332,4 +1333,7 @@
         <image name="settings" width="25" height="25"/>
         <image name="timer" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="pTc-DI-rCD"/>
+    </inferredMetricsTieBreakers>
 </document>
