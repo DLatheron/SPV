@@ -91,14 +91,19 @@ class PINButton : UIButton {
         self.backgroundColor = backgroundColour
         self.tintColor = textColour
         
-        let existingAttributedText = titleLabel!.attributedText!
-        let fullRange = NSRange(location: 0,
-                                length: existingAttributedText.length)
-        let newAttributedText = NSMutableAttributedString(attributedString: existingAttributedText)
-        newAttributedText.addAttribute(NSAttributedStringKey.foregroundColor,
-                                        value: textColour,
-                                        range: fullRange)
-        setAttributedTitle(newAttributedText,
-                           for: .normal)
+        if let titleLabel = titleLabel,
+            let existingAttributedText = titleLabel.attributedText {
+            let fullRange = NSRange(location: 0,
+                                    length: existingAttributedText.length)
+            let newAttributedText = NSMutableAttributedString(attributedString: existingAttributedText)
+            newAttributedText.addAttribute(NSAttributedStringKey.foregroundColor,
+                                            value: textColour,
+                                            range: fullRange)
+            setAttributedTitle(newAttributedText,
+                               for: .normal)
+        } else {
+            backgroundColor = backgroundColour
+            tintColor = textColour
+        }
     }
 }

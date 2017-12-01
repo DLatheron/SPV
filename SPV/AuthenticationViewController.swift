@@ -12,19 +12,35 @@ import UIKit
 class AuthenticationViewController : UIViewController {
     @IBOutlet var pinDigits: [PINDigit]!
     @IBOutlet var pinButtons: [PINButton]!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
-    var completionBlock: (() -> Void)? = nil
+    let retryTimes = [ 0, 3, 9, 18, 81 ]
+    var pinItems: [KeychainPasswordItem] = []
     
-    let pin = PIN()
-    let expectedPIN = PIN()
+    var completionBlock: ((Bool) -> Void)? = nil
+    var canCancel: Bool = false
+    var authenticationDelegate: AuthenticationDelegate? = nil
+
+    fileprivate let pin = PIN()
+    fileprivate let expectedPIN = PIN("1111")
+    fileprivate var attempts = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         pinDigits.sort { $0.tag > $1.tag }
         
+        // TODO: Move.
+        let authenticationService = AuthenticationService()
+        authenticationService.registerPIN(pin: expectedPIN)
+        authenticationDelegate = authenticationService
+        
         if UIScreen.main.bounds.height <= 568 {
             navigationController?.navigationBar.prefersLargeTitles = false
+        }
+        
+        if !canCancel {
+            navigationItem.rightBarButtonItem = nil
         }
     }
     
@@ -45,6 +61,11 @@ extension AuthenticationViewController : PINButtonDelegate {
         }
     }
     
+    func clearPIN() {
+        pin.reset()
+        refreshPIN()
+    }
+    
     func pressed(character: String) {
         print("\(character) was pressed")
         
@@ -58,9 +79,52 @@ extension AuthenticationViewController : PINButtonDelegate {
             refreshPIN()
             
             if pin.complete {
-                if pin == expectedPIN {
-                    completionBlock?()
-                }
+                performPINAuthentication()
+            }
+        }
+    }
+}
+
+extension AuthenticationViewController {
+    @IBAction func cancel(_ sender: Any) {
+        completionBlock?(false)
+    }
+}
+
+extension AuthenticationViewController {
+    var lockoutTimeInSeconds: Int {
+        get {
+            return attempts < retryTimes.count
+                ? retryTimes[attempts]
+                : retryTimes.last!
+        }
+    }
+    
+    func authenticationFailed(reason: String,
+                              completionBlock: @escaping () -> Void) {
+        view.shake() {
+            _ = TimedAlertController(reason: reason,
+                                     for: self.lockoutTimeInSeconds,
+                                     viewController: self,
+                                     completionBlock: completionBlock)
+            self.attempts += 1
+        }
+    }
+    
+    func authenticationSucceeded() {
+        print("Authentication Succeeded")
+        completionBlock?(true)
+    }
+}
+
+extension AuthenticationViewController {
+    func performPINAuthentication() {
+        if authenticationDelegate?.performPINAuthentication(pin: pin)
+            ?? false {
+            authenticationSucceeded()
+        } else {
+            authenticationFailed(reason: "Incorrect PIN") {
+                self.clearPIN()
             }
         }
     }
@@ -68,6 +132,15 @@ extension AuthenticationViewController : PINButtonDelegate {
 
 extension AuthenticationViewController {
     func performBiometricAuthentication() {
-        
+        authenticationDelegate?.performBiometricAuthentication()
+            { success, reason in
+                if success {
+                    self.authenticationSucceeded()
+                } else {
+                    self.authenticationFailed(reason: reason ?? "Biometric Failure") {
+                        self.clearPIN()
+                    }
+                }
+        }
     }
 }

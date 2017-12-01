@@ -12,14 +12,11 @@ import UIKit
 class PINDigit : UIView {
     var filled: Bool = false {
         didSet {
-            if filled {
-                showFilled()
-            } else {
-                showEmpty()
-            }
+            filledView.isHidden = !filled
         }
     }
     
+    var filledView: UIView!
     var initialBackgroundColour: UIColor!
     var initialForegroundColour: UIColor!
 
@@ -32,23 +29,18 @@ class PINDigit : UIView {
         super.init(coder: aDecoder)
         configureLook()
     }
+}
+
+extension PINDigit {
     
     func configureLook() {
         initialBackgroundColour = backgroundColor ?? UIColor.clear
         initialForegroundColour = tintColor
         layer.cornerRadius = 6
-        showEmpty()
-    }
-}
-
-extension PINDigit {
-    func showFilled() {
-        self.backgroundColor = initialForegroundColour
-        self.tintColor = initialBackgroundColour
-    }
-    
-    func showEmpty() {
-        self.backgroundColor = initialBackgroundColour
-        self.tintColor = initialForegroundColour
+        
+        filledView = subviews[0]
+        filledView.layer.cornerRadius = filledView.bounds.size.width / 2
+        filledView.backgroundColor = filledView.tintColor
+        filled = !(!filled)
     }
 }
