@@ -107,7 +107,7 @@ Cg
 </string>
                                                     <attributes>
                                                         <color key="NSColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <font key="NSFont" metaFont="system" size="18"/>
+                                                        <font key="NSFont" name=".SFNSText" size="14"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="clipping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -515,8 +515,26 @@ Cg
                                         <rect key="frame" x="0.0" y="288" width="80" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                        <state key="normal" image="touchID">
-                                            <attributedString key="attributedTitle"/>
+                                        <state key="normal">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="＊">
+                                                    <attributes>
+                                                        <color key="NSColor" red="0.0" green="0.47843000000000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" size="30" name=".AppleSystemUIFont"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="clipping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                                <fragment>
+                                                    <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                                                    <attributes>
+                                                        <color key="NSColor" red="0.0" green="0.47843000000000002" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <font key="NSFont" metaFont="system" size="18"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="clipping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="character" value="*"/>
@@ -594,7 +612,4 @@ Cg
             <point key="canvasLocation" x="-524" y="178"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="touchID" width="138" height="137"/>
-    </resources>
 </document>

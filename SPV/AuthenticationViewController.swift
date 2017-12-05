@@ -14,6 +14,8 @@ class AuthenticationViewController : UIViewController {
     @IBOutlet var pinButtons: [PINButton]!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
+    var authenticationService: AuthenticationService!
+    
     let retryTimes = [ 0, 3, 9, 18, 81 ]
     var pinItems: [KeychainPasswordItem] = []
     
@@ -31,9 +33,16 @@ class AuthenticationViewController : UIViewController {
         pinDigits.sort { $0.tag > $1.tag }
         
         // TODO: Move.
-        let authenticationService = AuthenticationService()
+        authenticationService = AuthenticationService()
         authenticationService.registerPIN(pin: expectedPIN)
         authenticationDelegate = authenticationService
+        
+        if authenticationService.hasBiometry {
+            reconfigureButton(button: pinButtons[9],
+                              imageName: authenticationService.iconName)
+        }
+        reconfigureButton(button: pinButtons[11],
+                          imageName: "backspace")
         
         if UIScreen.main.bounds.height <= 568 {
             navigationController?.navigationBar.prefersLargeTitles = false
@@ -50,6 +59,14 @@ class AuthenticationViewController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    func reconfigureButton(button: PINButton,
+                           imageName: String) {
+        button.setAttributedTitle(nil,
+                                  for: .normal)
+        button.setImage(UIImage(named: imageName),
+                        for: .normal)
     }
 }
 
@@ -73,7 +90,9 @@ extension AuthenticationViewController : PINButtonDelegate {
             pin.backspace()
             refreshPIN()
         } else if character == "*" {
-            performBiometricAuthentication()
+            if authenticationService.hasBiometry {
+                performBiometricAuthentication()
+            }
         } else {
             pin.append(character.first!)
             refreshPIN()
@@ -101,13 +120,16 @@ extension AuthenticationViewController {
     }
     
     func authenticationFailed(reason: String,
+                              increaseAttempts: Bool,
                               completionBlock: @escaping () -> Void) {
         view.shake() {
             _ = TimedAlertController(reason: reason,
                                      for: self.lockoutTimeInSeconds,
                                      viewController: self,
                                      completionBlock: completionBlock)
-            self.attempts += 1
+            if increaseAttempts {
+                self.attempts += 1
+            }
         }
     }
     
@@ -123,7 +145,8 @@ extension AuthenticationViewController {
             ?? false {
             authenticationSucceeded()
         } else {
-            authenticationFailed(reason: "Incorrect PIN") {
+            authenticationFailed(reason: "Incorrect PIN",
+                                 increaseAttempts: true) {
                 self.clearPIN()
             }
         }
@@ -133,11 +156,12 @@ extension AuthenticationViewController {
 extension AuthenticationViewController {
     func performBiometricAuthentication() {
         authenticationDelegate?.performBiometricAuthentication()
-            { success, reason in
+            { success, reason, increaseAttempts in
                 if success {
                     self.authenticationSucceeded()
                 } else {
-                    self.authenticationFailed(reason: reason ?? "Biometric Failure") {
+                    self.authenticationFailed(reason: reason ?? "Biometric Failure",
+                                              increaseAttempts: increaseAttempts) {
                         self.clearPIN()
                     }
                 }

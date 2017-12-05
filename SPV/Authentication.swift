@@ -17,11 +17,24 @@ struct KeychainConfiguration {
 
 protocol AuthenticationDelegate {
     func performPINAuthentication(pin: PIN) -> Bool
-    func performBiometricAuthentication(completionBlock: @escaping (Bool, String?) -> Void)
+    func performBiometricAuthentication(completionBlock: @escaping (Bool, String?, Bool) -> Void)
 }
 
 class AuthenticationService {
     let context = LAContext()
+    
+    var hasBiometry: Bool {
+        get {
+            switch context.biometryType {
+            case .typeTouchID:
+                return true
+            case .typeFaceID:
+                return true
+            default:
+                return false
+            }
+        }
+    }
     
     var biometryType: String {
         get {
@@ -30,8 +43,21 @@ class AuthenticationService {
                 return "Touch ID"
             case .typeFaceID:
                 return "Face ID"
-            default :
+            default:
                 return "Unknown"
+            }
+        }
+    }
+    
+    var iconName: String {
+        get {
+            switch context.biometryType {
+            case .typeTouchID:
+                return "touchID"
+            case .typeFaceID:
+                return "faceID"
+            default:
+                return "faceID"
             }
         }
     }
@@ -80,12 +106,12 @@ extension AuthenticationService : AuthenticationDelegate {
         }
     }
     
-    func performBiometricAuthentication(completionBlock: @escaping (Bool, String?) -> Void) {
+    func performBiometricAuthentication(completionBlock: @escaping (Bool, String?, Bool) -> Void) {
         guard context.canEvaluatePolicy(
             .deviceOwnerAuthenticationWithBiometrics,
             error: nil)
             else {
-            return completionBlock(false, "\(biometryType) not available")
+            return completionBlock(false, "\(biometryType) not available", false)
         }
         
         context.evaluatePolicy(
@@ -95,7 +121,7 @@ extension AuthenticationService : AuthenticationDelegate {
             (success, evaluateError) in
             if success {
                 DispatchQueue.main.async {
-                    completionBlock(true, nil)
+                    completionBlock(true, nil, true)
                 }
             } else {
                 let message: String
@@ -107,12 +133,18 @@ extension AuthenticationService : AuthenticationDelegate {
                     message = "You pressed cancel"
                 case LAError.userFallback?:
                     message = "You pressed password"
+                case LAError.biometryNotEnrolled?:
+                    message = "\(self.biometryType) is not configured"
+                case LAError.biometryLockout?:
+                    message = "\(self.biometryType) is locked out"
+                case LAError.biometryNotAvailable?:
+                    message = "\(self.biometryType) is not available"
                 default:
-                    message = "Touch ID may not be configured"
+                    message = "\(self.biometryType) may not be configured"
                 }
                 
                 DispatchQueue.main.async {
-                    completionBlock(false, message)
+                    completionBlock(false, message, false)
                 }
             }
         }
