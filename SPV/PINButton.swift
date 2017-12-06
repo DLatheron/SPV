@@ -54,6 +54,15 @@ class PINButton : UIButton {
                        for: .touchUpOutside)
     }
     
+    
+    func configureForImage(named imageName: String) {
+        self.setAttributedTitle(nil,
+                                for: .normal)
+        let image = UIImage(named: imageName)
+        self.setImage(image, for: .normal)
+        self.setImage(image, for: .highlighted)
+    }
+    
     @objc func touchDown(_ sender: Any) {
         highlight()
     }
@@ -90,20 +99,19 @@ class PINButton : UIButton {
                         backgroundColour: UIColor) {
         self.backgroundColor = backgroundColour
         self.tintColor = textColour
-        
-        if let titleLabel = titleLabel,
-            let existingAttributedText = titleLabel.attributedText {
-            let fullRange = NSRange(location: 0,
-                                    length: existingAttributedText.length)
-            let newAttributedText = NSMutableAttributedString(attributedString: existingAttributedText)
-            newAttributedText.addAttribute(NSAttributedStringKey.foregroundColor,
-                                            value: textColour,
-                                            range: fullRange)
-            setAttributedTitle(newAttributedText,
-                               for: .normal)
-        } else {
-            backgroundColor = backgroundColour
-            tintColor = textColour
+
+        if image(for: .normal) == nil {
+            if let titleLabel = titleLabel,
+                let existingAttributedText = titleLabel.attributedText {
+                let fullRange = NSRange(location: 0,
+                                        length: existingAttributedText.length)
+                let newAttributedText = NSMutableAttributedString(attributedString: existingAttributedText)
+                newAttributedText.addAttribute(NSAttributedStringKey.foregroundColor,
+                                                value: textColour,
+                                                range: fullRange)
+                setAttributedTitle(newAttributedText,
+                                   for: .normal)
+            }
         }
     }
 }

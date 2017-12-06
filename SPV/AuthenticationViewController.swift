@@ -38,11 +38,9 @@ class AuthenticationViewController : UIViewController {
         authenticationDelegate = authenticationService
         
         if authenticationService.hasBiometry {
-            reconfigureButton(button: pinButtons[9],
-                              imageName: authenticationService.iconName)
+            pinButtons[9].configureForImage(named: authenticationService.iconName)
         }
-        reconfigureButton(button: pinButtons[11],
-                          imageName: "backspace")
+        pinButtons[11].configureForImage(named: "backspace")
         
         if UIScreen.main.bounds.height <= 568 {
             navigationController?.navigationBar.prefersLargeTitles = false
@@ -59,14 +57,6 @@ class AuthenticationViewController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-    }
-    
-    func reconfigureButton(button: PINButton,
-                           imageName: String) {
-        button.setAttributedTitle(nil,
-                                  for: .normal)
-        button.setImage(UIImage(named: imageName),
-                        for: .normal)
     }
 }
 
