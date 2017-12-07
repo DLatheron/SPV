@@ -75,7 +75,7 @@
 		F9C8DA3A1FCF3BB2002BB2D5 /* PINDigit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA391FCF3BB2002BB2D5 /* PINDigit.swift */; };
 		F9C8DA3C1FD14684002BB2D5 /* TimedAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA3B1FD14684002BB2D5 /* TimedAlertController.swift */; };
 		F9C8DA3F1FD1C886002BB2D5 /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA3E1FD1C885002BB2D5 /* KeychainPasswordItem.swift */; };
-		F9C8DA411FD1DF08002BB2D5 /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA401FD1DF08002BB2D5 /* Authentication.swift */; };
+		F9C8DA411FD1DF08002BB2D5 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA401FD1DF08002BB2D5 /* AuthenticationService.swift */; };
 		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */; };
 		F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E843C51F972F050075BA43 /* UIViewExtensions.swift */; };
@@ -193,7 +193,7 @@
 		F9C8DA391FCF3BB2002BB2D5 /* PINDigit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINDigit.swift; sourceTree = "<group>"; };
 		F9C8DA3B1FD14684002BB2D5 /* TimedAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedAlertController.swift; sourceTree = "<group>"; };
 		F9C8DA3E1FD1C885002BB2D5 /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
-		F9C8DA401FD1DF08002BB2D5 /* Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
+		F9C8DA401FD1DF08002BB2D5 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/SPV-efrwuliddfrewpeoxhcadziytpjt/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		F9D301871F5F592900ADEEF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -534,7 +534,7 @@
 			children = (
 				F9C8DA381FCF3B37002BB2D5 /* Controls */,
 				F9C8DA331FCF36E4002BB2D5 /* VCs */,
-				F9C8DA401FD1DF08002BB2D5 /* Authentication.swift */,
+				F9C8DA401FD1DF08002BB2D5 /* AuthenticationService.swift */,
 			);
 			name = Authentication;
 			sourceTree = "<group>";
@@ -881,7 +881,7 @@
 				F90FFFE81FBF560F00D2C304 /* TextBlockCell.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
 				F9E8DE8F1FC3405100FDAAB9 /* PINEntryViewController.swift in Sources */,
-				F9C8DA411FD1DF08002BB2D5 /* Authentication.swift in Sources */,
+				F9C8DA411FD1DF08002BB2D5 /* AuthenticationService.swift in Sources */,
 				F9C68BB51F860FF20094E5F3 /* URLBuilder.swift in Sources */,
 				F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */,
 				F97943B21F702F6F00739030 /* MediaAddTagCell.swift in Sources */,

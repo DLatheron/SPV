@@ -36,8 +36,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         MediaManager.shared.scanForMedia(atPath: documentsURL)
         
+        let startOnAuthenticationScreen = true
+        if startOnAuthenticationScreen {
+            requestAuthentication()
+        }
+        
         // Override point for customization after application launch.
         return true
+    }
+    
+    func requestAuthentication() {
+        let authenticationService = AuthenticationService.shared
+        
+        // TODO: Replace with correct setting
+        authenticationService.registerPIN(pin: PIN("1111"))
+
+        if authenticationService.pinHasBeenSet {
+            let storyboard = UIStoryboard(name: "Authentication",
+                                          bundle: nil)
+            let authenticationNavVC = storyboard.instantiateViewController(
+                withIdentifier: "Authentication"
+                ) as! UINavigationController
+            let authenticationVC = authenticationNavVC.viewControllers[0] as! AuthenticationViewController
+            
+            authenticationVC.authenticationService = authenticationService
+            authenticationVC.authenticationDelegate = authenticationService
+            authenticationVC.entryMode = .pin
+            authenticationVC.completionBlock = { success in
+                if success {
+                    // TODO: Launch usual UI
+                    self.launchUI()
+                } else {
+                    // TODO: Kill app?
+                }
+            }
+            
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            self.window?.rootViewController = authenticationNavVC
+            self.window?.makeKeyAndVisible()
+        }
+    }
+    
+    func launchUI() {
+        // TODO: Nice transition???
+        let storyboard = UIStoryboard(name: "Main",
+                                      bundle: nil)
+        let vc = storyboard.instantiateInitialViewController()!
+        vc.modalTransitionStyle = .flipHorizontal
+        
+        self.window?.rootViewController?.present(vc,
+                                                 animated: true) {
+            print("Done")
+        }
     }
 
 //    func applicationWillResignActive(_ application: UIApplication) {

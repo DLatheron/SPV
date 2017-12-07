@@ -21,6 +21,8 @@ protocol AuthenticationDelegate {
 }
 
 class AuthenticationService {
+    static var shared = AuthenticationService()
+    
     let context = LAContext()
     
     var hasBiometry: Bool {
@@ -58,6 +60,22 @@ class AuthenticationService {
                 return "faceID"
             default:
                 return "faceID"
+            }
+        }
+    }
+    
+    var pinHasBeenSet: Bool {
+        get {
+            do {
+                let passwordItem = keychainPasswordItem
+                let keychainPIN = try passwordItem.readPassword()
+                
+                return PIN(keychainPIN).complete
+            }
+            catch {
+                // TODO: Corrupt reading of keychain - fail safe and deny access.
+                print("Error reading PIN from keychain - \(error)")
+                return true
             }
         }
     }

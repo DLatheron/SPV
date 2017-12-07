@@ -12,7 +12,7 @@
         <!--Delegate-->
         <scene sceneID="jVe-FW-ZZn">
             <objects>
-                <viewController title="Authentication" id="ikt-4x-3j1" customClass="AuthenticationViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuthenticationViewController" title="Authentication" id="ikt-4x-3j1" customClass="AuthenticationViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jhv-1a-ZKu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -107,7 +107,7 @@ Cg
 </string>
                                                     <attributes>
                                                         <color key="NSColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <font key="NSFont" name=".SFNSText" size="14"/>
+                                                        <font key="NSFont" size="14" name=".SFNSText"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="clipping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                     </attributes>
                                                 </fragment>
@@ -596,7 +596,7 @@ Cg
         <!--Navigation Controller-->
         <scene sceneID="UY9-Re-fpT">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Rf7-DM-S4R" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Authentication" automaticallyAdjustsScrollViewInsets="NO" id="Rf7-DM-S4R" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="x5W-cG-tmb">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>

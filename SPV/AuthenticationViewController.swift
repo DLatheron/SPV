@@ -15,6 +15,7 @@ class AuthenticationViewController : UIViewController {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     var authenticationService: AuthenticationService!
+    var entryMode: PINEntryMode = PINEntryMode.pin
     
     let retryTimes = [ 0, 3, 9, 18, 81 ]
     var pinItems: [KeychainPasswordItem] = []
@@ -24,7 +25,7 @@ class AuthenticationViewController : UIViewController {
     var authenticationDelegate: AuthenticationDelegate? = nil
 
     fileprivate let pin = PIN()
-    fileprivate let expectedPIN = PIN("1111")
+    fileprivate var expectedPIN = PIN("1111")
     fileprivate var attempts = 0
     
     override func viewDidLoad() {
@@ -32,12 +33,7 @@ class AuthenticationViewController : UIViewController {
         
         pinDigits.sort { $0.tag > $1.tag }
         
-        // TODO: Move.
-        authenticationService = AuthenticationService()
-        authenticationService.registerPIN(pin: expectedPIN)
-        authenticationDelegate = authenticationService
-        
-        if authenticationService.hasBiometry {
+        if entryMode == .pin && authenticationService.hasBiometry {
             pinButtons[9].configureForImage(named: authenticationService.iconName)
         }
         pinButtons[11].configureForImage(named: "backspace")
@@ -49,6 +45,8 @@ class AuthenticationViewController : UIViewController {
         if !canCancel {
             navigationItem.rightBarButtonItem = nil
         }
+        
+        setTitle()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +55,17 @@ class AuthenticationViewController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    func setTitle() {
+        switch entryMode {
+        case .pin:
+            self.title = NSLocalizedString("Please enter your PIN", comment: "Title for PIN view controller")
+        case .setPIN:
+            self.title = NSLocalizedString("Please type a new PIN", comment: "Title for setting a new PIN")
+        case .confirmPIN:
+            self.title = NSLocalizedString("Please confirm your PIN}", comment: "Title for confirming a new PIN")
+        }
     }
 }
 
@@ -88,7 +97,27 @@ extension AuthenticationViewController : PINButtonDelegate {
             refreshPIN()
             
             if pin.complete {
-                performPINAuthentication()
+                switch entryMode {
+                case .pin:
+                    performPINAuthentication()
+                case .setPIN:
+                    if let confirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AuthenticationViewController") as? AuthenticationViewController {
+                        confirmVC.entryMode = .confirmPIN
+                        confirmVC.expectedPIN = pin
+                        confirmVC.completionBlock = { success in
+                            if success {
+                                self.completionBlock?(true)
+                            } else {
+                                self.navigationController?.popViewController(animated: true)
+                                self.clearPIN()
+                            }
+                        }
+                        navigationController?.pushViewController(confirmVC,
+                                                                 animated: true)
+                    }
+                case .confirmPIN:
+                    performPINVerification()
+                }
             }
         }
     }
@@ -127,9 +156,7 @@ extension AuthenticationViewController {
         print("Authentication Succeeded")
         completionBlock?(true)
     }
-}
 
-extension AuthenticationViewController {
     func performPINAuthentication() {
         if authenticationDelegate?.performPINAuthentication(pin: pin)
             ?? false {
@@ -139,6 +166,32 @@ extension AuthenticationViewController {
                                  increaseAttempts: true) {
                 self.clearPIN()
             }
+        }
+    }
+}
+
+extension AuthenticationViewController {
+    func verificationFailed() {
+        view.shake() {
+            _ = TimedAlertController(reason: "PINs do not match",
+                                     for: 0,
+                                     viewController: self)
+            {
+                self.completionBlock?(false)
+            }
+        }
+    }
+    
+    func verificationSucceeded() {
+        print("Verification Succeeded")
+        completionBlock?(true)
+    }
+    
+    func performPINVerification() {
+        if pin == expectedPIN {
+            verificationSucceeded()
+        } else {
+            verificationFailed()
         }
     }
 }
