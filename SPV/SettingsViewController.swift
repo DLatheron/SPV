@@ -77,32 +77,6 @@ extension SettingsViewController : UITableViewDelegate {
     }
 }
 
-extension SettingsViewController {
-    override func prepare(for segue: UIStoryboardSegue,
-                          sender: Any?) {
-        switch segue.identifier {
-        case "SetPIN"?:
-            let destVC = segue.destination as! PINEntryViewController
-            destVC.entryMode = .setPIN
-            destVC.completionBlock = { pin in
-                print("Returned PIN was \(pin.asString)")
-                self.settings.pin.value = pin.hash
-                try? self.settings.save(toFileURL: Settings.defaultURL)
-            }
-        case "EnterPIN"?:
-            let destVC = segue.destination as! PINEntryViewController
-            destVC.entryMode = .pin
-            destVC.expectedPINHash = self.settings.pin.value
-            destVC.completionBlock = { pin in
-                print("PIN has been successfully validated")
-            }
-            
-        default:
-            print("Unhandled segue \(segue.identifier ?? "Unknown")")
-        }
-    }
-}
-
 extension SettingsViewController : SettingChangedDelegate {
     func changed(setting: Setting) {
         try? Settings.shared.save(toFileURL: Settings.defaultURL)
@@ -112,9 +86,6 @@ extension SettingsViewController : SettingChangedDelegate {
         switch setting.value {
         case "SetPIN":
             self.performSegue(withIdentifier: "SetPIN",
-                              sender: self)
-        case "EnterPIN":
-            self.performSegue(withIdentifier: "EnterPIN",
                               sender: self)
         default:
             fatalError("Unknown button value: \(setting.value)")

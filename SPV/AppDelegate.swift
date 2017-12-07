@@ -36,9 +36,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         MediaManager.shared.scanForMedia(atPath: documentsURL)
         
+        // TODO: Replace with correct setting
+        AuthenticationService.shared.registerPIN(pin: PIN("1111"))
+        
         let startOnAuthenticationScreen = true
-        if startOnAuthenticationScreen {
+        if startOnAuthenticationScreen && AuthenticationService.shared.pinHasBeenSet {
             requestAuthentication()
+        } else {
+            launchUI()
         }
         
         // Override point for customization after application launch.
@@ -48,37 +53,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func requestAuthentication() {
         let authenticationService = AuthenticationService.shared
         
-        // TODO: Replace with correct setting
-        authenticationService.registerPIN(pin: PIN("1111"))
-
-        if authenticationService.pinHasBeenSet {
-            let storyboard = UIStoryboard(name: "Authentication",
-                                          bundle: nil)
-            let authenticationNavVC = storyboard.instantiateViewController(
-                withIdentifier: "Authentication"
-                ) as! UINavigationController
-            let authenticationVC = authenticationNavVC.viewControllers[0] as! AuthenticationViewController
-            
-            authenticationVC.authenticationService = authenticationService
-            authenticationVC.authenticationDelegate = authenticationService
-            authenticationVC.entryMode = .pin
-            authenticationVC.completionBlock = { success in
-                if success {
-                    // TODO: Launch usual UI
-                    self.launchUI()
-                } else {
-                    // TODO: Kill app?
-                }
+        let storyboard = UIStoryboard(name: "Authentication",
+                                      bundle: nil)
+        let authenticationNavVC = storyboard.instantiateViewController(
+            withIdentifier: "Authentication"
+            ) as! UINavigationController
+        let authenticationVC = authenticationNavVC.viewControllers[0] as! AuthenticationViewController
+        
+        authenticationVC.authenticationService = authenticationService
+        authenticationVC.authenticationDelegate = authenticationService
+        authenticationVC.entryMode = .pin
+        authenticationVC.completionBlock = { success in
+            if success {
+                self.launchUI()
+            } else {
+                // TODO: Kill app?
             }
-            
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            self.window?.rootViewController = authenticationNavVC
-            self.window?.makeKeyAndVisible()
         }
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = authenticationNavVC
+        self.window?.makeKeyAndVisible()
     }
     
     func launchUI() {
-        // TODO: Nice transition???
         let storyboard = UIStoryboard(name: "Main",
                                       bundle: nil)
         let vc = storyboard.instantiateInitialViewController()!

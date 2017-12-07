@@ -30,7 +30,6 @@ class Settings {
     let testConstData0 = SettingT<Any>(name: "Const Data #0", value: "Const Data", editor: "ConstDataCell")
     let testConstData1 = SettingT<Any>(name: "Const Data #1", value: 12, editor: "ConstDataCell")
     let setPIN = SettingT<String>(name: "Set PIN", value: "SetPIN", editor: "ButtonCell")
-    let enterPIN = SettingT<String>(name: "Enter PIN", value: "EnterPIN", editor: "ButtonCell")
 
     let textLegalBlurb = SettingT<String>(name: "Legal Blurb", value:
 """
@@ -61,8 +60,7 @@ But still appears correctly - even if there are really long lines of text
             testConstData0,
             testConstData1,
             testLegalSubMenu,
-            setPIN,
-            enterPIN
+            setPIN
         ])
     }
     
