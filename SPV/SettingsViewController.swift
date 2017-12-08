@@ -13,6 +13,7 @@ class SettingsViewController: UIViewController {
     
     var settings: Settings = Settings.shared
     var settingsBlock: SettingsBlock!
+    var alert: UIAlertController! = nil
     
     required init?(coder aDecoder: NSCoder) {
         settingsBlock = settings.settingsBlock
@@ -85,10 +86,98 @@ extension SettingsViewController : SettingChangedDelegate {
     func clicked(setting: SettingT<String>) {
         switch setting.value {
         case "SetPIN":
-            self.performSegue(withIdentifier: "SetPIN",
-                              sender: self)
+            setNewPIN()
+            
         default:
             fatalError("Unknown button value: \(setting.value)")
+        }
+    }
+    
+    func setNewPIN() {
+        var navigationController: UINavigationController? = nil
+        
+        func _requestNew() {
+            self.requestAuthentication(
+                navController: &navigationController,
+                entryMode: .setPIN,
+                completionBlock: { (success, pin) in
+                    if success {
+                        AuthenticationService.shared.register(pin: pin!)
+
+                        self.displayPINUpdatedAlert(onViewController: (navigationController?.viewControllers.last)!) {
+                            navigationController!.dismiss(animated: true) {
+                            }
+                        }
+                    }
+            })
+        }
+        
+        if AuthenticationService.shared.pinHasBeenSet {
+            self.requestAuthentication(
+                navController: &navigationController,
+                entryMode: .pin,
+                completionBlock: { success, pin in
+                    if success {
+                        _requestNew()
+                    } else {
+                        print("PIN update cancelled")
+                    }
+            })
+        } else {
+            _requestNew()
+        }
+    }
+    
+    func displayPINUpdatedAlert(onViewController viewController: UIViewController,
+                                then: @escaping () -> Void) {
+        alert = UIAlertController(title: "Success",
+                                      message: "PIN was updated!",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK",
+                                      style: .default) { action in
+                then()
+            })
+        viewController.present(alert,
+                               animated: true)
+    }
+    
+    func requestAuthentication(
+        navController: inout UINavigationController?,
+        entryMode: PINEntryMode,
+        completionBlock: @escaping ((Bool, PIN?) -> ())
+    ) {
+        let authenticationService = AuthenticationService.shared
+        let storyboard = UIStoryboard(name: "Authentication",
+                                      bundle: nil)
+        let authenticationVC: AuthenticationViewController
+        
+        if navController == nil {
+            navController = storyboard.instantiateViewController(
+                withIdentifier: "Authentication"
+            ) as? UINavigationController
+            
+            authenticationVC = navController!.viewControllers[0] as! AuthenticationViewController
+
+            authenticationVC.authenticationService = authenticationService
+            authenticationVC.authenticationDelegate = authenticationService
+            authenticationVC.entryMode = entryMode
+            authenticationVC.completionBlock = completionBlock
+            
+            self.present(navController!,
+                         animated: true,
+                         completion: nil)
+        } else {
+            authenticationVC = storyboard.instantiateViewController(
+                withIdentifier: "AuthenticationViewController"
+            ) as! AuthenticationViewController
+            
+            authenticationVC.authenticationService = authenticationService
+            authenticationVC.authenticationDelegate = authenticationService
+            authenticationVC.entryMode = entryMode
+            authenticationVC.completionBlock = completionBlock
+            
+            navController!.pushViewController(authenticationVC,
+                                              animated: true)
         }
     }
 }

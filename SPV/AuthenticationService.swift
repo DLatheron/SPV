@@ -27,23 +27,16 @@ class AuthenticationService {
     
     var hasBiometry: Bool {
         get {
-            switch context.biometryType {
-            case .typeTouchID:
-                return true
-            case .typeFaceID:
-                return true
-            default:
-                return false
-            }
+            return biometryType != "Unknown"
         }
     }
     
     var biometryType: String {
         get {
             switch context.biometryType {
-            case .typeTouchID:
+            case .touchID:
                 return "Touch ID"
-            case .typeFaceID:
+            case .faceID:
                 return "Face ID"
             default:
                 return "Unknown"
@@ -54,9 +47,9 @@ class AuthenticationService {
     var iconName: String {
         get {
             switch context.biometryType {
-            case .typeTouchID:
+            case .touchID:
                 return "touchID"
-            case .typeFaceID:
+            case .faceID:
                 return "faceID"
             default:
                 return "faceID"
@@ -90,7 +83,7 @@ class AuthenticationService {
         }
     }
     
-    func registerPIN(pin: PIN) {
+    func register(pin: PIN) {
         guard pin.complete
             else {
             return
@@ -100,6 +93,16 @@ class AuthenticationService {
             let passwordItem = keychainPasswordItem
         
             try passwordItem.savePassword(pin.asString)
+        } catch {
+            fatalError("Error updating keychain - \(error)")
+        }
+    }
+    
+    func clear() {
+        do {
+            let passwordItem = keychainPasswordItem
+            
+            try passwordItem.savePassword("")
         } catch {
             fatalError("Error updating keychain - \(error)")
         }

@@ -20,8 +20,9 @@ class AuthenticationViewController : UIViewController {
     let retryTimes = [ 0, 3, 9, 18, 81 ]
     var pinItems: [KeychainPasswordItem] = []
     
-    var completionBlock: ((Bool) -> Void)? = nil
+    var completionBlock: ((Bool, PIN?) -> Void)? = nil
     var canCancel: Bool = false
+    var canUseBiometry: Bool = true
     var authenticationDelegate: AuthenticationDelegate? = nil
 
     fileprivate let pin = PIN()
@@ -33,7 +34,7 @@ class AuthenticationViewController : UIViewController {
         
         pinDigits.sort { $0.tag > $1.tag }
         
-        if entryMode == .pin && authenticationService.hasBiometry {
+        if canUseBiometry && entryMode == .pin && authenticationService.hasBiometry {
             pinButtons[9].configureForImage(named: authenticationService.iconName)
         }
         pinButtons[11].configureForImage(named: "backspace")
@@ -104,9 +105,9 @@ extension AuthenticationViewController : PINButtonDelegate {
                     if let confirmVC = self.storyboard?.instantiateViewController(withIdentifier: "AuthenticationViewController") as? AuthenticationViewController {
                         confirmVC.entryMode = .confirmPIN
                         confirmVC.expectedPIN = pin
-                        confirmVC.completionBlock = { success in
+                        confirmVC.completionBlock = { success, pin in
                             if success {
-                                self.completionBlock?(true)
+                                self.completionBlock?(true, pin)
                             } else {
                                 self.navigationController?.popViewController(animated: true)
                                 self.clearPIN()
@@ -125,7 +126,7 @@ extension AuthenticationViewController : PINButtonDelegate {
 
 extension AuthenticationViewController {
     @IBAction func cancel(_ sender: Any) {
-        completionBlock?(false)
+        completionBlock?(false, nil)
     }
 }
 
@@ -154,7 +155,7 @@ extension AuthenticationViewController {
     
     func authenticationSucceeded() {
         print("Authentication Succeeded")
-        completionBlock?(true)
+        completionBlock?(true, pin)
     }
 
     func performPINAuthentication() {
@@ -177,14 +178,14 @@ extension AuthenticationViewController {
                                      for: 0,
                                      viewController: self)
             {
-                self.completionBlock?(false)
+                self.completionBlock?(false, nil)
             }
         }
     }
     
     func verificationSucceeded() {
         print("Verification Succeeded")
-        completionBlock?(true)
+        completionBlock?(true, pin)
     }
     
     func performPINVerification() {

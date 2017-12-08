@@ -36,9 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         MediaManager.shared.scanForMedia(atPath: documentsURL)
         
-        // TODO: Replace with correct setting
-        AuthenticationService.shared.registerPIN(pin: PIN("1111"))
-        
         let startOnAuthenticationScreen = true
         if startOnAuthenticationScreen && AuthenticationService.shared.pinHasBeenSet {
             requestAuthentication()
@@ -63,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         authenticationVC.authenticationService = authenticationService
         authenticationVC.authenticationDelegate = authenticationService
         authenticationVC.entryMode = .pin
-        authenticationVC.completionBlock = { success in
+        authenticationVC.completionBlock = { success, pin in
             if success {
                 self.launchUI()
             } else {
