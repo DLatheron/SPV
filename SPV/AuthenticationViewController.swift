@@ -43,11 +43,7 @@ class AuthenticationViewController : UIViewController {
             navigationController?.navigationBar.prefersLargeTitles = false
         }
         
-        if !canCancel {
-            navigationItem.rightBarButtonItem = nil
-        }
-        
-        setTitle()
+        setMode()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,14 +54,19 @@ class AuthenticationViewController : UIViewController {
         super.viewWillDisappear(animated)
     }
     
-    func setTitle() {
+    func setMode() {
         switch entryMode {
         case .pin:
-            self.title = NSLocalizedString("Please enter your PIN", comment: "Title for PIN view controller")
+            self.title = NSLocalizedString("Please enter PIN", comment: "Title for PIN view controller")
+            if !canCancel {
+                navigationItem.rightBarButtonItem = nil
+            }
+            self.navigationItem.hidesBackButton = true
         case .setPIN:
-            self.title = NSLocalizedString("Please type a new PIN", comment: "Title for setting a new PIN")
+            self.title = NSLocalizedString("Please set a new PIN", comment: "Title for setting a new PIN")
+            self.navigationItem.hidesBackButton = true
         case .confirmPIN:
-            self.title = NSLocalizedString("Please confirm your PIN}", comment: "Title for confirming a new PIN")
+            self.title = NSLocalizedString("Please confirm PIN", comment: "Title for confirming a new PIN")
         }
     }
 }
@@ -109,8 +110,7 @@ extension AuthenticationViewController : PINButtonDelegate {
                             if success {
                                 self.completionBlock?(true, pin)
                             } else {
-                                self.navigationController?.popViewController(animated: true)
-                                self.clearPIN()
+                                self.completionBlock?(false, nil)
                             }
                         }
                         navigationController?.pushViewController(confirmVC,

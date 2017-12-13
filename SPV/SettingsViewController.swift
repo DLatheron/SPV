@@ -87,6 +87,8 @@ extension SettingsViewController : SettingChangedDelegate {
         switch setting.value {
         case "SetPIN":
             setNewPIN()
+        case "ClearPIN":
+            clearPIN()
             
         default:
             fatalError("Unknown button value: \(setting.value)")
@@ -108,6 +110,9 @@ extension SettingsViewController : SettingChangedDelegate {
                             navigationController!.dismiss(animated: true) {
                             }
                         }
+                    } else {
+                        navigationController!.dismiss(animated: true) {
+                        }                        
                     }
             })
         }
@@ -128,17 +133,56 @@ extension SettingsViewController : SettingChangedDelegate {
         }
     }
     
-    func displayPINUpdatedAlert(onViewController viewController: UIViewController,
-                                then: @escaping () -> Void) {
-        alert = UIAlertController(title: "Success",
-                                      message: "PIN was updated!",
-                                      preferredStyle: .alert)
+    func clearPIN() {
+        if AuthenticationService.shared.pinHasBeenSet {
+            var navigationController: UINavigationController? = nil
+            self.requestAuthentication(navController: &navigationController,
+                                       entryMode: .pin,
+                                       completionBlock: { (success, pin) in
+                if success {
+                    AuthenticationService.shared.clear()
+                    
+                    self.displayPINClearedAlert(onViewController: (navigationController?.viewControllers.last)!) {
+                        navigationController!.dismiss(animated: true) {
+                        }
+                    }
+
+                }
+            })
+        }
+    }
+    
+    func displayAlert(onViewController viewController: UIViewController,
+                      title: String,
+                      message: String,
+                      then: @escaping () -> Void) {
+        alert = UIAlertController(title: title,
+                                  message: message,
+                                  preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK",
                                       style: .default) { action in
-                then()
-            })
+            then()
+        })
         viewController.present(alert,
                                animated: true)
+
+    }
+    
+    func displayPINUpdatedAlert(onViewController viewController: UIViewController,
+                                then: @escaping () -> Void) {
+        displayAlert(onViewController: viewController,
+                     title: "Success",
+                     message: "PIN was updated!",
+                     then: then)
+    }
+
+    
+    func displayPINClearedAlert(onViewController viewController: UIViewController,
+                                then: @escaping () -> Void) {
+        displayAlert(onViewController: viewController,
+                     title: "Success",
+                     message: "PIN was cleared",
+                     then: then)
     }
     
     func requestAuthentication(
