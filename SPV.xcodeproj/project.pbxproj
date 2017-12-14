@@ -77,9 +77,9 @@
 		F9C8DA3F1FD1C886002BB2D5 /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA3E1FD1C885002BB2D5 /* KeychainPasswordItem.swift */; };
 		F9C8DA411FD1DF08002BB2D5 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA401FD1DF08002BB2D5 /* AuthenticationService.swift */; };
 		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		F9E25C291FE19509009D9DF7 /* PINEntryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */; };
 		F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */; };
 		F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E843C51F972F050075BA43 /* UIViewExtensions.swift */; };
-		F9E8DE8F1FC3405100FDAAB9 /* PINEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE8E1FC3405100FDAAB9 /* PINEntryViewController.swift */; };
 		F9E8DE911FC341C400FDAAB9 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */; };
 		F9E8DE931FC6B31B00FDAAB9 /* PIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE921FC6B31B00FDAAB9 /* PIN.swift */; };
 		F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F060A81F7C030B00AF6247 /* SearchScopeCell.swift */; };
@@ -184,7 +184,7 @@
 		F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfo.swift; sourceTree = "<group>"; };
 		F9C50C161F5E80F600EE79E5 /* Photo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Photo.json; path = JSON/Photo.json; sourceTree = "<group>"; };
 		F9C50C1A1F5F02DF00EE79E5 /* MediaInfoTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoTest.swift; sourceTree = "<group>"; };
-		F9C50C1C1F5F50B800EE79E5 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		F9C50C1C1F5F50B800EE79E5 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F9C68BB41F860FF20094E5F3 /* URLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilder.swift; sourceTree = "<group>"; };
 		F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBuilderTests.swift; sourceTree = "<group>"; };
 		F9C8DA301FCF1F92002BB2D5 /* Authentication.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
@@ -196,9 +196,9 @@
 		F9C8DA401FD1DF08002BB2D5 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/SPV-efrwuliddfrewpeoxhcadziytpjt/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		F9D301871F5F592900ADEEF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINEntryMode.swift; sourceTree = "<group>"; };
 		F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		F9E843C51F972F050075BA43 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
-		F9E8DE8E1FC3405100FDAAB9 /* PINEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINEntryViewController.swift; sourceTree = "<group>"; };
 		F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		F9E8DE921FC6B31B00FDAAB9 /* PIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PIN.swift; sourceTree = "<group>"; };
 		F9F060A81F7C030B00AF6247 /* SearchScopeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScopeCell.swift; sourceTree = "<group>"; };
@@ -445,7 +445,6 @@
 			isa = PBXGroup;
 			children = (
 				F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */,
-				F9E8DE8E1FC3405100FDAAB9 /* PINEntryViewController.swift */,
 			);
 			name = VCs;
 			sourceTree = "<group>";
@@ -480,6 +479,7 @@
 			children = (
 				F9C8DA321FCF36D8002BB2D5 /* Authentication */,
 				F9C8DA301FCF1F92002BB2D5 /* Authentication.storyboard */,
+				F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */,
 				F942D1301F9DC3330065C31B /* Camera */,
 				F98B8C391F767E2300719CA6 /* Common */,
 				F98B8C331F767D2D00719CA6 /* Media Viewer */,
@@ -877,10 +877,10 @@
 				63396F0E1F40FB30000E5F3E /* DownloadManager.swift in Sources */,
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F914D4F11F30E46200B9042E /* BaseTabBBarController.swift in Sources */,
+				F9E25C291FE19509009D9DF7 /* PINEntryMode.swift in Sources */,
 				F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */,
 				F90FFFE81FBF560F00D2C304 /* TextBlockCell.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
-				F9E8DE8F1FC3405100FDAAB9 /* PINEntryViewController.swift in Sources */,
 				F9C8DA411FD1DF08002BB2D5 /* AuthenticationService.swift in Sources */,
 				F9C68BB51F860FF20094E5F3 /* URLBuilder.swift in Sources */,
 				F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */,

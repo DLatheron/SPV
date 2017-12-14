@@ -92,8 +92,19 @@ extension CameraController {
                     throw CameraControllerError.captureSessionIsMissing
                 }
             
-            self.photoOutput = AVCapturePhotoOutput()
-            self.photoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])], completionHandler: nil)
+            let setting = AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])
+            setting.isHighResolutionPhotoEnabled = true
+            setting.isAutoDualCameraFusionEnabled = true
+            setting.isAutoStillImageStabilizationEnabled = true;
+            let settings = [ setting ]
+            
+            let capture = AVCapturePhotoOutput()
+            capture.setPreparedPhotoSettingsArray(settings, completionHandler: nil)
+            capture.isLivePhotoCaptureEnabled = true
+            capture.isHighResolutionCaptureEnabled = true
+            capture.isDualCameraDualPhotoDeliveryEnabled = true
+
+            self.photoOutput = capture
             
             if captureSession.canAddOutput(self.photoOutput!) { captureSession.addOutput(self.photoOutput!) }
             captureSession.startRunning()
