@@ -79,6 +79,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let vc = storyboard.instantiateInitialViewController()!
         vc.modalTransitionStyle = .flipHorizontal
         
+        let mediaViewerStoryboard = UIStoryboard(name: "MediaViewer",
+                                                 bundle: nil)
+        let mediaViewerVC = mediaViewerStoryboard.instantiateViewController(withIdentifier: "MediaViewer")
+        mediaViewerVC.tabBarItem = UITabBarItem(title: "New Albums",
+                                                image: UIImage(named: "albums"),
+                                                selectedImage: UIImage(named: "albums"))
+        vc.tabBarController?.addChildViewController(mediaViewerVC)
+        
         self.window?.rootViewController?.present(vc,
                                                  animated: true) {
             print("Done")

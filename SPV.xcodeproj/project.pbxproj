@@ -78,6 +78,7 @@
 		F9C8DA411FD1DF08002BB2D5 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA401FD1DF08002BB2D5 /* AuthenticationService.swift */; };
 		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		F9E25C291FE19509009D9DF7 /* PINEntryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */; };
+		F9E25C2B1FE26631009D9DF7 /* MediaViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */; };
 		F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */; };
 		F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E843C51F972F050075BA43 /* UIViewExtensions.swift */; };
 		F9E8DE911FC341C400FDAAB9 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */; };
@@ -197,6 +198,7 @@
 		F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/SPV-efrwuliddfrewpeoxhcadziytpjt/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		F9D301871F5F592900ADEEF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINEntryMode.swift; sourceTree = "<group>"; };
+		F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MediaViewer.storyboard; sourceTree = "<group>"; };
 		F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		F9E843C51F972F050075BA43 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 				F98B8C341F767D6100719CA6 /* VCs */,
 				F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */,
 				F98B8C351F767D7200719CA6 /* Cells */,
+				F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */,
 			);
 			name = "Media Viewer";
 			sourceTree = "<group>";
@@ -710,6 +713,7 @@
 				639170041F374E15001E5ABE /* Test02.jpg in Resources */,
 				F9BABAB31F28F92F00000D9B /* Assets.xcassets in Resources */,
 				F9BABAB11F28F92F00000D9B /* Main.storyboard in Resources */,
+				F9E25C2B1FE26631009D9DF7 /* MediaViewer.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
