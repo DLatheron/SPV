@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         MediaManager.shared.scanForMedia(atPath: documentsURL)
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.backgroundColor = UIColor.white
         self.window?.rootViewController = UITabBarController()
         self.window?.makeKeyAndVisible()
 

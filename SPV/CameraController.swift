@@ -100,9 +100,9 @@ extension CameraController {
             
             let capture = AVCapturePhotoOutput()
             capture.setPreparedPhotoSettingsArray(settings, completionHandler: nil)
-            capture.isLivePhotoCaptureEnabled = true
+            capture.isLivePhotoCaptureEnabled = capture.isLivePhotoCaptureSupported && true
             capture.isHighResolutionCaptureEnabled = true
-            capture.isDualCameraDualPhotoDeliveryEnabled = true
+            capture.isDualCameraDualPhotoDeliveryEnabled = capture.isDualCameraDualPhotoDeliverySupported && true
 
             self.photoOutput = capture
             
