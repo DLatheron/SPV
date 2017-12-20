@@ -13,8 +13,10 @@ import MediaPlayer
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    let initialTabIndex = 0
 
     var window: UIWindow?
+    
 //    var volume: Float = 0.5
 //    let audioSession = AVAudioSession.sharedInstance()
 //    var volumeObserver: NSKeyValueObservation? = nil
@@ -36,6 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
         MediaManager.shared.scanForMedia(atPath: documentsURL)
         
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = UITabBarController()
+        self.window?.makeKeyAndVisible()
+
         let startOnAuthenticationScreen = true
         if startOnAuthenticationScreen && AuthenticationService.shared.pinHasBeenSet {
             requestAuthentication()
@@ -48,49 +54,89 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func requestAuthentication() {
+        let tabBarController = self.window!.rootViewController as! UITabBarController
+        
         let authenticationService = AuthenticationService.shared
         
         let storyboard = UIStoryboard(name: "Authentication",
                                       bundle: nil)
-        let authenticationNavVC = storyboard.instantiateViewController(
-            withIdentifier: "Authentication"
-            ) as! UINavigationController
+        let authenticationNavVC = storyboard.instantiateInitialViewController() as! UINavigationController
         let authenticationVC = authenticationNavVC.viewControllers[0] as! AuthenticationViewController
         
         authenticationVC.authenticationService = authenticationService
         authenticationVC.authenticationDelegate = authenticationService
+        authenticationVC.modalTransitionStyle = .coverVertical
         authenticationVC.entryMode = .pin
         authenticationVC.completionBlock = { success, pin in
             if success {
                 self.launchUI()
+                
+                authenticationNavVC.dismiss(animated: true,
+                                            completion: nil)
             } else {
                 // TODO: Kill app?
             }
         }
         
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = authenticationNavVC
-        self.window?.makeKeyAndVisible()
+        tabBarController.present(authenticationNavVC,
+                                 animated: true,
+                                 completion: nil)
     }
     
     func launchUI() {
-        let storyboard = UIStoryboard(name: "Main",
-                                      bundle: nil)
-        let vc = storyboard.instantiateInitialViewController()!
-        vc.modalTransitionStyle = .flipHorizontal
-        
-        let mediaViewerStoryboard = UIStoryboard(name: "MediaViewer",
-                                                 bundle: nil)
-        let mediaViewerVC = mediaViewerStoryboard.instantiateViewController(withIdentifier: "MediaViewer")
-        mediaViewerVC.tabBarItem = UITabBarItem(title: "New Albums",
-                                                image: UIImage(named: "albums"),
-                                                selectedImage: UIImage(named: "albums"))
-        vc.tabBarController?.addChildViewController(mediaViewerVC)
-        
-        self.window?.rootViewController?.present(vc,
-                                                 animated: true) {
-            print("Done")
+        func addInitialViewController(fromStoryboardNamed storyboardName: String,
+                                      toTabBar tabBarController: UITabBarController,
+                                      forTabName tabName: String,
+                                      withImageName imageName: String) {
+            let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
+            if let viewController = storyboard.instantiateInitialViewController() {
+                let image = UIImage(named: imageName)
+                viewController.tabBarItem = UITabBarItem(title: tabName,
+                                                         image: image,
+                                                         selectedImage: image)
+                tabBarController.addChildViewController(viewController)
+            }
         }
+        
+        func addMediaViewer(to tabBarController: UITabBarController) {
+            addInitialViewController(fromStoryboardNamed: "MediaViewer",
+                                     toTabBar: tabBarController,
+                                     forTabName: "Albums",
+                                     withImageName: "albums")
+        }
+        
+        func addBrowser(to tabBarController: UITabBarController) {
+            addInitialViewController(fromStoryboardNamed: "Browser",
+                                     toTabBar: tabBarController,
+                                     forTabName: "Browser",
+                                     withImageName: "browser")
+        }
+        
+        func addCamera(to tabBarController: UITabBarController) {
+            addInitialViewController(fromStoryboardNamed: "Camera",
+                                     toTabBar: tabBarController,
+                                     forTabName: "Camera",
+                                     withImageName: "camera")
+        }
+        
+        func addSettings(to tabBarController: UITabBarController) {
+            addInitialViewController(fromStoryboardNamed: "Settings",
+                                     toTabBar: tabBarController,
+                                     forTabName: "Settings",
+                                     withImageName: "settings")
+        }
+
+        let tabBarController = self.window!.rootViewController as! UITabBarController
+
+        addMediaViewer(to: tabBarController)
+        addBrowser(to: tabBarController)
+        addCamera(to: tabBarController)
+        addSettings(to: tabBarController)
+        
+        tabBarController.selectedIndex = initialTabIndex
+        
+        // Force layout so that it will redraw when we generate it behind the PIN screen - essential.
+        tabBarController.view.setNeedsLayout()
     }
 
 //    func applicationWillResignActive(_ application: UIApplication) {

@@ -83,6 +83,9 @@
 		F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E843C51F972F050075BA43 /* UIViewExtensions.swift */; };
 		F9E8DE911FC341C400FDAAB9 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */; };
 		F9E8DE931FC6B31B00FDAAB9 /* PIN.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE921FC6B31B00FDAAB9 /* PIN.swift */; };
+		F9EE7C311FE97D75003C1B04 /* Browser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9EE7C301FE97D75003C1B04 /* Browser.storyboard */; };
+		F9EE7C331FE98030003C1B04 /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9EE7C321FE98030003C1B04 /* Camera.storyboard */; };
+		F9EE7C351FE982A0003C1B04 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9EE7C341FE982A0003C1B04 /* Settings.storyboard */; };
 		F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F060A81F7C030B00AF6247 /* SearchScopeCell.swift */; };
 		F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */; };
 		F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */; };
@@ -203,6 +206,9 @@
 		F9E843C51F972F050075BA43 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		F9E8DE921FC6B31B00FDAAB9 /* PIN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PIN.swift; sourceTree = "<group>"; };
+		F9EE7C301FE97D75003C1B04 /* Browser.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Browser.storyboard; sourceTree = "<group>"; };
+		F9EE7C321FE98030003C1B04 /* Camera.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
+		F9EE7C341FE982A0003C1B04 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		F9F060A81F7C030B00AF6247 /* SearchScopeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScopeCell.swift; sourceTree = "<group>"; };
 		F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Test05.jpg; sourceTree = "<group>"; };
 		F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoScrollView.swift; sourceTree = "<group>"; };
@@ -314,6 +320,7 @@
 			children = (
 				F942D1321F9DC3490065C31B /* Common */,
 				F942D1311F9DC3420065C31B /* VCs */,
+				F9EE7C321FE98030003C1B04 /* Camera.storyboard */,
 			);
 			name = Camera;
 			sourceTree = "<group>";
@@ -375,6 +382,7 @@
 				63D026E41F4F4E6B00006275 /* Download.swift */,
 				F98B8C381F767DE900719CA6 /* Cells */,
 				F98B8C371F767DE200719CA6 /* VCs */,
+				F9EE7C301FE97D75003C1B04 /* Browser.storyboard */,
 			);
 			name = Browser;
 			sourceTree = "<group>";
@@ -440,6 +448,7 @@
 			children = (
 				F912DE111FB9832A00037ABF /* Cells */,
 				F98B8C3C1F767E8500719CA6 /* VCs */,
+				F9EE7C341FE982A0003C1B04 /* Settings.storyboard */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -699,11 +708,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9F2D3D01F41CC5C00FD6F78 /* Test07.gif in Resources */,
+				F9EE7C351FE982A0003C1B04 /* Settings.storyboard in Resources */,
 				63396F071F40D91F000E5F3E /* Test06.mp4 in Resources */,
+				F9EE7C311FE97D75003C1B04 /* Browser.storyboard in Resources */,
 				63396F0C1F40ED58000E5F3E /* GetImage.js in Resources */,
 				639170051F374E15001E5ABE /* Test03.jpg in Resources */,
 				639170061F374E15001E5ABE /* Test04.png in Resources */,
 				F9C8DA311FCF1F92002BB2D5 /* Authentication.storyboard in Resources */,
+				F9EE7C331FE98030003C1B04 /* Camera.storyboard in Resources */,
 				F9BABAB61F28F92F00000D9B /* LaunchScreen.storyboard in Resources */,
 				F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */,
 				F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */,
