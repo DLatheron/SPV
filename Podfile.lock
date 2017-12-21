@@ -1,18 +1,18 @@
 PODS:
-  - BCryptSwift (0.1.1)
+  - Bluuur (0.3.2)
   - Cosmos (11.0.3)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
-  - BCryptSwift
+  - Bluuur
   - Cosmos (~> 11.0)
   - SwiftyJSON
 
 SPEC CHECKSUMS:
-  BCryptSwift: 7f02057564d3c20c45992cd11b3726271b67d562
+  Bluuur: 8769814f974e2fb50618551a14b69c35396c1fa0
   Cosmos: eb506859929f4add2d2aec822a27efb2f718a95d
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 284a59bd04b71f24ec3ccef417149b12aa6b939e
+PODFILE CHECKSUM: 8e1c338e971a604c4a6f59443460e440748467e7
 
 COCOAPODS: 1.2.0

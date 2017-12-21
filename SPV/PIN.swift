@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import BCryptSwift
 
 class PIN {
     let presentCh: Character = "⚫︎"
@@ -102,25 +101,6 @@ class PIN {
     
     func reset() {
         _pin = []
-    }
-}
-
-extension PIN {
-    var hash: String {
-        get {
-            let salt = BCryptSwift.generateSaltWithNumberOfRounds(6)
-            if let hash = BCryptSwift.hashPassword(asString,
-                                                   withSalt: salt) {
-                return hash
-            } else {
-                return ""
-            }
-        }
-    }
-    
-    func verifyPIN(hash: String) -> Bool {
-        return BCryptSwift.verifyPassword(asString,
-                                          matchesHash: hash) ?? false
     }
 }
 
