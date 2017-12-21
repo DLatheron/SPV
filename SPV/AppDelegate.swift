@@ -150,10 +150,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let blurOutDuration: TimeInterval = 0.3
     let blurRadius: CGFloat = 30.0
     
-    func getOrCreateBlurView() -> MLWBluuurView {
+    func getOrCreateBlurView() -> MLWBluuurView? {
         let rootViewControllerView = self.window!.rootViewController!.view!
         if let blurView: MLWBluuurView = self.window!.rootViewController!.view.viewWithTag(blurTag) as? MLWBluuurView {
             return blurView
+        } else if Settings.shared.blurInBackground.value == false {
+            return nil
         } else {
             let blurView = MLWBluuurView(frame: (self.window?.frame)!)
             blurView.tag = blurTag
@@ -167,22 +169,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func blur(view blurView: MLWBluuurView) {
-        blurView.blurRadius = 0
-        
-        UIView.animate(withDuration: blurInDuration) {
-            blurView.blurRadius = self.blurRadius
+    func blur(view blurView: MLWBluuurView?) {
+        if let blurView = blurView {
+            blurView.blurRadius = 0
+            
+            UIView.animate(withDuration: blurInDuration) {
+                blurView.blurRadius = self.blurRadius
+            }
         }
     }
     
-    func unblur(view blurView: MLWBluuurView) {
-        UIView.animate(withDuration: blurOutDuration,
-                       animations: {
-            blurView.blurRadius = 0
-        }) { (complete) in
-            if complete {
-                blurView.removeFromSuperview()
-                print("Blur removed")
+    func unblur(view blurView: MLWBluuurView?) {
+        if let blurView = blurView {
+            UIView.animate(withDuration: blurOutDuration,
+                           animations: {
+                blurView.blurRadius = 0
+            }) { (complete) in
+                if complete {
+                    blurView.removeFromSuperview()
+                    print("Blur removed")
+                }
             }
         }
     }
@@ -265,30 +271,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         debugPrint("handleEventsForBackgroundURLSession: \(identifier)")
         completionHandler()
     }
-}
-
-extension AppDelegate  {
-//    override func observeValue(forKeyPath keyPath: String?,
-//                               of object: Any?,
-//                               change: [NSKeyValueChangeKey : Any]?,
-//                               context: UnsafeMutableRawPointer?) {
-//        (MPVolumeView().subviews.filter{NSStringFromClass($0.classForCoder) == "MPVolumeSlider"}.first as? UISlider)?.setValue(volume, animated: false)
-//
-//        NotificationCenter.default.removeObserver(self)
-//        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "volumeChanged")))
-//    }
-    
-//    func applicationDidBecomeActive(_ application: UIApplication) {
-//        try! audioSession.setActive(true)
-//        volume = audioSession.outputVolume
-//        if volume == 0 { volume += 0.1 } else if volume == 1 { volume -= 0.1 }
-//        volumeObserver = audioSession.observe(\.outputVolume) { (av, change) in
-//           print("volume \(av.outputVolume)")
-//        }
-//    }
-//    
-//    func applicationWillResignActive(_ application: UIApplication) {
-//        //audioSession.removeObserver(self, forKeyPath: "outputVolume")
-//        volumeObserver = nil
-//    }
 }

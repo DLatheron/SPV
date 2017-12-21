@@ -25,8 +25,6 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
     }
     
     override func didReceiveMemoryWarning() {

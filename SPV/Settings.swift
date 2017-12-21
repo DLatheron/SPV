@@ -41,6 +41,7 @@ It occupies quite a few lines of space.
 But still appears correctly - even if there are really long lines of text
 """, editor: "TextBlockCell")
     let pin = SettingT<String>(name: "PIN", value: "", editor: nil)
+    let blurInBackground = SettingT<Bool>(name: "Blur in Background", value: true)
     
     let settingsBlock: SettingsBlock
     let legalSettingsBlock: SettingsBlock
@@ -62,7 +63,8 @@ But still appears correctly - even if there are really long lines of text
             testConstData1,
             testLegalSubMenu,
             setPIN,
-            clearPIN
+            clearPIN,
+            blurInBackground
         ])
     }
     
@@ -88,6 +90,9 @@ But still appears correctly - even if there are really long lines of text
         if !json["pin"].isEmpty {
             pin.value = json["pin"].stringValue
         }
+        if !json["blurInBackground"].isEmpty {
+            blurInBackground.value = json["blurInBackground"].boolValue
+        }
     }
     
     internal func writeAsJSON() -> JSON {
@@ -97,7 +102,8 @@ But still appears correctly - even if there are really long lines of text
             "testName": testName.value,
             "testConstData0": testConstData0.value,
             "testConstData1": testConstData1.value,
-            "pin": pin.value
+            "pin": pin.value,
+            "blurInBackground": blurInBackground.value
         ])
     }
     
