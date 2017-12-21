@@ -46,7 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let startOnAuthenticationScreen = true
         if startOnAuthenticationScreen && AuthenticationService.shared.pinHasBeenSet {
-            requestAuthentication()
+            requestAuthentication() {
+                self.launchUI()
+                self.unblur(view: self.getOrCreateBlurView())
+            }
         } else {
             launchUI()
         }
@@ -55,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func requestAuthentication() {
+    func requestAuthentication(onSuccess: @escaping () -> Void) {
         let tabBarController = self.window!.rootViewController as! UITabBarController
         
         let authenticationService = AuthenticationService.shared
@@ -71,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         authenticationVC.entryMode = .pin
         authenticationVC.completionBlock = { success, pin in
             if success {
-                self.launchUI()
+                onSuccess()
                 
                 authenticationNavVC.dismiss(animated: true,
                                             completion: nil)
@@ -81,8 +84,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         tabBarController.present(authenticationNavVC,
-                                 animated: true,
-                                 completion: nil)
+                                 animated: true) {
+            print("Presented \(self.window!.subviews)")
+        }
     }
     
     func launchUI() {
@@ -141,21 +145,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarController.view.setNeedsLayout()
     }
     
+    let blurTag: Int = 1234
     let blurInDuration: TimeInterval = 0.3
     let blurOutDuration: TimeInterval = 0.3
     let blurRadius: CGFloat = 30.0
+    
+    func getOrCreateBlurView() -> MLWBluuurView {
+        let rootViewControllerView = self.window!.rootViewController!.view!
+        if let blurView: MLWBluuurView = self.window!.rootViewController!.view.viewWithTag(blurTag) as? MLWBluuurView {
+            return blurView
+        } else {
+            let blurView = MLWBluuurView(frame: (self.window?.frame)!)
+            blurView.tag = blurTag
+            
+            rootViewControllerView.addSubview(blurView)
+            rootViewControllerView.bringSubview(toFront: blurView)
+            
+            print("Blur added")
+
+            return blurView
+        }
+    }
+    
+    func blur(view blurView: MLWBluuurView) {
+        blurView.blurRadius = 0
+        
+        UIView.animate(withDuration: blurInDuration) {
+            blurView.blurRadius = self.blurRadius
+        }
+    }
+    
+    func unblur(view blurView: MLWBluuurView) {
+        UIView.animate(withDuration: blurOutDuration,
+                       animations: {
+            blurView.blurRadius = 0
+        }) { (complete) in
+            if complete {
+                blurView.removeFromSuperview()
+                print("Blur removed")
+            }
+        }
+    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        let blurView = MLWBluuurView(frame: (self.window?.frame)!)
-        blurView.tag = 1234
-        
-        self.window?.addSubview(blurView)
-        self.window?.bringSubview(toFront: blurView)
-        
-        UIView.animate(withDuration: blurInDuration) {
-            blurView.blurRadius = self.blurRadius
+        blur(view: getOrCreateBlurView())
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if AuthenticationService.shared.pinHasBeenSet {
+            requestAuthentication() {
+                self.unblur(view: self.getOrCreateBlurView())
+            }
+        } else {
+            unblur(view: getOrCreateBlurView())
         }
     }
 
@@ -166,20 +211,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        if let blurView = self.window?.viewWithTag(1234) as? MLWBluuurView {
-            UIView.animate(withDuration: blurOutDuration,
-                           animations: {
-                blurView.blurRadius = 0
-            }) { (complete) in
-                if complete {
-                    blurView.removeFromSuperview()
-                }
-            }
-        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
