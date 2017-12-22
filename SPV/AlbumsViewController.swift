@@ -1,3 +1,4 @@
+
 //
 //  AlbumsViewController.swift
 //  SPV
@@ -9,6 +10,7 @@
 import UIKit
 
 class AlbumsViewController: UICollectionViewController {
+    @IBOutlet weak var selectButton: UIBarButtonItem!
     
     var media: [Media] = []
     
@@ -17,6 +19,7 @@ class AlbumsViewController: UICollectionViewController {
     // MARK: - Properties
     fileprivate let reuseIdentifier = "PhotoCellId"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
+    fileprivate var selectMode = false
     
    
     required init(coder aDecoder: NSCoder) {
@@ -153,5 +156,17 @@ extension AlbumsViewController : MediaEnumerator {
     func prevMedia(media: Media) -> Media {
         let index = getIndex(of: media)!
         return self.media[clampIndex(index: index - 1)]
+    }
+}
+
+extension AlbumsViewController {
+    @IBAction func selectButtonClicked(_ sender: Any) {
+        if !selectMode {
+            selectMode = true
+            selectButton.title = NSLocalizedString("Done", comment: "Button title to exit media selection mode")
+        } else {
+            selectMode = false
+            selectButton.title = NSLocalizedString("Select", comment: "Button title to enter media selection mode")
+        }
     }
 }
