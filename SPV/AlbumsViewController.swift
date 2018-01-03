@@ -11,21 +11,52 @@ import UIKit
 
 class AlbumsViewController: UICollectionViewController {
     @IBOutlet weak var selectButton: UIBarButtonItem!
+    var deleteButton: UIBarButtonItem!
+    var actionButton: UIBarButtonItem!
+    var navButtons: [UIBarButtonItem] = []
+    
     
     var media: [Media] = []
+    var selectedMedia = Set<Media>()
     
     let mediaManager: MediaManager
     
     // MARK: - Properties
     fileprivate let reuseIdentifier = "PhotoCellId"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
-    fileprivate var selectMode = false
     
+    var selectMode: Bool = false {
+        didSet {
+            if selectMode {
+                selectButton.title = NSLocalizedString("Done",
+                                                       comment: "Button title to exit media selection mode")
+                navigationItem.setRightBarButtonItems(navButtons,
+                                                      animated: true)
+            } else {
+                selectButton.title = NSLocalizedString("Select",
+                                                       comment: "Button title to enter media selection mode")
+                navigationItem.setRightBarButtonItems([],
+                                                      animated: true)
+                deselectAll()
+            }
+        }
+    }
    
     required init(coder aDecoder: NSCoder) {
         mediaManager = MediaManager.shared
         
         super.init(coder: aDecoder)!
+    }
+    
+    override func awakeFromNib() {
+        deleteButton = UIBarButtonItem(barButtonSystemItem: .trash,
+                                       target: self,
+                                       action: #selector(deleteSelectedMedia(_:)))
+        actionButton = UIBarButtonItem(barButtonSystemItem: .action,
+                                       target: self,
+                                       action: #selector(actionOnSelectedMedia(_:)))
+        navButtons = [actionButton, deleteButton]
+        
     }
 
     override func viewDidLoad() {
@@ -59,14 +90,17 @@ class AlbumsViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! PhotoCell
         let media = getMedia(for: indexPath)
+        let selected = isSelected(media: media)
         
-        cell.configure(withMedia: media)
+        cell.configure(withMedia: media,
+                       isSelected: selected,
+                       delegate: self)
         
         return cell
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
-        if (segue.identifier == "PhotoDetails") {
+        if (segue.identifier == "MediaViewer") {
             let photoCell = sender as! PhotoCell
             let photoDetailsVC = segue.destination as! PhotoDetailsViewController
             let indexPath = collectionView?.indexPath(for: photoCell)
@@ -160,6 +194,15 @@ extension AlbumsViewController : MediaEnumerator {
 }
 
 extension AlbumsViewController {
+    func deselectAll() {
+        selectedMedia.removeAll()
+        self.collectionView?.reloadData()
+    }
+    
+    func isSelected(media: Media) -> Bool {
+        return selectedMedia.contains(media)
+    }
+    
     @IBAction func selectButtonClicked(_ sender: Any) {
         if !selectMode {
             selectMode = true
@@ -167,6 +210,45 @@ extension AlbumsViewController {
         } else {
             selectMode = false
             selectButton.title = NSLocalizedString("Select", comment: "Button title to enter media selection mode")
+            
+            deselectAll()
         }
+    }
+}
+
+extension AlbumsViewController : PhotoCellDelegate {
+    func photoCellClicked(_ sender: PhotoCell) {
+        if !selectMode {
+            self.performSegue(withIdentifier: "MediaViewer",
+                              sender: sender)
+        } else {
+            sender.isSelected = true
+        }
+    }
+    
+    func photoCellSelectionChanged(_ sender: PhotoCell) {
+        if let media = sender.media {
+            if sender.isSelected {
+                selectedMedia.insert(media)
+                selectMode = true
+            } else {
+                selectedMedia.remove(media)
+            }
+        }
+    }
+}
+
+extension AlbumsViewController {
+    @IBAction func deleteSelectedMedia(_ sender: Any) {
+        print("TODO: Delete: \(selectedMedia)")
+        
+        
+        
+        selectMode = false
+    }
+    
+    @IBAction func actionOnSelectedMedia(_ sender: Any) {
+        print("TODO: Action: \(selectedMedia)")
+        selectMode = false
     }
 }

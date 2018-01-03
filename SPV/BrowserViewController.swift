@@ -448,7 +448,7 @@ extension BrowserViewController : UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = self.searchBar.urlString {
+        if let searchText = self.searchBar.text {
 //            if !shouldShowSearchResults {
 //                //searchController.isActive = true
 //                searchResultsTable.isHidden = !shouldShowSearchResults

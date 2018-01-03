@@ -50,20 +50,50 @@
                                     <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3j4-xG-GEQ">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3j4-xG-GEQ">
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kE8-Z8-hpJ">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kE8-Z8-hpJ">
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <subviews>
+                                                <view opaque="NO" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Zu-Hk-oNl">
+                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check" translatesAutoresizingMaskIntoConstraints="NO" id="4gi-xu-Cdt" userLabel="Checkmark">
+                                                    <rect key="frame" x="80" y="80" width="32" height="32"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="32" id="v5m-BE-gvI"/>
+                                                        <constraint firstAttribute="width" constant="32" id="vrB-Kz-XR5"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="1Zu-Hk-oNl" firstAttribute="width" secondItem="kE8-Z8-hpJ" secondAttribute="width" id="2Gk-MT-bpS"/>
+                                                <constraint firstAttribute="trailing" secondItem="4gi-xu-Cdt" secondAttribute="trailing" constant="8" id="C8E-G1-oz4"/>
+                                                <constraint firstItem="1Zu-Hk-oNl" firstAttribute="centerY" secondItem="kE8-Z8-hpJ" secondAttribute="centerY" id="DvJ-ym-9cZ"/>
+                                                <constraint firstItem="1Zu-Hk-oNl" firstAttribute="height" secondItem="kE8-Z8-hpJ" secondAttribute="height" id="Pg3-Mx-Na7"/>
+                                                <constraint firstAttribute="bottom" secondItem="4gi-xu-Cdt" secondAttribute="bottom" constant="8" id="Tbe-6M-ub3"/>
+                                                <constraint firstItem="1Zu-Hk-oNl" firstAttribute="centerX" secondItem="kE8-Z8-hpJ" secondAttribute="centerX" id="ytH-ae-WAr"/>
+                                            </constraints>
                                         </view>
                                     </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstItem="kE8-Z8-hpJ" firstAttribute="height" secondItem="Z2A-ew-eVQ" secondAttribute="height" id="HXg-0J-hiy"/>
+                                    <constraint firstItem="3j4-xG-GEQ" firstAttribute="centerY" secondItem="Z2A-ew-eVQ" secondAttribute="centerY" id="Pht-Ax-2W6"/>
+                                    <constraint firstItem="kE8-Z8-hpJ" firstAttribute="width" secondItem="Z2A-ew-eVQ" secondAttribute="width" id="Srf-zP-kTA"/>
+                                    <constraint firstItem="kE8-Z8-hpJ" firstAttribute="centerX" secondItem="Z2A-ew-eVQ" secondAttribute="centerX" id="fLe-gn-nzS"/>
+                                    <constraint firstItem="3j4-xG-GEQ" firstAttribute="centerX" secondItem="Z2A-ew-eVQ" secondAttribute="centerX" id="imZ-zl-5lw"/>
+                                    <constraint firstItem="3j4-xG-GEQ" firstAttribute="width" secondItem="Z2A-ew-eVQ" secondAttribute="width" id="myp-cG-jFd"/>
+                                    <constraint firstItem="kE8-Z8-hpJ" firstAttribute="centerY" secondItem="Z2A-ew-eVQ" secondAttribute="centerY" id="vuK-pP-VxG"/>
+                                    <constraint firstItem="3j4-xG-GEQ" firstAttribute="height" secondItem="Z2A-ew-eVQ" secondAttribute="height" id="xMQ-lr-xL9"/>
+                                </constraints>
                                 <connections>
+                                    <outlet property="dimmingView" destination="1Zu-Hk-oNl" id="kpN-JN-U1d"/>
                                     <outlet property="imageView" destination="3j4-xG-GEQ" id="Owc-29-dnU"/>
-                                    <segue destination="85C-eC-cvA" kind="show" identifier="PhotoDetails" id="duX-Ig-dQI"/>
+                                    <outlet property="selectedView" destination="kE8-Z8-hpJ" id="QbC-ni-slI"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -72,6 +102,9 @@
                             <outlet property="delegate" destination="KwI-0L-1vH" id="zOr-K3-8GI"/>
                         </connections>
                     </collectionView>
+                    <toolbarItems>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="BhZ-E8-4fo"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Media" id="yhO-jm-wQx">
                         <barButtonItem key="leftBarButtonItem" title="Select" id="Rxv-kv-BVt">
                             <connections>
@@ -79,13 +112,15 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="selectButton" destination="Rxv-kv-BVt" id="iC9-lz-4nP"/>
+                        <segue destination="85C-eC-cvA" kind="show" identifier="MediaViewer" id="fwz-mO-Tu3"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1lA-la-DMc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1841" y="-386"/>
+            <point key="canvasLocation" x="1938" y="-385"/>
         </scene>
         <!--Info-->
         <scene sceneID="Fp9-7Y-gtc">
@@ -343,4 +378,7 @@
             <point key="canvasLocation" x="1009" y="-385"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="check" width="32" height="32"/>
+    </resources>
 </document>
