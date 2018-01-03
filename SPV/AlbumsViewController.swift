@@ -9,19 +9,34 @@
 
 import UIKit
 
+fileprivate let deleteMediaTitle = NSLocalizedString("Delete Media",
+                                                     comment: "Action item title for deleting selected media")
+fileprivate let moveMediaTitle = NSLocalizedString("Move To...",
+                                                   comment: "Action item title for moving selected media")
+fileprivate let shareMediaTitle = NSLocalizedString("Share To...",
+                                                    comment: "Action item title for sharing selected media")
+fileprivate let cancelTitle = NSLocalizedString("Cancel",
+                                                comment: "Action item title for cancelling media seletion")
+
 class AlbumsViewController: UICollectionViewController {
     @IBOutlet weak var selectButton: UIBarButtonItem!
-    var deleteButton: UIBarButtonItem!
-    var actionButton: UIBarButtonItem!
-    var navButtons: [UIBarButtonItem] = []
     
+    fileprivate var deleteButton: UIBarButtonItem!
+    fileprivate var actionButton: UIBarButtonItem!
+    fileprivate var navButtons: [UIBarButtonItem] = []
+    fileprivate var alertController: UIAlertController!
     
-    var media: [Media] = []
-    var selectedMedia = Set<Media>()
+    fileprivate var media: [Media] = []
+    fileprivate var selectedMedia = Set<Media>() {
+        didSet {
+            let anyMediaSelected = selectedMedia.count > 0
+            deleteButton.isEnabled = anyMediaSelected
+            actionButton.isEnabled = anyMediaSelected
+        }
+    }
     
-    let mediaManager: MediaManager
+    fileprivate let mediaManager: MediaManager
     
-    // MARK: - Properties
     fileprivate let reuseIdentifier = "PhotoCellId"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     
@@ -239,16 +254,73 @@ extension AlbumsViewController : PhotoCellDelegate {
 }
 
 extension AlbumsViewController {
-    @IBAction func deleteSelectedMedia(_ sender: Any) {
-        print("TODO: Delete: \(selectedMedia)")
-        
-        
-        
-        selectMode = false
+    fileprivate func alertControllerDismissed(clearSelection: Bool = false) {
+        self.alertController = nil
+        if clearSelection {
+            self.selectMode = false
+        }
     }
     
-    @IBAction func actionOnSelectedMedia(_ sender: Any) {
-        print("TODO: Action: \(selectedMedia)")
-        selectMode = false
+    @objc func deleteSelectedMedia(_ sender: Any) {
+        func deleteMedia(_ mediaToDelete: Set<Media>) {
+            print("TODO: Delete: \(mediaToDelete)")
+        }
+        
+        alertController = UIAlertController(title: nil,
+                                            message: nil,
+                                            preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: deleteMediaTitle,
+                                                style: .destructive)
+        { alertAction in
+            deleteMedia(self.selectedMedia)
+            
+            self.alertControllerDismissed(clearSelection: true)
+        })
+        alertController.addAction(UIAlertAction(title: cancelTitle,
+                                                style: .cancel)
+        { alertAction in
+             self.alertControllerDismissed()
+        })
+        present(alertController,
+                animated: true)
+    }
+    
+    @objc func actionOnSelectedMedia(_ sender: Any) {
+        func moveMedia(_ mediaToMove: Set<Media>) {
+            print("TODO: Move: \(mediaToMove)")
+        }
+        
+        func shareMedia(_ mediaToShare: Set<Media>) {
+            print("TODO: Share: \(mediaToShare)")
+        }
+        
+        alertController = UIAlertController(title: nil,
+                                            message: nil,
+                                            preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: moveMediaTitle,
+                                                style: .default)
+        { alertAction in
+            moveMedia(self.selectedMedia)
+            
+            self.alertControllerDismissed()
+            
+            // NOTE: Move operation MUST retain selection (or refresh it).
+        })
+        alertController.addAction(UIAlertAction(title: shareMediaTitle,
+                                                style: .default)
+        { alertAction in
+            shareMedia(self.selectedMedia)
+            
+            self.alertControllerDismissed()
+        })
+        alertController.addAction(UIAlertAction(title: cancelTitle,
+                                                style: .cancel)
+        { alertAction in
+            self.alertControllerDismissed()
+        })
+        present(alertController,
+                animated: true)
+        
+        // EXPORT?
     }
 }
