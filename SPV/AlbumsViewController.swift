@@ -93,7 +93,7 @@ class AlbumsViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        return MediaManager.shared.count
+        return media.count
     }
     
     func getImage(at index: Int) -> UIImage? {
@@ -186,12 +186,10 @@ extension AlbumsViewController : MediaManagerChangedProtocol {
     }
     
     func deleted(media: Media) {
-        DispatchQueue.main.async {
-            if let index = self.media.index(of: media) {
-                self.media.remove(at: index)
-                self.collectionView?.deleteItems(at: [ IndexPath(row: index,
-                                                                 section: 0) ])
-            }
+        if let index = self.media.index(of: media) {
+            self.media.remove(at: index)
+            self.collectionView?.deleteItems(at: [ IndexPath(row: index,
+                                                             section: 0) ])
         }
     }
 }
@@ -263,7 +261,16 @@ extension AlbumsViewController {
     
     @objc func deleteSelectedMedia(_ sender: Any) {
         func deleteMedia(_ mediaToDelete: Set<Media>) {
-            print("TODO: Delete: \(mediaToDelete)")
+            var indexPaths: [IndexPath] = []
+            
+            mediaToDelete.forEach { media in
+                if let indexPath = getIndexPath(of: media) {
+                    indexPaths.append(indexPath)
+                }
+                mediaManager.deleteMedia(media)
+            }
+            
+            self.alertControllerDismissed(clearSelection: true)
         }
         
         alertController = UIAlertController(title: nil,
@@ -273,8 +280,6 @@ extension AlbumsViewController {
                                                 style: .destructive)
         { alertAction in
             deleteMedia(self.selectedMedia)
-            
-            self.alertControllerDismissed(clearSelection: true)
         })
         alertController.addAction(UIAlertAction(title: cancelTitle,
                                                 style: .cancel)

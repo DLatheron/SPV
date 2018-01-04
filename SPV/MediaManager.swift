@@ -55,6 +55,24 @@ class MediaManager {
         return newMedia
     }
     
+    func deleteMedia(_ mediaToDelete: Media) {
+        print("Deleting: \(mediaToDelete.id)")
+        delegate?.deleted(media: mediaToDelete)
+
+        if let index = media.index(of: mediaToDelete) {
+            media.remove(at: index)
+        }
+
+        mediaToDelete.delete()
+    }
+    
+    func moveMedia(_ id: UUID,
+                   toFolder: String) {
+    }
+    
+    func shareMedia(_ id: UUID) {
+    }
+    
     func getNextFilename(basePath: String,
                          filenamePrefix: String,
                          numberOfDigits: Int = 6,

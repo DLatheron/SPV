@@ -52,8 +52,29 @@ class Media : NSObject {
         }
     }
     
+    func deleteInfo(_ info: MediaInfo) {
+        do {
+            try FileManager.default.removeItem(at: infoURL)
+        } catch {
+            print("Failed to delete media info because: \(error)")
+        }
+    }
+    
     func save() {
         saveInfo(info: mediaInfo)
+    }
+    
+    func deleteMedia() {
+        do {
+            try FileManager.default.removeItem(at: URL(fileURLWithPath:fileURL.absoluteString))
+        } catch {
+            print("Failed to delete media because: \(error)")
+        }
+    }
+    
+    func delete() {
+        deleteInfo(mediaInfo)
+        deleteMedia()
     }
     
     private class func makeInfoURL(fileURL: URL) -> URL {

@@ -18,11 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-//    var volume: Float = 0.5
-//    let audioSession = AVAudioSession.sharedInstance()
-//    var volumeObserver: NSKeyValueObservation? = nil
-    
-
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions:
         [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
