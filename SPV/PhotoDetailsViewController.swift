@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Cosmos
 
 protocol MediaEnumerator: class {
     func nextMedia(media: Media) -> Media
@@ -15,6 +16,9 @@ protocol MediaEnumerator: class {
 }
 
 class PhotoDetailsViewController : UIViewController, Fullscreen {
+    let showRatingsAnimationDuration = 0.2
+    let hideRatingsAnimationDuration = 0.2
+    
     var delegate: MediaEnumerator?
     var scrollView: PhotoScrollView?
     
@@ -26,12 +30,22 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     var swipeLeft: UISwipeGestureRecognizer? = nil
     var swipeRight: UISwipeGestureRecognizer? = nil
     
+    @IBOutlet weak var ratingsView: RatingsView!
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.isUserInteractionEnabled = true
+        self.view.subviews.forEach { view in
+            view.isUserInteractionEnabled = true
+        }
+        
+        ratingsView.media = media
+        enableRatingsView(true)
         
         self.view.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
 
@@ -125,7 +139,7 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         self.view.addGestureRecognizer(singleTap!)
         
         singleTap?.require(toFail: doubleTap!)
-        
+
         // Swipe left for next image.
         swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeLeft(_:)))
         swipeLeft?.direction = UISwipeGestureRecognizerDirection.left
@@ -145,9 +159,11 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     }
     
     @objc func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
+        print("Single Tap")
+        // MAKE THIS NOT HAPPEN IF WE ARE INTERACTING WITH RATINGS...
         
         let currentState = navigationController?.isNavigationBarHidden == false
-        
+            
         navigationController?.setNavigationBarHidden(currentState, animated: true)
         setTabBarVisible(visible: !currentState, animated: true)
         
@@ -156,23 +172,27 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     }
     
     @objc func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
+        print("Double Tap")
+        
         // TODO: Also zoom into the point tapped...
         // TODO: Multistage zoom - based on the size of the picture... no more than about 3 stages...
         // TODO: Move into PhotoScrollView
-        if (self.scrollView!.zoomScale > self.scrollView!.minimumZoomScale) {
+        if self.scrollView!.zoomScale > self.scrollView!.minimumZoomScale {
             self.scrollView!.setZoomScale(self.scrollView!.minimumZoomScale, animated: true)
+            enableRatingsView(true)
         } else {
             self.scrollView!.setZoomScale()
             self.scrollView!.setZoomScale(self.scrollView!.maximumZoomScale, animated: true)
+            enableRatingsView(false)
         }
     }
-    
-    @objc func handleSwipeLeft(_ recognizer: UITapGestureRecognizer) {
+
+    @objc func handleSwipeLeft(_ recognizer: UISwipeGestureRecognizer) {
         print("Swipe left")
         handleSwipe(forDirection: .left)
     }
     
-    @objc func handleSwipeRight(_ recognizer: UITapGestureRecognizer) {
+    @objc func handleSwipeRight(_ recognizer: UISwipeGestureRecognizer) {
         print("Swipe right")
         handleSwipe(forDirection: .right)
     }
@@ -191,6 +211,7 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
                                             fullscreen: self)
         newScrollView.center.x += xOffset
         self.view.addSubview(newScrollView)
+        self.view.bringSubview(toFront: self.ratingsView)
         
         newScrollView.setNeedsLayout()
         newScrollView.setNeedsDisplay()
@@ -264,5 +285,9 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     
     func tabBarIsVisible() -> Bool {
         return !self.tabBarController!.tabBar.isHidden
+    }
+    
+    func enableRatingsView(_ enable: Bool) {
+        ratingsView.isUserInteractionEnabled = enable
     }
 }

@@ -18,6 +18,7 @@ protocol Fullscreen {
 class PhotoScrollView : UIScrollView {
     var fullscreen: Fullscreen
     var imageView: UIImageView
+    var parentView: UIView
     
     
     init(parentView: UIView,
@@ -29,8 +30,13 @@ class PhotoScrollView : UIScrollView {
         
         self.fullscreen = fullscreen
         self.imageView = imageView
+        self.parentView = parentView
         
         super.init(frame: UIScreen.main.bounds)
+        
+        parentView.isUserInteractionEnabled = true
+        isUserInteractionEnabled = true
+        self.imageView.isUserInteractionEnabled = true
         
         backgroundColor = UIColor.white
         contentSize = imageView.bounds.size
@@ -96,6 +102,39 @@ class PhotoScrollView : UIScrollView {
                                              left: 0,
                                              bottom: bottomOffset,
                                              right: 0)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>,
+                               with event: UIEvent?) {
+        //print("ScrollView - touchesBegan")
+        parentView.touchesBegan(touches,
+                                with: event)
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>,
+                               with event: UIEvent?) {
+        //print("ScrollView - touchesMoved")
+        parentView.touchesMoved(touches,
+                                with: event)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>,
+                               with event: UIEvent?) {
+        //print("ScrollView - touchesEnded")
+        parentView.touchesEnded(touches,
+                                with: event)
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>,
+                                   with event: UIEvent?) {
+        //print("ScrollView - touchesCancelled")
+        parentView.touchesCancelled(touches,
+                                    with: event)
+    }
+    
+    override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
+        //print("ScrollView - touchesEstimatedPropertiesUpdated")
+        parentView.touchesEstimatedPropertiesUpdated(touches)
     }
 }
     

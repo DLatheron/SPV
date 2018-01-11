@@ -22,6 +22,7 @@ class MediaInfoHeaderCell : UITableViewCell {
         ratings.rating = Double(media.mediaInfo.rating)
         
         ratings.didFinishTouchingCosmos = {
+            print("Rating updated to \($0)")
             media.mediaInfo.rating = Int($0)
             media.save()
         }

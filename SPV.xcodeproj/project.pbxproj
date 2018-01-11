@@ -33,6 +33,7 @@
 		F936CCA01FA70F3300813F2E /* UIScreenExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */; };
 		F93E26F11FB1A833001D0DAE /* CollapsibleSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93E26F01FB1A833001D0DAE /* CollapsibleSearchBar.swift */; };
 		F93EE1521FCC002900363333 /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93EE1511FCC002900363333 /* Dispatch.swift */; };
+		F941354E2006022500B77323 /* RatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F941354D2006022500B77323 /* RatingsView.swift */; };
 		F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D12E1F9CE1100065C31B /* SearchCell.swift */; };
 		F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D1331F9DC3680065C31B /* CameraViewController.swift */; };
 		F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */; };
@@ -75,6 +76,7 @@
 		F9C8DA3F1FD1C886002BB2D5 /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA3E1FD1C885002BB2D5 /* KeychainPasswordItem.swift */; };
 		F9C8DA411FD1DF08002BB2D5 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C8DA401FD1DF08002BB2D5 /* AuthenticationService.swift */; };
 		F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		F9D47C621FFF631A00515A27 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D47C611FFF631A00515A27 /* UIGestureRecognizer.swift */; };
 		F9E25C291FE19509009D9DF7 /* PINEntryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */; };
 		F9E25C2B1FE26631009D9DF7 /* MediaViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */; };
 		F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */; };
@@ -149,6 +151,7 @@
 		F93E26F01FB1A833001D0DAE /* CollapsibleSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSearchBar.swift; sourceTree = "<group>"; };
 		F93EE1511FCC002900363333 /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
 		F93EE1541FCE9E5D00363333 /* BCryptSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BCryptSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F941354D2006022500B77323 /* RatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsView.swift; sourceTree = "<group>"; };
 		F942D12E1F9CE1100065C31B /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		F942D1331F9DC3680065C31B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadable.swift; sourceTree = "<group>"; };
@@ -198,6 +201,7 @@
 		F9C8DA401FD1DF08002BB2D5 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		F9D3017D1F5F580400ADEEF8 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../../Library/Developer/Xcode/DerivedData/SPV-efrwuliddfrewpeoxhcadziytpjt/Build/Products/Debug-iphonesimulator/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		F9D301871F5F592900ADEEF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		F9D47C611FFF631A00515A27 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINEntryMode.swift; sourceTree = "<group>"; };
 		F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MediaViewer.storyboard; sourceTree = "<group>"; };
 		F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -348,6 +352,7 @@
 				F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */,
 				F98B8C351F767D7200719CA6 /* Cells */,
 				F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */,
+				F941354D2006022500B77323 /* RatingsView.swift */,
 			);
 			name = "Media Viewer";
 			sourceTree = "<group>";
@@ -439,6 +444,7 @@
 				F9E843C51F972F050075BA43 /* UIViewExtensions.swift */,
 				F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */,
 				F93EE1511FCC002900363333 /* Dispatch.swift */,
+				F9D47C611FFF631A00515A27 /* UIGestureRecognizer.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -906,6 +912,7 @@
 				F914D4F51F38C33A00B9042E /* MediaManager.swift in Sources */,
 				F912DE131FB9834800037ABF /* BoolCell.swift in Sources */,
 				F96D37B61FBDFDE600DD2F76 /* ConstDataCell.swift in Sources */,
+				F9D47C621FFF631A00515A27 /* UIGestureRecognizer.swift in Sources */,
 				F9F2D3CE1F3D892300FD6F78 /* PhotoScrollView.swift in Sources */,
 				F9C8DA371FCF3B30002BB2D5 /* PINButton.swift in Sources */,
 				F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */,
@@ -940,6 +947,7 @@
 				F9F5D0081F683BD100E16DAA /* MediaInfoViewController.swift in Sources */,
 				F9F2D3D61F42D3B200FD6F78 /* DownloadingCell.swift in Sources */,
 				F97943B01F6FA96600739030 /* MediaTagCell.swift in Sources */,
+				F941354E2006022500B77323 /* RatingsView.swift in Sources */,
 				F93EE1521FCC002900363333 /* Dispatch.swift in Sources */,
 				F9C50C081F59376000EE79E5 /* FakeDownloadManager.swift in Sources */,
 				F9C8DA351FCF371B002BB2D5 /* AuthenticationViewController.swift in Sources */,

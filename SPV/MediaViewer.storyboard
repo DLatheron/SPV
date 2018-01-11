@@ -17,10 +17,92 @@
                     <view key="view" contentMode="scaleAspectFit" id="tiy-FS-0t2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sh6-YC-b4z" customClass="RatingsView" customModule="SPV" customModuleProvider="target">
+                                <rect key="frame" x="54.5" y="477" width="266" height="66"/>
+                                <subviews>
+                                    <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="enH-HE-XJg">
+                                        <rect key="frame" x="0.0" y="0.0" width="266" height="66"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="U6y-mq-Kch">
+                                            <rect key="frame" x="0.0" y="0.0" width="266" height="66"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgi-vn-ciw" customClass="CosmosView" customModule="Cosmos">
+                                                    <rect key="frame" x="8" y="8" width="250" height="50"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="totalStars">
+                                                            <integer key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                                            <real key="value" value="50"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
+                                                            <real key="value" value="0.0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="fillMode">
+                                                            <integer key="value" value="0"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="filledBorderWidth">
+                                                            <real key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="filledColor">
+                                                            <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="emptyColor">
+                                                            <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="filledBorderColor">
+                                                            <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="emptyBorderColor">
+                                                            <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="emptyBorderWidth">
+                                                            <real key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="tgi-vn-ciw" firstAttribute="top" secondItem="enH-HE-XJg" secondAttribute="top" constant="8" id="KEu-vm-UID"/>
+                                            <constraint firstAttribute="trailing" secondItem="tgi-vn-ciw" secondAttribute="trailing" constant="8" id="YDg-pJ-EFw"/>
+                                            <constraint firstAttribute="height" secondItem="tgi-vn-ciw" secondAttribute="height" constant="16" id="gKO-hc-Dfl"/>
+                                            <constraint firstItem="tgi-vn-ciw" firstAttribute="leading" secondItem="enH-HE-XJg" secondAttribute="leading" constant="8" id="hBO-Cf-xOK"/>
+                                            <constraint firstAttribute="width" secondItem="tgi-vn-ciw" secondAttribute="width" constant="16" id="ld6-dI-B8Q"/>
+                                            <constraint firstAttribute="bottom" secondItem="tgi-vn-ciw" secondAttribute="bottom" constant="8" id="oIi-9Y-ina"/>
+                                        </constraints>
+                                        <blurEffect style="extraLight"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </visualEffectView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="enH-HE-XJg" secondAttribute="width" id="0E9-aK-5YP"/>
+                                    <constraint firstItem="enH-HE-XJg" firstAttribute="centerY" secondItem="sh6-YC-b4z" secondAttribute="centerY" id="3DY-ow-cTl"/>
+                                    <constraint firstItem="enH-HE-XJg" firstAttribute="centerX" secondItem="sh6-YC-b4z" secondAttribute="centerX" id="Z5N-h2-YnE"/>
+                                    <constraint firstAttribute="height" secondItem="enH-HE-XJg" secondAttribute="height" id="ZxP-9G-HWo"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstItem="61i-Hs-GkW" firstAttribute="bottom" secondItem="sh6-YC-b4z" secondAttribute="bottom" constant="80" id="hbx-o4-20c"/>
+                            <constraint firstItem="sh6-YC-b4z" firstAttribute="centerX" secondItem="61i-Hs-GkW" secondAttribute="centerX" id="tSF-Up-wCS"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="61i-Hs-GkW"/>
                     </view>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="ratingsView" destination="sh6-YC-b4z" id="gHr-2u-Yrh"/>
                         <segue destination="8yj-Hm-gVe" kind="show" identifier="MediaInfo" id="0pt-sU-ul6"/>
                     </connections>
                 </viewController>
