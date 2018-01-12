@@ -9,26 +9,30 @@
 import Foundation
 import UIKit
 
-protocol Fullscreen {
+protocol PhotoScrollViewDelegate {
     var isFullscreen: Bool {
         get
+    }
+    var isFullyZoomedOut: Bool {
+        get
+        set
     }
 }
 
 class PhotoScrollView : UIScrollView {
-    var fullscreen: Fullscreen
+    var psvDelegate: PhotoScrollViewDelegate
     var imageView: UIImageView
     var parentView: UIView
     
     
     init(parentView: UIView,
          forImage image: UIImage,
-         fullscreen: Fullscreen) {
+         psvDelegate: PhotoScrollViewDelegate) {
         let imageView = UIImageView()
         imageView.image = image
         imageView.sizeToFit()
         
-        self.fullscreen = fullscreen
+        self.psvDelegate = psvDelegate
         self.imageView = imageView
         self.parentView = parentView
         
@@ -66,6 +70,8 @@ class PhotoScrollView : UIScrollView {
         calcZoomScale()
         
         zoomScale = minimumZoomScale
+        
+        trackZoomScale(zoomScale)
     }
     
     func calcZoomScale() {
@@ -91,7 +97,7 @@ class PhotoScrollView : UIScrollView {
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
         let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
         
-        let bottomOffset = CGFloat(fullscreen.isFullscreen ? -50 : 0)
+        let bottomOffset = CGFloat(psvDelegate.isFullscreen ? -50 : 0)
         
         contentInset = UIEdgeInsets(top: verticalPadding,
                                     left: horizontalPadding,
@@ -104,46 +110,59 @@ class PhotoScrollView : UIScrollView {
                                              right: 0)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>,
-                               with event: UIEvent?) {
-        //print("ScrollView - touchesBegan")
-        parentView.touchesBegan(touches,
-                                with: event)
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>,
-                               with event: UIEvent?) {
-        //print("ScrollView - touchesMoved")
-        parentView.touchesMoved(touches,
-                                with: event)
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>,
-                               with event: UIEvent?) {
-        //print("ScrollView - touchesEnded")
-        parentView.touchesEnded(touches,
-                                with: event)
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>,
-                                   with event: UIEvent?) {
-        //print("ScrollView - touchesCancelled")
-        parentView.touchesCancelled(touches,
-                                    with: event)
-    }
-    
-    override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
-        //print("ScrollView - touchesEstimatedPropertiesUpdated")
-        parentView.touchesEstimatedPropertiesUpdated(touches)
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>,
+//                               with event: UIEvent?) {
+//        //print("ScrollView - touchesBegan")
+//        parentView.touchesBegan(touches,
+//                                with: event)
+//    }
+//
+//    override func touchesMoved(_ touches: Set<UITouch>,
+//                               with event: UIEvent?) {
+//        //print("ScrollView - touchesMoved")
+//        parentView.touchesMoved(touches,
+//                                with: event)
+//    }
+//
+//    override func touchesEnded(_ touches: Set<UITouch>,
+//                               with event: UIEvent?) {
+//        //print("ScrollView - touchesEnded")
+//        parentView.touchesEnded(touches,
+//                                with: event)
+//    }
+//
+//    override func touchesCancelled(_ touches: Set<UITouch>,
+//                                   with event: UIEvent?) {
+//        //print("ScrollView - touchesCancelled")
+//        parentView.touchesCancelled(touches,
+//                                    with: event)
+//    }
+//
+//    override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
+//        //print("ScrollView - touchesEstimatedPropertiesUpdated")
+//        parentView.touchesEstimatedPropertiesUpdated(touches)
+//    }
 }
     
 extension PhotoScrollView : UIScrollViewDelegate {
+    func trackZoomScale(_ zoomScale: CGFloat) {
+        if zoomScale == minimumZoomScale {
+            print("Fully Zoomed Out: \(zoomScale)")
+            psvDelegate.isFullyZoomedOut = true
+        } else {
+            print("Zoom: \(zoomScale)")
+            psvDelegate.isFullyZoomedOut = false
+        }
+    }
+    
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centreImage()
     }
     
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView,
+                                 with view: UIView?,
+                                 atScale scale: CGFloat) {
+        trackZoomScale(scale)
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {

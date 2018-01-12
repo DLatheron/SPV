@@ -15,7 +15,7 @@ protocol MediaEnumerator: class {
     func prevMedia(media: Media) -> Media
 }
 
-class PhotoDetailsViewController : UIViewController, Fullscreen {
+class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     let showRatingsAnimationDuration = 0.2
     let hideRatingsAnimationDuration = 0.2
     
@@ -45,6 +45,7 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         }
         
         ratingsView.media = media
+        ratingsView.delegate = self
         enableRatingsView(true)
         
         self.view.autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
@@ -97,6 +98,19 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     var isFullscreen: Bool {
         get {
             return navigationController?.isNavigationBarHidden == true
+        }
+    }
+    
+    var isFullyZoomedOut: Bool {
+        get {
+            return ratingsView.isUserInteractionEnabled
+        }
+        set(value) {
+            if value {
+                ratingsView.isUserInteractionEnabled = true
+            } else {
+                ratingsView.isUserInteractionEnabled = false
+            }
         }
     }
     
@@ -160,7 +174,11 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     
     @objc func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
         print("Single Tap")
-        // MAKE THIS NOT HAPPEN IF WE ARE INTERACTING WITH RATINGS...
+        
+        if ratingsView.alpha > 0 {
+            recognizer.cancel()
+            return
+        }
         
         let currentState = navigationController?.isNavigationBarHidden == false
             
@@ -208,7 +226,7 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
         let image = newMedia.getImage()
         let newScrollView = PhotoScrollView(parentView: self.view,
                                             forImage: image,
-                                            fullscreen: self)
+                                            psvDelegate: self)
         newScrollView.center.x += xOffset
         self.view.addSubview(newScrollView)
         self.view.bringSubview(toFront: self.ratingsView)
@@ -289,5 +307,30 @@ class PhotoDetailsViewController : UIViewController, Fullscreen {
     
     func enableRatingsView(_ enable: Bool) {
         ratingsView.isUserInteractionEnabled = enable
+    }
+}
+
+extension PhotoDetailsViewController : RatingsViewDelegate {
+    func enableGestureRecognizers(_ enable: Bool) {
+        singleTap?.isEnabled = enable
+        doubleTap?.isEnabled = enable
+        swipeLeft?.isEnabled = enable
+        swipeRight?.isEnabled = enable
+    }
+    
+    func canBeginInteraction() -> Bool {
+        return isFullyZoomedOut
+    }
+    
+    func interactionBegan() {
+        enableGestureRecognizers(false)
+    }
+    
+    func interactionEnded() {
+        enableGestureRecognizers(true)
+    }
+    
+    func interactionCancelled() {
+        enableGestureRecognizers(true)
     }
 }
