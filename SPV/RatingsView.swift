@@ -20,18 +20,22 @@ protocol RatingsViewDelegate {
 class RatingsView : UIView {
     let minViewAlpha: CGFloat = 0.0
     let maxViewAlpha: CGFloat = 1.0
-    let viewFadeOutDuration: TimeInterval = 0.3
-    let viewFadeInDuration: TimeInterval = 0.3
+    let interactionBeganFadeDuration: TimeInterval = 0.3
+    let interactionEndedFadeDuration: TimeInterval = 0.3
+    let interactionCancelledFadeDuration: TimeInterval = 0.5
     
     var delegate: RatingsViewDelegate? = nil
     var interacting = false
     var cancelled = false
     
     var cosmosView: CosmosView! = nil
+    var backgroundView: CosmosView! = nil
     var media: Media? = nil {
         didSet {
+            let rating: Double
             if let media = media {
-                cosmosView.rating = Double(media.mediaInfo.rating)
+                rating = Double(media.mediaInfo.rating)
+                
                 cosmosView.didFinishTouchingCosmos = {
                     if self.cancelled {
                         print("Rating update was cancelled")
@@ -41,7 +45,12 @@ class RatingsView : UIView {
                         media.save()
                     }
                 }
+            } else {
+                rating = 0
             }
+            
+            cosmosView.rating = rating
+            backgroundView.rating = rating
         }
     }
     
@@ -49,7 +58,10 @@ class RatingsView : UIView {
         super.init(coder: aDecoder)
         
         let visualEffectView = self.subviews[0] as! UIVisualEffectView
-        cosmosView = visualEffectView.contentView.subviews[0] as! CosmosView
+        let contentSubViews = visualEffectView.contentView.subviews
+        
+        backgroundView = contentSubViews[0] as! CosmosView
+        cosmosView = contentSubViews[1] as! CosmosView
 
         alpha = minViewAlpha
     }
@@ -109,11 +121,38 @@ class RatingsView : UIView {
         cosmosTouchEvents(enabled: true)
     }
     
-    func interactionEnded() {
+    func updateMediaRating(rating: Int?) {
+        if let media = media {
+            if let rating = rating {
+                cosmosView.rating = Double(rating)
+                backgroundView.rating = Double(rating)
+                cosmosView.update()
+                backgroundView.update()
+                
+                print("Rating updated to \(rating)")
+                media.mediaInfo.rating = rating
+                media.save()
+            } else {
+                cosmosView.rating = Double(media.mediaInfo.rating)
+                backgroundView.rating = Double(media.mediaInfo.rating)
+                cosmosView.update()
+                backgroundView.update()
+            }
+        }
+    }
+    
+    func interactionEnded(wasCancelled: Bool) {
         interacting = false
         if cancelled {
+            cosmosView.didFinishTouchingCosmos = nil
+            self.updateMediaRating(rating: nil)
+            
             delegate?.interactionCancelled()
         } else {
+            cosmosView.didFinishTouchingCosmos = {
+                self.updateMediaRating(rating: Int($0))
+            }
+            
             delegate?.interactionEnded()
         }
         cosmosTouchEvents(enabled: false)
@@ -124,7 +163,7 @@ class RatingsView : UIView {
             transform = CGAffineTransform(scaleX: 1,
                                           y: 1)
 
-            UIView.animate(withDuration: viewFadeInDuration,
+            UIView.animate(withDuration: interactionBeganFadeDuration,
                            animations: {
                 self.alpha = self.maxViewAlpha
             }) { complete in
@@ -137,7 +176,7 @@ class RatingsView : UIView {
     
     func hide() {
         if interacting {
-            interactionEnded()
+            interactionEnded(wasCancelled: false)
             
             UIView.animate(withDuration: 0.5,
                            delay: 0.0,
@@ -148,27 +187,11 @@ class RatingsView : UIView {
                 self.transform = CGAffineTransform(scaleX: 1.1,
                                                    y: 1.1)
             }, completion: { completion in
-                UIView.animate(withDuration: self.viewFadeOutDuration,
+                UIView.animate(withDuration: self.interactionEndedFadeDuration,
                                animations: {
                     self.alpha = self.minViewAlpha
                 })
             })
-            
-//            UIView.animate(withDuration: 0.1,
-//                           delay: 0,
-//                           options: [.repeat, .autoreverse],
-//                           animations: {
-//                UIView.setAnimationRepeatCount(2)
-//                self.transform = CGAffineTransform(scaleX: 1.2,
-//                                                   y: 1.2)
-//            }, completion: { completion in
-//                self.transform = CGAffineTransform(scaleX: 1,
-//                                                   y: 1)
-//                UIView.animate(withDuration: self.viewFadeOutDuration,
-//                               animations: {
-//                    self.alpha = self.minViewAlpha
-//                })
-//            })
         }
     }
     
@@ -176,14 +199,9 @@ class RatingsView : UIView {
         if interacting {
             cancelled = true
             
-            interactionEnded()
+            interactionEnded(wasCancelled: true)
             
-            if let media = media {
-                cosmosView.rating = Double(media.mediaInfo.rating)
-                cosmosView.update()
-            }
-            
-            UIView.animate(withDuration: viewFadeOutDuration,
+            UIView.animate(withDuration: interactionCancelledFadeDuration,
                            animations: {
                 self.alpha = self.minViewAlpha
             })

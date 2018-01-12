@@ -240,12 +240,13 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
                        delay: 0.0,
                        options: .curveEaseOut,
                        animations: {
-                        newScrollView.center.x -= xOffset
+            newScrollView.center.x -= xOffset
         }) { (finished) in
             if (finished) {
                 self.scrollView?.removeFromSuperview()
                 self.scrollView = newScrollView
                 self.media = newMedia
+                self.ratingsView.media = newMedia
                 self.title = newImageName
             }
         }
