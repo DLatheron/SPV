@@ -42,6 +42,7 @@ But still appears correctly - even if there are really long lines of text
 """, editor: "TextBlockCell")
     let pin = SettingT<String>(name: "PIN", value: "", editor: nil)
     let blurInBackground = SettingT<Bool>(name: "Blur in Background", value: true)
+    let quickRating = SettingT<Bool>(name: "Quick Rating", value: true)
     
     let settingsBlock: SettingsBlock
     let legalSettingsBlock: SettingsBlock
@@ -64,7 +65,8 @@ But still appears correctly - even if there are really long lines of text
             testLegalSubMenu,
             setPIN,
             clearPIN,
-            blurInBackground
+            blurInBackground,
+            quickRating
         ])
     }
     
@@ -72,27 +74,14 @@ But still appears correctly - even if there are really long lines of text
         // This will automatically merge in new default settings,
         // but cannot foricbly update existing settings (you have
         // to rename them).
-        if !json["testOne"].isEmpty {
-            testOne.value = json["testOne"].boolValue
-        }
-        if !json["testTwo"].isEmpty {
-            testTwo.value = json["testTwo"].boolValue
-        }
-        if !json["testName"].isEmpty {
-            testName.value = json["testName"].stringValue
-        }
-        if !json["testConstData0"].isEmpty {
-            testConstData0.value = json["testConstData0"].rawValue
-        }
-        if !json["testConstData1"].isEmpty {
-            testConstData1.value = json["testConstData1"].rawValue
-        }
-        if !json["pin"].isEmpty {
-            pin.value = json["pin"].stringValue
-        }
-        if !json["blurInBackground"].isEmpty {
-            blurInBackground.value = json["blurInBackground"].boolValue
-        }
+        testOne.value = json["testOne"].bool ?? true
+        testTwo.value = json["testTwo"].bool ?? false
+        testName.value = json["testName"].string ?? ""
+        testConstData0.value = json["testConstData0"].rawValue
+        testConstData1.value = json["testConstData1"].rawValue
+        pin.value = json["pin"].string ?? ""
+        blurInBackground.value = json["blurInBackground"].bool ?? true
+        quickRating.value = json["quickRating"].bool ?? true
     }
     
     internal func writeAsJSON() -> JSON {
@@ -103,7 +92,8 @@ But still appears correctly - even if there are really long lines of text
             "testConstData0": testConstData0.value,
             "testConstData1": testConstData1.value,
             "pin": pin.value,
-            "blurInBackground": blurInBackground.value
+            "blurInBackground": blurInBackground.value,
+            "quickRating": quickRating.value
         ])
     }
     

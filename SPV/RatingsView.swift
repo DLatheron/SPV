@@ -82,7 +82,6 @@ class RatingsView : UIView {
         let yThreshold: CGFloat = 44
         
         let location = touches.first!.location(in: self)
-        print("Location: \(location)")
         if location.x < bounds.minX - xThreshold
             || location.x > bounds.maxX + xThreshold
             || location.y < bounds.minY - yThreshold
@@ -104,7 +103,10 @@ class RatingsView : UIView {
     
     override func hitTest(_ point: CGPoint,
                           with event: UIEvent?) -> UIView? {
-        print("Testing")
+        if !isUserInteractionEnabled {
+            return nil
+        }
+
         return cosmosView.hitTest(point,
                                   with: event)
     }

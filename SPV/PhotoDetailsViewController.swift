@@ -39,11 +39,8 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.isUserInteractionEnabled = true
-        self.view.subviews.forEach { view in
-            view.isUserInteractionEnabled = true
-        }
-        
+        //self.view.isUserInteractionEnabled = true
+
         ratingsView.media = media
         ratingsView.delegate = self
         enableRatingsView(true)
@@ -60,6 +57,8 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        enableRatingsView(true)
         
         animateOnToScreen(forMedia: media)
     }
@@ -103,14 +102,7 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     
     var isFullyZoomedOut: Bool {
         get {
-            return ratingsView.isUserInteractionEnabled
-        }
-        set(value) {
-            if value {
-                ratingsView.isUserInteractionEnabled = true
-            } else {
-                ratingsView.isUserInteractionEnabled = false
-            }
+            return scrollView?.isFullyZoomedOut ?? true
         }
     }
     
@@ -307,6 +299,7 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     }
     
     func enableRatingsView(_ enable: Bool) {
+        let enable = enable && Settings.shared.quickRating.value
         ratingsView.isUserInteractionEnabled = enable
     }
 }

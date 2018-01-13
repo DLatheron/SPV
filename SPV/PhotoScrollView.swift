@@ -13,10 +13,6 @@ protocol PhotoScrollViewDelegate {
     var isFullscreen: Bool {
         get
     }
-    var isFullyZoomedOut: Bool {
-        get
-        set
-    }
 }
 
 class PhotoScrollView : UIScrollView {
@@ -38,9 +34,9 @@ class PhotoScrollView : UIScrollView {
         
         super.init(frame: UIScreen.main.bounds)
         
-        parentView.isUserInteractionEnabled = true
-        isUserInteractionEnabled = true
-        self.imageView.isUserInteractionEnabled = true
+//        parentView.isUserInteractionEnabled = true
+//        isUserInteractionEnabled = true
+//        self.imageView.isUserInteractionEnabled = true
         
         backgroundColor = UIColor.white
         contentSize = imageView.bounds.size
@@ -70,8 +66,6 @@ class PhotoScrollView : UIScrollView {
         calcZoomScale()
         
         zoomScale = minimumZoomScale
-        
-        trackZoomScale(zoomScale)
     }
     
     func calcZoomScale() {
@@ -145,13 +139,9 @@ class PhotoScrollView : UIScrollView {
 }
     
 extension PhotoScrollView : UIScrollViewDelegate {
-    func trackZoomScale(_ zoomScale: CGFloat) {
-        if zoomScale == minimumZoomScale {
-            print("Fully Zoomed Out: \(zoomScale)")
-            psvDelegate.isFullyZoomedOut = true
-        } else {
-            print("Zoom: \(zoomScale)")
-            psvDelegate.isFullyZoomedOut = false
+    var isFullyZoomedOut: Bool {
+        get {
+            return zoomScale == minimumZoomScale
         }
     }
     
@@ -162,7 +152,6 @@ extension PhotoScrollView : UIScrollViewDelegate {
     func scrollViewDidEndZooming(_ scrollView: UIScrollView,
                                  with view: UIView?,
                                  atScale scale: CGFloat) {
-        trackZoomScale(scale)
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
