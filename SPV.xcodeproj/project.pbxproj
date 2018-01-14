@@ -79,6 +79,7 @@
 		F9D47C621FFF631A00515A27 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D47C611FFF631A00515A27 /* UIGestureRecognizer.swift */; };
 		F9E25C291FE19509009D9DF7 /* PINEntryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */; };
 		F9E25C2B1FE26631009D9DF7 /* MediaViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */; };
+		F9E5DA4E200BCAFF00BF5BD0 /* GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5DA4D200BCAFF00BF5BD0 /* GIF.swift */; };
 		F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */; };
 		F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E843C51F972F050075BA43 /* UIViewExtensions.swift */; };
 		F9E8DE911FC341C400FDAAB9 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */; };
@@ -204,6 +205,7 @@
 		F9D47C611FFF631A00515A27 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINEntryMode.swift; sourceTree = "<group>"; };
 		F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MediaViewer.storyboard; sourceTree = "<group>"; };
+		F9E5DA4D200BCAFF00BF5BD0 /* GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIF.swift; sourceTree = "<group>"; };
 		F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		F9E843C51F972F050075BA43 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
@@ -414,6 +416,7 @@
 		F98B8C391F767E2300719CA6 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				F9E5DA4C200BCAE900BF5BD0 /* Media Formats */,
 				F9C8DA3D1FD1C879002BB2D5 /* Security */,
 				F9C8DA3E1FD1C885002BB2D5 /* KeychainPasswordItem.swift */,
 				F9F2D3D91F44201A00FD6F78 /* Controls */,
@@ -579,6 +582,14 @@
 			children = (
 			);
 			name = Security;
+			sourceTree = "<group>";
+		};
+		F9E5DA4C200BCAE900BF5BD0 /* Media Formats */ = {
+			isa = PBXGroup;
+			children = (
+				F9E5DA4D200BCAFF00BF5BD0 /* GIF.swift */,
+			);
+			name = "Media Formats";
 			sourceTree = "<group>";
 		};
 		F9F2D3D91F44201A00FD6F78 /* Controls */ = {
@@ -933,6 +944,7 @@
 				F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */,
 				F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */,
 				F9F2D3D41F42CE0200FD6F78 /* DownloadsViewController.swift in Sources */,
+				F9E5DA4E200BCAFF00BF5BD0 /* GIF.swift in Sources */,
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
 				F919C7AF1F699357008372F6 /* MediaInfoHeaderCell.swift in Sources */,
 				F9BABAAC1F28F92F00000D9B /* AlbumsViewController.swift in Sources */,

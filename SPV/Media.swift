@@ -40,7 +40,14 @@ class Media : NSObject {
     }
     
     func getImage() -> UIImage {
-        return UIImage(contentsOfFile: fileURL.path)!
+        if fileURL.pathExtension == "gif" {
+            let properFileURL = URL(fileURLWithPath: fileURL.absoluteString)
+            let data = try? Data(contentsOf: properFileURL)
+            let baseGif = UIImage.gifImageWithData(data!)
+            return baseGif!
+        } else {
+            return UIImage(contentsOfFile: fileURL.path)!
+        }
     }
     
     func saveInfo(info: MediaInfo) {
