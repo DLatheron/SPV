@@ -18,18 +18,19 @@ protocol RatingsViewDelegate {
 }
 
 class RatingsView : UIView {
-    let minViewAlpha: CGFloat = 0.0
-    let maxViewAlpha: CGFloat = 1.0
-    let interactionBeganFadeDuration: TimeInterval = 0.3
-    let interactionEndedFadeDuration: TimeInterval = 0.3
-    let interactionCancelledFadeDuration: TimeInterval = 0.5
+    fileprivate let minViewAlpha: CGFloat = 0.0
+    fileprivate let maxViewAlpha: CGFloat = 1.0
+    fileprivate let interactionBeganFadeDuration: TimeInterval = 0.3
+    fileprivate let interactionEndedFadeDuration: TimeInterval = 0.3
+    fileprivate let interactionCancelledFadeDuration: TimeInterval = 0.5
     
+    fileprivate var interacting = false
+    fileprivate var cancelled = false
+    
+    fileprivate var cosmosView: CosmosView! = nil
+    fileprivate var backgroundView: CosmosView! = nil
+
     var delegate: RatingsViewDelegate? = nil
-    var interacting = false
-    var cancelled = false
-    
-    var cosmosView: CosmosView! = nil
-    var backgroundView: CosmosView! = nil
     var media: Media? = nil {
         didSet {
             let rating: Double
@@ -111,19 +112,19 @@ class RatingsView : UIView {
                                   with: event)
     }
     
-    func cosmosTouchEvents(enabled: Bool) {
+    fileprivate func cosmosTouchEvents(enabled: Bool) {
         cosmosView.setValue(enabled,
                             forKey: "updateOnTouch")
     }
     
-    func interactionBegan() {
+    fileprivate func interactionBegan() {
         interacting = true
         cancelled = false
         delegate?.interactionBegan()
         cosmosTouchEvents(enabled: true)
     }
     
-    func updateMediaRating(rating: Int?) {
+    fileprivate func updateMediaRating(rating: Int?) {
         if let media = media {
             if let rating = rating {
                 cosmosView.rating = Double(rating)
@@ -143,7 +144,7 @@ class RatingsView : UIView {
         }
     }
     
-    func interactionEnded(wasCancelled: Bool) {
+    fileprivate func interactionEnded(wasCancelled: Bool) {
         interacting = false
         if cancelled {
             cosmosView.didFinishTouchingCosmos = nil
@@ -160,7 +161,7 @@ class RatingsView : UIView {
         cosmosTouchEvents(enabled: false)
     }
     
-    func show() {
+    fileprivate func show() {
         if !interacting {
             transform = CGAffineTransform(scaleX: 1,
                                           y: 1)
@@ -176,7 +177,7 @@ class RatingsView : UIView {
         }
     }
     
-    func hide() {
+    fileprivate func hide() {
         if interacting {
             interactionEnded(wasCancelled: false)
             
@@ -197,7 +198,7 @@ class RatingsView : UIView {
         }
     }
     
-    func cancel() {
+    fileprivate func cancel() {
         if interacting {
             cancelled = true
             

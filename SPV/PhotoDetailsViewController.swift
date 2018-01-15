@@ -240,6 +240,9 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
                 self.media = newMedia
                 self.ratingsView.media = newMedia
                 self.title = newImageName
+                
+                // TODO: Briefly show the quick ratings view.
+                
             }
         }
     }
