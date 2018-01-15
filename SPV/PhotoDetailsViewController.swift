@@ -141,6 +141,7 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         // Double tab for zoom.
         doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTap?.numberOfTapsRequired = 2
+        doubleTap?.delegate = self
         self.view.addGestureRecognizer(doubleTap!)
         self.view.addGestureRecognizer(singleTap!)
         
@@ -149,11 +150,13 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         // Swipe left for next image.
         swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeLeft(_:)))
         swipeLeft?.direction = UISwipeGestureRecognizerDirection.left
+        swipeLeft?.delegate = self
         self.view.addGestureRecognizer(swipeLeft!)
         
         // Swipe right for previous image.
         swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeRight(_:)))
         swipeRight?.direction = UISwipeGestureRecognizerDirection.right
+        swipeRight?.delegate = self
         self.view.addGestureRecognizer(swipeRight!)
     }
     
@@ -169,6 +172,9 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         
         if ratingsView.alpha > 0 {
             recognizer.cancel()
+            let hitView = ratingsView.hitTest(recognizer.location(in: self.view),
+                                              with: nil)
+            self.ratingsView.hide(cancelled: hitView == self.ratingsView)
             return
         }
         
@@ -215,6 +221,8 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     func animateOnToScreen(forMedia newMedia: Media,
                            from xOffset: CGFloat = 0.0,
                            over duration: TimeInterval = 0.0) {
+        ratingsView.endPreview()
+        
         let image = newMedia.getImage()
         let newScrollView = PhotoScrollView(parentView: self.view,
                                             forImage: image,
@@ -241,8 +249,7 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
                 self.ratingsView.media = newMedia
                 self.title = newImageName
                 
-                // TODO: Briefly show the quick ratings view.
-                
+                self.ratingsView.beginPreview()
             }
         }
     }
@@ -307,27 +314,14 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     }
 }
 
-extension PhotoDetailsViewController : RatingsViewDelegate {
-    func enableGestureRecognizers(_ enable: Bool) {
-        singleTap?.isEnabled = enable
-        doubleTap?.isEnabled = enable
-        swipeLeft?.isEnabled = enable
-        swipeRight?.isEnabled = enable
+extension PhotoDetailsViewController : UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return !ratingsView.shouldSuppressGestures
     }
-    
+}
+
+extension PhotoDetailsViewController : RatingsViewDelegate {
     func canBeginInteraction() -> Bool {
         return isFullyZoomedOut
-    }
-    
-    func interactionBegan() {
-        enableGestureRecognizers(false)
-    }
-    
-    func interactionEnded() {
-        enableGestureRecognizers(true)
-    }
-    
-    func interactionCancelled() {
-        enableGestureRecognizers(true)
     }
 }

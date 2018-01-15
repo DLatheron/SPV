@@ -12,9 +12,6 @@ import UIKit
 
 protocol RatingsViewDelegate {
     func canBeginInteraction() -> Bool
-    func interactionBegan()
-    func interactionEnded()
-    func interactionCancelled()
 }
 
 class RatingsView : UIView {
@@ -23,9 +20,11 @@ class RatingsView : UIView {
     fileprivate let interactionBeganFadeDuration: TimeInterval = 0.3
     fileprivate let interactionEndedFadeDuration: TimeInterval = 0.3
     fileprivate let interactionCancelledFadeDuration: TimeInterval = 0.5
+    fileprivate let previewDuration: TimeInterval = 1.0
     
     fileprivate var interacting = false
     fileprivate var cancelled = false
+    fileprivate var previewing = false
     
     fileprivate var cosmosView: CosmosView! = nil
     fileprivate var backgroundView: CosmosView! = nil
@@ -54,6 +53,11 @@ class RatingsView : UIView {
             backgroundView.rating = rating
         }
     }
+    var shouldSuppressGestures: Bool {
+        get {
+            return alpha > 0 && !previewing
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -69,6 +73,8 @@ class RatingsView : UIView {
     
     override func touchesBegan(_ touches: Set<UITouch>,
                                with event: UIEvent?) {
+        previewing = false
+        
         if delegate?.canBeginInteraction() ?? false {
             show()
         } else {
@@ -87,7 +93,7 @@ class RatingsView : UIView {
             || location.x > bounds.maxX + xThreshold
             || location.y < bounds.minY - yThreshold
             || location.y > bounds.maxY + yThreshold {
-            cancel()
+            hide(cancelled: true)
         } else {
             super.touchesMoved(touches,
                                with: event)
@@ -120,7 +126,6 @@ class RatingsView : UIView {
     fileprivate func interactionBegan() {
         interacting = true
         cancelled = false
-        delegate?.interactionBegan()
         cosmosTouchEvents(enabled: true)
     }
     
@@ -144,21 +149,21 @@ class RatingsView : UIView {
         }
     }
     
-    fileprivate func interactionEnded(wasCancelled: Bool) {
+    fileprivate func interactionEnded(wasCancelledOrNoChange: Bool) -> Bool {
         interacting = false
+        cancelled = wasCancelledOrNoChange
+        
         if cancelled {
             cosmosView.didFinishTouchingCosmos = nil
             self.updateMediaRating(rating: nil)
-            
-            delegate?.interactionCancelled()
         } else {
             cosmosView.didFinishTouchingCosmos = {
                 self.updateMediaRating(rating: Int($0))
             }
-            
-            delegate?.interactionEnded()
         }
         cosmosTouchEvents(enabled: false)
+        
+        return cancelled
     }
     
     fileprivate func show() {
@@ -167,6 +172,8 @@ class RatingsView : UIView {
                                           y: 1)
 
             UIView.animate(withDuration: interactionBeganFadeDuration,
+                           delay: 0.0,
+                           options: .beginFromCurrentState,
                            animations: {
                 self.alpha = self.maxViewAlpha
             }) { complete in
@@ -174,18 +181,27 @@ class RatingsView : UIView {
                     self.interactionBegan()
                 }
             }
+        } else {
+            self.interactionBegan()
         }
     }
     
-    fileprivate func hide() {
-        if interacting {
-            interactionEnded(wasCancelled: false)
-            
+    func hide(cancelled wasCancelled: Bool = false) {
+        let noChange = media?.mediaInfo.rating == Int(cosmosView.rating)
+        
+        if interactionEnded(wasCancelledOrNoChange: wasCancelled || noChange) {
+            UIView.animate(withDuration: interactionCancelledFadeDuration,
+                           delay: 0.0,
+                           options: .beginFromCurrentState,
+                           animations: {
+                            self.alpha = self.minViewAlpha
+            })
+        } else {
             UIView.animate(withDuration: 0.5,
                            delay: 0.0,
                            usingSpringWithDamping: 0.1,
                            initialSpringVelocity: 6,
-                           options: [.curveEaseInOut],
+                           options: [.curveEaseInOut, .beginFromCurrentState],
                            animations: {
                 self.transform = CGAffineTransform(scaleX: 1.1,
                                                    y: 1.1)
@@ -198,16 +214,20 @@ class RatingsView : UIView {
         }
     }
     
-    fileprivate func cancel() {
-        if interacting {
-            cancelled = true
-            
-            interactionEnded(wasCancelled: true)
-            
-            UIView.animate(withDuration: interactionCancelledFadeDuration,
-                           animations: {
-                self.alpha = self.minViewAlpha
-            })
+    func beginPreview() {
+        previewing = true
+        
+        self.show()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + previewDuration) {
+            self.endPreview()
+        }
+    }
+    
+    func endPreview() {
+        if self.previewing {
+            self.previewing = false
+            hide(cancelled: true)
         }
     }
 }
