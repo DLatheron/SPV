@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 fileprivate let deleteMediaTitle = NSLocalizedString("Delete Media",
                                                      comment: "Action item title for deleting selected media")
@@ -17,13 +18,17 @@ fileprivate let shareMediaTitle = NSLocalizedString("Share To...",
                                                     comment: "Action item title for sharing selected media")
 fileprivate let cancelTitle = NSLocalizedString("Cancel",
                                                 comment: "Action item title for cancelling media seletion")
+fileprivate let importPhotoTitle = NSLocalizedString("Import Photo...",
+                                                     comment: "Import from photos")
 
 class AlbumsViewController: UICollectionViewController {
     @IBOutlet weak var selectButton: UIBarButtonItem!
     
     fileprivate var deleteButton: UIBarButtonItem!
     fileprivate var actionButton: UIBarButtonItem!
-    fileprivate var navButtons: [UIBarButtonItem] = []
+    fileprivate var importButton: UIBarButtonItem!
+    fileprivate var standardNavButtons: [UIBarButtonItem] = []
+    fileprivate var selectedNavButtons: [UIBarButtonItem] = []
     fileprivate var alertController: UIAlertController!
     
     fileprivate var media: [Media] = []
@@ -32,6 +37,7 @@ class AlbumsViewController: UICollectionViewController {
             let anyMediaSelected = selectedMedia.count > 0
             deleteButton.isEnabled = anyMediaSelected
             actionButton.isEnabled = anyMediaSelected
+            importButton.isEnabled = !anyMediaSelected
         }
     }
     
@@ -45,12 +51,12 @@ class AlbumsViewController: UICollectionViewController {
             if selectMode {
                 selectButton.title = NSLocalizedString("Done",
                                                        comment: "Button title to exit media selection mode")
-                navigationItem.setRightBarButtonItems(navButtons,
+                navigationItem.setRightBarButtonItems(selectedNavButtons,
                                                       animated: true)
             } else {
                 selectButton.title = NSLocalizedString("Select",
                                                        comment: "Button title to enter media selection mode")
-                navigationItem.setRightBarButtonItems([],
+                navigationItem.setRightBarButtonItems(standardNavButtons,
                                                       animated: true)
                 deselectAll()
             }
@@ -70,7 +76,13 @@ class AlbumsViewController: UICollectionViewController {
         actionButton = UIBarButtonItem(barButtonSystemItem: .action,
                                        target: self,
                                        action: #selector(actionOnSelectedMedia(_:)))
-        navButtons = [actionButton, deleteButton]
+        selectedNavButtons = [actionButton, deleteButton]
+        
+        // TODO: Replace with custom import icon.
+        importButton = UIBarButtonItem(barButtonSystemItem: .action,
+                                       target: self,
+                                       action: #selector(importMedia(_:)))
+        standardNavButtons = [importButton]
         
     }
 
@@ -79,6 +91,7 @@ class AlbumsViewController: UICollectionViewController {
         
         mediaManager.delegate = self
         media = mediaManager.media
+        selectMode = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -248,6 +261,89 @@ extension AlbumsViewController : PhotoCellDelegate {
                 selectedMedia.remove(media)
             }
         }
+    }
+}
+
+extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        self.dismiss(animated: true,
+                     completion: nil)
+        
+        // Is this a live photo?
+        if let livePhoto = info[UIImagePickerControllerLivePhoto] {
+            print("Live Photo picked")
+            
+            
+        }
+
+//        // if we have a live photo view already, remove it
+//        if ([self.view viewWithTag:87]) {
+//            UIView *subview = [self.view viewWithTag:87];
+//            [subview removeFromSuperview];
+//        }
+//
+//        // check if this is a Live Image, otherwise present a warning
+//        PHLivePhoto *photo = [info objectForKey:UIImagePickerControllerLivePhoto];
+//        if (!photo) {
+//            [self notLivePhotoWarning];
+//            return;
+//        }
+//
+//        // create a Live Photo View
+//        PHLivePhotoView *photoView = [[PHLivePhotoView alloc]initWithFrame:self.view.bounds];
+//        photoView.livePhoto = [info objectForKey:UIImagePickerControllerLivePhoto];
+//        photoView.contentMode = UIViewContentModeScaleAspectFit;
+//        photoView.tag = 87;
+//
+//        // bring up the Live Photo View
+//        [self.view addSubview:photoView];
+//        [self.view sendSubviewToBack:photoView];
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true,
+                     completion: nil)
+    }
+    
+    @objc func importMedia(_ sender: Any) {
+        func importFromPhotos() {
+            print("TODO: Import from photos")
+            
+            let picker = UIImagePickerController()
+            picker.sourceType = .photoLibrary
+            picker.allowsEditing = false;
+            picker.delegate = self;
+            picker.mediaTypes = [
+                kUTTypeMovie as String,
+                kUTTypeImage as String,
+                kUTTypeLivePhoto as String
+            ];
+            
+            self.present(picker,
+                         animated: true,
+                         completion: nil)
+        }
+        
+        alertController = UIAlertController(title: nil,
+                                            message: nil,
+                                            preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: importPhotoTitle,
+                                                style: .default)
+        { alertAction in
+            importFromPhotos()
+            
+            self.alertControllerDismissed()
+            
+            // NOTE: Move operation MUST retain selection (or refresh it).
+        })
+        alertController.addAction(UIAlertAction(title: cancelTitle,
+                                                style: .cancel)
+        { alertAction in
+            self.alertControllerDismissed()
+        })
+        present(alertController,
+                animated: true)
     }
 }
 
