@@ -7,7 +7,26 @@
 //
 
 import Foundation
+import UIKit
+import AVFoundation
 
 class Video : Media {
+    override func getImage() -> UIImage {
+        return generateThumbnail(url: URL(fileURLWithPath: fileURL.absoluteString))
+    }
     
+    func generateThumbnail(url: URL) -> UIImage {
+        do {
+            let asset = AVURLAsset(url: url)
+            let imageGenerator = AVAssetImageGenerator(asset: asset)
+            imageGenerator.appliesPreferredTrackTransform = true
+            let cgImage = try imageGenerator.copyCGImage(at: kCMTimeZero, actualTime: nil)
+            
+            return UIImage(cgImage: cgImage)
+        } catch {
+            print(error.localizedDescription)
+            
+            return UIImage()
+        }
+    }
 }

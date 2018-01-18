@@ -9,6 +9,7 @@
 
 import UIKit
 import MobileCoreServices
+import PhotosUI
 
 fileprivate let deleteMediaTitle = NSLocalizedString("Delete Media",
                                                      comment: "Action item title for deleting selected media")
@@ -269,12 +270,35 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         self.dismiss(animated: true,
                      completion: nil)
+
+        // Is this a photo asset?
+        if let asset = info[UIImagePickerControllerPHAsset] as? PHAsset {
+            print("Photo asset picked")
+            
+            print("Asset: \(asset)")
+            
+            switch asset.mediaSubtypes {
+            case .photoLive:
+                print("Live Photo")
+                
+            case .photoPanorama:
+                print("Panorama")
+                
+            case .photoHDR:
+                print("HDR Photo")
+                
+            default:
+                print("Other")
+            }
+        }
         
         // Is this a live photo?
-        if let livePhoto = info[UIImagePickerControllerLivePhoto] {
+        if let livePhoto = info[UIImagePickerControllerLivePhoto] as? PHLivePhoto {
             print("Live Photo picked")
             
             
+            let livePhotoView = PHLivePhotoView(frame: self.view.bounds)
+            livePhotoView.livePhoto = livePhoto
         }
 
 //        // if we have a live photo view already, remove it

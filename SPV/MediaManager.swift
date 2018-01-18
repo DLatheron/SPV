@@ -19,14 +19,6 @@ class MediaManager {
     static var shared: MediaManager = MediaManager()
     
     weak var delegate: MediaManagerChangedProtocol?
-    
-    let extensions = [
-        "jpg",
-        "jpeg",
-        "png",
-        "bmp",
-        "gif"
-    ]
 
     var media: [Media] = []
     
@@ -35,9 +27,13 @@ class MediaManager {
     init() {
     }
     
+    func newMedia(fileURL: URL) {
+//        let properFileURL = URL(fileURLWithPath: fileURL.absoluteString)
+    }
+    
     func scanForMedia(atPath basePath: URL) {
         let filenames = extractAllFiles(atPath: basePath.absoluteString,
-                                        withExtensions: extensions)
+                                        withExtensions: MediaExtension.extensions)
         for filename in filenames {
             let fileURL = basePath.appendingPathComponent(filename)
             _ = addMedia(url: fileURL)
@@ -45,7 +41,16 @@ class MediaManager {
     }
     
     func addMedia(url fileURL: URL) -> Media {
-        let newMedia = Media(fileURL: fileURL)
+        let newMedia: Media
+        
+        switch (fileURL.pathExtension) {
+        case "mov":
+            newMedia = Video(fileURL: fileURL)
+        case "mp4":
+            newMedia = Video(fileURL: fileURL)
+        default:
+            newMedia = Photo(fileURL: fileURL)
+        }
         
         media.append(newMedia)
         idToMedia[newMedia.id] = newMedia

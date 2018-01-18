@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5D2846D5FA11D5AB884161AD /* Pods_SPVTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0A1F310F3881531D77EFA8 /* Pods_SPVTests.framework */; };
-		63396F071F40D91F000E5F3E /* Test06.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 63396F061F40D884000E5F3E /* Test06.mp4 */; };
 		63396F091F40DE9E000E5F3E /* ImageCapture.js in Resources */ = {isa = PBXBuildFile; fileRef = 63396F081F40DE9E000E5F3E /* ImageCapture.js */; };
 		63396F0C1F40ED58000E5F3E /* GetImage.js in Resources */ = {isa = PBXBuildFile; fileRef = 63396F0B1F40ED58000E5F3E /* GetImage.js */; };
 		63396F0E1F40FB30000E5F3E /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63396F0D1F40FB30000E5F3E /* DownloadManager.swift */; };
@@ -80,6 +79,12 @@
 		F9E25C291FE19509009D9DF7 /* PINEntryMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */; };
 		F9E25C2B1FE26631009D9DF7 /* MediaViewer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */; };
 		F9E5DA4E200BCAFF00BF5BD0 /* GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5DA4D200BCAFF00BF5BD0 /* GIF.swift */; };
+		F9E5DA55200FB9A200BF5BD0 /* Test08.mov in Resources */ = {isa = PBXBuildFile; fileRef = F9E5DA54200FB9A200BF5BD0 /* Test08.mov */; };
+		F9E5DA56200FBA3900BF5BD0 /* Test06.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F9E5DA53200FB99A00BF5BD0 /* Test06.mp4 */; };
+		F9E5DA58200FBC8C00BF5BD0 /* PhotoGIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5DA57200FBC8C00BF5BD0 /* PhotoGIF.swift */; };
+		F9E5DA5A20108B3400BF5BD0 /* EnumCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5DA5920108B3400BF5BD0 /* EnumCollection.swift */; };
+		F9E5DA5C20108EFD00BF5BD0 /* MediaExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5DA5B20108EFD00BF5BD0 /* MediaExtensionTest.swift */; };
+		F9E5DA5E20108F3F00BF5BD0 /* MediaExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5DA5D20108F3F00BF5BD0 /* MediaExtension.swift */; };
 		F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */; };
 		F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E843C51F972F050075BA43 /* UIViewExtensions.swift */; };
 		F9E8DE911FC341C400FDAAB9 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */; };
@@ -123,7 +128,6 @@
 		5A28D6647DE20743C259D3AB /* Pods-SPVTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPVTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SPVTests/Pods-SPVTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5D0E3ACFE3A285D1619F90D5 /* Pods-SPV.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SPV.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SPV/Pods-SPV.debug.xcconfig"; sourceTree = "<group>"; };
 		5FF0ACB10349E2AD198B3392 /* Pods_SPVUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SPVUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		63396F061F40D884000E5F3E /* Test06.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Test06.mp4; sourceTree = "<group>"; };
 		63396F081F40DE9E000E5F3E /* ImageCapture.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ImageCapture.js; sourceTree = "<group>"; };
 		63396F0B1F40ED58000E5F3E /* GetImage.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = GetImage.js; sourceTree = "<group>"; };
 		63396F0D1F40FB30000E5F3E /* DownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
@@ -206,6 +210,12 @@
 		F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINEntryMode.swift; sourceTree = "<group>"; };
 		F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MediaViewer.storyboard; sourceTree = "<group>"; };
 		F9E5DA4D200BCAFF00BF5BD0 /* GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIF.swift; sourceTree = "<group>"; };
+		F9E5DA53200FB99A00BF5BD0 /* Test06.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Test06.mp4; sourceTree = "<group>"; };
+		F9E5DA54200FB9A200BF5BD0 /* Test08.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = Test08.mov; sourceTree = "<group>"; };
+		F9E5DA57200FBC8C00BF5BD0 /* PhotoGIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGIF.swift; sourceTree = "<group>"; };
+		F9E5DA5920108B3400BF5BD0 /* EnumCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumCollection.swift; sourceTree = "<group>"; };
+		F9E5DA5B20108EFD00BF5BD0 /* MediaExtensionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExtensionTest.swift; sourceTree = "<group>"; };
+		F9E5DA5D20108F3F00BF5BD0 /* MediaExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExtension.swift; sourceTree = "<group>"; };
 		F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		F9E843C51F972F050075BA43 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		F9E8DE901FC341C400FDAAB9 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
@@ -269,13 +279,14 @@
 		63916FFE1F374E00001E5ABE /* TestData */ = {
 			isa = PBXGroup;
 			children = (
-				F9F2D3CF1F41CC5C00FD6F78 /* Test07.gif */,
-				63396F061F40D884000E5F3E /* Test06.mp4 */,
 				63916FFF1F374E15001E5ABE /* Test01.jpg */,
 				639170001F374E15001E5ABE /* Test02.jpg */,
 				639170011F374E15001E5ABE /* Test03.jpg */,
 				639170021F374E15001E5ABE /* Test04.png */,
 				F9F2D3CB1F3AEA9C00FD6F78 /* Test05.jpg */,
+				F9E5DA53200FB99A00BF5BD0 /* Test06.mp4 */,
+				F9F2D3CF1F41CC5C00FD6F78 /* Test07.gif */,
+				F9E5DA54200FB9A200BF5BD0 /* Test08.mov */,
 			);
 			name = TestData;
 			sourceTree = "<group>";
@@ -426,7 +437,9 @@
 				F9C50C071F59376000EE79E5 /* FakeDownloadManager.swift */,
 				639DBDB61F5B1D4700BDD48E /* DownloadManagerBase.swift */,
 				F9C50C091F5E7EEF00EE79E5 /* Media.swift */,
+				F9E5DA5D20108F3F00BF5BD0 /* MediaExtension.swift */,
 				F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */,
+				F9E5DA57200FBC8C00BF5BD0 /* PhotoGIF.swift */,
 				F9C50C0D1F5E7F2900EE79E5 /* Video.swift */,
 				F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */,
 				F96D37B11FBCABE100DD2F76 /* Settings.swift */,
@@ -448,6 +461,7 @@
 				F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */,
 				F93EE1511FCC002900363333 /* Dispatch.swift */,
 				F9D47C611FFF631A00515A27 /* UIGestureRecognizer.swift */,
+				F9E5DA5920108B3400BF5BD0 /* EnumCollection.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -528,6 +542,7 @@
 				F973F8041F601A4200A5813B /* JSONTestHelper.swift */,
 				F9F5D0051F61283E00E16DAA /* MediaTest.swift */,
 				F9C68BB61F8613500094E5F3 /* URLBuilderTests.swift */,
+				F9E5DA5B20108EFD00BF5BD0 /* MediaExtensionTest.swift */,
 			);
 			path = SPVTests;
 			sourceTree = "<group>";
@@ -723,9 +738,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9E5DA56200FBA3900BF5BD0 /* Test06.mp4 in Resources */,
 				F9F2D3D01F41CC5C00FD6F78 /* Test07.gif in Resources */,
 				F9EE7C351FE982A0003C1B04 /* Settings.storyboard in Resources */,
-				63396F071F40D91F000E5F3E /* Test06.mp4 in Resources */,
 				F9EE7C311FE97D75003C1B04 /* Browser.storyboard in Resources */,
 				63396F0C1F40ED58000E5F3E /* GetImage.js in Resources */,
 				639170051F374E15001E5ABE /* Test03.jpg in Resources */,
@@ -738,6 +753,7 @@
 				639170031F374E15001E5ABE /* Test01.jpg in Resources */,
 				63396F091F40DE9E000E5F3E /* ImageCapture.js in Resources */,
 				F9F2D3D21F42016C00FD6F78 /* Todo.rtf in Resources */,
+				F9E5DA55200FB9A200BF5BD0 /* Test08.mov in Resources */,
 				639170041F374E15001E5ABE /* Test02.jpg in Resources */,
 				F9BABAB31F28F92F00000D9B /* Assets.xcassets in Resources */,
 				F9BABAB11F28F92F00000D9B /* Main.storyboard in Resources */,
@@ -912,7 +928,9 @@
 				F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */,
 				F90FFFE81FBF560F00D2C304 /* TextBlockCell.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
+				F9E5DA58200FBC8C00BF5BD0 /* PhotoGIF.swift in Sources */,
 				F9C8DA411FD1DF08002BB2D5 /* AuthenticationService.swift in Sources */,
+				F9E5DA5A20108B3400BF5BD0 /* EnumCollection.swift in Sources */,
 				F9C68BB51F860FF20094E5F3 /* URLBuilder.swift in Sources */,
 				F9E843C61F972F050075BA43 /* UIViewExtensions.swift in Sources */,
 				F97943B21F702F6F00739030 /* MediaAddTagCell.swift in Sources */,
@@ -929,6 +947,7 @@
 				F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */,
 				F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */,
 				F912DE151FB9856700037ABF /* SettingsCell.swift in Sources */,
+				F9E5DA5E20108F3F00BF5BD0 /* MediaExtension.swift in Sources */,
 				F911A18E1FBA06A1009EF02C /* Setting.swift in Sources */,
 				F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */,
 				F96D37B21FBCABE100DD2F76 /* Settings.swift in Sources */,
@@ -971,6 +990,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9E5DA5C20108EFD00BF5BD0 /* MediaExtensionTest.swift in Sources */,
 				F9F5D0061F61283E00E16DAA /* MediaTest.swift in Sources */,
 				F9BABAC11F28F92F00000D9B /* SPVTests.swift in Sources */,
 				F973F8051F601A4200A5813B /* JSONTestHelper.swift in Sources */,
@@ -1073,7 +1093,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1127,7 +1147,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

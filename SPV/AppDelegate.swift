@@ -228,7 +228,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "Test04.png",
             "Test05.jpg",
             "Test06.mp4",
-            "Test07.gif"
+            "Test07.gif",
+            "Test08.mov"
             ], toPath: documentDirectoryPath)
     }
     
@@ -257,7 +258,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         catch let error as NSError {
             print("Unable to copy test resources because of \(error)")
         }
-        
     }
     
     func application(_ application: UIApplication,

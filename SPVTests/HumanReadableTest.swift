@@ -103,7 +103,7 @@ class HumanReadableTest: XCTestCase {
         
         // Spaces.
         tests.forEach { test in
-            /Users/davidlatheron/Development/Personal/SPV/SPVTests/HumanReadableTest.swiftXCTAssertEqual(
+            XCTAssertEqual(
                 HumanReadable.bytes(bytes: test.bytes,
                                     units: bytesUnits,
                                     space: true
