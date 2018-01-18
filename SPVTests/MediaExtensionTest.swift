@@ -59,4 +59,14 @@ class MediaExtensionTest : XCTestCase {
         XCTAssertEqual(MediaExtension.isValidExtension(".MP3"), false)
         XCTAssertEqual(MediaExtension.isValidExtension(".PoNG"), false)
     }
+    
+    func test_fromExtesnion() {
+        XCTAssertEqual(MediaExtension.fromExtension(".jpeg"), MediaExtension.jpeg)
+        XCTAssertEqual(MediaExtension.fromExtension(".png"), MediaExtension.png)
+        XCTAssertEqual(MediaExtension.fromExtension(".mov"), MediaExtension.mov)
+        
+        XCTAssertEqual(MediaExtension.fromExtension(".txt"), nil)
+        XCTAssertEqual(MediaExtension.fromExtension(".pdf"), nil)
+        XCTAssertEqual(MediaExtension.fromExtension(".doc"), nil)
+    }
 }
