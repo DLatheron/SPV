@@ -33,7 +33,7 @@ class MediaManager {
     
     func scanForMedia(atPath basePath: URL) {
         let filenames = extractAllFiles(atPath: basePath.absoluteString,
-                                        withExtensions: MediaExtension.extensions)
+                                        withExtensions: MediaExtension.allExtensions)
         for filename in filenames {
             let fileURL = basePath.appendingPathComponent(filename)
             _ = addMedia(url: fileURL)

@@ -78,7 +78,7 @@ class Media : NSObject {
     }
     
     private class func makeInfoURL(fileURL: URL) -> URL {
-        return URL(fileURLWithPath: fileURL.absoluteString).appendingPathExtension(Media.mediaInfoExtension) // TODO Recently changed...
+        return fileURL.appendingPathExtension(Media.mediaInfoExtension) // TODO Recently changed...
     }
     
     private class func loadOrCreateMediaInfo(forFileURL fileURL: URL) -> MediaInfo {

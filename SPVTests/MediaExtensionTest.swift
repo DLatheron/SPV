@@ -21,33 +21,28 @@ class MediaExtensionTest : XCTestCase {
         super.tearDown()
     }
     
-    func test_init() {
-        
-    }
-    
-    
-    func test_fileExtensions() {
-        let fileExtensions = MediaExtension.fileExtensions
+    func test_allFileExtensions() {
+        let fileExtensions = MediaExtension.allFileExtensions
         
         XCTAssertEqual(fileExtensions, [".jpg",".jpeg", ".png", ".bmp", ".gif", ".mov", ".mp4"]);
     }
     
-    func test_extensions() {
-        let extensions = MediaExtension.extensions
+    func test_allExtensions() {
+        let extensions = MediaExtension.allExtensions
         
         XCTAssertEqual(extensions, ["jpg", "jpeg", "png", "bmp", "gif", "mov", "mp4"]);
     }
     
     func test_getFileExtension() {
-        XCTAssertEqual(MediaExtension.getFileExtension(.jpg), ".jpg")
-        XCTAssertEqual(MediaExtension.getFileExtension(.mov), ".mov")
-        XCTAssertEqual(MediaExtension.getFileExtension(.bmp), ".bmp")
+        XCTAssertEqual(MediaExtension.getFileExtensions(.jpg), [".jpg", ".jpeg"])
+        XCTAssertEqual(MediaExtension.getFileExtensions(.mov), [".mov"])
+        XCTAssertEqual(MediaExtension.getFileExtensions(.bmp), [".bmp"])
     }
     
     func test_getExtension() {
-        XCTAssertEqual(MediaExtension.getExtension(.jpeg), "jpeg")
-        XCTAssertEqual(MediaExtension.getExtension(.png), "png")
-        XCTAssertEqual(MediaExtension.getExtension(.mov), "mov")
+        XCTAssertEqual(MediaExtension.getExtensions(.jpg), ["jpg", "jpeg"])
+        XCTAssertEqual(MediaExtension.getExtensions(.png), ["png"])
+        XCTAssertEqual(MediaExtension.getExtensions(.mov), ["mov"])
     }
     
     func test_isValidExtension() {
@@ -60,8 +55,8 @@ class MediaExtensionTest : XCTestCase {
         XCTAssertEqual(MediaExtension.isValidExtension(".PoNG"), false)
     }
     
-    func test_fromExtesnion() {
-        XCTAssertEqual(MediaExtension.fromExtension(".jpeg"), MediaExtension.jpeg)
+    func test_fromExtension() {
+        XCTAssertEqual(MediaExtension.fromExtension(".jpeg"), MediaExtension.jpg)
         XCTAssertEqual(MediaExtension.fromExtension(".png"), MediaExtension.png)
         XCTAssertEqual(MediaExtension.fromExtension(".mov"), MediaExtension.mov)
         
@@ -69,4 +64,46 @@ class MediaExtensionTest : XCTestCase {
         XCTAssertEqual(MediaExtension.fromExtension(".pdf"), nil)
         XCTAssertEqual(MediaExtension.fromExtension(".doc"), nil)
     }
+    
+    func test_type() {
+        XCTAssertEqual(MediaExtension.bmp.type, MediaType.photo)
+        XCTAssertEqual(MediaExtension.mov.type, MediaType.video)
+    }
+    
+    func test_isPhoto() {
+        XCTAssertEqual(MediaExtension.bmp.isPhoto, true)
+        XCTAssertEqual(MediaExtension.jpg.isPhoto, true)
+        
+        XCTAssertEqual(MediaExtension.mov.isPhoto, false)
+        XCTAssertEqual(MediaExtension.mp4.isPhoto, false)
+    }
+    
+    func test_isVideo() {
+        XCTAssertEqual(MediaExtension.mov.isVideo, true)
+        XCTAssertEqual(MediaExtension.mp4.isVideo, true)
+
+        XCTAssertEqual(MediaExtension.bmp.isVideo, false)
+        XCTAssertEqual(MediaExtension.jpg.isVideo, false)
+    }
+    
+    func test_extensions() {
+        XCTAssertEqual(MediaExtension.jpg.extensions, ["jpg", "jpeg"])
+        XCTAssertEqual(MediaExtension.mov.extensions, ["mov"])
+    }
+    
+    func test_fileExtensions() {
+        XCTAssertEqual(MediaExtension.jpg.fileExtensions, [".jpg", ".jpeg"])
+        XCTAssertEqual(MediaExtension.mov.fileExtensions, [".mov"])
+    }
+    
+    func test_ext() {
+        XCTAssertEqual(MediaExtension.jpg.ext, "jpg")
+        XCTAssertEqual(MediaExtension.mov.ext, "mov")
+    }
+    
+    func test_fileExt() {
+        XCTAssertEqual(MediaExtension.jpg.fileExt, ".jpg")
+        XCTAssertEqual(MediaExtension.mov.fileExt, ".mov")
+    }
+
 }

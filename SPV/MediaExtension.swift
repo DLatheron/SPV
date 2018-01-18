@@ -8,40 +8,96 @@
 
 import Foundation
 
+enum MediaType {
+    case photo
+    case video
+}
+
 enum MediaExtension : String, EnumCollection {
     case jpg
-    case jpeg
     case png
     case bmp
     case gif
     case mov
     case mp4
     
-    static var fileExtensions: [String] {
+    var type: MediaType {
         get {
-            return allValues.map({ getFileExtension($0) })
+            return MediaExtension.getType(self)
         }
     }
     
-    static var extensions: [String] {
+    var isPhoto: Bool {
         get {
-            return allValues.map({ getExtension($0) })
+            return type == MediaType.photo
         }
     }
     
-    static func getFileExtension(_ ext: MediaExtension) -> String {
-        return ".\(getExtension(ext))"
+    var isVideo: Bool {
+        get {
+            return type == MediaType.video
+        }
     }
     
-    static func getExtension(_ ext: MediaExtension) -> String {
+    var extensions: [String] {
+        get {
+            return MediaExtension.getExtensions(self)
+        }
+    }
+    
+    var fileExtensions: [String] {
+        get {
+            return MediaExtension.getFileExtensions(self)
+        }
+    }
+    
+    var ext: String {
+        get {
+            return extensions[0]
+        }
+    }
+    
+    var fileExt: String {
+        get {
+            return fileExtensions[0]
+        }
+    }
+    
+    static var allFileExtensions: [String] {
+        get {
+            return allValues.flatMap({ getFileExtensions($0) })
+        }
+    }
+    
+    static var allExtensions: [String] {
+        get {
+            return allValues.flatMap({ getExtensions($0) })
+        }
+    }
+    
+    static func getType(_ ext: MediaExtension) -> MediaType {
         switch ext {
-        case .jpg: return "jpg"
-        case .jpeg: return "jpeg"
-        case .png: return "png"
-        case .bmp: return "bmp"
-        case .gif: return "gif"
-        case .mov: return "mov"
-        case .mp4: return "mp4"
+        case jpg: return MediaType.photo
+        case png: return MediaType.photo
+        case bmp: return MediaType.photo
+        case gif: return MediaType.photo
+        case mov: return MediaType.video
+        case mp4: return MediaType.video
+        }
+    }
+    
+    static func getFileExtensions(_ ext: MediaExtension) -> [String] {
+        return getExtensions(ext).map({ ".\($0)" })
+    }
+    
+    static func getExtensions(_ ext: MediaExtension) -> [String] {
+        switch ext {
+        case .jpg: return ["jpg", "jpeg"]
+        case .png: return ["png"]
+        case .bmp: return ["bmp"]
+        case .gif: return ["gif"]
+        case .mov: return ["mov"]
+        case .mp4: return ["mp4"]
         }
     }
     
@@ -53,9 +109,11 @@ enum MediaExtension : String, EnumCollection {
         let lowercase = extString.lowercased()
         
         for mediaExt in MediaExtension.allValues {
-            let ext = MediaExtension.getFileExtension(mediaExt)
-            if lowercase.hasSuffix(ext) {
-                return mediaExt
+            let extensions = MediaExtension.getFileExtensions(mediaExt)
+            for ext in extensions {
+                if lowercase.hasSuffix(ext) {
+                    return mediaExt
+                }
             }
         }
         

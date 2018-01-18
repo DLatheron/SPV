@@ -34,7 +34,6 @@ class DownloadTest: XCTestCase {
         XCTAssertEqual(download.timeAccumulated, 0)
         XCTAssertEqual(download.bytesSinceResume, 0)
         XCTAssertEqual(download.totalSizeInBytes, 0)
-        XCTAssertNil(download.index)
         XCTAssertEqual(download.isPaused, true)
         XCTAssertEqual(download.bytesDownloaded, 0)
     }

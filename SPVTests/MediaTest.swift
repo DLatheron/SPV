@@ -26,9 +26,9 @@ class MediaTest: XCTestCase {
     }
     
     func test_infoURL() {
-        let fileURL = URL(fileURLWithPath: "./image001.jpg")
+        let fileURL = URL(fileURLWithPath: "/image001.jpg")
         let media = Media(fileURL: fileURL)
         
-        XCTAssertEqual(media.infoURL, URL(fileURLWithPath: "./image001.jpg.info"))
+        XCTAssertEqual(media.infoURL, URL(fileURLWithPath: "/image001.jpg.info"))
     }
 }
