@@ -168,7 +168,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoCellId" id="Z2A-ew-eVQ" customClass="PhotoCell" customModule="SPV" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MediaCellId" id="Z2A-ew-eVQ" customClass="MediaCell" customModule="SPV" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -178,6 +178,14 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3j4-xG-GEQ">
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                         </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0LP-1p-zhF" userLabel="Video Indicator View" customClass="TriangleView" customModule="SPV" customModuleProvider="target">
+                                            <rect key="frame" x="4" y="100" width="12" height="16"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="1dB-rn-McY"/>
+                                                <constraint firstAttribute="width" constant="12" id="gsD-oi-KYf"/>
+                                            </constraints>
+                                        </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kE8-Z8-hpJ">
                                             <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                             <subviews>
@@ -186,7 +194,7 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check" translatesAutoresizingMaskIntoConstraints="NO" id="4gi-xu-Cdt" userLabel="Checkmark">
-                                                    <rect key="frame" x="80" y="80" width="32" height="32"/>
+                                                    <rect key="frame" x="84" y="84" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="v5m-BE-gvI"/>
                                                         <constraint firstAttribute="width" constant="32" id="vrB-Kz-XR5"/>
@@ -196,10 +204,10 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="1Zu-Hk-oNl" firstAttribute="width" secondItem="kE8-Z8-hpJ" secondAttribute="width" id="2Gk-MT-bpS"/>
-                                                <constraint firstAttribute="trailing" secondItem="4gi-xu-Cdt" secondAttribute="trailing" constant="8" id="C8E-G1-oz4"/>
+                                                <constraint firstAttribute="trailing" secondItem="4gi-xu-Cdt" secondAttribute="trailing" constant="4" id="C8E-G1-oz4"/>
                                                 <constraint firstItem="1Zu-Hk-oNl" firstAttribute="centerY" secondItem="kE8-Z8-hpJ" secondAttribute="centerY" id="DvJ-ym-9cZ"/>
                                                 <constraint firstItem="1Zu-Hk-oNl" firstAttribute="height" secondItem="kE8-Z8-hpJ" secondAttribute="height" id="Pg3-Mx-Na7"/>
-                                                <constraint firstAttribute="bottom" secondItem="4gi-xu-Cdt" secondAttribute="bottom" constant="8" id="Tbe-6M-ub3"/>
+                                                <constraint firstAttribute="bottom" secondItem="4gi-xu-Cdt" secondAttribute="bottom" constant="4" id="Tbe-6M-ub3"/>
                                                 <constraint firstItem="1Zu-Hk-oNl" firstAttribute="centerX" secondItem="kE8-Z8-hpJ" secondAttribute="centerX" id="ytH-ae-WAr"/>
                                             </constraints>
                                         </view>
@@ -209,6 +217,8 @@
                                     <constraint firstItem="kE8-Z8-hpJ" firstAttribute="height" secondItem="Z2A-ew-eVQ" secondAttribute="height" id="HXg-0J-hiy"/>
                                     <constraint firstItem="3j4-xG-GEQ" firstAttribute="centerY" secondItem="Z2A-ew-eVQ" secondAttribute="centerY" id="Pht-Ax-2W6"/>
                                     <constraint firstItem="kE8-Z8-hpJ" firstAttribute="width" secondItem="Z2A-ew-eVQ" secondAttribute="width" id="Srf-zP-kTA"/>
+                                    <constraint firstItem="0LP-1p-zhF" firstAttribute="leading" secondItem="Z2A-ew-eVQ" secondAttribute="leading" constant="4" id="Tsu-hW-MpK"/>
+                                    <constraint firstAttribute="bottom" secondItem="0LP-1p-zhF" secondAttribute="bottom" constant="4" id="bXa-x6-rfp"/>
                                     <constraint firstItem="kE8-Z8-hpJ" firstAttribute="centerX" secondItem="Z2A-ew-eVQ" secondAttribute="centerX" id="fLe-gn-nzS"/>
                                     <constraint firstItem="3j4-xG-GEQ" firstAttribute="centerX" secondItem="Z2A-ew-eVQ" secondAttribute="centerX" id="imZ-zl-5lw"/>
                                     <constraint firstItem="3j4-xG-GEQ" firstAttribute="width" secondItem="Z2A-ew-eVQ" secondAttribute="width" id="myp-cG-jFd"/>
@@ -219,6 +229,7 @@
                                     <outlet property="dimmingView" destination="1Zu-Hk-oNl" id="kpN-JN-U1d"/>
                                     <outlet property="imageView" destination="3j4-xG-GEQ" id="Owc-29-dnU"/>
                                     <outlet property="selectedView" destination="kE8-Z8-hpJ" id="QbC-ni-slI"/>
+                                    <outlet property="videoIndicatorView" destination="0LP-1p-zhF" id="Htx-LP-JTl"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -245,7 +256,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1lA-la-DMc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1938" y="-385"/>
+            <point key="canvasLocation" x="1936.8" y="-385.45727136431788"/>
         </scene>
         <!--Info-->
         <scene sceneID="Fp9-7Y-gtc">

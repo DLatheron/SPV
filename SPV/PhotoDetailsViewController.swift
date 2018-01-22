@@ -20,7 +20,8 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     let hideRatingsAnimationDuration = 0.2
     
     var delegate: MediaEnumerator?
-    var scrollView: PhotoScrollView?
+    
+    var embeddedMediaView: EmbeddedMediaViewDelegate?
     
     var media: Media! = nil
     var image: UIImage! = nil
@@ -84,13 +85,15 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         setTabBarVisible(visible: currentState, animated: false)
 
         coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.scrollView?.centreImage()
-            self.scrollView?.calcZoomScale()
-            self.setTabBarVisible(visible: currentState, animated: false)
+            self.embeddedMediaView?.willRotate(parentView: self.view)
+            
+            self.setTabBarVisible(visible: currentState,
+                                  animated: false)
         }) { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.scrollView?.centreImage()
-            self.scrollView?.calcZoomScale()
-            self.setTabBarVisible(visible: currentState, animated: false)
+            self.embeddedMediaView?.didRotate(parentView: self.view)
+            
+            self.setTabBarVisible(visible: currentState,
+                                  animated: false)
         }
     }
     
@@ -102,7 +105,7 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     
     var isFullyZoomedOut: Bool {
         get {
-            return scrollView?.isFullyZoomedOut ?? true
+            return embeddedMediaView?.isFullyZoomedOut ?? true
         }
     }
     
@@ -179,12 +182,12 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         }
         
         let currentState = navigationController?.isNavigationBarHidden == false
-            
+        
         navigationController?.setNavigationBarHidden(currentState, animated: true)
         setTabBarVisible(visible: !currentState, animated: true)
         
         // TODO: Would be best to do this AFTER the animation, or all in one
-        scrollView!.centreImage()
+        embeddedMediaView?.singleTap()
     }
     
     @objc func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
@@ -193,14 +196,9 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         // TODO: Also zoom into the point tapped...
         // TODO: Multistage zoom - based on the size of the picture... no more than about 3 stages...
         // TODO: Move into PhotoScrollView
-        if self.scrollView!.zoomScale > self.scrollView!.minimumZoomScale {
-            self.scrollView!.setZoomScale(self.scrollView!.minimumZoomScale, animated: true)
-            enableRatingsView(true)
-        } else {
-            self.scrollView!.setZoomScale()
-            self.scrollView!.setZoomScale(self.scrollView!.maximumZoomScale, animated: true)
-            enableRatingsView(false)
-        }
+        embeddedMediaView?.doubleTap()
+        
+        enableRatingsView(embeddedMediaView?.isFullyZoomedOut ?? true)
     }
 
     @objc func handleSwipeLeft(_ recognizer: UISwipeGestureRecognizer) {
@@ -223,33 +221,68 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
                            over duration: TimeInterval = 0.0) {
         ratingsView.endPreview()
         
-        let image = newMedia.getImage()
-        let newScrollView = PhotoScrollView(parentView: self.view,
-                                            forImage: image,
-                                            psvDelegate: self)
-        newScrollView.center.x += xOffset
-        self.view.addSubview(newScrollView)
-        self.view.bringSubview(toFront: self.ratingsView)
-        
-        newScrollView.setNeedsLayout()
-        newScrollView.setNeedsDisplay()
-        
-        let newImageName = newMedia.filename
-        
-        UIView.animate(withDuration: 0.3,
-                       delay: 0.0,
-                       options: .curveEaseOut,
-                       animations: {
-            newScrollView.center.x -= xOffset
-        }) { (finished) in
-            if (finished) {
-                self.scrollView?.removeFromSuperview()
-                self.scrollView = newScrollView
-                self.media = newMedia
-                self.ratingsView.media = newMedia
-                self.title = newImageName
-                
-                self.ratingsView.beginPreview()
+        // TODO: If the old view is a videoView then we need to remove it from the superview...
+
+        switch newMedia.mediaExtension.type {
+        case MediaType.photo:
+            let image = newMedia.getImage()
+            let newScrollView = PhotoScrollView(parentView: self.view,
+                                                forImage: image,
+                                                psvDelegate: self)            
+            newScrollView.center.x += xOffset
+            self.view.addSubview(newScrollView)
+            self.view.bringSubview(toFront: self.ratingsView)
+            
+            newScrollView.setNeedsLayout()
+            newScrollView.setNeedsDisplay()
+            
+            let newImageName = newMedia.filename
+            
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.0,
+                           options: .curveEaseOut,
+                           animations: {
+                newScrollView.center.x -= xOffset
+            }) { (finished) in
+                if (finished) {
+                    self.embeddedMediaView?.remove()
+                    self.embeddedMediaView = newScrollView
+                    self.media = newMedia
+                    self.ratingsView.media = newMedia
+                    self.title = newImageName
+                    
+                    self.ratingsView.beginPreview()
+                }
+            }
+        case MediaType.video:
+            // TODO: Do something with the video.
+            let newVideoView = VideoView(parentController: self,
+                                         forMedia: newMedia)
+            
+            newVideoView.center.x += xOffset
+            self.view.addSubview(newVideoView)
+            self.view.bringSubview(toFront: self.ratingsView)
+            
+            newVideoView.setNeedsLayout()
+            newVideoView.setNeedsDisplay()
+            
+            let newVideoName = newMedia.filename
+            
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.0,
+                           options: .curveEaseOut,
+                           animations: {
+                newVideoView.center.x -= xOffset
+            }) { (finished) in
+                if (finished) {
+                    self.embeddedMediaView?.remove()
+                    self.embeddedMediaView = newVideoView
+                    self.media = newMedia
+                    self.ratingsView.media = newMedia
+                    self.title = newVideoName
+                    
+                    self.ratingsView.beginPreview()
+                }
             }
         }
     }
@@ -258,17 +291,19 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         var newMedia: Media
         var xOffset: CGFloat = 0
         
-        if forDirection == .left {
-            xOffset = CGFloat(self.scrollView!.frame.width)
-            newMedia = (delegate?.nextMedia(media: media!))!
-        } else {
-            xOffset = CGFloat(-self.scrollView!.frame.width)
-            newMedia = (delegate?.prevMedia(media: media!))!
+        if let embeddedView = embeddedMediaView?.view {
+            if forDirection == .left {
+                xOffset = CGFloat(embeddedView.frame.width)
+                newMedia = (delegate?.nextMedia(media: media!))!
+            } else {
+                xOffset = CGFloat(-embeddedView.frame.width)
+                newMedia = (delegate?.prevMedia(media: media!))!
+            }
+            
+            animateOnToScreen(forMedia: newMedia,
+                              from: xOffset,
+                              over: 0.3)
         }
-        
-        animateOnToScreen(forMedia: newMedia,
-                          from: xOffset,
-                          over: 0.3)
     }
     
     //MARK: - Tab bar hiding

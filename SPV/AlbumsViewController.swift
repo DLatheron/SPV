@@ -44,7 +44,7 @@ class AlbumsViewController: UICollectionViewController {
     
     fileprivate let mediaManager: MediaManager
     
-    fileprivate let reuseIdentifier = "PhotoCellId"
+    fileprivate let reuseIdentifier = "MediaCellId"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     
     var selectMode: Bool = false {
@@ -117,7 +117,7 @@ class AlbumsViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
-                                                      for: indexPath) as! PhotoCell
+                                                      for: indexPath) as! MediaCell
         let media = getMedia(for: indexPath)
         let selected = isSelected(media: media)
         
@@ -130,16 +130,16 @@ class AlbumsViewController: UICollectionViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) {
         if (segue.identifier == "MediaViewer") {
-            let photoCell = sender as! PhotoCell
+            let mediaCell = sender as! MediaCell
             let photoDetailsVC = segue.destination as! PhotoDetailsViewController
-            let indexPath = collectionView?.indexPath(for: photoCell)
+            let indexPath = collectionView?.indexPath(for: mediaCell)
             let media = getMedia(forIndexPath: indexPath!)
             let backItem = UIBarButtonItem()
             backItem.title = ""
             navigationItem.backBarButtonItem = backItem
             
             photoDetailsVC.media = media
-            photoDetailsVC.image = photoCell.imageView.image
+            photoDetailsVC.image = mediaCell.imageView.image
             photoDetailsVC.delegate = self
         }
     }
@@ -243,8 +243,8 @@ extension AlbumsViewController {
     }
 }
 
-extension AlbumsViewController : PhotoCellDelegate {
-    func photoCellClicked(_ sender: PhotoCell) {
+extension AlbumsViewController : MediaCellDelegate {
+    func mediaCellClicked(_ sender: MediaCell) {
         if !selectMode {
             self.performSegue(withIdentifier: "MediaViewer",
                               sender: sender)
@@ -253,7 +253,7 @@ extension AlbumsViewController : PhotoCellDelegate {
         }
     }
     
-    func photoCellSelectionChanged(_ sender: PhotoCell) {
+    func mediaCellSelectionChanged(_ sender: MediaCell) {
         if let media = sender.media {
             if sender.isSelected {
                 selectedMedia.insert(media)

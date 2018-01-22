@@ -6,20 +6,16 @@
 //  Copyright © 2017 dlatheron. All rights reserved.
 //
 
+// TODO: Move single tap gesture recogniser into here??? Then callback to remove the appropriate hud elements???
+// TODO: Move doulbe tap gesture recogniser (at least the response)
+
 import Foundation
 import UIKit
-
-protocol PhotoScrollViewDelegate {
-    var isFullscreen: Bool {
-        get
-    }
-}
 
 class PhotoScrollView : UIScrollView {
     var psvDelegate: PhotoScrollViewDelegate
     var imageView: UIImageView
     var parentView: UIView
-    
     
     init(parentView: UIView,
          forImage image: UIImage,
@@ -33,10 +29,6 @@ class PhotoScrollView : UIScrollView {
         self.parentView = parentView
         
         super.init(frame: UIScreen.main.bounds)
-        
-//        parentView.isUserInteractionEnabled = true
-//        isUserInteractionEnabled = true
-//        self.imageView.isUserInteractionEnabled = true
         
         backgroundColor = UIColor.white
         contentSize = imageView.bounds.size
@@ -87,7 +79,7 @@ class PhotoScrollView : UIScrollView {
     func centreImage() {
         let imageViewSize = imageView.frame.size
         let scrollViewSize = frame.size
-        
+
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
         let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
         
@@ -103,48 +95,50 @@ class PhotoScrollView : UIScrollView {
                                              bottom: bottomOffset,
                                              right: 0)
     }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>,
-//                               with event: UIEvent?) {
-//        //print("ScrollView - touchesBegan")
-//        parentView.touchesBegan(touches,
-//                                with: event)
-//    }
-//
-//    override func touchesMoved(_ touches: Set<UITouch>,
-//                               with event: UIEvent?) {
-//        //print("ScrollView - touchesMoved")
-//        parentView.touchesMoved(touches,
-//                                with: event)
-//    }
-//
-//    override func touchesEnded(_ touches: Set<UITouch>,
-//                               with event: UIEvent?) {
-//        //print("ScrollView - touchesEnded")
-//        parentView.touchesEnded(touches,
-//                                with: event)
-//    }
-//
-//    override func touchesCancelled(_ touches: Set<UITouch>,
-//                                   with event: UIEvent?) {
-//        //print("ScrollView - touchesCancelled")
-//        parentView.touchesCancelled(touches,
-//                                    with: event)
-//    }
-//
-//    override func touchesEstimatedPropertiesUpdated(_ touches: Set<UITouch>) {
-//        //print("ScrollView - touchesEstimatedPropertiesUpdated")
-//        parentView.touchesEstimatedPropertiesUpdated(touches)
-//    }
 }
-    
-extension PhotoScrollView : UIScrollViewDelegate {
+
+extension PhotoScrollView : EmbeddedMediaViewDelegate {
     var isFullyZoomedOut: Bool {
         get {
             return zoomScale == minimumZoomScale
         }
     }
     
+    var view: UIView {
+        get {
+            return self
+        }
+    }
+    
+    func willRotate(parentView: UIView) {
+        centreImage()
+        calcZoomScale()
+    }
+    
+    func didRotate(parentView: UIView) {
+    }
+    
+    func remove() {
+        removeFromSuperview()
+    }
+    
+    func singleTap() {
+        centreImage()
+    }
+    
+    func doubleTap() {
+        if zoomScale > minimumZoomScale {
+            setZoomScale(minimumZoomScale,
+                         animated: true)
+        } else {
+            setZoomScale()
+            setZoomScale(maximumZoomScale,
+                         animated: true)
+        }
+    }
+}
+    
+extension PhotoScrollView : UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centreImage()
     }

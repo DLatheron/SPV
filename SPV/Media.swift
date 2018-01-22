@@ -34,9 +34,12 @@ class Media : NSObject {
         }
     }
     
+    var mediaExtension: MediaExtension
+    
     init(fileURL: URL) {
         self.fileURL = fileURL
         self.mediaInfo = Media.loadOrCreateMediaInfo(forFileURL: fileURL)
+        self.mediaExtension = MediaExtension.fromExtension(fileURL.absoluteString)!
     }
     
     func getImage() -> UIImage {

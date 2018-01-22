@@ -1,5 +1,5 @@
 //
-//  PhotoCell.swift
+//  MediaCell.swift
 //  SPV
 //
 //  Created by dlatheron on 04/08/2017.
@@ -9,19 +9,20 @@
 import Foundation
 import UIKit
 
-protocol PhotoCellDelegate {
-    func photoCellClicked(_ sender: PhotoCell)
-    func photoCellSelectionChanged(_ sender: PhotoCell)
+protocol MediaCellDelegate {
+    func mediaCellClicked(_ sender: MediaCell)
+    func mediaCellSelectionChanged(_ sender: MediaCell)
 }
 
-class PhotoCell : UICollectionViewCell {
+class MediaCell : UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var selectedView: UIView!
+    @IBOutlet weak var videoIndicatorView: UIView!
     @IBOutlet weak var dimmingView: UIView!
     
     var selectedColour: UIColor = UIColor.blue
     var selectedBorderWidth: CGFloat = 2
-    var delegate: PhotoCellDelegate? = nil
+    var delegate: MediaCellDelegate? = nil
     var media: Media!
     
     override func awakeFromNib() {
@@ -49,7 +50,7 @@ class PhotoCell : UICollectionViewCell {
             if self.isSelected {
                 self.isSelected = false
             } else {
-                self.delegate?.photoCellClicked(self)
+                self.delegate?.mediaCellClicked(self)
             }
         }
     }
@@ -57,17 +58,24 @@ class PhotoCell : UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             selectedView.isHidden = !self.isSelected
-            delegate?.photoCellSelectionChanged(self)
+            delegate?.mediaCellSelectionChanged(self)
         }
     }
     
     func configure(withMedia media: Media,
                    isSelected selected: Bool,
-                   delegate: PhotoCellDelegate?) {
+                   delegate: MediaCellDelegate?) {
         self.media = media
         self.delegate = delegate
+        
+        let mediaType = media.mediaExtension.type
 
         self.imageView.image = media.getImage()        
         self.isSelected = selected
+        self.videoIndicatorView.isHidden = mediaType != MediaType.video
+        
+        if mediaType == MediaType.video {
+            self.backgroundColor = UIColor.black
+        }
     }
 }
