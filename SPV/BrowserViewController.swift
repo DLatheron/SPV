@@ -208,27 +208,10 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         if sender.state != .ended {
             return
         }
-        
-//        if let flexibleHeightBar = flexibleHeightBar {
-//            if let behaviourDefiner = flexibleHeightBar.behaviorDefiner {
-//                UIView.animate(withDuration: 0.15,
-//                               animations: {
-//                    self.progressChanged(progress: 0.0)
-//                })
-//
-//                flexibleHeightBar.progress = 0.0
-//
-//                behaviourDefiner.snap(with: webView.scrollView) {
-//                    flexibleHeightBar.enableSubviewInteractions(true)
-//                    self.searchField.becomeFirstResponder()
-//                }
-//            }
-//        }
     }
     
     // TODO: Only show domain and lock symbol (centred) when the search is inactive.
-    // On activation display the whole thing AND left justify it (with animation).
-   
+    // On activation display the whole thing AND left justify it (with animation).   
     override func observeValue(forKeyPath keyPath: String?,
                                of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?,

@@ -10,8 +10,6 @@ import Foundation
 import AVKit
 
 class VideoView : UIView {
-    //weak var videoPreviewLayer: UIView!
-    
     var media: Media
     var player: AVPlayerLooper!
     var avpController = AVPlayerViewController()
@@ -27,6 +25,8 @@ class VideoView : UIView {
         player = AVPlayerLooper(player: queuePlayer,
                                 templateItem: playerItem)
         avpController = AVPlayerViewController()
+        avpController.entersFullScreenWhenPlaybackBegins = true
+        avpController.exitsFullScreenWhenPlaybackEnds = true
 
         super.init(frame: UIScreen.main.bounds)
 

@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sh6-YC-b4z" customClass="RatingsView" customModule="SPV" customModuleProvider="target">
-                                <rect key="frame" x="54.5" y="477" width="266" height="66"/>
+                                <rect key="frame" x="54.5" y="457" width="266" height="66"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="enH-HE-XJg">
                                         <rect key="frame" x="0.0" y="0.0" width="266" height="66"/>
@@ -138,7 +138,7 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
-                            <constraint firstItem="61i-Hs-GkW" firstAttribute="bottom" secondItem="sh6-YC-b4z" secondAttribute="bottom" constant="80" id="hbx-o4-20c"/>
+                            <constraint firstItem="61i-Hs-GkW" firstAttribute="bottom" secondItem="sh6-YC-b4z" secondAttribute="bottom" constant="100" id="hbx-o4-20c"/>
                             <constraint firstItem="sh6-YC-b4z" firstAttribute="centerX" secondItem="61i-Hs-GkW" secondAttribute="centerX" id="tSF-Up-wCS"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="61i-Hs-GkW"/>
