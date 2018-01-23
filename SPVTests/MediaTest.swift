@@ -21,8 +21,12 @@ class MediaTest: XCTestCase {
         super.tearDown()
     }
     
-    func test_init() {
+    func test_fileURL() {
+        let fileURL = URL(fileURLWithPath: "/image001.jpg")
+        let media = Media(fileURL: fileURL)
         
+        XCTAssertEqual(media.fileURL, URL(fileURLWithPath: "/image001.jpg"))
+        XCTAssert(media.fileURL.isFileURL, "Not a file URL")
     }
     
     func test_infoURL() {
@@ -30,5 +34,6 @@ class MediaTest: XCTestCase {
         let media = Media(fileURL: fileURL)
         
         XCTAssertEqual(media.infoURL, URL(fileURLWithPath: "/image001.jpg.info"))
+        XCTAssert(media.infoURL.isFileURL, "Not a file URL")
     }
 }

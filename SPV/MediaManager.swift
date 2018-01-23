@@ -44,6 +44,8 @@ class MediaManager {
         let newMedia: Media
         
         switch (fileURL.pathExtension) {
+        case "gif":
+            newMedia = PhotoGIF(fileURL: fileURL)
         case "mov":
             newMedia = Video(fileURL: fileURL)
         case "mp4":

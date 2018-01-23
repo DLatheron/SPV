@@ -20,8 +20,7 @@ class VideoView : UIView {
         
         let queuePlayer = AVQueuePlayer()
         //let playerLayer = AVPlayerLayer(player: player)
-        let videoUrl = URL(fileURLWithPath: media.fileURL.absoluteString)
-        let playerItem = AVPlayerItem(url: videoUrl)
+        let playerItem = AVPlayerItem(url: media.fileURL)
         player = AVPlayerLooper(player: queuePlayer,
                                 templateItem: playerItem)
         avpController = AVPlayerViewController()

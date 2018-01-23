@@ -13,7 +13,16 @@ import UIKit
 class Media : NSObject {
     static var mediaInfoExtension = "info"
     
-    private(set) var fileURL: URL
+    private var _fileURL: URL
+    private(set) var fileURL: URL {
+        get {
+            return _fileURL
+        }
+        set {
+            _fileURL = newValue.ensureFileURL()
+        }
+    }
+    
     private(set) var mediaInfo: MediaInfo
     
     var id: UUID {
@@ -37,7 +46,7 @@ class Media : NSObject {
     var mediaExtension: MediaExtension
     
     init(fileURL: URL) {
-        self.fileURL = fileURL
+        self._fileURL = fileURL.ensureFileURL()
         self.mediaInfo = Media.loadOrCreateMediaInfo(forFileURL: fileURL)
         self.mediaExtension = MediaExtension.fromExtension(fileURL.absoluteString)!
     }
@@ -69,7 +78,7 @@ class Media : NSObject {
     
     func deleteMedia() {
         do {
-            try FileManager.default.removeItem(at: URL(fileURLWithPath:fileURL.absoluteString))
+            try FileManager.default.removeItem(at: fileURL)
         } catch {
             print("Failed to delete media because: \(error)")
         }
@@ -81,7 +90,7 @@ class Media : NSObject {
     }
     
     private class func makeInfoURL(fileURL: URL) -> URL {
-        return fileURL.appendingPathExtension(Media.mediaInfoExtension) // TODO Recently changed...
+        return fileURL.appendingPathExtension(Media.mediaInfoExtension).ensureFileURL()
     }
     
     private class func loadOrCreateMediaInfo(forFileURL fileURL: URL) -> MediaInfo {

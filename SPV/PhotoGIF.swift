@@ -11,8 +11,7 @@ import UIKit
 
 class PhotoGIF : Media {
     override func getImage() -> UIImage {
-        let properFileURL = URL(fileURLWithPath: fileURL.absoluteString)
-        let data = try? Data(contentsOf: properFileURL)
+        let data = try? Data(contentsOf: fileURL)
         let baseGif = UIImage.gifImageWithData(data!)
         return baseGif!
     }

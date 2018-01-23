@@ -12,7 +12,7 @@ import AVFoundation
 
 class Video : Media {
     override func getImage() -> UIImage {
-        return generateThumbnail(url: URL(fileURLWithPath: fileURL.absoluteString))
+        return generateThumbnail(url: fileURL)
     }
     
     func generateThumbnail(url: URL) -> UIImage {

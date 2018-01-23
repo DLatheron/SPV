@@ -31,6 +31,7 @@
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
 		F93015B42015CE1A002973D7 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93015B32015CE1A002973D7 /* VideoView.swift */; };
 		F93015B62016519A002973D7 /* EmbeddedMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93015B52016519A002973D7 /* EmbeddedMediaView.swift */; };
+		F93015B820172651002973D7 /* URLExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93015B720172651002973D7 /* URLExtensions.swift */; };
 		F936CCA01FA70F3300813F2E /* UIScreenExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */; };
 		F93E26F11FB1A833001D0DAE /* CollapsibleSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93E26F01FB1A833001D0DAE /* CollapsibleSearchBar.swift */; };
 		F93EE1521FCC002900363333 /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93EE1511FCC002900363333 /* Dispatch.swift */; };
@@ -157,6 +158,7 @@
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
 		F93015B32015CE1A002973D7 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		F93015B52016519A002973D7 /* EmbeddedMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedMediaView.swift; sourceTree = "<group>"; };
+		F93015B720172651002973D7 /* URLExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensions.swift; sourceTree = "<group>"; };
 		F936CC9F1FA70F3300813F2E /* UIScreenExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreenExtensions.swift; sourceTree = "<group>"; };
 		F93E26F01FB1A833001D0DAE /* CollapsibleSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSearchBar.swift; sourceTree = "<group>"; };
 		F93EE1511FCC002900363333 /* Dispatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatch.swift; sourceTree = "<group>"; };
@@ -437,7 +439,6 @@
 			children = (
 				F9E5DA4C200BCAE900BF5BD0 /* Media Formats */,
 				F9C8DA3D1FD1C879002BB2D5 /* Security */,
-				F9C8DA3E1FD1C885002BB2D5 /* KeychainPasswordItem.swift */,
 				F9F2D3D91F44201A00FD6F78 /* Controls */,
 				F98B8C3A1F767E4300719CA6 /* Helpers */,
 				F914D4F41F38C33A00B9042E /* MediaManager.swift */,
@@ -470,6 +471,7 @@
 				F93EE1511FCC002900363333 /* Dispatch.swift */,
 				F9D47C611FFF631A00515A27 /* UIGestureRecognizer.swift */,
 				F9E5DA5920108B3400BF5BD0 /* EnumCollection.swift */,
+				F93015B720172651002973D7 /* URLExtensions.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -603,6 +605,7 @@
 		F9C8DA3D1FD1C879002BB2D5 /* Security */ = {
 			isa = PBXGroup;
 			children = (
+				F9C8DA3E1FD1C885002BB2D5 /* KeychainPasswordItem.swift */,
 			);
 			name = Security;
 			sourceTree = "<group>";
@@ -971,6 +974,7 @@
 				F9C50C0E1F5E7F2900EE79E5 /* Video.swift in Sources */,
 				F9E8DE931FC6B31B00FDAAB9 /* PIN.swift in Sources */,
 				F9C50C101F5E7F6200EE79E5 /* MediaInfo.swift in Sources */,
+				F93015B820172651002973D7 /* URLExtensions.swift in Sources */,
 				F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */,
 				F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */,
 				F9F2D3D41F42CE0200FD6F78 /* DownloadsViewController.swift in Sources */,
