@@ -120,7 +120,7 @@
                                             <constraint firstAttribute="width" secondItem="tgi-vn-ciw" secondAttribute="width" constant="16" id="ld6-dI-B8Q"/>
                                             <constraint firstAttribute="bottom" secondItem="tgi-vn-ciw" secondAttribute="bottom" constant="8" id="oIi-9Y-ina"/>
                                         </constraints>
-                                        <blurEffect style="extraLight"/>
+                                        <blurEffect style="dark"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="16"/>

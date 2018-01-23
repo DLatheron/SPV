@@ -30,7 +30,7 @@ class PhotoScrollView : UIScrollView {
         
         super.init(frame: UIScreen.main.bounds)
         
-        backgroundColor = UIColor.white
+        backgroundColor = UIColor.black
         contentSize = imageView.bounds.size
         autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
         
