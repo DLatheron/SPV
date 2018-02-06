@@ -28,6 +28,7 @@ class AlbumsViewController: UICollectionViewController {
     fileprivate var deleteButton: UIBarButtonItem!
     fileprivate var actionButton: UIBarButtonItem!
     fileprivate var importButton: UIBarButtonItem!
+    fileprivate var sortButton: UIBarButtonItem!
     fileprivate var standardNavButtons: [UIBarButtonItem] = []
     fileprivate var selectedNavButtons: [UIBarButtonItem] = []
     fileprivate var alertController: UIAlertController!
@@ -39,6 +40,7 @@ class AlbumsViewController: UICollectionViewController {
             deleteButton.isEnabled = anyMediaSelected
             actionButton.isEnabled = anyMediaSelected
             importButton.isEnabled = !anyMediaSelected
+            sortButton.isEnabled = !anyMediaSelected
         }
     }
     
@@ -83,7 +85,11 @@ class AlbumsViewController: UICollectionViewController {
         importButton = UIBarButtonItem(barButtonSystemItem: .action,
                                        target: self,
                                        action: #selector(importMedia(_:)))
-        standardNavButtons = [importButton]
+        // TODO: Replace with custom sort icon.
+        sortButton = UIBarButtonItem(barButtonSystemItem: .action,
+                                     target: self,
+                                     action: #selector(sortMedia(_:)))
+        standardNavButtons = [importButton, sortButton]
         
     }
 
@@ -369,6 +375,19 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
         present(alertController,
                 animated: true)
     }
+    
+    @objc func sortMedia(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "MediaViewer",
+                                      bundle: nil)
+        let navController = storyboard.instantiateViewController(withIdentifier: "SortOrderController") as! UINavigationController
+        let sortOrderController = navController.viewControllers[0] as! SortOrderViewController
+        sortOrderController.delegate = self
+        
+        self.present(navController,
+                     animated: true) {
+            print("Displayed")
+        }
+    }
 }
 
 extension AlbumsViewController {
@@ -447,5 +466,11 @@ extension AlbumsViewController {
                 animated: true)
         
         // EXPORT?
+    }
+}
+
+extension AlbumsViewController : SortViewControllerDelegate {
+    func sortBy(option: SortBy) {
+        print("SortBy \(option.description ?? "Unknown")")
     }
 }
