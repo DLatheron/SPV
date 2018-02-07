@@ -22,8 +22,27 @@ fileprivate let cancelTitle = NSLocalizedString("Cancel",
 fileprivate let importPhotoTitle = NSLocalizedString("Import Photo...",
                                                      comment: "Import from photos")
 
-class AlbumsViewController: UICollectionViewController {
+class AlbumsViewController: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var selectButton: UIBarButtonItem!
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet weak var sortPanelHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var sortBySegment: UISegmentedControl!
+    @IBOutlet weak var directionSegment: UISegmentedControl!
+    
+    enum SortBy: Int {
+        case Added
+        case Created
+        case Size
+        case Other
+    }
+    
+    enum Direction: Int {
+        case Ascending
+        case Descending
+    }
+    
+    fileprivate var sortBy: SortBy = .Added
+    fileprivate var direction: Direction = .Ascending
     
     fileprivate var deleteButton: UIBarButtonItem!
     fileprivate var actionButton: UIBarButtonItem!
@@ -48,6 +67,9 @@ class AlbumsViewController: UICollectionViewController {
     
     fileprivate let reuseIdentifier = "MediaCellId"
     fileprivate let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
+    fileprivate let sortPanelOpenHeight: CGFloat = 90
+    fileprivate let sortPanelClosedHeight: CGFloat = 0
+    fileprivate let sortPanelOpenCloseDuration: TimeInterval = 0.3
     
     var selectMode: Bool = false {
         didSet {
@@ -96,6 +118,18 @@ class AlbumsViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        sortPanelHeightConstraint.constant = 0
+        
+        sortBySegment.addTarget(self,
+                                action: #selector(handleSortBy(_:)),
+                                for: .valueChanged)
+        directionSegment.addTarget(self,
+                                   action: #selector(handleDirection(_:)),
+                                   for: .valueChanged)
+        
+        sortMedia(by: self.sortBy,
+                  direction: self.direction)
+
         mediaManager.delegate = self
         media = mediaManager.media
         selectMode = false
@@ -105,14 +139,15 @@ class AlbumsViewController: UICollectionViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    // MARK: - UICollectionViewDataSource
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+}
+
+extension AlbumsViewController : UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    override func collectionView(_ collectionView: UICollectionView,
-                                 numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return media.count
     }
     
@@ -120,8 +155,8 @@ class AlbumsViewController: UICollectionViewController {
         return UIImage(contentsOfFile: media[index].fileURL.path)
     }
     
-    override func collectionView(_ collectionView: UICollectionView,
-                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! MediaCell
         let media = getMedia(for: indexPath)
@@ -376,17 +411,47 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
                 animated: true)
     }
     
-    @objc func sortMedia(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "MediaViewer",
-                                      bundle: nil)
-        let navController = storyboard.instantiateViewController(withIdentifier: "SortOrderController") as! UINavigationController
-        let sortOrderController = navController.viewControllers[0] as! SortOrderViewController
-        sortOrderController.delegate = self
+    func animateSortOptions(targetHeight height: CGFloat) {
+        sortPanelHeightConstraint.constant = height
         
-        self.present(navController,
-                     animated: true) {
-            print("Displayed")
+        UIView.animate(withDuration: sortPanelOpenCloseDuration,
+                       delay: 0.0,
+                       options: .curveEaseInOut,
+                       animations: {
+                        self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    @objc func sortMedia(_ sender: Any) {
+        if sortPanelHeightConstraint.constant == sortPanelClosedHeight {
+            animateSortOptions(targetHeight: sortPanelOpenHeight)
+        } else if sortPanelHeightConstraint.constant == sortPanelOpenHeight {
+            animateSortOptions(targetHeight: sortPanelClosedHeight)
         }
+    }
+    
+    @objc func handleSortBy(_ sender: Any) {
+        if let sortBy = SortBy(rawValue: sortBySegment.selectedSegmentIndex) {
+            self.sortBy = sortBy
+            sortMedia(by: self.sortBy,
+                      direction: self.direction)
+        }
+    }
+    
+    @objc func handleDirection(_ sender: Any) {
+        if let direction = Direction(rawValue: directionSegment.selectedSegmentIndex) {
+            self.direction = direction
+            sortMedia(by: self.sortBy,
+                      direction: self.direction)
+        }
+    }
+    
+    func sortMedia(by sortBy: SortBy,
+                   direction: Direction) {
+        // TODO: Perform the sorting...
+        
+        sortBySegment.selectedSegmentIndex = sortBy.rawValue
+        directionSegment.selectedSegmentIndex = direction.rawValue
     }
 }
 
@@ -466,11 +531,5 @@ extension AlbumsViewController {
                 animated: true)
         
         // EXPORT?
-    }
-}
-
-extension AlbumsViewController : SortViewControllerDelegate {
-    func sortBy(option: SortBy) {
-        print("SortBy \(option.description ?? "Unknown")")
     }
 }

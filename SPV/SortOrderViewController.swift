@@ -88,7 +88,9 @@ class SortOrderViewController : UIViewController, UITableViewDataSource, UITable
             cell?.accessoryType = .none
         }
         
-        dismiss(animated: true,
-                completion: nil)
+        DispatchQueue.main.async {
+            self.dismiss(animated: true,
+                         completion: nil)
+        }
     }
 }
