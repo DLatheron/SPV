@@ -28,17 +28,51 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var sortPanelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sortBySegment: UISegmentedControl!
     @IBOutlet weak var directionSegment: UISegmentedControl!
+    @IBOutlet weak var closeSortPanelButton: UIButton!
     
-    enum SortBy: Int {
+    
+    enum SortBy : Int, EnumCollection {
         case Added
+        case Rating
         case Created
         case Size
-        case Other
+        
+        var localizedString: String  {
+            get {
+                switch self {
+                case .Added:
+                    return NSLocalizedString("Added",
+                                             comment: "Sort by date added")
+                case .Rating:
+                    return NSLocalizedString("Rating",
+                                             comment: "Sort by rating")
+                case .Created:
+                    return NSLocalizedString("Created",
+                                             comment: "Sort by date created")
+                case .Size:
+                    return NSLocalizedString("Size",
+                                             comment: "Sort by file size")
+                }
+            }
+        }
     }
     
-    enum Direction: Int {
+    enum Direction : Int, EnumCollection {
         case Ascending
         case Descending
+        
+        var localizedString: String {
+            get {
+                switch self {
+                case .Ascending:
+                    return NSLocalizedString("⬆︎ Ascending",
+                                             comment: "Ascending sort direction")
+                case .Descending:
+                    return NSLocalizedString("⬇︎ Descending",
+                                             comment: "Descending sort direction")
+                }
+            }
+        }
     }
     
     fileprivate var sortBy: SortBy = .Added
@@ -114,22 +148,48 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
         standardNavButtons = [importButton, sortButton]
         
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    
+    func initSortControl() {
         sortPanelHeightConstraint.constant = 0
         
+        sortBySegment.removeAllSegments()
+        for (index, sortBy) in SortBy.allValues.enumerated() {
+            sortBySegment.insertSegment(withTitle: sortBy.localizedString,
+                                        at: index,
+                                        animated: false)
+            sortBySegment.setWidth(0.0,
+                                   forSegmentAt: index)
+        }
+        sortBySegment.setNeedsLayout()
+
         sortBySegment.addTarget(self,
                                 action: #selector(handleSortBy(_:)),
                                 for: .valueChanged)
+        
+        directionSegment.removeAllSegments()
+        for (index, direction) in Direction.allValues.enumerated() {
+            directionSegment.insertSegment(withTitle: direction.localizedString,
+                                           at: index,
+                                           animated: false)
+            directionSegment.setWidth(0.0,
+                                      forSegmentAt: index)
+        }
+        directionSegment.setNeedsLayout()
+        
         directionSegment.addTarget(self,
                                    action: #selector(handleDirection(_:)),
                                    for: .valueChanged)
         
+        closeSortPanelButton.layer.cornerRadius = closeSortPanelButton.bounds.size.width / 2
+        
         sortMedia(by: self.sortBy,
                   direction: self.direction)
+    }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        initSortControl()
         mediaManager.delegate = self
         media = mediaManager.media
         selectMode = false
@@ -446,9 +506,75 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
         }
     }
     
+    @IBAction func closeSortPanel(_ sender: Any) {
+        animateSortOptions(targetHeight: sortPanelClosedHeight)
+    }
+    
     func sortMedia(by sortBy: SortBy,
                    direction: Direction) {
+        func SortFunc(_ fn: @escaping (Media, Media) -> Bool) -> (Media, Media) -> Bool {
+            return fn
+        }
+
+        let addedAscending = SortFunc {
+            switch ($0.mediaInfo.importDate, $1.mediaInfo.importDate) {
+            case (nil, nil):
+                return true
+            case (nil, _):
+                return true
+            case (_, nil):
+                return false
+            case (.some(let a), .some(let b)):
+                return a < b
+            }
+        }
+        
+        let addedDescending = SortFunc {
+            return !addedAscending($0, $1)
+        }
+        
+        var sortedMedia: [Media]
+
         // TODO: Perform the sorting...
+        if direction == .Ascending {
+            switch sortBy {
+            case .Added:
+                sortedMedia = media.sorted(by: addedAscending)
+            case .Created:
+                sortedMedia = media.sorted(by: { $0.mediaInfo.creationDate < $1.mediaInfo.creationDate })
+            case .Size:
+                sortedMedia = media.sorted(by: { $0.mediaInfo.fileSize < $1.mediaInfo.fileSize })
+            case .Rating:
+                sortedMedia = media.sorted(by: { $0.mediaInfo.rating < $1.mediaInfo.rating })
+            }
+        } else {
+            switch sortBy {
+            case .Added:
+                sortedMedia = media.sorted(by: addedDescending)
+            case .Created:
+                sortedMedia = media.sorted(by: { $0.mediaInfo.creationDate > $1.mediaInfo.creationDate })
+            case .Size:
+                sortedMedia = media.sorted(by: { $0.mediaInfo.fileSize > $1.mediaInfo.fileSize })
+            case .Rating:
+                sortedMedia = media.sorted(by: { $0.mediaInfo.rating > $1.mediaInfo.rating })
+            }
+        }
+        
+        media = sortedMedia
+        collectionView.reloadData()
+
+        // TODO NEXT:
+//        collectionView?.performBatchUpdates({ () -> Void in
+//            for (newIndex, product) in productsOrdered.enumerate() {
+//                let oldIndex = self.products.indexOf({ $0 === product })
+//                let fromIndexPath = NSIndexPath(forRow: oldIndex!, inSection: 0)
+//                let toIndexPath = NSIndexPath(forRow: newIndex, inSection: 0)
+//
+//                self.collectionView?.moveItemAtIndexPath(fromIndexPath, toIndexPath: toIndexPath)
+//            }
+//        }, completion: { finished in
+//            self.products = productsOrdered
+//        })
         
         sortBySegment.selectedSegmentIndex = sortBy.rawValue
         directionSegment.selectedSegmentIndex = direction.rawValue

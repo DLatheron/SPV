@@ -167,26 +167,46 @@
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bJR-Ry-95p">
                                         <rect key="frame" x="8" y="10" width="359" height="29"/>
                                         <segments>
+                                            <segment title="Rating"/>
                                             <segment title="Added"/>
                                             <segment title="Created"/>
                                             <segment title="Size"/>
-                                            <segment title="Other"/>
                                         </segments>
                                     </segmentedControl>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Z2m-Pj-laU">
-                                        <rect key="frame" x="101" y="54" width="173" height="29"/>
+                                        <rect key="frame" x="87.5" y="54" width="200" height="29"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="TOn-co-F2k"/>
+                                        </constraints>
                                         <segments>
                                             <segment title="Ascending"/>
                                             <segment title="Descending"/>
                                         </segments>
                                     </segmentedControl>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BKH-1Y-PW5">
+                                        <rect key="frame" x="337" y="52" width="30" height="30"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
+                                        <state key="normal" title="X">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="closeSortPanel:" destination="ejU-CE-gHE" eventType="touchUpInside" id="qli-ho-cTm"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="Z2m-Pj-laU" firstAttribute="centerX" secondItem="PI4-S1-S8o" secondAttribute="centerX" id="1ev-Zd-OCF"/>
                                     <constraint firstAttribute="trailing" secondItem="bJR-Ry-95p" secondAttribute="trailing" constant="8" id="FBG-fs-Ifb"/>
-                                    <constraint firstItem="bJR-Ry-95p" firstAttribute="leading" secondItem="Z2m-Pj-laU" secondAttribute="trailing" constant="-266" id="QjI-bl-kqa"/>
+                                    <constraint firstAttribute="trailing" secondItem="BKH-1Y-PW5" secondAttribute="trailing" constant="8" id="Q9K-S0-BBg"/>
+                                    <constraint firstAttribute="bottom" secondItem="BKH-1Y-PW5" secondAttribute="bottom" constant="8" id="SHj-i4-Njn"/>
                                     <constraint firstItem="Z2m-Pj-laU" firstAttribute="top" secondItem="bJR-Ry-95p" secondAttribute="bottom" constant="16" id="Y2k-bA-Jp5"/>
+                                    <constraint firstItem="Z2m-Pj-laU" firstAttribute="centerX" secondItem="PI4-S1-S8o" secondAttribute="centerX" id="gKb-0L-lnx"/>
                                     <constraint firstAttribute="bottom" secondItem="Z2m-Pj-laU" secondAttribute="bottom" constant="8" id="ltr-zJ-Kvm"/>
                                     <constraint firstAttribute="height" constant="90" id="o1h-Ri-fj0"/>
                                     <constraint firstItem="bJR-Ry-95p" firstAttribute="leading" secondItem="PI4-S1-S8o" secondAttribute="leading" constant="8" id="ymm-DA-0Ap"/>
@@ -291,6 +311,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Select" id="YRp-5O-7Ak"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="closeSortPanelButton" destination="BKH-1Y-PW5" id="xEd-Tb-kg2"/>
                         <outlet property="collectionView" destination="Gcy-na-GUw" id="cmI-Qv-Qky"/>
                         <outlet property="directionSegment" destination="Z2m-Pj-laU" id="uov-EU-Hxo"/>
                         <outlet property="selectButton" destination="YRp-5O-7Ak" id="fqm-xO-A2E"/>
@@ -301,7 +322,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ivv-1A-Uwn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1769" y="-385"/>
+            <point key="canvasLocation" x="1768.8" y="-385.45727136431788"/>
         </scene>
         <!--Media-->
         <scene sceneID="NiL-39-dgA">
