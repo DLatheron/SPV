@@ -138,11 +138,13 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
         selectedNavButtons = [actionButton, deleteButton]
         
         // TODO: Replace with custom import icon.
-        importButton = UIBarButtonItem(barButtonSystemItem: .action,
+        importButton = UIBarButtonItem(image: UIImage(named: "import"),
+                                       style: .plain,
                                        target: self,
                                        action: #selector(importMedia(_:)))
         // TODO: Replace with custom sort icon.
-        sortButton = UIBarButtonItem(barButtonSystemItem: .action,
+        sortButton = UIBarButtonItem(image: UIImage(named: "sort"),
+                                     style: .plain,
                                      target: self,
                                      action: #selector(sortMedia(_:)))
         standardNavButtons = [importButton, sortButton]
@@ -512,6 +514,10 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
     
     func sortMedia(by sortBy: SortBy,
                    direction: Direction) {
+        if media.count == 0 {
+            return
+        }
+        
         func SortFunc(_ fn: @escaping (Media, Media) -> Bool) -> (Media, Media) -> Bool {
             return fn
         }
@@ -560,8 +566,22 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
             }
         }
         
-        media = sortedMedia
-        collectionView.reloadData()
+        //media = sortedMedia
+        //collectionView.reloadData()
+        
+        collectionView.performBatchUpdates({
+            for (newIndex, media) in sortedMedia.enumerated() {
+                let oldIndex = self.media.index(where: { $0 === media })
+                let fromIndexPath = IndexPath(row: oldIndex!,
+                                              section: 0)
+                let toIndexPath = IndexPath(row: newIndex,
+                                            section: 0)
+                self.collectionView.moveItem(at: fromIndexPath,
+                                             to: toIndexPath)
+            }
+        }) { (complete) in
+            self.media = sortedMedia
+        }
 
         // TODO NEXT:
 //        collectionView?.performBatchUpdates({ () -> Void in
