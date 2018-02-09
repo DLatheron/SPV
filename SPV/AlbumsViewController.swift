@@ -30,6 +30,23 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var directionSegment: UISegmentedControl!
     @IBOutlet weak var closeSortPanelButton: UIButton!
     
+    enum Direction : Int, EnumCollection {
+        case Ascending
+        case Descending
+        
+        var localizedString: String {
+            get {
+                switch self {
+                case .Ascending:
+                    return NSLocalizedString("⬆︎ Ascending",
+                                             comment: "Ascending sort direction")
+                case .Descending:
+                    return NSLocalizedString("⬇︎ Descending",
+                                             comment: "Descending sort direction")
+                }
+            }
+        }
+    }
     
     enum SortBy : Int, EnumCollection {
         case Added
@@ -37,6 +54,52 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
         case Created
         case Size
         
+        static func SortFunc(_ fn: @escaping (Media, Media) -> Bool) -> (Media, Media) -> Bool {
+            return fn
+        }
+        
+        static let addedAscending = SortFunc {
+            switch ($0.mediaInfo.importDate, $1.mediaInfo.importDate) {
+            case (nil, nil):
+                return true
+            case (nil, _):
+                return true
+            case (_, nil):
+                return false
+            case (.some(let a), .some(let b)):
+                return a < b
+            }
+        }
+        static let addedDescending = SortFunc { !addedAscending($0, $1) }
+        static let createdAscending = SortFunc { $0.mediaInfo.creationDate < $1.mediaInfo.creationDate }
+        static let createdDescending = SortFunc { !createdAscending($0, $1) }
+        static let fileSizeAscending = SortFunc { $0.mediaInfo.fileSize < $1.mediaInfo.fileSize }
+        static let fileSizeDescending = SortFunc { !fileSizeAscending($0, $1) }
+        static let ratingAscending = SortFunc { $0.mediaInfo.rating < $1.mediaInfo.rating }
+        static let ratingDescending = SortFunc { !ratingAscending($0, $1) }
+        
+        func sort(media: [Media], direction: Direction) -> [Media] {
+            var sortedMedia: [Media]
+            
+            if direction == .Ascending {
+                switch self {
+                case .Added: sortedMedia = media.sorted(by: SortBy.addedAscending)
+                case .Created: sortedMedia = media.sorted(by: SortBy.createdAscending)
+                case .Size: sortedMedia = media.sorted(by: SortBy.fileSizeAscending)
+                case .Rating: sortedMedia = media.sorted(by: SortBy.ratingAscending )
+                }
+            } else {
+                switch self {
+                case .Added: sortedMedia = media.sorted(by: SortBy.addedDescending)
+                case .Created: sortedMedia = media.sorted(by: SortBy.createdDescending)
+                case .Size: sortedMedia = media.sorted(by: SortBy.fileSizeDescending)
+                case .Rating: sortedMedia = media.sorted(by: SortBy.ratingDescending)
+                }
+            }
+            
+            return sortedMedia
+        }
+
         var localizedString: String  {
             get {
                 switch self {
@@ -52,24 +115,6 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
                 case .Size:
                     return NSLocalizedString("Size",
                                              comment: "Sort by file size")
-                }
-            }
-        }
-    }
-    
-    enum Direction : Int, EnumCollection {
-        case Ascending
-        case Descending
-        
-        var localizedString: String {
-            get {
-                switch self {
-                case .Ascending:
-                    return NSLocalizedString("⬆︎ Ascending",
-                                             comment: "Ascending sort direction")
-                case .Descending:
-                    return NSLocalizedString("⬇︎ Descending",
-                                             comment: "Descending sort direction")
                 }
             }
         }
@@ -137,18 +182,15 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
                                        action: #selector(actionOnSelectedMedia(_:)))
         selectedNavButtons = [actionButton, deleteButton]
         
-        // TODO: Replace with custom import icon.
         importButton = UIBarButtonItem(image: UIImage(named: "import"),
                                        style: .plain,
                                        target: self,
                                        action: #selector(importMedia(_:)))
-        // TODO: Replace with custom sort icon.
         sortButton = UIBarButtonItem(image: UIImage(named: "sort"),
                                      style: .plain,
                                      target: self,
                                      action: #selector(sortMedia(_:)))
         standardNavButtons = [importButton, sortButton]
-        
     }
     
     func initSortControl() {
@@ -191,10 +233,11 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initSortControl()
         mediaManager.delegate = self
         media = mediaManager.media
         selectMode = false
+
+        initSortControl()
     }
 
     override func didReceiveMemoryWarning() {
@@ -290,6 +333,8 @@ extension AlbumsViewController : MediaManagerChangedProtocol {
             self.media.append(media)
             self.collectionView?.insertItems(at: [ IndexPath(row: self.media.count - 1,
                                                              section: 0) ])
+            self.sortMedia(by: self.sortBy,
+                           direction: self.direction)
         }
     }
     
@@ -298,6 +343,8 @@ extension AlbumsViewController : MediaManagerChangedProtocol {
             if let index = self.media.index(of: media) {
                 self.collectionView?.reloadItems(at: [ IndexPath(row: index,
                                                                  section: 0)])
+                self.sortMedia(by: self.sortBy,
+                               direction: self.direction)
             }
         }
     }
@@ -514,61 +561,16 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
     
     func sortMedia(by sortBy: SortBy,
                    direction: Direction) {
+        sortBySegment.selectedSegmentIndex = sortBy.rawValue
+        directionSegment.selectedSegmentIndex = direction.rawValue
+
         if media.count == 0 {
             return
         }
         
-        func SortFunc(_ fn: @escaping (Media, Media) -> Bool) -> (Media, Media) -> Bool {
-            return fn
-        }
+        let sortedMedia = self.sortBy.sort(media: self.media,
+                                           direction: self.direction)
 
-        let addedAscending = SortFunc {
-            switch ($0.mediaInfo.importDate, $1.mediaInfo.importDate) {
-            case (nil, nil):
-                return true
-            case (nil, _):
-                return true
-            case (_, nil):
-                return false
-            case (.some(let a), .some(let b)):
-                return a < b
-            }
-        }
-        
-        let addedDescending = SortFunc {
-            return !addedAscending($0, $1)
-        }
-        
-        var sortedMedia: [Media]
-
-        // TODO: Perform the sorting...
-        if direction == .Ascending {
-            switch sortBy {
-            case .Added:
-                sortedMedia = media.sorted(by: addedAscending)
-            case .Created:
-                sortedMedia = media.sorted(by: { $0.mediaInfo.creationDate < $1.mediaInfo.creationDate })
-            case .Size:
-                sortedMedia = media.sorted(by: { $0.mediaInfo.fileSize < $1.mediaInfo.fileSize })
-            case .Rating:
-                sortedMedia = media.sorted(by: { $0.mediaInfo.rating < $1.mediaInfo.rating })
-            }
-        } else {
-            switch sortBy {
-            case .Added:
-                sortedMedia = media.sorted(by: addedDescending)
-            case .Created:
-                sortedMedia = media.sorted(by: { $0.mediaInfo.creationDate > $1.mediaInfo.creationDate })
-            case .Size:
-                sortedMedia = media.sorted(by: { $0.mediaInfo.fileSize > $1.mediaInfo.fileSize })
-            case .Rating:
-                sortedMedia = media.sorted(by: { $0.mediaInfo.rating > $1.mediaInfo.rating })
-            }
-        }
-        
-        //media = sortedMedia
-        //collectionView.reloadData()
-        
         collectionView.performBatchUpdates({
             for (newIndex, media) in sortedMedia.enumerated() {
                 let oldIndex = self.media.index(where: { $0 === media })
@@ -582,22 +584,6 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
         }) { (complete) in
             self.media = sortedMedia
         }
-
-        // TODO NEXT:
-//        collectionView?.performBatchUpdates({ () -> Void in
-//            for (newIndex, product) in productsOrdered.enumerate() {
-//                let oldIndex = self.products.indexOf({ $0 === product })
-//                let fromIndexPath = NSIndexPath(forRow: oldIndex!, inSection: 0)
-//                let toIndexPath = NSIndexPath(forRow: newIndex, inSection: 0)
-//
-//                self.collectionView?.moveItemAtIndexPath(fromIndexPath, toIndexPath: toIndexPath)
-//            }
-//        }, completion: { finished in
-//            self.products = productsOrdered
-//        })
-        
-        sortBySegment.selectedSegmentIndex = sortBy.rawValue
-        directionSegment.selectedSegmentIndex = direction.rawValue
     }
 }
 

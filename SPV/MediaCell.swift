@@ -70,12 +70,10 @@ class MediaCell : UICollectionViewCell {
         
         let mediaType = media.mediaExtension.type
 
-        self.imageView.image = media.getImage()        
-        self.isSelected = selected
-        self.videoIndicatorView.isHidden = mediaType != MediaType.video
+        imageView.image = media.getImage()        
+        isSelected = selected
+        videoIndicatorView.isHidden = mediaType != MediaType.video
         
-        if mediaType == MediaType.video {
-            self.backgroundColor = UIColor.black
-        }
+        backgroundColor = (mediaType == MediaType.video) ? UIColor.black : UIColor.white
     }
 }
