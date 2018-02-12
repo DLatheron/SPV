@@ -27,10 +27,6 @@ class MediaManager {
     init() {
     }
     
-    func newMedia(fileURL: URL) {
-//        let properFileURL = URL(fileURLWithPath: fileURL.absoluteString)
-    }
-    
     func scanForMedia(atPath basePath: URL) {
         let filenames = extractAllFiles(atPath: basePath.absoluteString,
                                         withExtensions: MediaExtension.allExtensions)
@@ -103,21 +99,9 @@ class MediaManager {
         return nil
     }
     
-//    func getMedia(at index: Int) -> Media {
-//        return media[index]
-//    }
-    
     func getMedia(byId id: UUID) -> Media {
         return idToMedia[id]!
     }
-    
-//    func getImage(at index: Int) -> UIImage? {
-//        return UIImage(contentsOfFile: getMedia(at: index).fileURL.absoluteString)
-//    }
-    
-//    func getImage(byId id: UUID) -> UIImage? {
-//        return UIImage(contentsOfFile: getMedia(byId: id).fileURL.absoluteString)
-//    }
     
     public var count: Int {
         get {
