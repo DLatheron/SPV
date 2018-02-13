@@ -1,0 +1,44 @@
+{
+  "media" : [
+    {
+      "filename" : "Test01.jpg",
+      "extension" : "jpg",
+      "date" : "2017-12-13T17:05:57Z"
+    },
+    {
+      "filename" : "Test02.jpg",
+      "extension" : "jpg",
+      "date" : "2017-12-13T17:05:57Z"
+    },
+    {
+      "filename" : "Test03.jpg",
+      "extension" : "jpg",
+      "date" : "2017-12-13T17:05:57Z"
+    },
+    {
+      "filename" : "Test04.png",
+      "extension" : "png",
+      "date" : "2017-12-13T17:05:57Z"
+    },
+    {
+      "filename" : "Test05.jpg",
+      "extension" : "jpg",
+      "date" : "2017-12-13T17:05:57Z"
+    },
+    {
+      "filename" : "Test08.mov",
+      "extension" : "mov",
+      "date" : "2018-01-17T17:04:36Z"
+    },
+    {
+      "filename" : "Test07.gif",
+      "extension" : "gif",
+      "date" : "2017-12-13T17:05:57Z"
+    },
+    {
+      "filename" : "Test06.mp4",
+      "extension" : "mp4",
+      "date" : "2017-12-07T17:15:44Z"
+    }
+  ]
+}

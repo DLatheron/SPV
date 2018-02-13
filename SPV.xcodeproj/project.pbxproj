@@ -60,6 +60,7 @@
 		F9BABAC11F28F92F00000D9B /* SPVTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAC01F28F92F00000D9B /* SPVTests.swift */; };
 		F9BABACC1F28F92F00000D9B /* SPVUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABACB1F28F92F00000D9B /* SPVUITests.swift */; };
 		F9BABADA1F28FB6D00000D9B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */; };
+		F9C0B72D2032D1A5001D18DC /* .MediaManager.json in Resources */ = {isa = PBXBuildFile; fileRef = F9C0B72C2032D1A5001D18DC /* .MediaManager.json */; };
 		F9C50C081F59376000EE79E5 /* FakeDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C071F59376000EE79E5 /* FakeDownloadManager.swift */; };
 		F9C50C0A1F5E7EEF00EE79E5 /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C091F5E7EEF00EE79E5 /* Media.swift */; };
 		F9C50C0C1F5E7F0600EE79E5 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */; };
@@ -194,6 +195,7 @@
 		F9BABACB1F28F92F00000D9B /* SPVUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPVUITests.swift; sourceTree = "<group>"; };
 		F9BABACD1F28F92F00000D9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9BABAD91F28FB6D00000D9B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		F9C0B72C2032D1A5001D18DC /* .MediaManager.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = .MediaManager.json; sourceTree = "<group>"; };
 		F9C50C071F59376000EE79E5 /* FakeDownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeDownloadManager.swift; sourceTree = "<group>"; };
 		F9C50C091F5E7EEF00EE79E5 /* Media.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		F9C50C0B1F5E7F0600EE79E5 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 				F9E5DA53200FB99A00BF5BD0 /* Test06.mp4 */,
 				F9F2D3CF1F41CC5C00FD6F78 /* Test07.gif */,
 				F9E5DA54200FB9A200BF5BD0 /* Test08.mov */,
+				F9C0B72C2032D1A5001D18DC /* .MediaManager.json */,
 			);
 			name = TestData;
 			sourceTree = "<group>";
@@ -761,6 +764,7 @@
 				F9EE7C331FE98030003C1B04 /* Camera.storyboard in Resources */,
 				F9BABAB61F28F92F00000D9B /* LaunchScreen.storyboard in Resources */,
 				F9F2D3CC1F3AEA9C00FD6F78 /* Test05.jpg in Resources */,
+				F9C0B72D2032D1A5001D18DC /* .MediaManager.json in Resources */,
 				F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */,
 				639170031F374E15001E5ABE /* Test01.jpg in Resources */,
 				63396F091F40DE9E000E5F3E /* ImageCapture.js in Resources */,

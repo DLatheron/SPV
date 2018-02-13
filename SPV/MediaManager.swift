@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 
 protocol MediaManagerChangedProtocol: class {
     func added(media: Media)
@@ -34,6 +35,8 @@ class MediaManager {
             let fileURL = basePath.appendingPathComponent(filename)
             _ = addMedia(url: fileURL)
         }
+        
+        try? saveIfNecessary()
     }
     
     func addMedia(url fileURL: URL) -> Media {
@@ -131,5 +134,97 @@ class MediaManager {
             }
         }
         return allFiles
+    }
+}
+
+extension MediaManager {
+    internal func fileModificationDate(url: URL) -> Date? {
+        do {
+            let attr = try FileManager.default.attributesOfItem(atPath: url.path)
+            return attr[FileAttributeKey.modificationDate] as? Date
+        } catch {
+            return nil
+        }
+    }
+    
+    internal func toJSON(media: Media) -> JSON {
+        let lastModificationDate = fileModificationDate(url: media.fileURL)
+        
+        return JSON([
+            "filename": media.filename,
+            "extension": media.mediaExtension.ext,
+            "date": JSONHelper.ToString(date: lastModificationDate)
+        ])
+    }
+    
+    internal func toJSON() -> JSON {
+        var json = JSON()
+        
+        json["media"] = JSON(media.map({ (entry) in
+            return toJSON(media: entry)
+        }))
+        
+        return json
+    }
+    
+    internal func mediaFromJSON(_ json: JSON) -> Media {
+        let filename = json["filename"].stringValue
+        // TODO: Do something with the extension and date???
+        //let ext = json["extension"].stringValue
+        //let date = JSONHelper.ToDate(string: json["date"].stringValue)
+
+        // Is there any point to this given that reading it from JSON is probably slower than reading the directory layout from disk???
+        let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        let documentsURL = URL(string: documentsDirectory)!
+        let fileURL = documentsURL.appendingPathComponent(filename)
+        
+        return Media(fileURL: fileURL)
+    }
+    
+    internal func fromJSON(_ json: JSON) throws {
+        let jsonMediaArray = json["media"].arrayValue
+        var media: [Media] = []
+        
+        for (_, entry) in jsonMediaArray.enumerated() {
+            let newMedia = mediaFromJSON(entry)
+            media.append(newMedia)
+        }
+    }
+    
+    var dbFilePath: URL {
+        get {
+            let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            let documentsURL = URL(string: documentsDirectory)!
+            let dbFilePath = documentsURL.appendingPathComponent(".MediaManager.json")
+
+            return URL(fileURLWithPath: dbFilePath.absoluteString)
+        }
+    }
+    
+    func saveIfNecessary() throws {
+        if true {
+            try saveTo(fileURL: dbFilePath)
+        }
+    }
+    
+    func saveTo(fileURL: URL) throws {
+        let json = toJSON()
+        
+        do {
+            try JSONHelper.Save(toURL: fileURL,
+                                jsonString: json.rawString() ?? "{}")
+        } catch {
+            print("Failed to save Media Manager database because:", error.localizedDescription)
+        }
+    }
+    
+    func loadFrom(fileURL: URL) throws {
+        do {
+            let jsonString = try JSONHelper.Load(fromURL: fileURL)!
+            let json = JSONHelper.ToJSON(fromString: jsonString)!
+            try fromJSON(json)
+        } catch {
+            print("Failed to load Media Manager database because:", error.localizedDescription)
+        }
     }
 }
