@@ -29,7 +29,9 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var sortBySegment: UISegmentedControl!
     @IBOutlet weak var directionSegment: UISegmentedControl!
     @IBOutlet weak var closeSortPanelButton: UIButton!
-    
+
+    let jpegPhotoImageQuality: CGFloat = 0.8
+
     enum Direction : Int, EnumCollection {
         case Ascending
         case Descending
@@ -441,6 +443,29 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
                 print("Other")
             }
         }
+        
+        if let photoImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            // TODO: Overwrites existing file...
+            if let localFileURL = MediaManager.GetNextFileURL(filenamePrefix: "ImportPhoto-",
+                                                              numberOfDigits: 6,
+                                                              filenamePostfix: ".jpg") {
+                if let data = UIImageJPEGRepresentation(photoImage, jpegPhotoImageQuality) {
+                    try? data.write(to: localFileURL,
+                                    options: [ .atomic, .completeFileProtection ])
+                    
+                    _ = mediaManager.addMedia(url: localFileURL)
+                }
+            }
+        }
+        
+//        func imagePickerController(_ picker: UIImagePickerController,
+//                                   didFinishPickingMediaWithInfo info: [String : AnyObject])
+//        {
+//            let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
+//            myImageView.contentMode = .scaleAspectFit //3
+//            myImageView.image = chosenImage //4
+//            dismiss(animated:true, completion: nil) //5
+//        }
         
         // Is this a live photo?
         if let livePhoto = info[UIImagePickerControllerLivePhoto] as? PHLivePhoto {

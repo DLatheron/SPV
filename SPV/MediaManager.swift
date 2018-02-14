@@ -36,7 +36,7 @@ class MediaManager {
             _ = addMedia(url: fileURL)
         }
         
-        try? saveIfNecessary()
+        //try? saveIfNecessary()
     }
     
     func addMedia(url fileURL: URL) -> Media {
@@ -79,10 +79,10 @@ class MediaManager {
     func shareMedia(_ id: UUID) {
     }
     
-    func getNextFilename(basePath: String,
-                         filenamePrefix: String,
-                         numberOfDigits: Int = 6,
-                         filenamePostfix: String) -> String? {
+    class func GetNextFilename(basePath: URL,
+                               filenamePrefix: String,
+                               numberOfDigits: Int = 6,
+                               filenamePostfix: String) -> URL? {
         // TODO: Precache the filename list rather than checking against the filesystem?
         let formatter = NumberFormatter()
         formatter.minimumIntegerDigits = numberOfDigits
@@ -92,14 +92,31 @@ class MediaManager {
         for number in 0..<maximumNumber {
             let formattedNumber = formatter.string(from: NSNumber(value: number))!
             let filename = "\(filenamePrefix)\(formattedNumber)\(filenamePostfix)"
-            let path = (basePath as NSString).appendingPathComponent(filename)
+            let fileURL = basePath.appendingPathComponent(filename)
             
-            if !FileManager.default.fileExists(atPath: path) {
-                return path
+            if !FileManager.default.fileExists(atPath: fileURL.path) {
+                return fileURL
             }
         }
         
         return nil
+    }
+    
+    class var DocumentsDirectoryURL: URL {
+        get {
+            let paths = FileManager.default.urls(for: .documentDirectory,
+                                                 in: .userDomainMask)
+            return paths[0] as URL
+        }
+    }
+    
+    class func GetNextFileURL(filenamePrefix: String,
+                              numberOfDigits: Int = 6,
+                              filenamePostfix: String) -> URL? {
+        return GetNextFilename(basePath: DocumentsDirectoryURL,
+                               filenamePrefix: filenamePrefix,
+                               numberOfDigits: numberOfDigits,
+                               filenamePostfix: filenamePostfix)
     }
     
     func getMedia(byId id: UUID) -> Media {
@@ -134,6 +151,18 @@ class MediaManager {
             }
         }
         return allFiles
+    }
+}
+
+extension MediaManager {
+    class func MakeLocalFileURL(filename: String) -> URL {
+        let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory,
+                                                                     .userDomainMask,
+                                                                     true)[0]
+        let documentsURL = URL(string: documentsDirectory)!
+        let fullURL = documentsURL.appendingPathComponent(filename)
+    
+        return URL(fileURLWithPath: fullURL.absoluteString)
     }
 }
 

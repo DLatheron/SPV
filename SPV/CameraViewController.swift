@@ -494,11 +494,9 @@ class CameraViewController : UIViewController {
                 return
             }
             
-            if let fullPath = MediaManager.shared.getNextFilename(basePath: self.getURLForDocumentsDirectory().path,
-                                                                  filenamePrefix: "CameraPhoto-",
-                                                                  numberOfDigits: 6,
-                                                                  filenamePostfix: ".jpg") {
-                let localFileURL = URL(fileURLWithPath: fullPath, isDirectory: false)
+            if let localFileURL = MediaManager.GetNextFileURL(filenamePrefix: "CameraPhoto-",
+                                                              numberOfDigits: 6,
+                                                              filenamePostfix: ".jpg") {
                 try? self.saveImageToLocalFile(image: image,
                                                url: localFileURL)
                 
