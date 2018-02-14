@@ -38,6 +38,8 @@
 		F941354E2006022500B77323 /* RatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F941354D2006022500B77323 /* RatingsView.swift */; };
 		F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D12E1F9CE1100065C31B /* SearchCell.swift */; };
 		F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F942D1331F9DC3680065C31B /* CameraViewController.swift */; };
+		F94819A12034260600AFE077 /* LivePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94819A02034260600AFE077 /* LivePhoto.swift */; };
+		F94819A32034A44C00AFE077 /* LivePhotoScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94819A22034A44C00AFE077 /* LivePhotoScrollView.swift */; };
 		F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */; };
 		F969ACA21F55C9D4005C7F8D /* HumanReadableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */; };
 		F96D37B01FBCA8E100DD2F76 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */; };
@@ -167,6 +169,8 @@
 		F941354D2006022500B77323 /* RatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsView.swift; sourceTree = "<group>"; };
 		F942D12E1F9CE1100065C31B /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		F942D1331F9DC3680065C31B /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		F94819A02034260600AFE077 /* LivePhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePhoto.swift; sourceTree = "<group>"; };
+		F94819A22034A44C00AFE077 /* LivePhotoScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivePhotoScrollView.swift; sourceTree = "<group>"; };
 		F969AC9F1F55C98E005C7F8D /* HumanReadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadable.swift; sourceTree = "<group>"; };
 		F969ACA11F55C9D4005C7F8D /* HumanReadableTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanReadableTest.swift; sourceTree = "<group>"; };
 		F96D37AF1FBCA8E100DD2F76 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
@@ -375,6 +379,7 @@
 				F98B8C341F767D6100719CA6 /* VCs */,
 				F93015B52016519A002973D7 /* EmbeddedMediaView.swift */,
 				F9F2D3CD1F3D892300FD6F78 /* PhotoScrollView.swift */,
+				F94819A22034A44C00AFE077 /* LivePhotoScrollView.swift */,
 				F93015B32015CE1A002973D7 /* VideoView.swift */,
 				F98B8C351F767D7200719CA6 /* Cells */,
 				F9E25C2A1FE26631009D9DF7 /* MediaViewer.storyboard */,
@@ -454,6 +459,7 @@
 				F9E5DA57200FBC8C00BF5BD0 /* PhotoGIF.swift */,
 				F9C50C0D1F5E7F2900EE79E5 /* Video.swift */,
 				F9C50C0F1F5E7F6200EE79E5 /* MediaInfo.swift */,
+				F94819A02034260600AFE077 /* LivePhoto.swift */,
 				F96D37B11FBCABE100DD2F76 /* Settings.swift */,
 				F911A18D1FBA06A1009EF02C /* Setting.swift */,
 				F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */,
@@ -964,6 +970,7 @@
 				F942D12F1F9CE1100065C31B /* SearchCell.swift in Sources */,
 				F9F060A91F7C030B00AF6247 /* SearchScopeCell.swift in Sources */,
 				F912DE151FB9856700037ABF /* SettingsCell.swift in Sources */,
+				F94819A12034260600AFE077 /* LivePhoto.swift in Sources */,
 				F9E5DA5E20108F3F00BF5BD0 /* MediaExtension.swift in Sources */,
 				F911A18E1FBA06A1009EF02C /* Setting.swift in Sources */,
 				F969ACA01F55C98E005C7F8D /* HumanReadable.swift in Sources */,
@@ -979,6 +986,7 @@
 				F9E8DE931FC6B31B00FDAAB9 /* PIN.swift in Sources */,
 				F9C50C101F5E7F6200EE79E5 /* MediaInfo.swift in Sources */,
 				F93015B820172651002973D7 /* URLExtensions.swift in Sources */,
+				F94819A32034A44C00AFE077 /* LivePhotoScrollView.swift in Sources */,
 				F9E7A2BA1FA0EACC00D1BCAC /* CameraController.swift in Sources */,
 				F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */,
 				F9F2D3D41F42CE0200FD6F78 /* DownloadsViewController.swift in Sources */,

@@ -11,6 +11,7 @@ import Foundation
 enum MediaType {
     case photo
     case video
+    case livePhoto
 }
 
 enum MediaExtension : String, EnumCollection {
@@ -20,6 +21,7 @@ enum MediaExtension : String, EnumCollection {
     case gif
     case mov
     case mp4
+    case livePhoto
     
     var type: MediaType {
         get {
@@ -83,6 +85,7 @@ enum MediaExtension : String, EnumCollection {
         case gif: return MediaType.photo
         case mov: return MediaType.video
         case mp4: return MediaType.video
+        case livePhoto: return MediaType.livePhoto
         }
     }
     
@@ -98,6 +101,7 @@ enum MediaExtension : String, EnumCollection {
         case .gif: return ["gif"]
         case .mov: return ["mov"]
         case .mp4: return ["mp4"]
+        case .livePhoto: return ["livephoto"]
         }
     }
     

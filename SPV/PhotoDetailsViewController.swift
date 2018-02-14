@@ -254,6 +254,38 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
                     self.ratingsView.beginPreview()
                 }
             }
+            
+        case MediaType.livePhoto:
+            let image = newMedia.getImage()
+            let newScrollView = LivePhotoScrollView(parentView: self.view,
+                                                    forImage: image,
+                                                    psvDelegate: self)
+            newScrollView.center.x += xOffset
+            self.view.addSubview(newScrollView)
+            self.view.bringSubview(toFront: self.ratingsView)
+            
+            newScrollView.setNeedsLayout()
+            newScrollView.setNeedsDisplay()
+            
+            let newImageName = newMedia.filename
+            
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.0,
+                           options: .curveEaseOut,
+                           animations: {
+                            newScrollView.center.x -= xOffset
+            }) { (finished) in
+                if (finished) {
+                    self.embeddedMediaView?.remove()
+                    self.embeddedMediaView = newScrollView
+                    self.media = newMedia
+                    self.ratingsView.media = newMedia
+                    self.title = newImageName
+                    
+                    self.ratingsView.beginPreview()
+                }
+            }
+            
         case MediaType.video:
             // TODO: Do something with the video.
             let newVideoView = VideoView(parentController: self,

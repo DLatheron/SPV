@@ -42,13 +42,15 @@ class MediaManager {
     func addMedia(url fileURL: URL) -> Media {
         let newMedia: Media
         
-        switch (fileURL.pathExtension) {
+        switch (fileURL.pathExtension.lowercased()) {
         case "gif":
             newMedia = PhotoGIF(fileURL: fileURL)
         case "mov":
             newMedia = Video(fileURL: fileURL)
         case "mp4":
             newMedia = Video(fileURL: fileURL)
+        case "livephoto":
+            newMedia = LivePhoto(directoryURL: fileURL)
         default:
             newMedia = Photo(fileURL: fileURL)
         }
@@ -137,9 +139,9 @@ class MediaManager {
         var allFiles: [String] = []
         let fileManager = FileManager.default
         let pathString = path.replacingOccurrences(of: "file:", with: "")
-        if let enumerator = fileManager.enumerator(atPath: pathString) {
-            for file in enumerator {
-                if let path = NSURL(fileURLWithPath: file as! String,
+        if let files = try? fileManager.contentsOfDirectory(atPath: pathString) {
+            for (_, file) in files.enumerated() {
+                if let path = NSURL(fileURLWithPath: file,
                                     relativeTo: pathURL as URL).path {
                     let fileExt = (path as NSString).pathExtension
                     
