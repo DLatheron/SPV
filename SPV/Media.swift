@@ -170,4 +170,14 @@ class Media : NSObject {
 //        
 //        return CGSize(width: width, height: height)
 //    }
+    
+    func wasViewed() {
+        mediaInfo.previousViews += 1
+        mediaInfo.lastViewed = Date()
+        
+        try? mediaInfo.save(toURL: infoURL,
+                            evenIfUnchanged: false)
+        
+        print("Viewed '\(filename)'")
+    }
 }

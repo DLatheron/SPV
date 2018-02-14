@@ -40,8 +40,8 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.view.isUserInteractionEnabled = true
-
+        media.wasViewed()
+        
         ratingsView.media = media
         ratingsView.delegate = self
         enableRatingsView(true)
@@ -303,6 +303,8 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
             animateOnToScreen(forMedia: newMedia,
                               from: xOffset,
                               over: 0.3)
+            
+            newMedia.wasViewed()
         }
     }
     
