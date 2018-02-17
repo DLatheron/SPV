@@ -10,6 +10,7 @@
 import UIKit
 import MobileCoreServices
 import PhotosUI
+import Photos
 
 fileprivate let deleteMediaTitle = NSLocalizedString("Delete Media",
                                                      comment: "Action item title for deleting selected media")
@@ -419,7 +420,8 @@ extension AlbumsViewController : MediaCellDelegate {
 
 extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [String : Any]) {
         self.dismiss(animated: true,
                      completion: nil)
 
@@ -471,6 +473,34 @@ extension AlbumsViewController : UIImagePickerControllerDelegate, UINavigationCo
         if let livePhoto = info[UIImagePickerControllerLivePhoto] as? PHLivePhoto {
             print("Live Photo picked")
             
+            guard
+                let photoDir = LivePhoto.generateFolderForLivePhotoResources()
+            else {
+                return;
+            }
+            
+            let assetResources = PHAssetResource.assetResources(for: livePhoto)
+            for resource in assetResources {
+                let buffer = NSMutableData()
+                PHAssetResourceManager.default().requestData(
+                    for: resource,
+                    options: nil,
+                    dataReceivedHandler: { (chunk: Data) -> Void in
+                        buffer.append(chunk as Data)
+                },
+                    completionHandler: { didError in
+                        if didError == nil {
+                            let error: NSError? = nil
+
+                            LivePhoto.SaveAssetResource(resource: resource,
+                                                        inDirectory: photoDir,
+                                                        buffer: buffer,
+                                                        maybeError: error)
+                        }
+                })
+            }
+            
+//            print out the livephoto resources... so we can see what we need to recreate a live photo...
             
             let livePhotoView = PHLivePhotoView(frame: self.view.bounds)
             livePhotoView.livePhoto = livePhoto

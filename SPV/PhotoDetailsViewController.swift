@@ -256,9 +256,8 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
             }
             
         case MediaType.livePhoto:
-            let image = newMedia.getImage()
             let newScrollView = LivePhotoScrollView(parentView: self.view,
-                                                    forImage: image,
+                                                    forLivePhoto: newMedia as! LivePhoto,
                                                     psvDelegate: self)
             newScrollView.center.x += xOffset
             self.view.addSubview(newScrollView)

@@ -145,6 +145,7 @@ class MediaManager {
                                     relativeTo: pathURL as URL).path {
                     let fileExt = (path as NSString).pathExtension
                     
+                    // TODO: Case insensitive.
                     if fileExtensions.contains(fileExt) {
                         let filename = (path as NSString).lastPathComponent
                         allFiles.append(filename)
