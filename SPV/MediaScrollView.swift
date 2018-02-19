@@ -1,44 +1,39 @@
 //
-//  PhotoScrollView.swift
+//  MediaScrollView.swift
 //  SPV
 //
-//  Created by dlatheron on 11/08/2017.
-//  Copyright © 2017 dlatheron. All rights reserved.
+//  Created by dlatheron on 19/02/2018.
+//  Copyright © 2018 dlatheron. All rights reserved.
 //
-
-// TODO: Move single tap gesture recogniser into here??? Then callback to remove the appropriate hud elements???
-// TODO: Move doulbe tap gesture recogniser (at least the response)
 
 import Foundation
 import UIKit
 
-class PhotoScrollView : UIScrollView {
-    var psvDelegate: PhotoScrollViewDelegate
-    var imageView: UIImageView
+class MediaScrollView : UIScrollView {
     var parentView: UIView
-    
+    var contentView: UIView
+    var psvDelegate: PhotoScrollViewDelegate
+
     init(parentView: UIView,
-         forImage image: UIImage,
+         contentView: UIView,
          psvDelegate: PhotoScrollViewDelegate) {
-        imageView = UIImageView()
-        imageView.image = image
-        imageView.sizeToFit()
-        
-        self.psvDelegate = psvDelegate
         self.parentView = parentView
-        
+        self.contentView = contentView
+        self.psvDelegate = psvDelegate
+
         super.init(frame: UIScreen.main.bounds)
         
-        //backgroundColor = UIColor.black
-        contentSize = imageView.bounds.size
         autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
         
-        delegate = self
-        minimumZoomScale = 1.0
-        maximumZoomScale = 6.0
-        zoomScale = 1.0
+        self.delegate = self
+        self.minimumZoomScale = 1.0
+        self.maximumZoomScale = 6.0
+        self.zoomScale = 1.0
         
-        addSubview(imageView)
+        contentView.frame = parentView.frame;
+        contentView.setNeedsLayout()
+        
+        addSubview(contentView)
         
         framePhoto()
     }
@@ -60,7 +55,7 @@ class PhotoScrollView : UIScrollView {
     }
     
     func calcZoomScale() {
-        let imageViewSize = imageView.bounds.size
+        let imageViewSize = contentView.bounds.size
         let scrollViewSize = bounds.size
         let widthScale = scrollViewSize.width / imageViewSize.width
         let heightScale = scrollViewSize.height / imageViewSize.height
@@ -76,9 +71,9 @@ class PhotoScrollView : UIScrollView {
     }
     
     func centreImage() {
-        let imageViewSize = imageView.frame.size
+        let imageViewSize = contentView.frame.size
         let scrollViewSize = frame.size
-
+        
         let verticalPadding = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
         let horizontalPadding = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
         
@@ -96,7 +91,7 @@ class PhotoScrollView : UIScrollView {
     }
 }
 
-extension PhotoScrollView : EmbeddedMediaViewDelegate {
+extension MediaScrollView : EmbeddedMediaViewDelegate {
     var isFullyZoomedOut: Bool {
         get {
             return zoomScale == minimumZoomScale
@@ -136,8 +131,8 @@ extension PhotoScrollView : EmbeddedMediaViewDelegate {
         }
     }
 }
-    
-extension PhotoScrollView : UIScrollViewDelegate {
+
+extension MediaScrollView : UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centreImage()
     }
@@ -148,6 +143,6 @@ extension PhotoScrollView : UIScrollViewDelegate {
     }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.imageView
+        return self.contentView
     }
 }

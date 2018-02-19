@@ -136,7 +136,6 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <constraints>
                             <constraint firstItem="61i-Hs-GkW" firstAttribute="bottom" secondItem="sh6-YC-b4z" secondAttribute="bottom" constant="100" id="hbx-o4-20c"/>
                             <constraint firstItem="sh6-YC-b4z" firstAttribute="centerX" secondItem="61i-Hs-GkW" secondAttribute="centerX" id="tSF-Up-wCS"/>

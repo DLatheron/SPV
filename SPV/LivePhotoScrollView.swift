@@ -7,50 +7,47 @@
 //
 
 // TODO: Move single tap gesture recogniser into here??? Then callback to remove the appropriate hud elements???
-// TODO: Move doulbe tap gesture recogniser (at least the response)
+// TODO: Move double tap gesture recogniser (at least the response)
 
 import Foundation
 import UIKit
 import PhotosUI
 
-class LivePhotoScrollView : UIView {
-    var psvDelegate: PhotoScrollViewDelegate
+class LivePhotoScrollView : MediaScrollView {
+//    var psvDelegate: PhotoScrollViewDelegate
     var livePhotoView: PHLivePhotoView
-    var parentView: UIView
+//    var parentView: UIView
     var requestID: PHLivePhotoRequestID = PHLivePhotoRequestIDInvalid
     
     init(parentView: UIView,
          forLivePhoto livePhoto: LivePhoto,
          psvDelegate: PhotoScrollViewDelegate) {
-        //imageView.image = image
         livePhotoView = PHLivePhotoView()
         
-        self.psvDelegate = psvDelegate
-        //self.livePhotoView = livePhotoView
-        self.parentView = parentView
+        super.init(parentView: parentView,
+                   contentView: livePhotoView,
+                   psvDelegate: psvDelegate)
         
-        //super.init(frame: UIScreen.main.bounds)
+//        self.psvDelegate = psvDelegate
+//        self.parentView = parentView
         
-        //backgroundColor = UIColor.yellow
-//        autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
-        
-//        delegate = self
-        //minimumZoomScale = 1.0
-        //maximumZoomScale = 6.0
-        //zoomScale = 1.0
-        
-        //super.init()
-
         let image = livePhoto.getImage()
         let size = image.size
         
-        super.init(frame: parentView.frame)
+//        super.init(frame: UIScreen.main.bounds)
+
+//        autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
+//
+//        delegate = self
+//        minimumZoomScale = 1.0
+//        maximumZoomScale = 6.0
+//        zoomScale = 1.0
         
-        livePhotoView.frame = parentView.frame
-        
-        livePhotoView.setNeedsLayout()
-        
-        addSubview(livePhotoView)
+//        livePhotoView.frame = parentView.frame
+//
+//        livePhotoView.setNeedsLayout()
+//
+//        addSubview(livePhotoView)
         
 //        framePhoto()
         
@@ -79,9 +76,8 @@ class LivePhotoScrollView : UIView {
             }
             
             if let photo = phLivePhoto {
-                self.livePhotoView.livePhoto = phLivePhoto
+                self.livePhotoView.livePhoto = photo
             }
-            //self.contentSize = size
         }
     }
     
@@ -90,9 +86,9 @@ class LivePhotoScrollView : UIView {
     }
     
 //    func framePhoto() {
-////        centreImage()
-////        calcZoomScale()
-////        setZoomScale()
+//        centreImage()
+//        calcZoomScale()
+//        setZoomScale()
 //    }
     
 //    func setZoomScale() {
@@ -138,36 +134,36 @@ class LivePhotoScrollView : UIView {
 //    }
 }
 
-extension LivePhotoScrollView : EmbeddedMediaViewDelegate {
-    var isFullyZoomedOut: Bool {
-        get {
-            return true//zoomScale == minimumZoomScale
-        }
-    }
-    
-    var view: UIView {
-        get {
-            return self
-        }
-    }
-    
-    func willRotate(parentView: UIView) {
+//extension LivePhotoScrollView : EmbeddedMediaViewDelegate {
+//    var isFullyZoomedOut: Bool {
+//        get {
+//            return zoomScale == minimumZoomScale
+//        }
+//    }
+//
+//    var view: UIView {
+//        get {
+//            return self
+//        }
+//    }
+//
+//    func willRotate(parentView: UIView) {
 //        centreImage()
 //        calcZoomScale()
-    }
-
-    func didRotate(parentView: UIView) {
-    }
-
-    func remove() {
-        removeFromSuperview()
-    }
-
-    func singleTap() {
+//    }
+//
+//    func didRotate(parentView: UIView) {
+//    }
+//
+//    func remove() {
+//        removeFromSuperview()
+//    }
+//
+//    func singleTap() {
 //        centreImage()
-    }
-
-    func doubleTap() {
+//    }
+//
+//    func doubleTap() {
 //        if zoomScale > minimumZoomScale {
 //            setZoomScale(minimumZoomScale,
 //                         animated: true)
@@ -176,8 +172,8 @@ extension LivePhotoScrollView : EmbeddedMediaViewDelegate {
 //            setZoomScale(maximumZoomScale,
 //                         animated: true)
 //        }
-    }
-}
+//    }
+//}
 
 //extension LivePhotoScrollView : UIScrollViewDelegate {
 //    func scrollViewDidZoom(_ scrollView: UIScrollView) {

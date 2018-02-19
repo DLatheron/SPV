@@ -219,6 +219,37 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     func animateOnToScreen(forMedia newMedia: Media,
                            from xOffset: CGFloat = 0.0,
                            over duration: TimeInterval = 0.0) {
+        func displayNewMediaView(view: UIView,
+                                 embeddedMediaViewDelegate: EmbeddedMediaViewDelegate) {
+            view.center.x += xOffset
+            self.view.addSubview(view)
+            self.view.bringSubview(toFront: self.ratingsView)
+            
+            view.setNeedsLayout()
+            view.setNeedsDisplay()
+            
+            let newImageName = newMedia.filename
+            
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.0,
+                           options: .curveEaseOut,
+                           animations:
+                {
+                    view.center.x -= xOffset
+                })
+            { (finished) in
+                if (finished) {
+                    self.embeddedMediaView?.remove()
+                    self.embeddedMediaView = embeddedMediaViewDelegate
+                    self.media = newMedia
+                    self.ratingsView.media = newMedia
+                    self.title = newImageName
+                    
+                    self.ratingsView.beginPreview()
+                }
+            }
+        }
+        
         ratingsView.endPreview()
         
         // TODO: If the old view is a videoView then we need to remove it from the superview...
@@ -228,93 +259,23 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
             let image = newMedia.getImage()
             let newScrollView = PhotoScrollView(parentView: self.view,
                                                 forImage: image,
-                                                psvDelegate: self)            
-            newScrollView.center.x += xOffset
-            self.view.addSubview(newScrollView)
-            self.view.bringSubview(toFront: self.ratingsView)
-            
-            newScrollView.setNeedsLayout()
-            newScrollView.setNeedsDisplay()
-            
-            let newImageName = newMedia.filename
-            
-            UIView.animate(withDuration: 0.3,
-                           delay: 0.0,
-                           options: .curveEaseOut,
-                           animations: {
-                newScrollView.center.x -= xOffset
-            }) { (finished) in
-                if (finished) {
-                    self.embeddedMediaView?.remove()
-                    self.embeddedMediaView = newScrollView
-                    self.media = newMedia
-                    self.ratingsView.media = newMedia
-                    self.title = newImageName
-                    
-                    self.ratingsView.beginPreview()
-                }
-            }
+                                                psvDelegate: self)
+            displayNewMediaView(view: newScrollView,
+                            embeddedMediaViewDelegate: newScrollView)
             
         case MediaType.livePhoto:
             let newScrollView = LivePhotoScrollView(parentView: self.view,
                                                     forLivePhoto: newMedia as! LivePhoto,
                                                     psvDelegate: self)
-            newScrollView.center.x += xOffset
-            self.view.addSubview(newScrollView)
-            self.view.bringSubview(toFront: self.ratingsView)
-            
-            newScrollView.setNeedsLayout()
-            newScrollView.setNeedsDisplay()
-            
-            let newImageName = newMedia.filename
-            
-            UIView.animate(withDuration: 0.3,
-                           delay: 0.0,
-                           options: .curveEaseOut,
-                           animations: {
-                            newScrollView.center.x -= xOffset
-            }) { (finished) in
-                if (finished) {
-                    self.embeddedMediaView?.remove()
-                    self.embeddedMediaView = newScrollView
-                    self.media = newMedia
-                    self.ratingsView.media = newMedia
-                    self.title = newImageName
-                    
-                    self.ratingsView.beginPreview()
-                }
-            }
+            displayNewMediaView(view: newScrollView,
+                            embeddedMediaViewDelegate: newScrollView)
             
         case MediaType.video:
             // TODO: Do something with the video.
             let newVideoView = VideoView(parentController: self,
                                          forMedia: newMedia)
-            
-            newVideoView.center.x += xOffset
-            self.view.addSubview(newVideoView)
-            self.view.bringSubview(toFront: self.ratingsView)
-            
-            newVideoView.setNeedsLayout()
-            newVideoView.setNeedsDisplay()
-            
-            let newVideoName = newMedia.filename
-            
-            UIView.animate(withDuration: 0.3,
-                           delay: 0.0,
-                           options: .curveEaseOut,
-                           animations: {
-                newVideoView.center.x -= xOffset
-            }) { (finished) in
-                if (finished) {
-                    self.embeddedMediaView?.remove()
-                    self.embeddedMediaView = newVideoView
-                    self.media = newMedia
-                    self.ratingsView.media = newMedia
-                    self.title = newVideoName
-                    
-                    self.ratingsView.beginPreview()
-                }
-            }
+            displayNewMediaView(view: newVideoView,
+                            embeddedMediaViewDelegate: newVideoView)
         }
     }
     
