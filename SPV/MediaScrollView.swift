@@ -17,6 +17,7 @@ class MediaScrollView : UIScrollView {
     init(parentView: UIView,
          contentView: UIView,
          psvDelegate: PhotoScrollViewDelegate) {
+        
         self.parentView = parentView
         self.contentView = contentView
         self.psvDelegate = psvDelegate
@@ -25,12 +26,12 @@ class MediaScrollView : UIScrollView {
         
         autoresizingMask = [.flexibleTopMargin, .flexibleBottomMargin, .flexibleLeftMargin, .flexibleRightMargin, .flexibleWidth, .flexibleHeight]
         
-        self.delegate = self
-        self.minimumZoomScale = 1.0
-        self.maximumZoomScale = 6.0
-        self.zoomScale = 1.0
+        backgroundColor = UIColor.white
+        delegate = self
+        minimumZoomScale = 1.0
+        maximumZoomScale = 6.0
+        zoomScale = 1.0
         
-        contentView.frame = parentView.frame;
         contentView.setNeedsLayout()
         
         addSubview(contentView)
@@ -41,7 +42,9 @@ class MediaScrollView : UIScrollView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+}
+
+extension MediaScrollView {
     func framePhoto() {
         centreImage()
         calcZoomScale()
@@ -91,6 +94,21 @@ class MediaScrollView : UIScrollView {
     }
 }
 
+extension MediaScrollView : UIScrollViewDelegate {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        centreImage()
+    }
+    
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView,
+                                 with view: UIView?,
+                                 atScale scale: CGFloat) {
+    }
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.contentView
+    }
+}
+
 extension MediaScrollView : EmbeddedMediaViewDelegate {
     var isFullyZoomedOut: Bool {
         get {
@@ -129,20 +147,5 @@ extension MediaScrollView : EmbeddedMediaViewDelegate {
             setZoomScale(maximumZoomScale,
                          animated: true)
         }
-    }
-}
-
-extension MediaScrollView : UIScrollViewDelegate {
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centreImage()
-    }
-    
-    func scrollViewDidEndZooming(_ scrollView: UIScrollView,
-                                 with view: UIView?,
-                                 atScale scale: CGFloat) {
-    }
-    
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.contentView
     }
 }

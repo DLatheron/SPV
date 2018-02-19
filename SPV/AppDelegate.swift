@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try? Settings.shared.save(toFileURL: Settings.defaultURL)
         }
         
-        //copyTestResources()
+        copyTestResources()
     
         MediaManager.shared.scanForMedia(atPath: documentsURL)
         
