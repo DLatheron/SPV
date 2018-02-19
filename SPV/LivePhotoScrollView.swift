@@ -14,6 +14,7 @@ import UIKit
 import PhotosUI
 
 class LivePhotoScrollView : MediaScrollView {
+    var imageView = UIImageView()
     var livePhotoView: PHLivePhotoView
     var requestID: PHLivePhotoRequestID = PHLivePhotoRequestIDInvalid
     
@@ -21,14 +22,21 @@ class LivePhotoScrollView : MediaScrollView {
          forLivePhoto livePhoto: LivePhoto,
          psvDelegate: PhotoScrollViewDelegate) {
         
+        let image = livePhoto.getImage()
+        let size = image.size
+        
+        imageView.image = image
+        imageView.sizeToFit()
         livePhotoView = PHLivePhotoView(frame: parentView.frame)
+
+        imageView.isHidden = false
+        livePhotoView.isHidden = true
 
         super.init(parentView: parentView,
                    contentView: livePhotoView,
                    psvDelegate: psvDelegate)
         
-        let image = livePhoto.getImage()
-        let size = image.size
+        addSubview(imageView)
         
         requestID = PHLivePhoto.request(withResourceFileURLs: livePhoto.resourceFileURLs,
                                         placeholderImage: image,
@@ -56,6 +64,11 @@ class LivePhotoScrollView : MediaScrollView {
             
             if let photo = phLivePhoto {
                 self.livePhotoView.livePhoto = photo
+                
+                self.livePhotoView.isHidden = false
+                self.imageView.isHidden = true
+                
+                self.livePhotoView.startPlayback(with: .hint)
             }
         }
     }
