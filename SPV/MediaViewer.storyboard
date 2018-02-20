@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Arial.ttf">
+            <string>ArialMT</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Media Viewer-->
         <scene sceneID="AM1-U2-kcq">
@@ -239,6 +244,14 @@
                                                         <constraint firstAttribute="width" constant="12" id="brj-op-a7Z"/>
                                                     </constraints>
                                                 </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fMj-74-nFj" userLabel="Live Indicator View">
+                                                    <rect key="frame" x="4" y="103.5" width="23" height="12.5"/>
+                                                    <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="10"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <color key="shadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <size key="shadowOffset" width="1" height="1"/>
+                                                </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vVx-g4-Ggg">
                                                     <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                                     <subviews>
@@ -267,9 +280,11 @@
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="fMj-74-nFj" secondAttribute="bottom" constant="4" id="6l2-ln-7bg"/>
                                             <constraint firstItem="EvD-sV-EvN" firstAttribute="centerX" secondItem="bMK-LD-n8A" secondAttribute="centerX" id="Bn1-PW-8lm"/>
                                             <constraint firstItem="EvD-sV-EvN" firstAttribute="height" secondItem="bMK-LD-n8A" secondAttribute="height" id="GS2-jm-S82"/>
                                             <constraint firstItem="vVx-g4-Ggg" firstAttribute="centerX" secondItem="bMK-LD-n8A" secondAttribute="centerX" id="Okw-4p-KW0"/>
+                                            <constraint firstItem="fMj-74-nFj" firstAttribute="leading" secondItem="bMK-LD-n8A" secondAttribute="leading" constant="4" id="WJK-tp-6Dg"/>
                                             <constraint firstItem="vVx-g4-Ggg" firstAttribute="centerY" secondItem="bMK-LD-n8A" secondAttribute="centerY" id="XK4-2g-x0a"/>
                                             <constraint firstItem="EvD-sV-EvN" firstAttribute="centerY" secondItem="bMK-LD-n8A" secondAttribute="centerY" id="YFj-NA-G9p"/>
                                             <constraint firstItem="cGd-IH-SuQ" firstAttribute="leading" secondItem="bMK-LD-n8A" secondAttribute="leading" constant="4" id="dOj-G2-asX"/>
@@ -282,6 +297,9 @@
                                             <outlet property="dimmingView" destination="t9O-OQ-xdo" id="K8f-2h-ZXu"/>
                                             <outlet property="imageView" destination="EvD-sV-EvN" id="S6u-on-Xce"/>
                                             <outlet property="selectedView" destination="vVx-g4-Ggg" id="eHL-Pz-5TG"/>
+                                            <outlet property="typeIndicatorBottomConstraint" destination="6l2-ln-7bg" id="WWU-M3-Dxd"/>
+                                            <outlet property="typeIndicatorLeftConstraint" destination="WJK-tp-6Dg" id="bP9-Ih-UTP"/>
+                                            <outlet property="typeIndicatorView" destination="fMj-74-nFj" id="z0C-YN-DxM"/>
                                             <outlet property="videoIndicatorView" destination="cGd-IH-SuQ" id="RUk-iR-kY6"/>
                                         </connections>
                                     </collectionViewCell>

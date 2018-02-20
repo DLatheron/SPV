@@ -29,6 +29,7 @@
 		F919C7AD1F699325008372F6 /* MediaInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919C7AC1F699325008372F6 /* MediaInfoCell.swift */; };
 		F919C7AF1F699357008372F6 /* MediaInfoHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */; };
 		F92E1B09203ABD9400A5436C /* MediaScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92E1B08203ABD9400A5436C /* MediaScrollView.swift */; };
+		F92E1B0B203B3DD200A5436C /* LivePhotoTest2.livephoto in Resources */ = {isa = PBXBuildFile; fileRef = F92E1B0A203B3DD200A5436C /* LivePhotoTest2.livephoto */; };
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
 		F93015B42015CE1A002973D7 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93015B32015CE1A002973D7 /* VideoView.swift */; };
 		F93015B62016519A002973D7 /* EmbeddedMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93015B52016519A002973D7 /* EmbeddedMediaView.swift */; };
@@ -160,6 +161,7 @@
 		F919C7AC1F699325008372F6 /* MediaInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoCell.swift; sourceTree = "<group>"; };
 		F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoHeaderCell.swift; sourceTree = "<group>"; };
 		F92E1B08203ABD9400A5436C /* MediaScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaScrollView.swift; sourceTree = "<group>"; };
+		F92E1B0A203B3DD200A5436C /* LivePhotoTest2.livephoto */ = {isa = PBXFileReference; lastKnownFileType = folder; path = LivePhotoTest2.livephoto; sourceTree = "<group>"; };
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
 		F93015B32015CE1A002973D7 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		F93015B52016519A002973D7 /* EmbeddedMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddedMediaView.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 		63916FFE1F374E00001E5ABE /* TestData */ = {
 			isa = PBXGroup;
 			children = (
+				F92E1B0A203B3DD200A5436C /* LivePhotoTest2.livephoto */,
 				63916FFF1F374E15001E5ABE /* Test01.jpg */,
 				639170001F374E15001E5ABE /* Test02.jpg */,
 				639170011F374E15001E5ABE /* Test03.jpg */,
@@ -782,6 +785,7 @@
 				639170041F374E15001E5ABE /* Test02.jpg in Resources */,
 				F9BABAB31F28F92F00000D9B /* Assets.xcassets in Resources */,
 				F9BABAB11F28F92F00000D9B /* Main.storyboard in Resources */,
+				F92E1B0B203B3DD200A5436C /* LivePhotoTest2.livephoto in Resources */,
 				F9E25C2B1FE26631009D9DF7 /* MediaViewer.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

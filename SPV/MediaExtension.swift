@@ -7,11 +7,26 @@
 //
 
 import Foundation
+import UIKit
 
 enum MediaType {
     case photo
     case video
     case livePhoto
+    
+    var mediaCellBackgroundColour: UIColor {
+        get {
+            switch self {
+            case .photo:
+                return UIColor.white
+            case .video:
+                return UIColor.white
+            case .livePhoto:
+                return UIColor.white
+            }
+            
+        }
+    }
 }
 
 enum MediaExtension : String, EnumCollection {
