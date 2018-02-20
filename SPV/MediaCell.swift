@@ -18,7 +18,6 @@ protocol MediaCellDelegate {
 class MediaCell : UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var selectedView: UIView!
-    @IBOutlet weak var videoIndicatorView: UIView!
     @IBOutlet weak var typeIndicatorView: UILabel!
     @IBOutlet weak var dimmingView: UIView!
     
@@ -35,13 +34,17 @@ class MediaCell : UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressAction))
+        let longPress = UILongPressGestureRecognizer(target: self,
+                                                     action: #selector(longPressAction))
         longPress.minimumPressDuration = 0.3
         longPress.cancelsTouchesInView = true
         addGestureRecognizer(longPress)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(tapAction))
         addGestureRecognizer(tap)
+        
+        imageView.contentMode = .scaleAspectFill
     }
     
     @objc func longPressAction(_ sender: UIGestureRecognizer) {
@@ -70,19 +73,19 @@ class MediaCell : UICollectionViewCell {
     }
     
     func displayTypeOverlay(mediaExtension: MediaExtension) {
-        switch mediaExtension.type {
-        case .photo:
-            if (mediaExtension == MediaExtension.gif) {
-                typeIndicatorView.isHidden = false
-                typeIndicatorView.text = "GIF"
-            }
-        case .livePhoto:
+        if let typeIndicatorText = mediaExtension.mediaCellTypeIndicator {
             typeIndicatorView.isHidden = false
-            typeIndicatorView.text = "LIVE"
-        case .video:
-            typeIndicatorView.isHidden = false
-            typeIndicatorView.text = "VIDEO"
-            //videoIndicatorView.isHidden = false
+            typeIndicatorView.text = typeIndicatorText
+        }
+    }
+    
+    func offsetTypeIndicatorRelativeToImage(imageView: UIImageView) {
+        if imageView.contentMode == .scaleAspectFit {
+            let result = AVMakeRect(aspectRatio: imageView.image!.size,
+                                    insideRect: imageView.frame)
+            
+            typeIndicatorLeftConstraint.constant = result.minX + typeIndicatorOffset.width
+            typeIndicatorBottomConstraint.constant = result.minY + typeIndicatorOffset.height
         }
     }
     
@@ -96,17 +99,11 @@ class MediaCell : UICollectionViewCell {
 
         imageView.image = media.getImage()        
         isSelected = selected
-        videoIndicatorView.isHidden = true
-        typeIndicatorView.isHidden = true
 
         displayTypeOverlay(mediaExtension: media.mediaExtension)
         
         backgroundColor = mediaType.mediaCellBackgroundColour
         
-        let result = AVMakeRect(aspectRatio: imageView.image!.size,
-                                insideRect: imageView.frame)
-        
-        typeIndicatorLeftConstraint.constant = result.minX + typeIndicatorOffset.width
-        typeIndicatorBottomConstraint.constant = result.minY + typeIndicatorOffset.height
+        offsetTypeIndicatorRelativeToImage(imageView: imageView)
     }
 }

@@ -220,7 +220,7 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
                            from xOffset: CGFloat = 0.0,
                            over duration: TimeInterval = 0.0) {
         func displayNewMediaView(view: UIView,
-                                 embeddedMediaViewDelegate: EmbeddedMediaViewDelegate) {
+                                 delegate: EmbeddedMediaViewDelegate) {
             view.center.x += xOffset
             self.view.addSubview(view)
             self.view.bringSubview(toFront: self.ratingsView)
@@ -240,7 +240,7 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
             { (finished) in
                 if (finished) {
                     self.embeddedMediaView?.remove()
-                    self.embeddedMediaView = embeddedMediaViewDelegate
+                    self.embeddedMediaView = delegate
                     self.media = newMedia
                     self.ratingsView.media = newMedia
                     self.title = newImageName
@@ -253,30 +253,27 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         ratingsView.endPreview()
         
         // TODO: If the old view is a videoView then we need to remove it from the superview...
-
+        let newView: UIView
+        
         switch newMedia.mediaExtension.type {
         case MediaType.photo:
             let image = newMedia.getImage()
-            let newScrollView = PhotoScrollView(parentView: self.view,
-                                                forImage: image,
-                                                psvDelegate: self)
-            displayNewMediaView(view: newScrollView,
-                            embeddedMediaViewDelegate: newScrollView)
+            newView = PhotoScrollView(parentView: self.view,
+                                      forImage: image,
+                                      psvDelegate: self)
             
         case MediaType.livePhoto:
-            let newScrollView = LivePhotoScrollView(parentView: self.view,
-                                                    forLivePhoto: newMedia as! LivePhoto,
-                                                    psvDelegate: self)
-            displayNewMediaView(view: newScrollView,
-                            embeddedMediaViewDelegate: newScrollView)
+            newView = LivePhotoScrollView(parentView: self.view,
+                                          forLivePhoto: newMedia as! LivePhoto,
+                                          psvDelegate: self)
             
         case MediaType.video:
-            // TODO: Do something with the video.
-            let newVideoView = VideoView(parentController: self,
-                                         forMedia: newMedia)
-            displayNewMediaView(view: newVideoView,
-                            embeddedMediaViewDelegate: newVideoView)
+            newView = VideoView(parentController: self,
+                                forMedia: newMedia)
         }
+        
+        displayNewMediaView(view: newView,
+                            delegate: newView as! EmbeddedMediaViewDelegate)
     }
     
     func handleSwipe(forDirection: SwipeDirection) {

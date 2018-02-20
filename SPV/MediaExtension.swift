@@ -80,6 +80,20 @@ enum MediaExtension : String, EnumCollection {
         }
     }
     
+    var mediaCellTypeIndicator: String? {
+        get {
+            switch self {
+            case .jpg: return nil
+            case .png: return nil
+            case .bmp: return nil
+            case .gif: return "GIF"
+            case .mov: return "VIDEO"
+            case .mp4: return "VIDEO"
+            case .livePhoto: return "LIVE"
+            }
+        }
+    }
+    
     static var allFileExtensions: [String] {
         get {
             return allValues.flatMap({ getFileExtensions($0) })
