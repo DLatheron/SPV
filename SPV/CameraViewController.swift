@@ -572,6 +572,7 @@ extension CameraViewController {
                     self.fakeCameraBackground.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
                     self.capturePreviewView.insertSubview(self.fakeCameraBackground, at: 0)
                     self.setFakeCameraBackground()
+                    self.cameraController.setPreviewOrientation()
                 } else {
                     try? self.cameraController.displayPreview(on: self.capturePreviewView)
                 }
@@ -595,5 +596,11 @@ extension CameraViewController {
 
         styleCaptureButton()
         configureCameraController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        self.cameraController.setPreviewOrientation()
     }
 }

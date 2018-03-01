@@ -1,0 +1,18 @@
+PODS:
+  - Bluuur (0.3.2)
+  - Cosmos (11.0.3)
+  - SwiftyJSON (3.1.4)
+
+DEPENDENCIES:
+  - Bluuur
+  - Cosmos (~> 11.0)
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Bluuur: 8769814f974e2fb50618551a14b69c35396c1fa0
+  Cosmos: eb506859929f4add2d2aec822a27efb2f718a95d
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+
+PODFILE CHECKSUM: 8e1c338e971a604c4a6f59443460e440748467e7
+
+COCOAPODS: 1.2.0

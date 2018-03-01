@@ -27,7 +27,6 @@ class CameraController: NSObject {
     var rearCameraInput: AVCaptureDeviceInput?
     
     var previewLayer: AVCaptureVideoPreviewLayer?
-    var previewView: UIView?
     
     var flashMode = AVCaptureDevice.FlashMode.off
     var photoCaptureCompletionBlock: ((UIImage?, Error?) -> Void)?
@@ -142,7 +141,6 @@ extension CameraController {
             }
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewView = view
         view.layer.insertSublayer(self.previewLayer!, at: 0)
 
         setPreviewOrientation()
@@ -176,25 +174,27 @@ extension CameraController {
     }
     
     func setPreviewOrientation() {
-        previewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        previewLayer!.frame = previewView!.frame
+        if let previewLayer = previewLayer {
+            previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            previewLayer.frame = UIScreen.main.bounds
 
-        let captureOrientation: AVCaptureVideoOrientation
-        
-        switch UIScreen.main.orientation {
-        case .portrait:
-            captureOrientation = .portrait
-        case .landscapeLeft:
-            captureOrientation = .landscapeLeft
-        case .landscapeRight:
-            captureOrientation = .landscapeRight
-        case .portraitUpsideDown:
-            captureOrientation = .portraitUpsideDown
-        default:
-            captureOrientation = .portrait
+            let captureOrientation: AVCaptureVideoOrientation
+            
+            switch UIScreen.main.orientation {
+            case .portrait:
+                captureOrientation = .portrait
+            case .landscapeLeft:
+                captureOrientation = .landscapeLeft
+            case .landscapeRight:
+                captureOrientation = .landscapeRight
+            case .portraitUpsideDown:
+                captureOrientation = .portraitUpsideDown
+            default:
+                captureOrientation = .portrait
+            }
+            
+            previewLayer.connection?.videoOrientation = captureOrientation
         }
-        
-        previewLayer!.connection?.videoOrientation = captureOrientation
     }
     
     func switchToFrontCamera() throws {

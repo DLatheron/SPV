@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "1AB47EA4E9F203A4BBD3B32CE08104A5A3D4681C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "1AB47EA4E9F203A4BBD3B32CE08104A5A3D4681C" : 9223372036854775807,
+    "6FF50F64FF43A6030DA23D917528D8209EA9B926" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A3FCB225-0FBF-4215-B375-A39A53713A01",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "1AB47EA4E9F203A4BBD3B32CE08104A5A3D4681C" : "SPV\/",
+    "6FF50F64FF43A6030DA23D917528D8209EA9B926" : "SPV\/ThirdParty\/Sleipnir\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SPV",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SPV.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/DLatheron\/SPV.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1AB47EA4E9F203A4BBD3B32CE08104A5A3D4681C"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/railsware\/sleipnir",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6FF50F64FF43A6030DA23D917528D8209EA9B926"
+    }
+  ]
+}
