@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,7 +31,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NsU-CQ-FDb">
-                                                    <rect key="frame" x="16" y="11" width="42" height="21"/>
+                                                    <rect key="frame" x="16" y="11" width="379" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -46,8 +47,8 @@
                                                 <constraint firstItem="NsU-CQ-FDb" firstAttribute="centerY" secondItem="Ma8-nM-rm3" secondAttribute="centerY" id="4nD-t5-f1x"/>
                                                 <constraint firstItem="NsU-CQ-FDb" firstAttribute="leading" secondItem="Ma8-nM-rm3" secondAttribute="leading" constant="16" id="C4a-Oh-syL"/>
                                                 <constraint firstItem="Q8t-yx-NWJ" firstAttribute="centerY" secondItem="Ma8-nM-rm3" secondAttribute="centerY" id="Nv8-g6-7Cr"/>
-                                                <constraint firstAttribute="trailing" secondItem="Q8t-yx-NWJ" secondAttribute="trailing" id="VI1-2q-d8y"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="NsU-CQ-FDb" secondAttribute="trailing" constant="20" symbolic="YES" id="tDD-SJ-efA"/>
+                                                <constraint firstItem="Q8t-yx-NWJ" firstAttribute="trailing" secondItem="Ma8-nM-rm3" secondAttribute="trailing" id="VI1-2q-d8y"/>
+                                                <constraint firstItem="NsU-CQ-FDb" firstAttribute="trailing" secondItem="Ma8-nM-rm3" secondAttribute="trailing" constant="20" symbolic="YES" id="tDD-SJ-efA"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -68,7 +69,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" adjustsFontForContentSizeCategory="YES" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="pMb-J8-4fA">
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="10" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="pMb-J8-4fA">
                                                     <rect key="frame" x="122" y="11.5" width="253" height="21"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

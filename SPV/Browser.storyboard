@@ -28,7 +28,16 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2t-FQ-IA7" userLabel="Top Bar">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZWZ-eh-Vdk">
+                                <rect key="frame" x="0.0" y="-24" width="375" height="88"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="88" id="Sa5-5k-xhs"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="iNW-LB-HA8" kind="embed" identifier="CollapsibleSearchBarSegue" id="jgh-Os-XuL"/>
+                                </connections>
+                            </containerView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2t-FQ-IA7" userLabel="Top Bar">
                                 <rect key="frame" x="0.0" y="-24" width="375" height="88"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ymQ-LJ-AOr">
@@ -67,7 +76,7 @@
                                         <blurEffect style="extraLight"/>
                                     </visualEffectView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="1" green="0.19664914050000001" blue="0.0099352663179999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="ymQ-LJ-AOr" firstAttribute="centerX" secondItem="h2t-FQ-IA7" secondAttribute="centerX" id="WXz-xL-Tgq"/>
                                     <constraint firstItem="ymQ-LJ-AOr" firstAttribute="height" secondItem="h2t-FQ-IA7" secondAttribute="height" id="Ydb-Ke-Qny"/>
@@ -178,12 +187,15 @@
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="abT-BO-eps" firstAttribute="top" secondItem="ZWZ-eh-Vdk" secondAttribute="top" constant="44" id="2mv-km-gqy"/>
                             <constraint firstItem="h2t-FQ-IA7" firstAttribute="width" secondItem="ian-Hc-Njk" secondAttribute="width" id="5Be-xz-xrR"/>
+                            <constraint firstItem="ZWZ-eh-Vdk" firstAttribute="centerX" secondItem="abT-BO-eps" secondAttribute="centerX" id="9h2-m6-pSb"/>
                             <constraint firstItem="abT-BO-eps" firstAttribute="top" secondItem="h2t-FQ-IA7" secondAttribute="top" constant="44" id="JFX-NS-7Sw"/>
                             <constraint firstItem="qge-4W-qgg" firstAttribute="bottom" secondItem="abT-BO-eps" secondAttribute="bottom" id="Tt6-ek-dzh"/>
                             <constraint firstItem="qge-4W-qgg" firstAttribute="centerX" secondItem="abT-BO-eps" secondAttribute="centerX" id="nea-To-fkg"/>
                             <constraint firstItem="h2t-FQ-IA7" firstAttribute="centerX" secondItem="abT-BO-eps" secondAttribute="centerX" id="sLE-hi-n6e"/>
                             <constraint firstItem="qge-4W-qgg" firstAttribute="width" secondItem="ian-Hc-Njk" secondAttribute="width" id="tGr-Pu-bUf"/>
+                            <constraint firstItem="ZWZ-eh-Vdk" firstAttribute="width" secondItem="ian-Hc-Njk" secondAttribute="width" id="xkq-0m-URv"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="abT-BO-eps"/>
                         <connections>
@@ -199,6 +211,7 @@
                         <outlet property="reloadButton" destination="4LI-hP-OXZ" id="870-yp-eCJ"/>
                         <outlet property="searchBar" destination="W3N-jD-hpc" id="7NB-pi-Tza"/>
                         <outlet property="searchBarBottomOffsetConstraint" destination="dJo-4F-uZY" id="vwH-mY-9C0"/>
+                        <outlet property="searchBarVCHeightConstraint" destination="Sa5-5k-xhs" id="OeK-yf-QEd"/>
                         <outlet property="searchEffectsView" destination="LSN-M4-WQy" id="6vx-lw-Hqg"/>
                         <outlet property="searchResultsTable" destination="ant-WN-DUK" id="prb-Dc-s5a"/>
                         <outlet property="tabsButton" destination="ppr-Wa-N9s" id="muu-0B-4EJ"/>
@@ -217,6 +230,79 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="244" y="-18.440779610194905"/>
+        </scene>
+        <!--Collapsible Search Bar View Controller-->
+        <scene sceneID="Kaf-gA-nKF">
+            <objects>
+                <viewController id="iNW-LB-HA8" customClass="CollapsibleSearchBarViewController" customModule="SPV" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iad-Ga-Rts">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y4M-sy-X1S">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="5t1-A7-cbo">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search or enter website name" translatesAutoresizingMaskIntoConstraints="NO" id="33n-AO-RSb" customClass="CollapsibleSearchBar" customModule="SPV" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="34" width="375" height="56"/>
+                                            <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" keyboardAppearance="light" returnKeyType="go" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="interpolant">
+                                                    <real key="value" value="0.0"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </searchBar>
+                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rur-6s-ihb">
+                                            <rect key="frame" x="0.0" y="86" width="375" height="2"/>
+                                        </progressView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="33n-AO-RSb" secondAttribute="bottom" constant="-2" id="Lzj-4I-0Yq"/>
+                                        <constraint firstAttribute="bottom" secondItem="rur-6s-ihb" secondAttribute="bottom" id="NDc-v7-jsD"/>
+                                        <constraint firstItem="rur-6s-ihb" firstAttribute="width" secondItem="5t1-A7-cbo" secondAttribute="width" id="ONo-6p-msk"/>
+                                        <constraint firstItem="33n-AO-RSb" firstAttribute="width" secondItem="5t1-A7-cbo" secondAttribute="width" id="Wzj-No-mHi"/>
+                                        <constraint firstItem="rur-6s-ihb" firstAttribute="centerX" secondItem="5t1-A7-cbo" secondAttribute="centerX" id="nCF-lA-J4g"/>
+                                        <constraint firstItem="33n-AO-RSb" firstAttribute="centerX" secondItem="5t1-A7-cbo" secondAttribute="centerX" id="qvJ-xL-rvM"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="88" id="9R2-Ct-vDq"/>
+                                </constraints>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="y4M-sy-X1S" firstAttribute="centerX" secondItem="gdb-mZ-LuI" secondAttribute="centerX" id="WEd-o8-i6M"/>
+                            <constraint firstItem="y4M-sy-X1S" firstAttribute="width" secondItem="iad-Ga-Rts" secondAttribute="width" id="lCI-yp-1Qy"/>
+                            <constraint firstItem="gdb-mZ-LuI" firstAttribute="bottom" secondItem="y4M-sy-X1S" secondAttribute="bottom" id="z8W-W0-GIS"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="gdb-mZ-LuI"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="88"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="collapsedHeight">
+                            <real key="value" value="64"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="expandedHeight">
+                            <real key="value" value="88"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="interpolant">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="progressBar" destination="rur-6s-ihb" id="1Ws-SD-hNs"/>
+                        <outlet property="searchBar" destination="33n-AO-RSb" id="nYA-ag-qj1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AcF-SL-5FM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="244" y="439"/>
         </scene>
         <!--Downloads View Controller-->
         <scene sceneID="SzC-co-JOF">

@@ -23,8 +23,6 @@ protocol AuthenticationDelegate {
 class AuthenticationService {
     static var shared = AuthenticationService()
     
-    let context = LAContext()
-    
     var hasBiometry: Bool {
         get {
             return biometryType != "Unknown"
@@ -33,6 +31,14 @@ class AuthenticationService {
     
     var biometryType: String {
         get {
+            let context = LAContext()
+            guard context.canEvaluatePolicy(
+                .deviceOwnerAuthenticationWithBiometrics,
+                error: nil)
+                else {
+                    return "Unknown"
+            }
+            
             switch context.biometryType {
             case .touchID:
                 return "Touch ID"
@@ -46,6 +52,13 @@ class AuthenticationService {
     
     var iconName: String {
         get {
+            let context = LAContext()
+            guard context.canEvaluatePolicy(
+                .deviceOwnerAuthenticationWithBiometrics,
+                error: nil)
+                else {
+                    return "faceID"
+            }
             switch context.biometryType {
             case .touchID:
                 return "touchID"
@@ -128,6 +141,7 @@ extension AuthenticationService : AuthenticationDelegate {
     }
     
     func performBiometricAuthentication(completionBlock: @escaping (Bool, String?, Bool) -> Void) {
+        let context = LAContext()
         guard context.canEvaluatePolicy(
             .deviceOwnerAuthenticationWithBiometrics,
             error: nil)

@@ -28,6 +28,8 @@
 		F914D4F51F38C33A00B9042E /* MediaManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F914D4F41F38C33A00B9042E /* MediaManager.swift */; };
 		F919C7AD1F699325008372F6 /* MediaInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919C7AC1F699325008372F6 /* MediaInfoCell.swift */; };
 		F919C7AF1F699357008372F6 /* MediaInfoHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */; };
+		F9200AB02043F70800B12F0D /* CollapsibleSearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9200AAF2043F70800B12F0D /* CollapsibleSearchBarViewController.swift */; };
+		F9200AB22045477500B12F0D /* Interpolator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9200AB12045477500B12F0D /* Interpolator.swift */; };
 		F92E1B09203ABD9400A5436C /* MediaScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92E1B08203ABD9400A5436C /* MediaScrollView.swift */; };
 		F92E1B0B203B3DD200A5436C /* LivePhotoTest2.livephoto in Resources */ = {isa = PBXBuildFile; fileRef = F92E1B0A203B3DD200A5436C /* LivePhotoTest2.livephoto */; };
 		F92FBF4A1F2B9D4600E99589 /* Helpful.js in Resources */ = {isa = PBXBuildFile; fileRef = F92FBF491F2B9D4600E99589 /* Helpful.js */; };
@@ -160,6 +162,8 @@
 		F914D4F41F38C33A00B9042E /* MediaManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaManager.swift; sourceTree = "<group>"; };
 		F919C7AC1F699325008372F6 /* MediaInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoCell.swift; sourceTree = "<group>"; };
 		F919C7AE1F699357008372F6 /* MediaInfoHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoHeaderCell.swift; sourceTree = "<group>"; };
+		F9200AAF2043F70800B12F0D /* CollapsibleSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSearchBarViewController.swift; sourceTree = "<group>"; };
+		F9200AB12045477500B12F0D /* Interpolator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interpolator.swift; sourceTree = "<group>"; };
 		F92E1B08203ABD9400A5436C /* MediaScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaScrollView.swift; sourceTree = "<group>"; };
 		F92E1B0A203B3DD200A5436C /* LivePhotoTest2.livephoto */ = {isa = PBXFileReference; lastKnownFileType = folder; path = LivePhotoTest2.livephoto; sourceTree = "<group>"; };
 		F92FBF491F2B9D4600E99589 /* Helpful.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Helpful.js; sourceTree = SOURCE_ROOT; };
@@ -434,6 +438,7 @@
 			children = (
 				F9BABAAD1F28F92F00000D9B /* BrowserViewController.swift */,
 				F9F2D3D31F42CE0200FD6F78 /* DownloadsViewController.swift */,
+				F9200AAF2043F70800B12F0D /* CollapsibleSearchBarViewController.swift */,
 			);
 			name = VCs;
 			sourceTree = "<group>";
@@ -487,6 +492,7 @@
 				F9D47C611FFF631A00515A27 /* UIGestureRecognizer.swift */,
 				F9E5DA5920108B3400BF5BD0 /* EnumCollection.swift */,
 				F93015B720172651002973D7 /* URLExtensions.swift */,
+				F9200AB12045477500B12F0D /* Interpolator.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -955,6 +961,7 @@
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F92E1B09203ABD9400A5436C /* MediaScrollView.swift in Sources */,
 				F9E25C291FE19509009D9DF7 /* PINEntryMode.swift in Sources */,
+				F9200AB02043F70800B12F0D /* CollapsibleSearchBarViewController.swift in Sources */,
 				F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */,
 				F90FFFE81FBF560F00D2C304 /* TextBlockCell.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
@@ -1016,6 +1023,7 @@
 				F97943B01F6FA96600739030 /* MediaTagCell.swift in Sources */,
 				F941354E2006022500B77323 /* RatingsView.swift in Sources */,
 				F93EE1521FCC002900363333 /* Dispatch.swift in Sources */,
+				F9200AB22045477500B12F0D /* Interpolator.swift in Sources */,
 				F9C50C081F59376000EE79E5 /* FakeDownloadManager.swift in Sources */,
 				F9C8DA351FCF371B002BB2D5 /* AuthenticationViewController.swift in Sources */,
 				F9BABADA1F28FB6D00000D9B /* SettingsViewController.swift in Sources */,

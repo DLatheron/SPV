@@ -14,7 +14,7 @@ import Bluuur
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let initialTabIndex = 0
+    let initialTabIndex = 1
 
     var window: UIWindow?
     
@@ -159,10 +159,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             rootViewControllerView.bringSubview(toFront: blurView)
             
             print("Blur added")
+            isBlurred = true
 
             return blurView
         }
     }
+    
+    var isBlurred: Bool = false
     
     func blur(view blurView: MLWBluuurView?) {
         if let blurView = blurView {
@@ -171,6 +174,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIView.animate(withDuration: blurInDuration) {
                 blurView.blurRadius = self.blurRadius
             }
+        } else {
+            self.isBlurred = true
         }
     }
     
@@ -180,11 +185,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                            animations: {
                 blurView.blurRadius = 0
             }) { (complete) in
-                if complete {
-                    blurView.removeFromSuperview()
-                    print("Blur removed")
-                }
+                blurView.removeFromSuperview()
+                print("Blur removed")
+                self.isBlurred = false
             }
+        } else {
+            self.isBlurred = false
         }
     }
 
@@ -196,12 +202,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        if AuthenticationService.shared.pinHasBeenSet {
-            requestAuthentication() {
-                self.unblur(view: self.getOrCreateBlurView())
+        if isBlurred {
+            if AuthenticationService.shared.pinHasBeenSet {
+                requestAuthentication() {
+                    self.unblur(view: self.getOrCreateBlurView())
+                }
+            } else {
+                unblur(view: getOrCreateBlurView())
             }
-        } else {
-            unblur(view: getOrCreateBlurView())
         }
     }
 
@@ -212,6 +220,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        if isBlurred {
+            if AuthenticationService.shared.pinHasBeenSet {
+                requestAuthentication() {
+                    self.unblur(view: self.getOrCreateBlurView())
+                }
+            } else {
+                unblur(view: getOrCreateBlurView())
+            }
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

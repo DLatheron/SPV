@@ -27,6 +27,7 @@ class CameraController: NSObject {
     var rearCameraInput: AVCaptureDeviceInput?
     
     var previewLayer: AVCaptureVideoPreviewLayer?
+    var previewView: UIView?
     
     var flashMode = AVCaptureDevice.FlashMode.off
     var photoCaptureCompletionBlock: ((UIImage?, Error?) -> Void)?
@@ -140,11 +141,11 @@ extension CameraController {
                 throw CameraControllerError.captureSessionIsMissing
             }
         
-        self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        setPreviewOrientation()
-        
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewView = view
         view.layer.insertSublayer(self.previewLayer!, at: 0)
-        self.previewLayer?.frame = view.frame
+
+        setPreviewOrientation()
     }
     
     var captureDevice: AVCaptureDevice? {
@@ -175,8 +176,9 @@ extension CameraController {
     }
     
     func setPreviewOrientation() {
-        self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        
+        previewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        previewLayer!.frame = previewView!.frame
+
         let captureOrientation: AVCaptureVideoOrientation
         
         switch UIScreen.main.orientation {
@@ -192,7 +194,7 @@ extension CameraController {
             captureOrientation = .portrait
         }
         
-        self.previewLayer?.connection?.videoOrientation = captureOrientation
+        previewLayer!.connection?.videoOrientation = captureOrientation
     }
     
     func switchToFrontCamera() throws {

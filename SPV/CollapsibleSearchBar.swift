@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+// If we make the height of the bar the interpolant for the alpha, will that
+// help?
+
 class CollapsibleSearchBar : UISearchBar {
     @IBInspectable var collapsedHeight: CGFloat = 20
     @IBInspectable var expandedHeight: CGFloat = 44
@@ -64,32 +67,53 @@ class CollapsibleSearchBar : UISearchBar {
 }
 
 extension CollapsibleSearchBar {
+    override var bounds: CGRect {
+        didSet {
+            print("Bounds changed to \(bounds)")
+            
+            let height = bounds.size.height
+            let ratio = (height - collapsedHeight) / (expandedHeight - collapsedHeight)
+            let interpolant = max(min(1.0 - ratio, 1.0), 0.0)
+            
+            print("Interpolant is now \(interpolant)")
+            
+            let values = calculateValues(interpolant: interpolant)
+            
+            textFieldBackground.alpha = values.alpha
+            
+            transform = CGAffineTransform(scaleX: values.scale, y: values.scale)
+                .concatenating(CGAffineTransform(translationX: 0.0, y: values.yOffset))
+            
+            // We need to affect height externally.
+            
+            setNeedsLayout()
+            
+            textField.isUserInteractionEnabled = interpolant == 0.0
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        recalculate()
+        //recalculate()
     }
 }
 
 extension CollapsibleSearchBar {
-    private func calculateValues(interpolant: CGFloat) -> (height: CGFloat, alpha: CGFloat, scale: CGFloat, yOffset: CGFloat) {
-        let height = CollapsibleSearchBar.interpolate(from: expandedHeight,
-                                                      to: collapsedHeight,
-                                                      withProgress: interpolant)
-        let alpha = CollapsibleSearchBar.interpolate(from: 1.0,
-                                                     to: 0.0,
-                                                     withProgress: interpolant,
-                                                     minProgress: 0.0,
-                                                     maxProgress: 0.2)
-        let scale = CollapsibleSearchBar.interpolate(from: expandedScale,
-                                                     to: collapsedScale,
-                                                     withProgress: interpolant)
-        let yOffset = CollapsibleSearchBar.interpolate(from: expandedYOffset,
-                                                       to: collapsedYOffset,
-                                                       withProgress: interpolant)
+    private func calculateValues(interpolant: CGFloat) -> (alpha: CGFloat, scale: CGFloat, yOffset: CGFloat) {
+        let alpha = Interpolator.interpolate(from: 1.0,
+                                             to: 0.0,
+                                             withProgress: interpolant,
+                                             minProgress: 0.0,
+                                             maxProgress: 0.2)
+        let scale = Interpolator.interpolate(from: expandedScale,
+                                             to: collapsedScale,
+                                             withProgress: interpolant)
+        let yOffset = Interpolator.interpolate(from: expandedYOffset,
+                                               to: collapsedYOffset,
+                                               withProgress: interpolant)
         
         return (
-            height: height,
             alpha: alpha,
             scale: scale,
             yOffset: yOffset
@@ -99,34 +123,36 @@ extension CollapsibleSearchBar {
     func recalculate() {
         let values = calculateValues(interpolant: interpolant)
         
-        bounds = CGRect(x: bounds.origin.x,
-                        y: bounds.origin.y,
-                        width: bounds.size.width,
-                        height: values.height)
-        
         textFieldBackground.alpha = values.alpha
 
-        transform = CGAffineTransform(scaleX: values.scale, y: values.scale)
-            .concatenating(CGAffineTransform(translationX: 0.0, y: values.yOffset))
+        transform = CGAffineTransform(scaleX: values.scale,
+                                      y: values.scale)
+            .concatenating(CGAffineTransform(translationX: 0.0,
+                                             y: values.yOffset))
     }
     
     func changeOrientation() {
         setNeedsLayout()
     }
-    
-    static func interpolate(from fromValue: CGFloat,
-                            to toValue: CGFloat,
-                            withProgress progress: CGFloat,
-                            minProgress: CGFloat = 0.0,
-                            maxProgress: CGFloat = 1.0) -> CGFloat {
-        let rangeProgress = (progress - minProgress) / (maxProgress - minProgress)
-        let clampedProgress = max(min(rangeProgress, 1), 0)
-        
-        return fromValue - ((fromValue - toValue) * clampedProgress)
-    }
 }
 
 extension CollapsibleSearchBar {
+    func expandAndActivate(completionBlock: @escaping (() -> Void)) {
+        if interpolant == 0 {
+            activate()
+        } else {
+//            UIView.animate(withDuration: 5.0,
+//                           animations: {
+                self.interpolant = 0
+//            }, completion: { (completed) in
+//                if completed {
+                    self.activate()
+                    completionBlock()
+//                }
+//            })
+        }
+    }
+    
     func activate() {
         setShowsCancelButton(true,
                              animated: true)
