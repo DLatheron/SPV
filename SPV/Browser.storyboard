@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Baseline standard spacing" minToolsVersion="9.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -351,39 +353,58 @@
                                     <outlet property="delegate" destination="NVq-PY-1eb" id="iIP-Wb-JKG"/>
                                 </connections>
                             </tableView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QI9-Lv-cmF">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ozW-Lq-rY6">
+                                <rect key="frame" x="0.0" y="-24" width="375" height="88"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="5u8-QS-dlc">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QI9-Lv-cmF">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="88" id="yQI-ph-EPG"/>
+                                            </constraints>
+                                            <items>
+                                                <barButtonItem title="Clear" id="1Mc-ng-Ptm">
+                                                    <connections>
+                                                        <action selector="clearCompletedDownloads:" destination="NVq-PY-1eb" id="avF-S3-nm1"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                                <barButtonItem style="plain" systemItem="flexibleSpace" id="NVn-eh-xd4"/>
+                                                <barButtonItem systemItem="done" id="EZC-Ol-FdJ">
+                                                    <connections>
+                                                        <action selector="returnToBrowserViewController:" destination="NVq-PY-1eb" id="klc-ay-fRj"/>
+                                                    </connections>
+                                                </barButtonItem>
+                                            </items>
+                                        </toolbar>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloads" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmU-Pn-D2R">
+                                            <rect key="frame" x="139" y="55" width="97.5" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="DmU-Pn-D2R" firstAttribute="centerX" secondItem="QI9-Lv-cmF" secondAttribute="centerX" id="7FJ-jG-5gI"/>
+                                        <constraint firstAttribute="bottom" secondItem="QI9-Lv-cmF" secondAttribute="bottom" id="Cwi-Dd-2el"/>
+                                        <constraint firstItem="QI9-Lv-cmF" firstAttribute="width" secondItem="5u8-QS-dlc" secondAttribute="width" id="DaH-3J-UMs"/>
+                                        <constraint firstItem="QI9-Lv-cmF" firstAttribute="centerX" secondItem="5u8-QS-dlc" secondAttribute="centerX" id="EVl-cB-OSB"/>
+                                        <constraint firstItem="QI9-Lv-cmF" firstAttribute="baseline" secondItem="DmU-Pn-D2R" secondAttribute="firstBaseline" constant="14" symbolType="layoutAnchor" id="uXr-k9-pFQ"/>
+                                    </constraints>
+                                </view>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="yQI-ph-EPG"/>
+                                    <constraint firstAttribute="height" constant="88" id="BJr-fK-E7r"/>
                                 </constraints>
-                                <items>
-                                    <barButtonItem title="Clear" id="1Mc-ng-Ptm">
-                                        <connections>
-                                            <action selector="clearCompletedDownloads:" destination="NVq-PY-1eb" id="avF-S3-nm1"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="NVn-eh-xd4"/>
-                                    <barButtonItem systemItem="done" id="EZC-Ol-FdJ">
-                                        <connections>
-                                            <action selector="returnToBrowserViewController:" destination="NVq-PY-1eb" id="klc-ay-fRj"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloads" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmU-Pn-D2R">
-                                <rect key="frame" x="139" y="30" width="97.5" height="24"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="QI9-Lv-cmF" firstAttribute="width" secondItem="Y77-cP-lZO" secondAttribute="width" id="3ML-s9-9xJ"/>
-                            <constraint firstItem="QI9-Lv-cmF" firstAttribute="centerX" secondItem="wwg-UZ-1AU" secondAttribute="centerX" id="9UO-6n-XEm"/>
-                            <constraint firstItem="DmU-Pn-D2R" firstAttribute="centerX" secondItem="wwg-UZ-1AU" secondAttribute="centerX" id="Mr2-5w-y2d"/>
-                            <constraint firstItem="QI9-Lv-cmF" firstAttribute="top" secondItem="wwg-UZ-1AU" secondAttribute="top" constant="-20" id="dvH-er-xxK"/>
-                            <constraint firstItem="DmU-Pn-D2R" firstAttribute="top" secondItem="QI9-Lv-cmF" secondAttribute="bottom" constant="-34" id="vQB-cT-0HH"/>
+                            <constraint firstItem="ozW-Lq-rY6" firstAttribute="width" secondItem="Y77-cP-lZO" secondAttribute="width" id="3Hn-h0-aSe"/>
+                            <constraint firstItem="ozW-Lq-rY6" firstAttribute="centerX" secondItem="wwg-UZ-1AU" secondAttribute="centerX" id="3WQ-Uh-B8w"/>
+                            <constraint firstItem="wwg-UZ-1AU" firstAttribute="top" secondItem="ozW-Lq-rY6" secondAttribute="top" constant="44" id="dgb-HT-RKp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wwg-UZ-1AU"/>
                     </view>

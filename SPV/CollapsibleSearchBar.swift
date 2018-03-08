@@ -144,6 +144,7 @@ extension CollapsibleSearchBar {
 //    }
     
     func activate() {
+        becomeFirstResponder()
         setShowsCancelButton(true,
                              animated: true)
         editing = true

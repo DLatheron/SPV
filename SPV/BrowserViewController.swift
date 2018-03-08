@@ -482,51 +482,12 @@ extension BrowserViewController : UIScrollViewDelegate
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //if let scrollOffsetStart = scrollOffsetStart {
-            
-        let offset = scrollView.panGestureRecognizer.translation(in: self.view).y
-//        print("Offset \(offset), contentOffset \(scrollView.contentOffset.y)")
-        var interpolant: CGFloat? = nil
-    
-        interpolant = 1.0 - ((-scrollView.contentOffset.y - 48) / 40)
-//            if scrollView.contentOffset.y < 0 { //offset < 0 {
-//                interpolant = 1.0 - ((-scrollView.contentOffset.y - 48) / 40)
-//            } else if scrollView.contentOffset.y < 0 {
-//                interpolant = scrollView.contentOffset.y / 40
-//            }
+        let interpolant = 1.0 - ((-scrollView.contentOffset.y - 48) / 40)
 
-        if let interpolant = interpolant {
-//            let height = searchBarVC.calculateHeight(interpolant: interpolant)
-            
-            animate(searchBarVC: searchBarVC,
-                    interpolant: interpolant,
-                    duration: 0.3,
-                    completionBlock: nil)
-//            UIView.animate(withDuration: 0.3,
-//                           animations: {
-//                self.searchBarVCHeightConstraint.constant = height
-//            })
-        }
-        
-//            var offset = (scrollView.contentOffset.y - scrollOffsetStart) / 40
-//            offset += scrollCurrentInterpolant!
-//
-//            let interpolant = offset
-//            let height = searchBarVC.calculateHeight(interpolant: interpolant)
-//            print("Content Offset \(scrollView.contentOffset.y)")
-//
-//            if scrollOffsetStart < 0 {
-//                if scrollView.contentOffset.y < -88 + 40 {
-//                    searchBarVCHeightConstraint.constant = height
-//                    searchBarVC.interpolant = interpolant
-//                }
-//            } else if scrollOffsetStart > 0 {
-//                searchBarVCHeightConstraint.constant = height
-//                searchBarVC.interpolant = interpolant
-//
-//                // TODO: Update scroll content inset...
-//            }
-//        }
+        animate(searchBarVC: searchBarVC,
+                interpolant: interpolant,
+                duration: 0.3,
+                completionBlock: nil)
     }
 }
 
