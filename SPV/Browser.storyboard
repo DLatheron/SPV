@@ -37,54 +37,6 @@
                                     <segue destination="iNW-LB-HA8" kind="embed" identifier="CollapsibleSearchBarSegue" id="jgh-Os-XuL"/>
                                 </connections>
                             </containerView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2t-FQ-IA7" userLabel="Top Bar">
-                                <rect key="frame" x="0.0" y="-24" width="375" height="88"/>
-                                <subviews>
-                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ymQ-LJ-AOr">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="PSd-9K-qKu">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search or enter website name" translatesAutoresizingMaskIntoConstraints="NO" id="W3N-jD-hpc" customClass="CollapsibleSearchBar" customModule="SPV" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="38" width="375" height="56"/>
-                                                    <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" keyboardAppearance="light" returnKeyType="go" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="interpolant">
-                                                            <real key="value" value="0.0"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <outlet property="delegate" destination="g3s-Ln-E28" id="886-q2-pg5"/>
-                                                    </connections>
-                                                </searchBar>
-                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="V1h-5m-rgW">
-                                                    <rect key="frame" x="0.0" y="86" width="375" height="2"/>
-                                                </progressView>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="V1h-5m-rgW" secondAttribute="bottom" id="7YR-zh-zv8"/>
-                                                <constraint firstItem="W3N-jD-hpc" firstAttribute="width" secondItem="PSd-9K-qKu" secondAttribute="width" id="RZ7-1E-kCe"/>
-                                                <constraint firstAttribute="bottom" secondItem="W3N-jD-hpc" secondAttribute="bottom" constant="-6" id="dJo-4F-uZY"/>
-                                                <constraint firstItem="V1h-5m-rgW" firstAttribute="centerX" secondItem="PSd-9K-qKu" secondAttribute="centerX" id="dme-D0-n34"/>
-                                                <constraint firstItem="W3N-jD-hpc" firstAttribute="centerX" secondItem="PSd-9K-qKu" secondAttribute="centerX" id="gMd-MJ-kUg"/>
-                                                <constraint firstItem="V1h-5m-rgW" firstAttribute="width" secondItem="PSd-9K-qKu" secondAttribute="width" id="mO2-7X-BJ7"/>
-                                            </constraints>
-                                        </view>
-                                        <blurEffect style="extraLight"/>
-                                    </visualEffectView>
-                                </subviews>
-                                <color key="backgroundColor" red="1" green="0.19664914050000001" blue="0.0099352663179999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstItem="ymQ-LJ-AOr" firstAttribute="centerX" secondItem="h2t-FQ-IA7" secondAttribute="centerX" id="WXz-xL-Tgq"/>
-                                    <constraint firstItem="ymQ-LJ-AOr" firstAttribute="height" secondItem="h2t-FQ-IA7" secondAttribute="height" id="Ydb-Ke-Qny"/>
-                                    <constraint firstAttribute="height" constant="88" id="a0y-Bs-Rwd"/>
-                                    <constraint firstItem="ymQ-LJ-AOr" firstAttribute="width" secondItem="h2t-FQ-IA7" secondAttribute="width" id="gOX-0o-tvc"/>
-                                    <constraint firstItem="ymQ-LJ-AOr" firstAttribute="centerY" secondItem="h2t-FQ-IA7" secondAttribute="centerY" id="siI-mB-TYc"/>
-                                </constraints>
-                            </view>
                             <visualEffectView hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LSN-M4-WQy">
                                 <rect key="frame" x="0.0" y="88" width="375" height="716"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -188,12 +140,9 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="abT-BO-eps" firstAttribute="top" secondItem="ZWZ-eh-Vdk" secondAttribute="top" constant="44" id="2mv-km-gqy"/>
-                            <constraint firstItem="h2t-FQ-IA7" firstAttribute="width" secondItem="ian-Hc-Njk" secondAttribute="width" id="5Be-xz-xrR"/>
                             <constraint firstItem="ZWZ-eh-Vdk" firstAttribute="centerX" secondItem="abT-BO-eps" secondAttribute="centerX" id="9h2-m6-pSb"/>
-                            <constraint firstItem="abT-BO-eps" firstAttribute="top" secondItem="h2t-FQ-IA7" secondAttribute="top" constant="44" id="JFX-NS-7Sw"/>
                             <constraint firstItem="qge-4W-qgg" firstAttribute="bottom" secondItem="abT-BO-eps" secondAttribute="bottom" id="Tt6-ek-dzh"/>
                             <constraint firstItem="qge-4W-qgg" firstAttribute="centerX" secondItem="abT-BO-eps" secondAttribute="centerX" id="nea-To-fkg"/>
-                            <constraint firstItem="h2t-FQ-IA7" firstAttribute="centerX" secondItem="abT-BO-eps" secondAttribute="centerX" id="sLE-hi-n6e"/>
                             <constraint firstItem="qge-4W-qgg" firstAttribute="width" secondItem="ian-Hc-Njk" secondAttribute="width" id="tGr-Pu-bUf"/>
                             <constraint firstItem="ZWZ-eh-Vdk" firstAttribute="width" secondItem="ian-Hc-Njk" secondAttribute="width" id="xkq-0m-URv"/>
                         </constraints>
@@ -207,17 +156,12 @@
                         <outlet property="backButton" destination="2c3-UR-C75" id="fZG-Ul-ceF"/>
                         <outlet property="forwardButton" destination="M18-yq-Omz" id="MRo-Hz-vfq"/>
                         <outlet property="longPressGesture" destination="ESo-hJ-sPl" id="dFQ-WA-5WM"/>
-                        <outlet property="progressView" destination="V1h-5m-rgW" id="aug-LM-tuE"/>
                         <outlet property="reloadButton" destination="4LI-hP-OXZ" id="870-yp-eCJ"/>
-                        <outlet property="searchBar" destination="W3N-jD-hpc" id="7NB-pi-Tza"/>
-                        <outlet property="searchBarBottomOffsetConstraint" destination="dJo-4F-uZY" id="vwH-mY-9C0"/>
                         <outlet property="searchBarVCHeightConstraint" destination="Sa5-5k-xhs" id="OeK-yf-QEd"/>
                         <outlet property="searchEffectsView" destination="LSN-M4-WQy" id="6vx-lw-Hqg"/>
                         <outlet property="searchResultsTable" destination="ant-WN-DUK" id="prb-Dc-s5a"/>
                         <outlet property="tabsButton" destination="ppr-Wa-N9s" id="muu-0B-4EJ"/>
                         <outlet property="toolbar" destination="qge-4W-qgg" id="iX6-3c-JSX"/>
-                        <outlet property="topBar" destination="h2t-FQ-IA7" id="7mQ-QA-YQM"/>
-                        <outlet property="topBarHeightConstraint" destination="a0y-Bs-Rwd" id="gaK-Wq-n68"/>
                         <outlet property="webView" destination="rp0-Dc-xns" id="Zht-Jd-vZT"/>
                     </connections>
                 </viewController>

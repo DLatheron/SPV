@@ -137,21 +137,11 @@ extension CollapsibleSearchBar {
 }
 
 extension CollapsibleSearchBar {
-    func expandAndActivate(completionBlock: @escaping (() -> Void)) {
-        if interpolant == 0 {
-            activate()
-        } else {
-//            UIView.animate(withDuration: 5.0,
-//                           animations: {
-                self.interpolant = 0
-//            }, completion: { (completed) in
-//                if completed {
-                    self.activate()
-                    completionBlock()
-//                }
-//            })
-        }
-    }
+//    func expandAndActivate(completionBlock: @escaping (() -> Void)) {
+//        interpolant = 0
+//        activate()
+//        completionBlock()
+//    }
     
     func activate() {
         setShowsCancelButton(true,

@@ -20,16 +20,12 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     let initialPageUrl = "https://cdn.pixabay.com/photo/2015/07/06/13/58/arlberg-pass-833326_1280.jpg"
     
     @IBOutlet weak var webView: WKWebView!
-    @IBOutlet weak var topBar: UIView!
-    @IBOutlet weak var searchBar: CollapsibleSearchBar!
-    @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var searchBarBottomOffsetConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topBarHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var searchBarVCHeightConstraint: NSLayoutConstraint!
     weak var searchBarVC: CollapsibleSearchBarViewController!
     
     var scrollOffsetStart: CGFloat? = nil
+    var scrollCurrentInterpolant: CGFloat? = nil
     var canCollapse: Bool = false
 
     var scope: SearchScope = .all // TODO: Preserve as config.
@@ -126,23 +122,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         webView.allowsLinkPreview = false
     }
 
-//    func calcSearchBarHeight(at interpolant: CGFloat) -> CGFloat {
-//        searchBar.interpolant = interpolant
-//        let topBarHeight = searchBar.bounds.origin.y + searchBar.bounds.size.height
-//        let bottomBarHeight: CGFloat = 44//UIScreen.main.bounds.height - toolbar.bounds.origin.y
-//
-//        webView.scrollView.contentInset = UIEdgeInsets(top: topBarHeight,
-//                                                       left: 0,
-//                                                       bottom: bottomBarHeight,
-//                                                       right: 0)
-//        webView.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: topBarHeight,
-//                                                                left: 0,
-//                                                                bottom: bottomBarHeight,
-//                                                                right: 0)
-//
-//        return 44 + searchBar.bounds.size.height
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -150,30 +129,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         
         updateConstraints()
         
-//        let singleTap = UITapGestureRecognizer(target: self,
-//                                               action: #selector(handleSingleTap(_:)))
-//        singleTap.numberOfTapsRequired = 1
-//
-//        searchBar.addGestureRecognizer(singleTap)
-        
         navigateTo(url: initialPageUrl)
-    }
-    
-    
-//    @objc func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
-//        print("Single Tap")
-//
-//        if searchBarVCHeightConstraint.constant != searchBarVC.expandedHeight {
-//            UIView.animate(withDuration: 0.3) {
-//                self.searchBarVCHeightConstraint.constant = self.searchBarVC.calculateHeight(interpolant: 1)
-//            }
-//        } else {
-//            activateSearch()
-//        }
-//    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
@@ -252,7 +208,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
                                change: [NSKeyValueChangeKey : Any]?,
                                context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            progressView.progress = Float(webView.estimatedProgress)
+            searchBarVC.progress = webView.estimatedProgress
         }
         if keyPath == #keyPath(WKWebView.canGoBack) {
             backButton.isEnabled = webView.canGoBack
@@ -296,28 +252,13 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
         return urlString
     }
     
-    func setSearchBarText(urlString: String) {
-        let closedLock = "🔒"
-        let openLock = "🔓"
-        
-        if let urlBuilder = URLBuilder(string: urlString) {
-            let lockState = urlBuilder.isSchemeSecure ? closedLock : openLock
-            let domainText = "\(lockState) \(urlBuilder.host ?? "")"
-            searchBar.text = domainText
-//            searchField.text = domainText
-        } else {
-            searchBar.text = nil
-//            searchField.text = nil
-        }
-    }
-    
     func navigateTo(url newURLString: String?) {
         if let newURLString = newURLString {
             let modifiedNewURLString = ensureValidProtocol(urlString: newURLString)
             let newURL = URL(string: modifiedNewURLString)
             let myRequest = URLRequest(url: newURL!)
             
-            searchBar.urlString = modifiedNewURLString
+            searchBarVC.urlString = modifiedNewURLString
             
             addHistory(forURL: modifiedNewURLString)
             
@@ -326,7 +267,7 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     }
     
     func searchBarIsEmpty() -> Bool {
-        return /*searchField.text?.isEmpty ?? */true
+        return searchBarVC.searchBar.text?.isEmpty ?? true
     }
     
     func isFiltering() -> Bool {
@@ -352,15 +293,12 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     }
     
     func updateConstraints() {
-        let searchBarBottomOffset: CGFloat = UIScreen.main.isLandscape ? -6 : 0
-        
-        searchBarBottomOffsetConstraint.constant = searchBarBottomOffset
         toolbar.invalidateIntrinsicContentSize()
     }
     
     func changeOrientation() {
         updateConstraints()
-        searchBar.changeOrientation()
+//        searchBar.changeOrientation()
     }
     
     override func viewWillTransition(to size: CGSize,
@@ -403,50 +341,7 @@ extension BrowserViewController : UITextFieldDelegate {
 }
 
 //-----------------------------------------------------------------
-// Move some of this into CollapsibleSearchBar...
 extension BrowserViewController : UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar,
-                   textDidChange searchText: String) {
-        filterContentsBy(searchText: searchText,
-                         scope: scope)
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        activate(searchBarVC: searchBarVC)
-        
-        filterContentsBy(searchText: self.searchBar.urlString,
-                         scope: scope)
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        deactivate(searchBarVC: searchBarVC)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        deactivate(searchBarVC: searchBarVC)
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = self.searchBar.text {
-//            if !shouldShowSearchResults {
-//                //searchController.isActive = true
-//                searchResultsTable.isHidden = !shouldShowSearchResults
-//            }
-            
-//            searchBar.resignFirstResponder()
-            
-            self.navigateTo(url: searchText)
-        }
-
-        deactivate(searchBarVC: searchBarVC)
-    }
-    
-//    func searchBar(_ searchBar: UISearchBar,
-//                   selectedScopeButtonIndexDidChange selectedScope: Int) {
-//        filterContentsBy(searchText: searchBar.text!,
-//                         scope: selectedScope)
-//    }
-    
     func addHistory(forURL textURL: String, category: String = "History") {
         if let index = data.index(where: { (entryURL, entryCategory) -> Bool in
             return entryURL == textURL
@@ -458,16 +353,6 @@ extension BrowserViewController : UISearchBarDelegate {
                     at: 0)
     }
 }
-
-//-----------------------------------------------------------------
-//extension BrowserViewController : UISearchResultsUpdating {
-//    func updateSearchResults(for searchController: UISearchController) {
-//        let searchBar = searchController.searchBar
-//        let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
-//
-//        filterContentsBy(searchText: searchController.searchBar.text!, scope: scope)
-//    }
-//}
 
 //-----------------------------------------------------------------
 extension BrowserViewController : UITableViewDelegate {
@@ -512,14 +397,14 @@ extension BrowserViewController : UITableViewDelegate {
 extension BrowserViewController : SearchCellDelegate {
     func tableViewCell(singleTapActionFromCell cell: SearchCell) {
         DispatchQueue.main.async {
-            self.searchBar.urlString = cell.textLabel!.text!
+            self.searchBarVC.urlString = cell.textLabel!.text
         }
     }
     
     func tableViewCell(doubleTapActionFromCell cell: SearchCell) {
         DispatchQueue.main.async {
             self.navigateTo(url: cell.textLabel!.text!)
-            self.deactivate(searchBarVC: self.searchBarVC)
+            self.searchBarVC.deactivateSearch()
         }
     }
 }
@@ -534,7 +419,8 @@ extension BrowserViewController : WKNavigationDelegate {
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let urlStr = navigationAction.request.url?.absoluteString {
-            setSearchBarText(urlString: urlStr)
+            //setSearchBarText(urlString: urlStr)
+            searchBarVC.urlString = urlStr
         }
         decisionHandler(.allow)
     }
@@ -569,61 +455,6 @@ extension BrowserViewController : SearchScopeCellDelegate {
     }
 }
 
-//extension BrowserViewController : UISearchControllerDelegate {
-//    func didPresentSearchController(_ searchController: UISearchController) {
-//        //searchResultsTable.isHidden = false
-//    }
-//
-//    func didDismissSearchController(_ searchController: UISearchController) {
-//        //searchResultsTable.isHidden = true
-//    }
-//}
-
-//-----------------------------------------------------------------
-//extension BrowserViewController : UIScrollViewDelegate
-//{
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//    }
-//
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        if scrollOffsetStart == nil {
-//            scrollOffsetStart = scrollView.contentOffset.y
-//            if searchBar.interpolant == 1 {
-//                // View is fully collapsed.
-//            } else if searchBar.interpolant == 0 {
-//                // View is fully expanded.
-//                canCollapse = true
-//            }
-//        }
-//    }
-//
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView,
-//                                  willDecelerate decelerate: Bool) {
-//        canCollapse = false
-//        scrollOffsetStart = nil
-//    }
-//
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if let scrollOffsetStart = scrollOffsetStart {
-//            let offset = scrollView.contentOffset.y - scrollOffsetStart
-//
-//            if canCollapse && offset > 0 {
-//                let interpolant = offset / 40
-//
-//                topBarHeightConstraint.constant = calcSearchBarHeight(at: interpolant)
-//                print("topBarHeightConstraint = \(self.topBarHeightConstraint)")
-//
-//                // TODO: Update scroll content inset...
-//            } else if scrollView.contentOffset.y < -88 + 40 {
-//                let interpolant = offset / 40
-//
-//                topBarHeightConstraint.constant = calcSearchBarHeight(at: interpolant)
-//                print("topBarHeightConstraint = \(self.topBarHeightConstraint)")
-//            }
-//        }
-//    }
-//}
-
 extension BrowserViewController : UIScrollViewDelegate
 {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -632,6 +463,8 @@ extension BrowserViewController : UIScrollViewDelegate
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if scrollOffsetStart == nil {
             scrollOffsetStart = scrollView.contentOffset.y
+            scrollCurrentInterpolant = searchBarVC.interpolant * 40
+
             if searchBarVC.interpolant == 1 {
                 // View is fully collapsed.
             } else if searchBarVC.interpolant == 0 {
@@ -645,24 +478,55 @@ extension BrowserViewController : UIScrollViewDelegate
                                   willDecelerate decelerate: Bool) {
         canCollapse = false
         scrollOffsetStart = nil
+        scrollCurrentInterpolant = nil
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if let scrollOffsetStart = scrollOffsetStart {
-            let offset = scrollView.contentOffset.y - scrollOffsetStart
+        //if let scrollOffsetStart = scrollOffsetStart {
             
-            if canCollapse && offset > 0 {
-                let interpolant = offset / 40
-                
-                searchBarVCHeightConstraint.constant = searchBarVC.calculateHeight(interpolant: interpolant)
+        let offset = scrollView.panGestureRecognizer.translation(in: self.view).y
+//        print("Offset \(offset), contentOffset \(scrollView.contentOffset.y)")
+        var interpolant: CGFloat? = nil
+    
+        interpolant = 1.0 - ((-scrollView.contentOffset.y - 48) / 40)
+//            if scrollView.contentOffset.y < 0 { //offset < 0 {
+//                interpolant = 1.0 - ((-scrollView.contentOffset.y - 48) / 40)
+//            } else if scrollView.contentOffset.y < 0 {
+//                interpolant = scrollView.contentOffset.y / 40
+//            }
 
-                // TODO: Update scroll content inset...
-            } else if scrollView.contentOffset.y < -88 + 40 {
-                let interpolant = offset / 40
-                
-                searchBarVCHeightConstraint.constant = searchBarVC.calculateHeight(interpolant: interpolant)
-            }
+        if let interpolant = interpolant {
+//            let height = searchBarVC.calculateHeight(interpolant: interpolant)
+            
+            animate(searchBarVC: searchBarVC,
+                    interpolant: interpolant,
+                    duration: 0.3,
+                    completionBlock: nil)
+//            UIView.animate(withDuration: 0.3,
+//                           animations: {
+//                self.searchBarVCHeightConstraint.constant = height
+//            })
         }
+        
+//            var offset = (scrollView.contentOffset.y - scrollOffsetStart) / 40
+//            offset += scrollCurrentInterpolant!
+//
+//            let interpolant = offset
+//            let height = searchBarVC.calculateHeight(interpolant: interpolant)
+//            print("Content Offset \(scrollView.contentOffset.y)")
+//
+//            if scrollOffsetStart < 0 {
+//                if scrollView.contentOffset.y < -88 + 40 {
+//                    searchBarVCHeightConstraint.constant = height
+//                    searchBarVC.interpolant = interpolant
+//                }
+//            } else if scrollOffsetStart > 0 {
+//                searchBarVCHeightConstraint.constant = height
+//                searchBarVC.interpolant = interpolant
+//
+//                // TODO: Update scroll content inset...
+//            }
+//        }
     }
 }
 
@@ -705,43 +569,35 @@ extension BrowserViewController : CollapsibleSearchBarDelegate {
     }
     
     func activate(searchBarVC: CollapsibleSearchBarViewController) {
-        if !searchBar.editing {
-            print("Activating...")
-            searchBar.expandAndActivate() {
-                
-                self.searchEffectsView.alpha = 0
-                self.searchEffectsView.isHidden = false
-                
-                UIView.animate(withDuration: 0.3,
-                               delay: 0.1,
-                               options: [ .curveEaseInOut ],
-                               animations: {
-                                self.searchEffectsView.alpha = 1
-                })
-            }
-        } else {
-            print("Already activating!")
-        }
+        searchEffectsView.alpha = 0
+        searchEffectsView.isHidden = false
+
+        UIView.animate(withDuration: 0.3,
+                       delay: 0.1,
+                       options: [ .curveEaseInOut ],
+                       animations: {
+            self.searchEffectsView.alpha = 1
+            self.searchBarVC.progressBar.alpha = 0
+        })
     }
     
     func deactivate(searchBarVC: CollapsibleSearchBarViewController) {
-        if searchBar.editing {
-            print("...Deactivating")
-            searchBar.deactivate()
-            
-            UIView.animate(withDuration: 0.3,
-                           delay: 0.1,
-                           options: [ .curveEaseInOut ],
-                           animations: {
-                            self.searchEffectsView.alpha = 0
-            }) { (complete) in
-                if complete {
-                    self.searchEffectsView.isHidden = true
-                }
+        UIView.animate(withDuration: 0.3,
+                       delay: 0.1,
+                       options: [ .curveEaseInOut ],
+                       animations: {
+            self.searchEffectsView.alpha = 0
+            self.searchBarVC.progressBar.alpha = 1
+        }) { (complete) in
+            if complete {
+                self.searchEffectsView.isHidden = true
             }
-        } else {
-            print("...already deactivating!")
         }
+    }
+    
+    func changed(searchText: String?) {
+        filterContentsBy(searchText: searchText,
+                         scope: scope)
     }
 }
 
