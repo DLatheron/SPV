@@ -61,7 +61,7 @@
                                         <blurEffect style="dark"/>
                                     </visualEffectView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T9x-nc-cnb">
-                                        <rect key="frame" x="163.5" y="0.0" width="48" height="48"/>
+                                        <rect key="frame" x="311" y="0.0" width="48" height="48"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="h1r-LD-bJ4"/>
@@ -79,7 +79,6 @@
                                     <constraint firstItem="T9x-nc-cnb" firstAttribute="top" secondItem="2jY-jY-vZF" secondAttribute="top" id="Ofv-YT-6Mc"/>
                                     <constraint firstItem="hSz-RN-h7e" firstAttribute="width" secondItem="2jY-jY-vZF" secondAttribute="width" id="Urs-Nn-TPX"/>
                                     <constraint firstAttribute="bottom" secondItem="hSz-RN-h7e" secondAttribute="bottom" id="b8L-uc-oE3"/>
-                                    <constraint firstItem="T9x-nc-cnb" firstAttribute="centerX" secondItem="2jY-jY-vZF" secondAttribute="centerX" id="tVD-1r-Fyg"/>
                                     <constraint firstAttribute="height" constant="60" id="zmK-Op-lxu"/>
                                 </constraints>
                             </view>
@@ -218,6 +217,7 @@
                             <constraint firstItem="5iZ-yW-6w8" firstAttribute="top" secondItem="Fh5-9Z-Gh5" secondAttribute="top" constant="44" id="hum-SK-2Mw"/>
                             <constraint firstItem="J2p-j0-vN6" firstAttribute="width" secondItem="Fh5-9Z-Gh5" secondAttribute="width" id="i2x-lS-aJG"/>
                             <constraint firstItem="QH2-up-Ggj" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="kSj-nz-z3h"/>
+                            <constraint firstItem="5iZ-yW-6w8" firstAttribute="trailing" secondItem="T9x-nc-cnb" secondAttribute="trailing" constant="16" id="p9P-RG-whQ"/>
                             <constraint firstItem="QH2-up-Ggj" firstAttribute="width" secondItem="NiN-nR-keV" secondAttribute="width" id="tcC-lW-UDX"/>
                             <constraint firstItem="J2p-j0-vN6" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="xw1-jF-rEm"/>
                         </constraints>

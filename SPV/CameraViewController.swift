@@ -58,24 +58,38 @@ class CameraViewController : UIViewController {
     }
     
     enum CameraMode {
-        case camera
+        case photo
         case video
+        case livePhoto
         
         var imageName: String {
             get {
                 switch self {
-                case .camera: return "cameraInv.png"
+                case .photo: return "cameraInv.png"
                 case .video: return "video.png"
+                case .livePhoto: return "livePhoto.png"
+                }
+            }
+        }
+        
+        var captureMode: CameraController.CaptureMode {
+            get {
+                switch self {
+                case .photo: return .photo
+                case .video: return .video
+                case .livePhoto: return .livePhoto
                 }
             }
         }
         
         mutating func next() {
             switch self {
-            case .camera:
+            case .photo:
                 self = .video
             case .video:
-                self = .camera
+                self = .livePhoto
+            case .livePhoto:
+                self = .photo
             }
         }
     }
@@ -169,7 +183,7 @@ class CameraViewController : UIViewController {
     let cameraController = CameraController()
     let fakeCameraBackground = UIImageView()
     
-    var cameraMode: CameraMode = .camera
+    var cameraMode: CameraMode = .photo
     var flashMode: FlashMode = .flashAuto
     var selfTimer: SelfTimer = .off
     var cameraRotation: CameraRotation = .rear
@@ -332,12 +346,12 @@ class CameraViewController : UIViewController {
     @IBAction func capture(_ sender: Any) {
         if selfTimer.active {
             if timer == nil {
-                captureImage(after: selfTimerInterval)
+                captureMedia(after: selfTimerInterval)
             } else {
                 cancelSelfTimer()
             }
         } else {
-            captureImage()
+            captureMedia()
         }
     }
     
@@ -386,7 +400,7 @@ class CameraViewController : UIViewController {
         })
     }
     
-    func captureImage(after seconds: Int) {
+    func captureMedia(after seconds: Int) {
         timerCountdown = seconds
         updateCountdown(timerCountdown)
         
@@ -400,7 +414,7 @@ class CameraViewController : UIViewController {
         if (timerCountdown == 0) {
             cancelSelfTimer()
 
-            captureImage()
+            captureMedia()
         }
     }
     
@@ -442,9 +456,11 @@ class CameraViewController : UIViewController {
         UIView.animate(withDuration: flipAnimation.duration / 2) {
             switch cameraRotation {
             case .front:
-                try? self.cameraController.switchToFrontCamera()
+                try? self.cameraController.configure(cameraPosition: CameraRotation.front.cameraPosition,
+                                                     captureMode: self.cameraMode.captureMode)
             case .rear:
-                try? self.cameraController.switchToRearCamera()
+                try? self.cameraController.configure(cameraPosition: CameraRotation.rear.cameraPosition,
+                                                     captureMode: self.cameraMode.captureMode)
             }
             
             if self.capturePreviewView.subviews.count > 0 {
@@ -481,30 +497,41 @@ class CameraViewController : UIViewController {
         }
     }
     
-    func captureImage() {
-        print("Capturing image")
+    func captureMedia() {
+        print("Capturing media")
         
-        // TODO: Improve the shutter animation.
-        shutterAnimation(forView: capturePreviewView)
-        
-        // TODO: Video capture...
-        cameraController.captureImage { (image, error) in
-            guard let image = image else {
-                print(error ?? "Image capture error")
-                return
-            }
+        switch cameraMode {
+        case .photo:
+            // TODO: Improve the shutter animation.
+            shutterAnimation(forView: capturePreviewView)
             
-            if let localFileURL = MediaManager.GetNextFileURL(filenamePrefix: "CameraPhoto-",
-                                                              numberOfDigits: 6,
-                                                              filenamePostfix: ".jpg") {
-                try? self.saveImageToLocalFile(image: image,
-                                               url: localFileURL)
+            cameraController.captureImage { (image, error) in
+                guard let image = image else {
+                    print(error ?? "Image capture error")
+                    return
+                }
                 
-                _ = MediaManager.shared.addMedia(url: localFileURL)
-            } else {
-                print("Too many existing photos")
+                if let localFileURL = MediaManager.GetNextFileURL(filenamePrefix: "CameraPhoto-",
+                                                                  numberOfDigits: 6,
+                                                                  filenamePostfix: ".jpg") {
+                    try? self.saveImageToLocalFile(image: image,
+                                                   url: localFileURL)
+                    
+                    _ = MediaManager.shared.addMedia(url: localFileURL)
+                } else {
+                    print("Too many existing photos")
+                }
+                //try? self.saveImageToCameraRoll(image: image)
             }
-            //try? self.saveImageToCameraRoll(image: image)
+        case .video:
+            // TODO: Activate the record indicator...
+            
+            cameraController.captureVideo { (video, error) in
+                print("Video Support Not Yet Added")
+            }
+
+        case .livePhoto:
+            print("Live Photo Support Not Yet Added")
         }
     }
 }
