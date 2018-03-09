@@ -24,8 +24,6 @@ class BrowserViewController: UIViewController, WKUIDelegate, UIGestureRecognizer
     @IBOutlet weak var searchBarVCHeightConstraint: NSLayoutConstraint!
     weak var searchBarVC: CollapsibleSearchBarViewController!
     
-    var scrollOffsetStart: CGFloat? = nil
-    var scrollCurrentInterpolant: CGFloat? = nil
     var canCollapse: Bool = false
 
     var scope: SearchScope = .all // TODO: Preserve as config.
@@ -382,7 +380,10 @@ extension BrowserViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filteredData.count
     }
-    
+}
+
+//-----------------------------------------------------------------
+extension BrowserViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCell") as! SearchCell
@@ -407,10 +408,6 @@ extension BrowserViewController : SearchCellDelegate {
             self.searchBarVC.deactivateSearch()
         }
     }
-}
-
-//-----------------------------------------------------------------
-extension BrowserViewController : UITableViewDataSource {
 }
 
 //-----------------------------------------------------------------
@@ -457,37 +454,15 @@ extension BrowserViewController : SearchScopeCellDelegate {
 
 extension BrowserViewController : UIScrollViewDelegate
 {
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if scrollOffsetStart == nil {
-            scrollOffsetStart = scrollView.contentOffset.y
-            scrollCurrentInterpolant = searchBarVC.interpolant * 40
-
-            if searchBarVC.interpolant == 1 {
-                // View is fully collapsed.
-            } else if searchBarVC.interpolant == 0 {
-                // View is fully expanded.
-                canCollapse = true
-            }
-        }
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView,
-                                  willDecelerate decelerate: Bool) {
-        canCollapse = false
-        scrollOffsetStart = nil
-        scrollCurrentInterpolant = nil
-    }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let interpolant = 1.0 - ((-scrollView.contentOffset.y - 48) / 40)
+        if !searchBarVC.searchBar.editing {
+            let interpolant = 1.0 - ((-scrollView.contentOffset.y - (searchBarVC.expandedHeight - 40)) / 40)
 
-        animate(searchBarVC: searchBarVC,
-                interpolant: interpolant,
-                duration: 0.3,
+            animate(searchBarVC: searchBarVC,
+                    interpolant: interpolant,
+                       duration: searchBarVC.defaultAnimationDuration,
                 completionBlock: nil)
+        }
     }
 }
 

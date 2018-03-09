@@ -69,13 +69,9 @@ class CollapsibleSearchBar : UISearchBar {
 extension CollapsibleSearchBar {
     override var bounds: CGRect {
         didSet {
-            print("Bounds changed to \(bounds)")
-            
             let height = bounds.size.height
             let ratio = (height - collapsedHeight) / (expandedHeight - collapsedHeight)
             let interpolant = max(min(1.0 - ratio, 1.0), 0.0)
-            
-            print("Interpolant is now \(interpolant)")
             
             let values = calculateValues(interpolant: interpolant)
             

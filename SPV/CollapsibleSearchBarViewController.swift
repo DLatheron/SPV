@@ -26,6 +26,7 @@ protocol CollapsibleSearchBarDelegate {
 class CollapsibleSearchBarViewController : UIViewController {
     let collapseDuration: TimeInterval = 0.3
     let expandDuration: TimeInterval = 0.3
+    let defaultAnimationDuration: TimeInterval = 0.3
     
     @IBOutlet var searchBar: CollapsibleSearchBar!
     @IBOutlet var progressBar: UIProgressView!
