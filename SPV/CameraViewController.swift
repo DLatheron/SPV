@@ -602,5 +602,13 @@ extension CameraViewController {
         super.viewWillAppear(animated)
 
         self.cameraController.setPreviewOrientation()
+        
+        self.tabBarController?.tabBar.barTintColor = UIColor.black
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.tabBarController?.tabBar.barTintColor = UIColor.white
     }
 }
