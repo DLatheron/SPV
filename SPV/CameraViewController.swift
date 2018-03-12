@@ -435,6 +435,7 @@ class CameraViewController : UIViewController {
     
     func cameraSwitchAnimation(forView view: UIView,
                                toCameraRotation cameraRotation: CameraRotation) {
+        // TODO: Fix the bug whereby the new camera view is displayed BEFORE the flip happens.
         let flipAnimation = CATransition.init()
         flipAnimation.duration = 0.5
         flipAnimation.timingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -456,11 +457,11 @@ class CameraViewController : UIViewController {
         UIView.animate(withDuration: flipAnimation.duration / 2) {
             switch cameraRotation {
             case .front:
-                try? self.cameraController.configure(cameraPosition: CameraRotation.front.cameraPosition,
-                                                     captureMode: self.cameraMode.captureMode)
+                try? self.cameraController.configure(camera: CameraRotation.front.cameraPosition,
+                                                       mode: self.cameraMode.captureMode)
             case .rear:
-                try? self.cameraController.configure(cameraPosition: CameraRotation.rear.cameraPosition,
-                                                     captureMode: self.cameraMode.captureMode)
+                try? self.cameraController.configure(camera: CameraRotation.rear.cameraPosition,
+                                                       mode: self.cameraMode.captureMode)
             }
             
             if self.capturePreviewView.subviews.count > 0 {
