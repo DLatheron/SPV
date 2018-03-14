@@ -15,6 +15,7 @@ import MediaPlayer
 class CameraViewController : UIViewController {
     @IBOutlet fileprivate weak var captureButton: UIButton!
     @IBOutlet fileprivate weak var recordIndicator: UIView!
+    @IBOutlet fileprivate weak var zoomButton: UIButton!
     @IBOutlet fileprivate weak var selfTimerCountdown: UILabel!
     @IBOutlet fileprivate weak var selfTimerMenu: UIView!
     @IBOutlet fileprivate weak var selfTimer5Seconds: UIButton!
@@ -339,6 +340,17 @@ class CameraViewController : UIViewController {
         updateSelfTimerTimings(to: 20)
     }
     
+    @IBAction func setZoom(_ sender: Any) {
+        if cameraController.zoom == 1 {
+            cameraController.zoom = 2
+        } else {
+            cameraController.zoom = 1
+        }
+        
+        zoomButton.setTitle(String(format: "%.1fx",
+                                   cameraController.zoom),
+                            for: .normal)
+    }
 
     @IBAction func rotateCamera(_ sender: Any) {
         cameraRotation.next()
@@ -644,6 +656,12 @@ extension CameraViewController {
             captureButton.layer.cornerRadius = min(captureButton.frame.width, captureButton.frame.height) / 2
         }
         
+        func styleZoomButton() {
+            zoomButton.layer.borderColor = zoomButton.tintColor.cgColor
+            zoomButton.layer.borderWidth = 2
+            zoomButton.layer.cornerRadius = min(zoomButton.frame.width, captureButton.frame.height) / 2
+        }
+        
         super.viewDidLoad()
         
         positionBottomToolbar()
@@ -653,6 +671,7 @@ extension CameraViewController {
         updateSelfTimerButton(toMode: selfTimer)
 
         styleCaptureButton()
+        styleZoomButton()
         styleRecordIndicator(on: false)
         configureCameraController()
     }

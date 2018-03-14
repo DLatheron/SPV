@@ -35,6 +35,30 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wQ9-JH-YAi">
+                                <rect key="frame" x="163" y="507" width="48" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Knw-gW-16M">
+                                        <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                        <size key="titleShadowOffset" width="1" height="1"/>
+                                        <state key="normal" title="1.0x">
+                                            <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="setZoom:" destination="NnC-oV-Yk0" eventType="touchUpInside" id="EIa-VI-yCN"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="0dC-Tf-v7O"/>
+                                    <constraint firstItem="Knw-gW-16M" firstAttribute="width" secondItem="wQ9-JH-YAi" secondAttribute="width" id="1lb-bh-wa2"/>
+                                    <constraint firstAttribute="width" constant="48" id="CDD-1l-V3R"/>
+                                    <constraint firstItem="Knw-gW-16M" firstAttribute="centerX" secondItem="wQ9-JH-YAi" secondAttribute="centerX" id="tIB-el-hx9"/>
+                                    <constraint firstItem="Knw-gW-16M" firstAttribute="height" secondItem="wQ9-JH-YAi" secondAttribute="height" id="tmO-sI-0xA"/>
+                                    <constraint firstItem="Knw-gW-16M" firstAttribute="centerY" secondItem="wQ9-JH-YAi" secondAttribute="centerY" id="uyo-dg-3Gg"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2jY-jY-vZF">
                                 <rect key="frame" x="0.0" y="563" width="375" height="60"/>
                                 <subviews>
@@ -234,6 +258,7 @@
                             <constraint firstItem="2jY-jY-vZF" firstAttribute="width" secondItem="NiN-nR-keV" secondAttribute="width" id="0Ca-to-i7B"/>
                             <constraint firstItem="Fh5-9Z-Gh5" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="6G6-vN-35u"/>
                             <constraint firstItem="2jY-jY-vZF" firstAttribute="bottom" secondItem="5iZ-yW-6w8" secondAttribute="bottom" id="7OO-cs-e0A"/>
+                            <constraint firstItem="2jY-jY-vZF" firstAttribute="top" secondItem="wQ9-JH-YAi" secondAttribute="bottom" constant="8" id="7WF-uu-3cg"/>
                             <constraint firstItem="xE9-06-5ak" firstAttribute="top" secondItem="5iZ-yW-6w8" secondAttribute="top" constant="44" id="8Js-Uv-8Py"/>
                             <constraint firstItem="QH2-up-Ggj" firstAttribute="centerY" secondItem="NiN-nR-keV" secondAttribute="centerY" id="JWK-eg-nIw"/>
                             <constraint firstItem="J2p-j0-vN6" firstAttribute="top" secondItem="Fh5-9Z-Gh5" secondAttribute="bottom" id="NKc-wV-PDh"/>
@@ -243,6 +268,7 @@
                             <constraint firstItem="Fh5-9Z-Gh5" firstAttribute="width" secondItem="NiN-nR-keV" secondAttribute="width" id="YAF-rA-aXs"/>
                             <constraint firstItem="2jY-jY-vZF" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="Zkz-io-ruZ"/>
                             <constraint firstItem="QH2-up-Ggj" firstAttribute="height" secondItem="NiN-nR-keV" secondAttribute="height" id="aAe-dA-36B"/>
+                            <constraint firstItem="wQ9-JH-YAi" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="h3T-8y-AND"/>
                             <constraint firstItem="5iZ-yW-6w8" firstAttribute="top" secondItem="Fh5-9Z-Gh5" secondAttribute="top" constant="44" id="hum-SK-2Mw"/>
                             <constraint firstItem="J2p-j0-vN6" firstAttribute="width" secondItem="Fh5-9Z-Gh5" secondAttribute="width" id="i2x-lS-aJG"/>
                             <constraint firstItem="QH2-up-Ggj" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="kSj-nz-z3h"/>
@@ -272,6 +298,7 @@
                         <outlet property="selfTimerMenu" destination="J2p-j0-vN6" id="WwJ-JF-64p"/>
                         <outlet property="selfTimerToolbarHeightConstraint" destination="F1G-se-Tvt" id="sgL-ys-oly"/>
                         <outlet property="topToolbarHeightConstraint" destination="80M-PW-1W9" id="ZLO-an-eOR"/>
+                        <outlet property="zoomButton" destination="Knw-gW-16M" id="RvM-Xg-Gxh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ioi-z0-EdY" userLabel="First Responder" sceneMemberID="firstResponder"/>

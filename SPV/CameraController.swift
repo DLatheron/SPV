@@ -41,6 +41,27 @@ class CameraController: NSObject {
     var currentCaptureOutput: AVCaptureOutput?
     
     var capturingVideo: Bool = false
+    
+    var zoom: CGFloat {
+        get {
+            if let captureDevice = captureDevice {
+                return captureDevice.videoZoomFactor
+            } else {
+                return 1.0
+            }
+        }
+        set {
+            if let captureDevice = captureDevice {
+                do {
+                    try captureDevice.lockForConfiguration()
+                    captureDevice.videoZoomFactor = newValue
+                    captureDevice.unlockForConfiguration()
+                } catch {
+                    print("Failed to set zoom")
+                }
+            }
+        }
+    }
 }
 
 extension CameraController {
