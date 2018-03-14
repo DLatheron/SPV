@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         let documentsURL = URL(string: documentsDirectory)!
-
+        
         do {
             try Settings.shared.load(fromFileURL: Settings.defaultURL)
         } catch {
@@ -284,4 +284,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         debugPrint("handleEventsForBackgroundURLSession: \(identifier)")
         completionHandler()
     }
+    
+//    func application(_ application: UIApplication,
+//                     supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+//        if let rootViewController = self.topViewControllerWithRootViewController(rootViewController: window?.rootViewController) {
+//            if (rootViewController.responds(to: Selector(("canRotate")))) {
+//                // Unlock landscape view orientations for this view controller
+//                return .allButUpsideDown;
+//            }
+//        }
+//        
+//        // Only allow portrait (standard behaviour)
+//        return .portrait;
+//    }
+//    
+//    private func topViewControllerWithRootViewController(rootViewController: UIViewController!) -> UIViewController? {
+//        if (rootViewController == nil) { return nil }
+//        if (rootViewController.isKind(of: UITabBarController.self)) {
+//            return topViewControllerWithRootViewController(rootViewController: (rootViewController as! UITabBarController).selectedViewController)
+//        } else if (rootViewController.isKind(of: UINavigationController.self)) {
+//            return topViewControllerWithRootViewController(rootViewController: (rootViewController as! UINavigationController).visibleViewController)
+//        } else if (rootViewController.presentedViewController != nil) {
+//            return topViewControllerWithRootViewController(rootViewController: rootViewController.presentedViewController)
+//        }
+//        return rootViewController
+//    }
 }

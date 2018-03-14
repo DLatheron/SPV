@@ -15,7 +15,7 @@ protocol MediaEnumerator: class {
     func prevMedia(media: Media) -> Media
 }
 
-class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
+class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate, Rotatable {
     let showRatingsAnimationDuration = 0.2
     let hideRatingsAnimationDuration = 0.2
     
@@ -67,6 +67,8 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        UIViewController.attemptRotationToDeviceOrientation()
+        
         setupGestureRecognizers()
     }
     
@@ -74,6 +76,10 @@ class PhotoDetailsViewController : UIViewController, PhotoScrollViewDelegate {
         super.viewDidDisappear(animated)
         
         removeGestureRecognizers()
+
+        if (self.isMovingFromParentViewController) {
+            resetToPortrait()
+        }
     }
     
     override func viewWillTransition(to size: CGSize,

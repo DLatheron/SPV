@@ -14,6 +14,7 @@ import MediaPlayer
 
 class CameraViewController : UIViewController {
     @IBOutlet fileprivate weak var captureButton: UIButton!
+    @IBOutlet fileprivate weak var recordIndicator: UIView!
     @IBOutlet fileprivate weak var selfTimerCountdown: UILabel!
     @IBOutlet fileprivate weak var selfTimerMenu: UIView!
     @IBOutlet fileprivate weak var selfTimer5Seconds: UIButton!
@@ -189,6 +190,7 @@ class CameraViewController : UIViewController {
     var cameraRotation: CameraRotation = .rear
     var selfTimerMenuVisible: Bool = false
     var selfTimerInterval: Int = 5
+    var capturing: Bool = false
     
     var timerCountdown: Int = 0
     var timer: Timer? = nil
@@ -202,6 +204,8 @@ class CameraViewController : UIViewController {
     @IBAction func toggleCameraMode(_ sender: Any) {
         cameraMode.next()
         updateModeButton(toMode: cameraMode)
+        try? self.cameraController.configure(camera: cameraRotation.cameraPosition,
+                                             mode: cameraMode.captureMode)
     }
     
     func updateFlashButton(toMode flashMode: FlashMode) {
@@ -344,7 +348,9 @@ class CameraViewController : UIViewController {
     }
     
     @IBAction func capture(_ sender: Any) {
-        if selfTimer.active {
+        if capturing {
+            captureMedia()
+        } else if selfTimer.active {
             if timer == nil {
                 captureMedia(after: selfTimerInterval)
             } else {
@@ -501,16 +507,18 @@ class CameraViewController : UIViewController {
     func captureMedia() {
         print("Capturing media")
         
+        capturing = true
         switch cameraMode {
         case .photo:
             // TODO: Improve the shutter animation.
             shutterAnimation(forView: capturePreviewView)
             
             cameraController.captureImage { (image, error) in
-                guard let image = image else {
-                    print(error ?? "Image capture error")
-                    return
-                }
+                guard let image = image
+                    else {
+                        print(error ?? "Image capture error")
+                        return
+                    }
                 
                 if let localFileURL = MediaManager.GetNextFileURL(filenamePrefix: "CameraPhoto-",
                                                                   numberOfDigits: 6,
@@ -523,12 +531,25 @@ class CameraViewController : UIViewController {
                     print("Too many existing photos")
                 }
                 //try? self.saveImageToCameraRoll(image: image)
+                
+                self.capturing = false
             }
+
         case .video:
             // TODO: Activate the record indicator...
+            styleRecordIndicator(on: capturing)
             
-            cameraController.captureVideo { (video, error) in
-                print("Video Support Not Yet Added")
+            cameraController.captureVideo { (videoURL, error) in
+                self.capturing = false
+                self.styleRecordIndicator(on: self.capturing)
+
+                guard let videoURL = videoURL
+                    else {
+                        print(error ?? "Video capture error")
+                        return
+                    }
+
+                _ = MediaManager.shared.addMedia(url: videoURL)
             }
 
         case .livePhoto:
@@ -552,26 +573,26 @@ extension CameraViewController {
         self.view.setNeedsDisplay()
     }
     
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        guard
-            tabBarController?.selectedViewController === self
-        else {
-                return
-        }
-
-        super.viewWillTransition(to: size,
-                                 with: coordinator)
-        
-        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.positionBottomToolbar()
-            self.cameraController.setPreviewOrientation()
-            self.view.layer.shouldRasterize = true
-        }) { (context: UIViewControllerTransitionCoordinatorContext) in
-            self.view.layer.shouldRasterize = false
-            self.positionBottomToolbar()
-        }
-    }
+//    override func viewWillTransition(to size: CGSize,
+//                                     with coordinator: UIViewControllerTransitionCoordinator) {
+//        guard
+//            tabBarController?.selectedViewController === self
+//        else {
+//                return
+//        }
+//
+//        super.viewWillTransition(to: size,
+//                                 with: coordinator)
+//        
+//        coordinator.animate(alongsideTransition: { (context: UIViewControllerTransitionCoordinatorContext) in
+//            self.positionBottomToolbar()
+//            self.cameraController.setPreviewOrientation()
+//            self.view.layer.shouldRasterize = true
+//        }) { (context: UIViewControllerTransitionCoordinatorContext) in
+//            self.view.layer.shouldRasterize = false
+//            self.positionBottomToolbar()
+//        }
+//    }
 }
 
 extension CameraViewController {
@@ -623,11 +644,27 @@ extension CameraViewController {
         updateSelfTimerButton(toMode: selfTimer)
 
         styleCaptureButton()
+        styleRecordIndicator(on: false)
         configureCameraController()
+    }
+    
+    func styleRecordIndicator(on: Bool) {
+        if on {
+            recordIndicator.layer.borderColor = UIColor.black.cgColor
+            recordIndicator.layer.borderWidth = 1
+            recordIndicator.layer.cornerRadius = min(recordIndicator.frame.width, recordIndicator.frame.height) / 2
+            recordIndicator.backgroundColor = UIColor.red
+            
+            recordIndicator.isHidden = false
+        } else {
+            recordIndicator.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        UIViewController.attemptRotationToDeviceOrientation()
 
         self.cameraController.setPreviewOrientation()
         
