@@ -267,21 +267,23 @@ extension CameraController: AVCaptureFileOutputRecordingDelegate {
         }
         
         let movieDataOutput = currentCaptureOutput as! AVCaptureMovieFileOutput
-        if !movieDataOutput.isRecording {
-            print("Capture Video")
-            
-            let localFileURL = MediaManager.GetNextFileURL(filenamePrefix: "CameraMovie-",
-                                                           numberOfDigits: 6,
-                                                           filenamePostfix: ".mov")
-            
-            movieDataOutput.startRecording(to: localFileURL!,
-                                           recordingDelegate: self)
-        } else {
-            movieDataOutput.stopRecording()
-        }
+        print("Capture Video")
+        
+        let localFileURL = MediaManager.GetNextFileURL(filenamePrefix: "CameraMovie-",
+                                                       numberOfDigits: 6,
+                                                       filenamePostfix: ".mov")
+        
+        movieDataOutput.startRecording(to: localFileURL!,
+                                       recordingDelegate: self)
         
         self.videoCaptureCompletionBlock = completion
         self.photoCaptureCompletionBlock = nil
+    }
+
+    func stopCapturingVideo() {
+        let movieDataOutput = currentCaptureOutput as! AVCaptureMovieFileOutput
+        
+        movieDataOutput.stopRecording()
     }
     
     func fileOutput(_ output: AVCaptureFileOutput,

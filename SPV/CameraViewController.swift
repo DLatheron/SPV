@@ -349,7 +349,7 @@ class CameraViewController : UIViewController {
     
     @IBAction func capture(_ sender: Any) {
         if capturing {
-            captureMedia()
+            stopCapturing()
         } else if selfTimer.active {
             if timer == nil {
                 captureMedia(after: selfTimerInterval)
@@ -411,6 +411,15 @@ class CameraViewController : UIViewController {
         updateCountdown(timerCountdown)
         
         showTimerCountdown()
+    }
+    
+    func stopCapturing() {
+        switch cameraMode {
+        case .video:
+            cameraController.stopCapturingVideo()
+        default:
+            print("")
+        }
     }
     
     @objc func updateSelfTimerCountdown() {
