@@ -121,6 +121,38 @@ class MediaManager {
                                filenamePostfix: filenamePostfix)
     }
     
+    class func GetNextDirectory(basePath: URL,
+                                directoryPrefix: String,
+                                numberOfDigits: Int = 6,
+                                directoryPostfix: String) -> URL? {
+        // TODO: Precache the filename list rather than checking against the filesystem?
+        let formatter = NumberFormatter()
+        formatter.minimumIntegerDigits = numberOfDigits
+        
+        let maximumNumber = numberOfDigits * 10
+        
+        for number in 0..<maximumNumber {
+            let formattedNumber = formatter.string(from: NSNumber(value: number))!
+            let directory = "\(directoryPrefix)\(formattedNumber)\(directoryPostfix)"
+            let directoryURL = basePath.appendingPathComponent(directory)
+            
+            if !FileManager.default.fileExists(atPath: directoryURL.path) {
+                return directoryURL
+            }
+        }
+        
+        return nil
+    }
+    
+    class func GetNextDirectoryURL(directoryPrefix: String,
+                                   numberOfDigits: Int = 6,
+                                   directoryPostfix: String) -> URL? {
+        return GetNextDirectory(basePath: DocumentsDirectoryURL,
+                                directoryPrefix: directoryPrefix,
+                                numberOfDigits: numberOfDigits,
+                                directoryPostfix: directoryPostfix)
+    }
+    
     func getMedia(byId id: UUID) -> Media {
         return idToMedia[id]!
     }

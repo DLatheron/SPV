@@ -29,12 +29,14 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>For importing photos and videos</string>
-	<key>NSCameraUsageDescription</key>
-	<string>For taking photos</string>
+    <key>NSCameraUsageDescription</key>
+    <string>to take photos and video</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>to record Live Photos and movies</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>to export photos and video to your Photo Library</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>For unlocking the application</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>For exporting photos and videos</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

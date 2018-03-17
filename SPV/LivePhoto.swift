@@ -12,6 +12,7 @@ import Photos
 import MobileCoreServices
 
 class LivePhoto : Media {
+    var directoryURL: URL
     var imageURL: URL
     var videoURL: URL
     var heicURL: URL
@@ -26,6 +27,8 @@ class LivePhoto : Media {
     }
     
     init(directoryURL: URL) {
+        self.directoryURL = directoryURL
+        
         let dirURLWithoutExtension = directoryURL.deletingPathExtension()
         let filename = dirURLWithoutExtension.lastPathComponent
         
