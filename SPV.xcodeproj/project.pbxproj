@@ -57,6 +57,8 @@
 		F97943AE1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */; };
 		F97943B01F6FA96600739030 /* MediaTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97943AF1F6FA96600739030 /* MediaTagCell.swift */; };
 		F97943B21F702F6F00739030 /* MediaAddTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97943B11F702F6F00739030 /* MediaAddTagCell.swift */; };
+		F98751D4205DB220008637A7 /* FlashMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98751D3205DB220008637A7 /* FlashMode.swift */; };
+		F98751D6205DB546008637A7 /* CaptureMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98751D5205DB546008637A7 /* CaptureMode.swift */; };
 		F9B1026D2057B7130076B924 /* Rotatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B1026C2057B7130076B924 /* Rotatable.swift */; };
 		F9B1026F205C33F70076B924 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B1026E205C33F70076B924 /* PreviewView.swift */; };
 		F9B10271205C341F0076B924 /* PhotoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B10270205C341F0076B924 /* PhotoCaptureDelegate.swift */; };
@@ -195,6 +197,8 @@
 		F97943AD1F6BA64C00739030 /* MediaInfoSubHeadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaInfoSubHeadingCell.swift; sourceTree = "<group>"; };
 		F97943AF1F6FA96600739030 /* MediaTagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaTagCell.swift; sourceTree = "<group>"; };
 		F97943B11F702F6F00739030 /* MediaAddTagCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAddTagCell.swift; sourceTree = "<group>"; };
+		F98751D3205DB220008637A7 /* FlashMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashMode.swift; sourceTree = "<group>"; };
+		F98751D5205DB546008637A7 /* CaptureMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureMode.swift; sourceTree = "<group>"; };
 		F9B1026C2057B7130076B924 /* Rotatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotatable.swift; sourceTree = "<group>"; };
 		F9B1026E205C33F70076B924 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		F9B10270205C341F0076B924 /* PhotoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureDelegate.swift; sourceTree = "<group>"; };
@@ -386,6 +390,8 @@
 			isa = PBXGroup;
 			children = (
 				F9E7A2B91FA0EACC00D1BCAC /* CameraController.swift */,
+				F98751D3205DB220008637A7 /* FlashMode.swift */,
+				F98751D5205DB546008637A7 /* CaptureMode.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -971,6 +977,7 @@
 				F92E1B09203ABD9400A5436C /* MediaScrollView.swift in Sources */,
 				F9E25C291FE19509009D9DF7 /* PINEntryMode.swift in Sources */,
 				F9200AB02043F70800B12F0D /* CollapsibleSearchBarViewController.swift in Sources */,
+				F98751D6205DB546008637A7 /* CaptureMode.swift in Sources */,
 				F973F8071F601AD600A5813B /* JSONHelper.swift in Sources */,
 				F90FFFE81FBF560F00D2C304 /* TextBlockCell.swift in Sources */,
 				63D026E51F4F4E6B00006275 /* Download.swift in Sources */,
@@ -1015,6 +1022,7 @@
 				F942D1341F9DC3680065C31B /* CameraViewController.swift in Sources */,
 				F9B10271205C341F0076B924 /* PhotoCaptureDelegate.swift in Sources */,
 				F9F2D3D41F42CE0200FD6F78 /* DownloadsViewController.swift in Sources */,
+				F98751D4205DB220008637A7 /* FlashMode.swift in Sources */,
 				F9E5DA4E200BCAFF00BF5BD0 /* GIF.swift in Sources */,
 				F9BABAAA1F28F92F00000D9B /* AppDelegate.swift in Sources */,
 				F919C7AF1F699357008372F6 /* MediaInfoHeaderCell.swift in Sources */,
