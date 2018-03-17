@@ -11,16 +11,86 @@ import Photos
 
 class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
     
+    enum FlashMode {
+        case flashAuto
+        case flashOn
+        case flashOff
+        
+        var deviceFlashMode: AVCaptureDevice.FlashMode {
+            get {
+                switch self {
+                case .flashAuto: return AVCaptureDevice.FlashMode.auto
+                case .flashOn: return AVCaptureDevice.FlashMode.on
+                case .flashOff: return AVCaptureDevice.FlashMode.off
+                }
+            }
+        }
+        
+        mutating func next() -> FlashMode {
+            switch self {
+            case .flashAuto:
+                self = .flashOn
+            case .flashOn:
+                self = .flashOff
+            case .flashOff:
+                self = .flashAuto
+            }
+            
+            return self
+        }
+    }
+    
+    var uiFlashMode: FlashMode = .flashAuto
+    var deviceFlashMode: AVCaptureDevice.FlashMode = FlashMode.flashAuto.deviceFlashMode
+
+    
     @IBOutlet private weak var cameraUnavailableLabel: UILabel!
     @IBOutlet var capturingLivePhotoLabel: UILabel!
 
     @IBOutlet private weak var photoButton: UIButton!
+    @IBOutlet private weak var flashModeButton: UIButton!
     @IBOutlet private weak var videoRecordingIndicator: UIView!
     @IBOutlet private weak var resumeButton: UIButton!
     @IBOutlet private weak var livePhotoModeButton: UIButton!
     
+    @IBOutlet private weak var previewView: PreviewView!
     
+
     // MARK: View Controller Life Cycle
+    
+//    func updateFlashButton(toMode flashMode: FlashMode) {
+//        if self.videoDeviceInput.device.isFlashAvailable {
+//            flashModeButton.setImage(UIImage(named: flashMode.imageName),
+//                                 for: .normal)
+//        } else {
+//            flashModeButton.setImage(UIImage(named: FlashMode.flashOff.imageName),
+//                                 for: .normal)
+//        }
+//    }
+    
+    @IBAction private func toggleFlashMode(_ flashModeButton: UIButton) {
+        sessionQueue.async {
+            let flashMode = self.uiFlashMode.next()
+            
+            DispatchQueue.main.async {
+                // TODO: Animation.
+                let image: UIImage
+                
+                switch flashMode {
+                case .flashOff:
+                    image = UIImage(named: "flashOff.png")!
+                case .flashOn:
+                    image = UIImage(named: "flashOn.png")!
+                case .flashAuto:
+                    image = UIImage(named: "flashAuto.png")!
+                }
+                self.deviceFlashMode = flashMode.deviceFlashMode
+                
+                flashModeButton.setImage(image,
+                                         for: .normal)
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +100,11 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
         //recordButton.isEnabled = false
         photoButton.isEnabled = false
         livePhotoModeButton.isEnabled = false
+        flashModeButton.isHidden = true
         //depthDataDeliveryButton.isEnabled = false
         //captureModeControl.isEnabled = false
+        
+        //updateFlashButton(toMode: uiFlashMode)
         
         // Set up the video preview view.
         previewView.session = session
@@ -189,8 +262,6 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
     private var setupResult: SessionSetupResult = .success
     
     var videoDeviceInput: AVCaptureDeviceInput!
-    
-    @IBOutlet private weak var previewView: PreviewView!
     
     // Call this on the session queue.
     private func configureSession() {
@@ -493,6 +564,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                 //self.recordButton.isEnabled = self.movieFileOutput != nil
                 self.photoButton.isEnabled = true
                 self.livePhotoModeButton.isEnabled = true
+                self.flashModeButton.isEnabled = true
                 //self.captureModeControl.isEnabled = true
                 //self.depthDataDeliveryButton.isEnabled = self.photoOutput.isDepthDataDeliveryEnabled
                 //self.depthDataDeliveryButton.isHidden = !self.photoOutput.isDepthDataDeliverySupported
@@ -562,7 +634,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
             }
             
             if self.videoDeviceInput.device.isFlashAvailable {
-                photoSettings.flashMode = .auto
+                photoSettings.flashMode = self.deviceFlashMode
             }
             
             photoSettings.isHighResolutionPhotoEnabled = true
@@ -838,6 +910,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
             let isLivePhotoCaptureEnabled = self.photoOutput.isLivePhotoCaptureEnabled
             let isDepthDeliveryDataSupported = self.photoOutput.isDepthDataDeliverySupported
             let isDepthDeliveryDataEnabled = self.photoOutput.isDepthDataDeliveryEnabled
+            let isFlashAvailable = self.videoDeviceInput.device.isFlashAvailable
             
             DispatchQueue.main.async {
                 // Only enable the ability to change camera if the device has more than one camera.
@@ -847,6 +920,7 @@ class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelega
                 //self.captureModeControl.isEnabled = isSessionRunning
                 self.livePhotoModeButton.isEnabled = isSessionRunning && isLivePhotoCaptureEnabled
                 self.livePhotoModeButton.isHidden = !(isSessionRunning && isLivePhotoCaptureSupported)
+                self.flashModeButton.isHidden = !(isSessionRunning && isFlashAvailable)
                 //self.depthDataDeliveryButton.isEnabled = isSessionRunning && isDepthDeliveryDataEnabled
                 //self.depthDataDeliveryButton.isHidden = !(isSessionRunning && isDepthDeliveryDataSupported)
             }

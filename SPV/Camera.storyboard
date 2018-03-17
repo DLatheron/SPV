@@ -160,6 +160,16 @@
                                     <constraint firstItem="T9x-nc-cnb" firstAttribute="height" secondItem="grb-9e-TGU" secondAttribute="height" id="x0x-jv-rJ5"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIF-gl-eoX" userLabel="Flash Button">
+                                <rect key="frame" x="8" y="28" width="25" height="25"/>
+                                <color key="tintColor" red="1" green="0.99564432780000001" blue="0.26293172469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="flashAuto">
+                                    <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleFlashMode:" destination="NnC-oV-Yk0" eventType="touchUpInside" id="qc1-L9-IHu"/>
+                                </connections>
+                            </button>
                             <view hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fh5-9Z-Gh5" userLabel="Top Toolbar">
                                 <rect key="frame" x="0.0" y="-24" width="375" height="88"/>
                                 <subviews>
@@ -169,12 +179,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIF-gl-eoX" userLabel="Flash Button">
-                                                    <rect key="frame" x="20" y="55" width="25" height="25"/>
-                                                    <state key="normal" image="flashAuto">
-                                                        <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </state>
-                                                </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="apv-cc-lsL" userLabel="Self Timer Button">
                                                     <rect key="frame" x="175" y="55" width="25" height="25"/>
                                                     <state key="normal" image="timer"/>
@@ -196,8 +200,6 @@
                                                 <constraint firstAttribute="bottom" secondItem="apv-cc-lsL" secondAttribute="bottom" constant="8" id="ItO-DO-BVQ"/>
                                                 <constraint firstItem="apv-cc-lsL" firstAttribute="centerX" secondItem="JE5-jV-Mz0" secondAttribute="centerX" id="X2n-2y-Xha"/>
                                                 <constraint firstAttribute="trailing" secondItem="y7J-XI-jqc" secondAttribute="trailing" constant="20" id="ZrZ-d7-G4J"/>
-                                                <constraint firstItem="VIF-gl-eoX" firstAttribute="leading" secondItem="JE5-jV-Mz0" secondAttribute="leading" constant="20" id="bng-jT-ZtM"/>
-                                                <constraint firstAttribute="bottom" secondItem="VIF-gl-eoX" secondAttribute="bottom" constant="8" id="g7N-7O-SZg"/>
                                             </constraints>
                                         </view>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -285,7 +287,9 @@
                             <constraint firstItem="J2p-j0-vN6" firstAttribute="width" secondItem="Fh5-9Z-Gh5" secondAttribute="width" id="i2x-lS-aJG"/>
                             <constraint firstItem="QH2-up-Ggj" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="kSj-nz-z3h"/>
                             <constraint firstItem="LVf-pV-xaF" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="pAQ-cf-wtE"/>
+                            <constraint firstItem="VIF-gl-eoX" firstAttribute="top" secondItem="5iZ-yW-6w8" secondAttribute="top" constant="8" id="qia-ex-oMM"/>
                             <constraint firstItem="QH2-up-Ggj" firstAttribute="width" secondItem="NiN-nR-keV" secondAttribute="width" id="tcC-lW-UDX"/>
+                            <constraint firstItem="VIF-gl-eoX" firstAttribute="leading" secondItem="5iZ-yW-6w8" secondAttribute="leading" constant="8" id="w99-hs-eeb"/>
                             <constraint firstItem="J2p-j0-vN6" firstAttribute="centerX" secondItem="5iZ-yW-6w8" secondAttribute="centerX" id="xw1-jF-rEm"/>
                             <constraint firstItem="5iZ-yW-6w8" firstAttribute="trailing" secondItem="ODw-Og-mGo" secondAttribute="trailing" constant="8" id="zak-rO-BQ2"/>
                             <constraint firstItem="2lf-zS-yLb" firstAttribute="centerY" secondItem="5iZ-yW-6w8" secondAttribute="centerY" id="zg8-SJ-3ZI"/>
@@ -297,6 +301,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="cameraUnavailableLabel" destination="LVf-pV-xaF" id="okq-Pi-JJG"/>
+                        <outlet property="flashModeButton" destination="VIF-gl-eoX" id="fSA-nP-usr"/>
                         <outlet property="livePhotoModeButton" destination="ODw-Og-mGo" id="5IX-2i-LX9"/>
                         <outlet property="photoButton" destination="T9x-nc-cnb" id="jTk-vW-DAw"/>
                         <outlet property="previewView" destination="QH2-up-Ggj" id="4E4-3B-no1"/>
