@@ -61,6 +61,8 @@
 		F98751D6205DB546008637A7 /* CaptureMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98751D5205DB546008637A7 /* CaptureMode.swift */; };
 		F98751D8205EB329008637A7 /* AVCaptureVideoOrientationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98751D7205EB329008637A7 /* AVCaptureVideoOrientationExtensions.swift */; };
 		F98751DA205EB3D9008637A7 /* AVCaptureDevice.DiscoverySessionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98751D9205EB3D9008637A7 /* AVCaptureDevice.DiscoverySessionExtensions.swift */; };
+		F98751DC205EB834008637A7 /* HTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98751DB205EB834008637A7 /* HTTPServer.swift */; };
+		F98751DD205EBE29008637A7 /* Swifter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F98751DE205EBE29008637A7 /* Swifter.framework */; };
 		F9B1026D2057B7130076B924 /* Rotatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B1026C2057B7130076B924 /* Rotatable.swift */; };
 		F9B1026F205C33F70076B924 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B1026E205C33F70076B924 /* PreviewView.swift */; };
 		F9B10271205C341F0076B924 /* PhotoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B10270205C341F0076B924 /* PhotoCaptureDelegate.swift */; };
@@ -202,6 +204,8 @@
 		F98751D5205DB546008637A7 /* CaptureMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureMode.swift; sourceTree = "<group>"; };
 		F98751D7205EB329008637A7 /* AVCaptureVideoOrientationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureVideoOrientationExtensions.swift; sourceTree = "<group>"; };
 		F98751D9205EB3D9008637A7 /* AVCaptureDevice.DiscoverySessionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureDevice.DiscoverySessionExtensions.swift; sourceTree = "<group>"; };
+		F98751DB205EB834008637A7 /* HTTPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPServer.swift; sourceTree = "<group>"; };
+		F98751DE205EBE29008637A7 /* Swifter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Swifter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9B1026C2057B7130076B924 /* Rotatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotatable.swift; sourceTree = "<group>"; };
 		F9B1026E205C33F70076B924 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		F9B10270205C341F0076B924 /* PhotoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureDelegate.swift; sourceTree = "<group>"; };
@@ -276,6 +280,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F98751DD205EBE29008637A7 /* Swifter.framework in Frameworks */,
 				F9EE7C361FEB9E5A003C1B04 /* Bluuur.framework in Frameworks */,
 				F9D301851F5F591500ADEEF8 /* SwiftyJSON.framework in Frameworks */,
 				71F28ACDE4A6A2675A6785C3 /* Pods_SPV.framework in Frameworks */,
@@ -343,6 +348,7 @@
 		BE4F0069430F43FF449A6BE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F98751DE205EBE29008637A7 /* Swifter.framework */,
 				F9EE7C371FEB9E5A003C1B04 /* Bluuur.framework */,
 				F93EE1541FCE9E5D00363333 /* BCryptSwift.framework */,
 				F9D301871F5F592900ADEEF8 /* Foundation.framework */,
@@ -491,6 +497,7 @@
 				F96D37B31FBCAC0C00DD2F76 /* SettingT.swift */,
 				F96D37B71FBECAE200DD2F76 /* SettingsSubMenu.swift */,
 				F9E8DE921FC6B31B00FDAAB9 /* PIN.swift */,
+				F98751DB205EB834008637A7 /* HTTPServer.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -975,6 +982,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F98751DC205EB834008637A7 /* HTTPServer.swift in Sources */,
 				63396F0E1F40FB30000E5F3E /* DownloadManager.swift in Sources */,
 				639170081F376001001E5ABE /* PhotoDetailsViewController.swift in Sources */,
 				F92E1B09203ABD9400A5436C /* MediaScrollView.swift in Sources */,

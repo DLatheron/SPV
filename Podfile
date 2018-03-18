@@ -11,6 +11,7 @@ target 'SPV' do
   pod 'SwiftyJSON'
   pod 'Cosmos', '~> 11.0'
   pod 'Bluuur'
+  pod 'Swifter', '~> 1.3.2'
   
   target 'SPVTests' do
     inherit! :search_paths

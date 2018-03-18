@@ -87,9 +87,29 @@ extension SettingsViewController : SettingChangedDelegate {
             setNewPIN()
         case "ClearPIN":
             clearPIN()
+        case "HTTPServer":
+            httpServer(setting: setting)
             
         default:
             fatalError("Unknown button value: \(setting.value)")
+        }
+    }
+    
+    func httpServer(setting: SettingT<String>) {
+        HTTPServer.shared.toggle() { address, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    setting.name = "HTTP Server Errored"
+                    print("HTTP Server errored: \(error)")
+                } else if let address = address {
+                    setting.name = "HTTP Server Online: \(address)"
+                    print("HTTP Server online at \(address)")
+                } else {
+                    setting.name = "Start HTTP Server"
+                    print("HTTP Server offline")
+                }
+                self.settingsTableView.reloadData()
+            }
         }
     }
     

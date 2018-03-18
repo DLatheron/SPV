@@ -24,6 +24,7 @@ class Settings {
     static var shared: Settings = Settings()
     
     
+    let httpServer = SettingT<String>(name: "Start HTTP Server", value: "HTTPServer", editor: "ButtonCell")
     let testOne = SettingT<Bool>(name: "Test One", value: true)
     let testTwo = SettingT<Bool>(name: "Test Two", value: false)
     let testName = SettingT<String>(name: "Test Name", value: "Nothing")
@@ -58,6 +59,7 @@ But still appears correctly - even if there are really long lines of text
         testLegalSubMenu = SettingsSubMenu(legalSettingsBlock)
 
         settingsBlock = SettingsBlock([
+            httpServer,
             testOne,
             testName,
             testConstData0,
