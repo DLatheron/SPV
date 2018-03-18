@@ -120,7 +120,7 @@ extension CameraViewController {
         
         zoomButton.layer.cornerRadius = zoomButton.bounds.width / 2
         zoomButton.layer.borderWidth = 2
-        zoomButton.layer.borderColor = UIColor.yellow.cgColor
+        zoomButton.layer.borderColor = self.view.tintColor.cgColor
         
         // Disable UI. The UI is enabled if and only if the session starts running.
         cameraButton.isEnabled = false
@@ -400,11 +400,9 @@ extension CameraViewController {
             
             DispatchQueue.main.async {
                 if livePhotoMode == .on {
-                    livePhotoModeButton.tintColor = UIColor.yellow
-                    //self.livePhotoModeButton.setTitle(NSLocalizedString("Live Photo Mode: On", comment: "Live photo mode button on title"), for: [])
+                    livePhotoModeButton.tintColor = self.view.tintColor
                 } else {
                     livePhotoModeButton.tintColor = UIColor.darkGray
-                    //self.livePhotoModeButton.setTitle(NSLocalizedString("Live Photo Mode: Off", comment: "Live photo mode button off title"), for: [])
                 }
             }
         }
