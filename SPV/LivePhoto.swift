@@ -27,14 +27,14 @@ class LivePhoto : Media {
     }
     
     init(directoryURL: URL) {
-        self.directoryURL = directoryURL
+        self.directoryURL = directoryURL.ensureFileURL()
         
         let dirURLWithoutExtension = directoryURL.deletingPathExtension()
         let filename = dirURLWithoutExtension.lastPathComponent
         
-        imageURL = URL(fileURLWithPath: directoryURL.appendingPathComponent("\(filename).jpeg").absoluteString)
-        videoURL = URL(fileURLWithPath:directoryURL.appendingPathComponent("\(filename).mov").absoluteString)
-        heicURL = URL(fileURLWithPath:directoryURL.appendingPathComponent("\(filename).heic").absoluteString)
+        imageURL = URL(string: directoryURL.appendingPathComponent("\(filename).jpeg").absoluteString)!.ensureFileURL()
+        videoURL = URL(string: directoryURL.appendingPathComponent("\(filename).mov").absoluteString)!.ensureFileURL()
+        heicURL = URL(string: directoryURL.appendingPathComponent("\(filename).heic").absoluteString)!.ensureFileURL()
 
         super.init(fileURL: directoryURL)
     }

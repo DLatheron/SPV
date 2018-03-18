@@ -9,7 +9,7 @@ import UIKit
 import AVFoundation
 import Photos
 
-class CameraViewController: UIViewController, AVCaptureFileOutputRecordingDelegate {
+class CameraViewController: UIViewController {
     private enum SelfTimerMode {
         case on
         case off
@@ -276,6 +276,7 @@ extension CameraViewController {
         }
         
         super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.barTintColor = UIColor.white
     }
 }
 
@@ -424,7 +425,9 @@ extension CameraViewController {
 //    }
     
     @IBAction private func toggleMovieRecording(_ captureButton: UIButton) {
-        guard let movieFileOutput = self.movieFileOutput else {
+        guard
+            let movieFileOutput = self.movieFileOutput
+        else {
             return
         }
         
@@ -477,107 +480,18 @@ extension CameraViewController {
             }
         }
     }
-    
-    func fileOutput(_ output: AVCaptureFileOutput,
-                    didStartRecordingTo fileURL: URL,
-                    from connections: [AVCaptureConnection]) {
-        // Enable the Record button to let the user stop the recording.
-        DispatchQueue.main.async {
-            self.captureButton.isEnabled = true
-            self.zoomButton.isHidden = false
-            
-            let recordingSize: CGFloat = 32
-            let recordingCornerRadius: CGFloat = recordingSize / 4
-            
-            self.animateCaptureButtonChanges(size: recordingSize,
-                                             cornerRadius: recordingCornerRadius)
-        }
-    }
-    
-    func fileOutput(_ output: AVCaptureFileOutput,
-                    didFinishRecordingTo outputFileURL: URL,
-                    from connections: [AVCaptureConnection],
-                    error: Error?) {
-        /*
-         Note that currentBackgroundRecordingID is used to end the background task
-         associated with this recording. This allows a new recording to be started,
-         associated with a new UIBackgroundTaskIdentifier, once the movie file output's
-         `isRecording` property is back to false — which happens sometime after this method
-         returns.
-         
-         Note: Since we use a unique file path for each recording, a new recording will
-         not overwrite a recording currently being saved.
-         */
-        func cleanUp() {
-            let path = outputFileURL.path
-            if FileManager.default.fileExists(atPath: path) {
-                do {
-                    try FileManager.default.removeItem(atPath: path)
-                } catch {
-                    print("Could not remove file at url: \(outputFileURL)")
-                }
-            }
-            
-            if let currentBackgroundRecordingID = backgroundRecordingID {
-                backgroundRecordingID = UIBackgroundTaskInvalid
-                
-                if currentBackgroundRecordingID != UIBackgroundTaskInvalid {
-                    UIApplication.shared.endBackgroundTask(currentBackgroundRecordingID)
-                }
-            }
-        }
-        
-        var success = true
-        
-        if error != nil {
-            print("Movie file finishing error: \(String(describing: error))")
-            success = (((error! as NSError).userInfo[AVErrorRecordingSuccessfullyFinishedKey] as AnyObject).boolValue)!
-        }
-        
-        if success {
-            // Check authorization status.
-            PHPhotoLibrary.requestAuthorization { status in
-                if status == .authorized {
-                    // Save the movie file to the photo library and cleanup.
-                    PHPhotoLibrary.shared().performChanges({
-                        let options = PHAssetResourceCreationOptions()
-                        options.shouldMoveFile = true
-                        let creationRequest = PHAssetCreationRequest.forAsset()
-                        creationRequest.addResource(with: .video, fileURL: outputFileURL, options: options)
-                    }, completionHandler: { success, error in
-                        if !success {
-                            print("Could not save movie to photo library: \(String(describing: error))")
-                        }
-                        cleanUp()
-                    }
-                    )
-                } else {
-                    cleanUp()
-                }
-            }
-        } else {
-            cleanUp()
-        }
-        
-        // Enable the Camera and Record buttons to let the user switch camera and start another recording.
-        DispatchQueue.main.async {
-            // Only enable the ability to change camera if the device has more than one camera.
-            self.cameraButton.isEnabled = self.videoDeviceDiscoverySession.uniqueDevicePositionsCount > 1
-            self.captureModeButton.isEnabled = true
-            
-            let regularSize: CGFloat = 48
-            let regularCornerRadius: CGFloat = regularSize / 2
-            
-            self.animateCaptureButtonChanges(size: regularSize,
-                                             cornerRadius: regularCornerRadius)
-        }
-    }
+
     
     // MARK: KVO and Notifications
     
     private func addObservers() {
         let keyValueObservation = session.observe(\.isRunning, options: .new) { _, change in
-            guard let isSessionRunning = change.newValue else { return }
+            guard
+                let isSessionRunning = change.newValue
+            else {
+                return
+            }
+            
             let isLivePhotoCaptureSupported = self.photoOutput.isLivePhotoCaptureSupported
             let isLivePhotoCaptureEnabled = self.photoOutput.isLivePhotoCaptureEnabled
 //            let isDepthDeliveryDataSupported = self.photoOutput.isDepthDataDeliverySupported
@@ -769,7 +683,11 @@ extension CameraViewController {
     }
     
     @objc func sessionRuntimeError(notification: NSNotification) {
-        guard let error = notification.userInfo?[AVCaptureSessionErrorKey] as? AVError else { return }
+        guard
+            let error = notification.userInfo?[AVCaptureSessionErrorKey] as? AVError
+        else {
+            return
+        }
         
         print("Capture session runtime error: \(error)")
         
@@ -919,8 +837,10 @@ extension CameraViewController {
         
         if let videoPreviewLayerConnection = previewView.videoPreviewLayer.connection {
             let deviceOrientation = UIDevice.current.orientation
-            guard let newVideoOrientation = AVCaptureVideoOrientation(deviceOrientation: deviceOrientation),
-                deviceOrientation.isPortrait || deviceOrientation.isLandscape else {
+            guard
+                let newVideoOrientation = AVCaptureVideoOrientation(deviceOrientation: deviceOrientation),
+                deviceOrientation.isPortrait || deviceOrientation.isLandscape
+            else {
                     return
             }
             
@@ -1350,6 +1270,130 @@ extension CameraViewController {
     }
 }
 
+//
+// MARK: AVCaptureFileOutputRecordingDelegate
+//
+extension CameraViewController : AVCaptureFileOutputRecordingDelegate {
+    func fileOutput(_ output: AVCaptureFileOutput,
+                    didStartRecordingTo fileURL: URL,
+                    from connections: [AVCaptureConnection]) {
+        // Enable the Record button to let the user stop the recording.
+        DispatchQueue.main.async {
+            self.captureButton.isEnabled = true
+            self.zoomButton.isHidden = false
+            
+            let recordingSize: CGFloat = 32
+            let recordingCornerRadius: CGFloat = recordingSize / 4
+            
+            self.animateCaptureButtonChanges(size: recordingSize,
+                                             cornerRadius: recordingCornerRadius)
+        }
+    }
+
+    func fileOutput(_ output: AVCaptureFileOutput,
+                    didFinishRecordingTo outputFileURL: URL,
+                    from connections: [AVCaptureConnection],
+                    error: Error?) {
+        /*
+         Note that currentBackgroundRecordingID is used to end the background task
+         associated with this recording. This allows a new recording to be started,
+         associated with a new UIBackgroundTaskIdentifier, once the movie file output's
+         `isRecording` property is back to false — which happens sometime after this method
+         returns.
+         
+         Note: Since we use a unique file path for each recording, a new recording will
+         not overwrite a recording currently being saved.
+         */
+        func cleanUp() {
+            let path = outputFileURL.path
+            if FileManager.default.fileExists(atPath: path) {
+                do {
+                    try FileManager.default.removeItem(atPath: path)
+                } catch {
+                    print("Could not remove file at url: \(outputFileURL)")
+                }
+            }
+            
+            if let currentBackgroundRecordingID = backgroundRecordingID {
+                backgroundRecordingID = UIBackgroundTaskInvalid
+                
+                if currentBackgroundRecordingID != UIBackgroundTaskInvalid {
+                    UIApplication.shared.endBackgroundTask(currentBackgroundRecordingID)
+                }
+            }
+        }
+        
+        var success = true
+        
+        if error != nil {
+            print("Movie file finishing error: \(String(describing: error))")
+            success = (((error! as NSError).userInfo[AVErrorRecordingSuccessfullyFinishedKey] as AnyObject).boolValue)!
+        }
+        
+        if success {
+            //
+            // Video
+            //
+            if let localVideoURL =
+                MediaManager.GetNextFileURL(filenamePrefix: "CameraVideo-",
+                                            numberOfDigits: 6,
+                                            filenamePostfix: ".mov") {
+                do {
+                    try FileManager.default.moveItem(at: outputFileURL,
+                                                     to: localVideoURL)
+                    
+                    _ = MediaManager.shared.addMedia(url: localVideoURL)
+                } catch {
+                    print("Failed to write the video: \(error)")
+                }
+            } else {
+                print("Failed to make a local filename for a video")
+            }
+
+//            // Check authorization status.
+//            PHPhotoLibrary.requestAuthorization { status in
+//                if status == .authorized {
+//                    // Save the movie file to the photo library and cleanup.
+//                    PHPhotoLibrary.shared().performChanges({
+//                        let options = PHAssetResourceCreationOptions()
+//                        options.shouldMoveFile = true
+//
+//                        let creationRequest = PHAssetCreationRequest.forAsset()
+//                        creationRequest.addResource(with: .video,
+//                                                    fileURL: outputFileURL,
+//                                                    options: options)
+//                    }, completionHandler: { success, error in
+//                        if !success {
+//                            print("Could not save movie to photo library: \(String(describing: error))")
+//                        }
+//                        cleanUp()
+//                    }
+//                    )
+//                } else {
+//                    cleanUp()
+//                }
+//            }
+            
+            cleanUp()
+        } else {
+            cleanUp()
+        }
+        
+        // Enable the Camera and Record buttons to let the user switch camera and start another recording.
+        DispatchQueue.main.async {
+            // Only enable the ability to change camera if the device has more than one camera.
+            self.cameraButton.isEnabled = self.videoDeviceDiscoverySession.uniqueDevicePositionsCount > 1
+            self.captureModeButton.isEnabled = true
+            
+            let regularSize: CGFloat = 48
+            let regularCornerRadius: CGFloat = regularSize / 2
+            
+            self.animateCaptureButtonChanges(size: regularSize,
+                                             cornerRadius: regularCornerRadius)
+        }
+    }
+}
+
 extension AVCaptureVideoOrientation {
     init?(deviceOrientation: UIDeviceOrientation) {
         switch deviceOrientation {
@@ -1385,7 +1429,6 @@ extension AVCaptureDevice.DiscoverySession {
         return uniqueDevicePositions.count
     }
 }
-
 
 
 //
