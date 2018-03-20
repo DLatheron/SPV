@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SPV Image Gallery</title>
+
+        <meta charset="UTF-8">
+        <meta name="author" content="Ellipse Software Ltd.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="css/spv.css">
+
+        <script src="lib/lodash.core.js"></script>
+        <script src="lib/jquery-3.3.1.js"></script>
+
+        <script type="module">
+            import { pageLoaded } from '/src/gallery.js';
+            window.onPageLoaded = pageLoaded;
+        </script>
+    </head>
+    <body onload="myFunction()">
+        <script>
+            function myFunction() {
+                window.onPageLoaded();
+            }
+        </script>
+    </body>
+
+    <h1>SPV Gallery</h1>
+    <hr/>
+    <div class="screen">
+        <div class="Bol"></div>
+    </div>
+
+    <div id="sortBar">
+        <label>Sort By:</label>
+        <select id="sortBy"></select>
+        <label>Direction:</label>
+        <select id="direction"></select>
+        <label>Quantity:</label>
+        <select id="quantity"></select>
+    </div>
+
+    <div id="gallery" />
+
+    </body>
+</html>
+

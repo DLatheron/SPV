@@ -63,6 +63,7 @@
 		F98751DA205EB3D9008637A7 /* AVCaptureDevice.DiscoverySessionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98751D9205EB3D9008637A7 /* AVCaptureDevice.DiscoverySessionExtensions.swift */; };
 		F98751DC205EB834008637A7 /* HTTPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98751DB205EB834008637A7 /* HTTPServer.swift */; };
 		F98751DD205EBE29008637A7 /* Swifter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F98751DE205EBE29008637A7 /* Swifter.framework */; };
+		F98751E02061AA2D008637A7 /* ServerRoot in Resources */ = {isa = PBXBuildFile; fileRef = F98751DF2061AA2D008637A7 /* ServerRoot */; };
 		F9B1026D2057B7130076B924 /* Rotatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B1026C2057B7130076B924 /* Rotatable.swift */; };
 		F9B1026F205C33F70076B924 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B1026E205C33F70076B924 /* PreviewView.swift */; };
 		F9B10271205C341F0076B924 /* PhotoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B10270205C341F0076B924 /* PhotoCaptureDelegate.swift */; };
@@ -206,6 +207,7 @@
 		F98751D9205EB3D9008637A7 /* AVCaptureDevice.DiscoverySessionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureDevice.DiscoverySessionExtensions.swift; sourceTree = "<group>"; };
 		F98751DB205EB834008637A7 /* HTTPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPServer.swift; sourceTree = "<group>"; };
 		F98751DE205EBE29008637A7 /* Swifter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Swifter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F98751DF2061AA2D008637A7 /* ServerRoot */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ServerRoot; sourceTree = SOURCE_ROOT; };
 		F9B1026C2057B7130076B924 /* Rotatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotatable.swift; sourceTree = "<group>"; };
 		F9B1026E205C33F70076B924 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		F9B10270205C341F0076B924 /* PhotoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureDelegate.swift; sourceTree = "<group>"; };
@@ -568,6 +570,7 @@
 		F9BABAA81F28F92F00000D9B /* SPV */ = {
 			isa = PBXGroup;
 			children = (
+				F98751DF2061AA2D008637A7 /* ServerRoot */,
 				F9C8DA321FCF36D8002BB2D5 /* Authentication */,
 				F9C8DA301FCF1F92002BB2D5 /* Authentication.storyboard */,
 				F9E25C281FE19509009D9DF7 /* PINEntryMode.swift */,
@@ -818,6 +821,7 @@
 				F9BABAB11F28F92F00000D9B /* Main.storyboard in Resources */,
 				F92E1B0B203B3DD200A5436C /* LivePhotoTest2.livephoto in Resources */,
 				F9E25C2B1FE26631009D9DF7 /* MediaViewer.storyboard in Resources */,
+				F98751E02061AA2D008637A7 /* ServerRoot in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
