@@ -5,9 +5,25 @@ import { ImageStore } from '/src/ImageStore.js';
 
 const imageStore = new ImageStore();
 
-const quantities = [ 5, 10, 20, 'All' ];
+const quantities = [
+    { value: 5 },
+    { value: 10 },
+    { value: 20 },
+    { value: 'All' }
+];
+const sortByItems = [
+    { value: 'name' },
+    { value: 'date' },
+    { value: 'size' },
+    { value: 'rating' }
+];
+const directionItems = [
+    { value: 'ascending' },
+    { value: 'descending' }
+];
 
-function makeOption(value, text = value) {
+function makeOption({ value, text }) {
+    text = text || value;
     return `<option value='${value}'>${text}</option>`;
 }
 
@@ -19,6 +35,7 @@ function refreshGallery() {
 
     imageStore.getImages(sortBy, direction, offset, quantity, (error) => {
         const galleryDiv = $('#gallery').first();
+        galleryDiv.empty();
         imageStore.addToElement(galleryDiv);
     });
 }
@@ -38,21 +55,18 @@ function onQuantityChange(event) {
     refreshGallery();
 }
 
+function populateSelectBox(selector, onChange, options) {
+    const selectBox = $(selector);
+    selectBox.change(onChange);
+    options.forEach(item => selectBox.append(makeOption(item)));
+}
+
 export function pageLoaded() {
     console.log('pageLoaded');
 
-    $('#sortBy').change(onSortByChange)
-        .append(makeOption('name'))
-        .append(makeOption('date'))
-        .append(makeOption('size'))
-        .append(makeOption('rating'));
-
-    $('#direction').change(onDirectionChange)
-        .append(makeOption('up', 'ascending'))
-        .append(makeOption('down', 'descending'));
-
-    $('#quantity').change(onQuantityChange)
-    quantities.forEach(quantity => $('#quantity').append(makeOption(quantity)));
+    populateSelectBox('#sortBy', onSortByChange, sortByItems);
+    populateSelectBox('#direction', onDirectionChange, directionItems);
+    populateSelectBox('#quantity', onQuantityChange, quantities);
 
     refreshGallery();
 }
