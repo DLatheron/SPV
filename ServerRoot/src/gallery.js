@@ -11,19 +11,29 @@ const quantities = [
     { value: 3 },
     { value: 4 },
     { value: 5 },
-    { value: 10 },
+    { value: 10, default: true },
     { value: 20 },
     { value: 'all' }
 ];
 const sortByItems = [
-    { value: 'name' },
+    { value: 'name', default: true },
     { value: 'date' },
     { value: 'size' },
     { value: 'rating' }
 ];
 const directionItems = [
-    { value: 'ascending' },
+    { value: 'ascending', default: true },
     { value: 'descending' }
+];
+const thumbnailSizes = [
+    { value:  64, text: 'tiny' },
+    { value: 128, text: 'small', default: true },
+    { value: 256, text: 'medium' },
+    { value: 512, text: 'large' },
+];
+const displayModes = [
+    { value: 'aspect' },
+    { value: 'crop', default: true }
 ];
 let imageRanges = [];
 
@@ -48,6 +58,14 @@ function getImageRange() {
     return parseInt($('#imageRange').first().val() || 0);
 }
 
+function getSize() {
+    return parseInt($('#size').first().val());
+}
+
+function getDisplayMode() {
+    return $('#displayMode').first().val();
+}
+
 function onSortByChange(event) {
     console.log(`Sort By changed to ${event.target.value}`);
     requestImages();
@@ -67,6 +85,16 @@ function onQuantityChange(event, previousFirstImage) {
 function onImageRangeChange(event) {
     console.log(`Image range changed to ${event.target.value}`);
     requestImages();
+}
+
+function onSizeChange(event) {
+    console.log(`Thumbnail size changed to ${event.target.value}`);
+    refreshImages();
+}
+
+function onDisplayModeChamge(event) {
+    console.log(`Display mode changed to ${event.target.value}`);
+    refreshImages();
 }
 
 function makeOption({ value, text }) {
@@ -134,10 +162,19 @@ function requestImages() {
     const offset = getImageRange();
 
     imageStore.getImages(sortBy, direction, offset, quantity, (error) => {
-        const galleryDiv = $('#gallery').first();
-        galleryDiv.empty();
-        imageStore.addToElement(galleryDiv);
+        refreshImages();
     });
+}
+
+function refreshImages() {
+    const dimension = getSize();
+    const displayMode = getDisplayMode();
+
+    imageStore.resizeImagesTo(dimension, dimension, (displayMode === 'aspect'));
+
+    const galleryDiv = $('#gallery').first();
+    galleryDiv.empty();
+    imageStore.addToElement(galleryDiv);
 }
 
 function populateSelectBox(selector, options) {
@@ -148,6 +185,11 @@ function populateSelectBox(selector, options) {
         selectBox.attr('disabled', 'disabled');
     } else {
         selectBox.removeAttr('disabled');
+    }
+
+    const defaultOption = options.find(item => item.default);
+    if (defaultOption) {
+        selectBox.val(defaultOption.value);
     }
 }
 
@@ -176,10 +218,19 @@ export function pageLoaded() {
             onImageRangeChange(event);
             previousFirstImage = parseInt(this.value);
         });
+    $('#size').change(onSizeChange);
+    $('#displayMode').change(onDisplayModeChamge);
 
     populateSelectBox('#sortBy', sortByItems);
     populateSelectBox('#direction', directionItems);
     populateSelectBox('#quantity', quantities);
+    populateSelectBox('#size', thumbnailSizes);
+    populateSelectBox('#displayMode', displayModes);
+
+    // $('#sortBy').val('name');
+    // $('#direction').val('ascending');
+    // $('#quantity').val(10);
+    // $('#size').val(128);
 
     imageStore.getImageTotals((error) => {
         updateImageRanges(0, imageStore.totalImages);
