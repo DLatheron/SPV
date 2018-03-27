@@ -6,14 +6,35 @@
         <meta charset="UTF-8">
         <meta name="author" content="Ellipse Software Ltd.">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/favicon/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="stylesheet" href="css/spv.css">
+        <link rel="stylesheet" href="lib/jquery-ui-1.12.1.custom/jquery-ui.css">
 
         <script src="lib/lodash.core.js"></script>
         <script src="lib/jquery-3.3.1.js"></script>
+        <script src="lib/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 
         <script type="module">
-            import { pageLoaded } from '/src/gallery.js';
+            import { pageLoaded } from '/src/Gallery.js';
             window.onPageLoaded = pageLoaded;
         </script>
     </head>
@@ -38,6 +59,10 @@
         <select id="direction"></select>
         <label>Image Range:</label>
         <select id="imageRange"></select>
+        <button id="first">|&lt;</button>
+        <button id="prev">&lt;</button>
+        <button id="next">&gt;</button>
+        <button id="last">&gt;|</button>
         <label>Quantity:</label>
         <select id="quantity"></select>
         <label>Size:</label>
@@ -46,7 +71,28 @@
         <select id="displayMode"></select>
     </div>
 
-    <div id="gallery" />
+    <hr/>
+
+    <div id="downloadModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p></p>
+            <div id='#progressBar'></div>
+        </div>
+    </div>
+
+    <div id="gallery"></div>
+
+    <hr/>
+
+    <div id="selectionBar">
+        <label>Selection:</label>
+        <button id="selectAll">All</button>
+        <button id="selectInvert">Invert</button>
+        <button id="selectNone">None</button>
+        <button id="downloadSelected">Download Selected</button>
+        <button id="downloadAll">Download All</button>
+    </div>
 
     </body>
 </html>

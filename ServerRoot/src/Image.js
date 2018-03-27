@@ -1,7 +1,8 @@
 'use strict';
 
 export class Image {
-    constructor({ name, title, alt = 'TODO', thumbnailUrl, resourceUrl, width, height }) {
+    constructor({ index, name, title, alt = 'TODO', thumbnailUrl, resourceUrl, width, height }) {
+        this.index = index;
         this.name = name;
         this.title = title;
         this.alt = alt;
@@ -30,11 +31,18 @@ export class Image {
     }
 
     addToElement(element) {
+        const horizontalWidth = this.thumbnailWidth + 16;
+        const verticalWidth = horizontalWidth + 20;
+
         element
             .append(`
-<div class="img">
+<div class="img" style="width: ${horizontalWidth}px; height: ${verticalWidth}px;">
     <a target="_blank" href="${this.resourceUrl}">
     <img src="${this.thumbnailUrl}" alt="${this.alt}" width="${this.thumbnailWidth}" height="${this.thumbnailHeight}" title="${this.title}" /></a>
+    <div class="title" style="width: ${this.thumbnailWidth}px">
+        <input type="checkbox" type="checkbox" value="selection" class="checkbox" index="${this.index}" />
+        <label for="selection">${this.name}</label>
+    </div>
 </div>`);
     }
 }

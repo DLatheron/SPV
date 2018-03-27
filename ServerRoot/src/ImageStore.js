@@ -10,7 +10,7 @@ const testImageData = [
     { name: 'Test03', width:  259, height:  194, title: 'Test03', thumbnailUrl: '/images/Test03.jpg', resourceUrl: '/images/Test03.jpg', size: 5, rating: 3, date: '2018-01-02T00:00:00Z' },
     { name: 'Test04', width:  259, height:  194, title: 'Test04', thumbnailUrl: '/images/Test04.png', resourceUrl: '/images/Test04.png', size: 4, rating: 4, date: '2018-01-01T00:00:00Z' },
     { name: 'Test05', width: 3840, height: 2160, title: 'Test05', thumbnailUrl: '/images/Test05.jpg', resourceUrl: '/images/Test05.jpg', size: 3, rating: 5, date: '2018-01-06T00:00:00Z' },
-    { name: 'Test07', width:  850, height:  567, title: 'Test07', thumbnailUrl: '/images/Test07.gif', resourceUrl: '/images/Test07.gif', size: 2, rating: 1, date: '2018-01-05T00:00:00Z' }
+    { name: 'Test07 with a really long name', width:  850, height:  567, title: 'Test07', thumbnailUrl: '/images/Test07.gif', resourceUrl: '/images/Test07.gif', size: 2, rating: 1, date: '2018-01-05T00:00:00Z' }
 ];
 
 export class ImageStore {
@@ -94,9 +94,9 @@ export class ImageStore {
                 this.setImageData(imageData, totalImages);
                 callback();
             },
-            error: (error) => {
-                alert('Failed to get image data from server: \(error)');
-                callback(error);
+            error: (jqXHR, textStatus, errorThrown) => {
+                alert(`Failed to get image data from server: ${errorThrown}`);
+                callback(textStatus);
             }
         });
     }
@@ -105,7 +105,7 @@ export class ImageStore {
         this.totalImages = totalImages;
         this.totalPages = Math.ceil(totalImages / this.limit);
 
-        this.images = imageData.map(data => new Image(data));
+        this.images = imageData.map((data, index) => new Image(Object.assign({}, data, { index })));
     }
 
     addToElement(element) {
