@@ -1,5 +1,5 @@
 'use strict';
-/* globals console, $, _ , alert */
+/* globals $, _, alert */
 
 import { ImageStore } from '/src/ImageStore.js';
 import { Modal } from '/src/Modal.js';
@@ -8,7 +8,7 @@ import { ImageDownloader } from '/src/ImageDownloader.js';
 export class Gallery {
     constructor() {
         this.imageStore = new ImageStore();
-        this.selection = [];
+        this.selection = {};
 
         this.quantities = [
             { value: 1 },
@@ -37,8 +37,8 @@ export class Gallery {
             { value: 512, text: 'large' },
         ];
         this.displayModes = [
-            { value: 'aspect' },
-            { value: 'crop', default: true }
+            { value: 'aspect', default: true },
+            { value: 'crop' }
         ];
         this.imageRanges = [];
 
@@ -122,33 +122,27 @@ export class Gallery {
     }
 
     onSortByChange(event) {
-        console.log(`Sort By changed to ${event.target.value}`);
         this.requestImages();
     }
 
     onDirectionChange(event) {
-        console.log(`Direction changed to ${event.target.value}`);
         this.requestImages();
     }
 
     onQuantityChange(event, previousFirstImage) {
-        console.log(`Quantity changed to ${event.target.value}`);
         this.updateImageRanges(previousFirstImage, this.getQuantity());
         this.requestImages();
     }
 
     onImageRangeChange(event) {
-        console.log(`Image range changed to ${event.target.value}`);
         this.requestImages();
     }
 
     onSizeChange(event) {
-        console.log(`Thumbnail size changed to ${event.target.value}`);
         this.refreshImages();
     }
 
     onDisplayModeChamge(event) {
-        console.log(`Display mode changed to ${event.target.value}`);
         this.refreshImages();
     }
 
@@ -182,8 +176,6 @@ export class Gallery {
             const endImage = Math.min(startImage + batchSize, this.imageStore.totalImages);
             const imageRange = this.formatRange(startImage, endImage, maxDigits);
             this.imageRanges.push({ value: startImage, text: imageRange });
-
-            console.log(`${startImage + 1} => ${imageRange}`);
         }
 
         this.populateSelectBox('#imageRange', this.imageRanges);
@@ -206,7 +198,6 @@ export class Gallery {
             const startImage = rangeToSelect.value;
             const endImage = Math.min(startImage + quantity, this.imageStore.totalImages + 1);
             $('#imageRange').val(startImage);
-            console.log(`Offset ${offset} contained in range ${startImage} - ${endImage - 1}`);
         }
     }
 
@@ -232,6 +223,7 @@ export class Gallery {
         this.imageStore.addToElement(galleryDiv);
 
         $('input.checkbox').click(this.onCheckboxClick.bind(this));
+        this.refreshUISelection();
     }
 
     populateSelectBox(selector, options) {
@@ -315,42 +307,85 @@ export class Gallery {
         this.enableElement('#prev', !isFirst);
         this.enableElement('#next', !isLast);
         this.enableElement('#imageRange', !isFirst && !isLast);
+
+        const anySelected = !_.isEqual(this.selection, this.selectNone());
+        const allSelected = _.isEqual(this.selection, this.selectAll());
+
+        this.enableElement('#selectAll', !allSelected);
+        this.enableElement('#selectNone', anySelected);
+        this.enableElement('#downloadSelected', anySelected);
     }
 
     onCheckboxClick(event) {
-        const index = parseInt(event.target.attributes['index'].value);
-        console.log(`Clicked ${index}`);
+        const index = parseInt(event.target.attributes.index.value);
+        if (event.target.checked) {
+            this.selection[index] = event.target.checked;
+        } else {
+            delete this.selection[index];
+        }
+        this.refreshUIState();
+    }
+
+    selectAll() {
+        const totalImages = this.imageStore.totalImages;
+        const selection = {};
+
+        for (let index = 0; index < totalImages; index++) {
+            selection[index] = true;
+        }
+
+        return selection;
+    }
+
+    selectNone() {
+        return [];
+    }
+
+    selectionInvert(currentSelection) {
+        const totalImages = this.imageStore.totalImages;
+        const selection = {};
+
+        for (let index = 0; index < totalImages; index++) {
+            selection[index] = !currentSelection[index];
+        }
+
+        return selection;
+    }
+
+    refreshUISelection() {
+        const checkboxes = $('input.checkbox').toArray();
+        checkboxes.forEach(checkbox => {
+            const index = parseInt(checkbox.attributes.index.value);
+            const isSelected = this.selection[index];
+            checkbox.checked = isSelected;
+        });
+        this.refreshUIState();
     }
 
     onSelectAllClick() {
-
+        this.selection = this.selectAll();
+        this.refreshUISelection();
     }
 
     onSelectNoneClick() {
-
+        this.selection = this.selectNone();
+        this.refreshUISelection();
     }
 
     onSelectInvertClick() {
-
+        this.selection = this.selectionInvert(this.selection);
+        this.refreshUISelection();
     }
 
     onDownloadAllClick() {
-        // TODO:
-        this.downloadImages();
+        this.downloadImages(this.selectAll());
     }
 
     onDownloadSelectedClick() {
-        // TODO: Get selected...
-        this.selection = ['A', 'B'];
-
         this.downloadImages(this.selection);
     }
 
     downloadImages(selection) {
-        if (!selection) {
-            // Download everything!!!
-        }
-
         const modal = new Modal('#downloadModal');
         const imageDownloader = new ImageDownloader();
 
@@ -390,7 +425,5 @@ export class Gallery {
 let gallery;
 
 export function pageLoaded() {
-    console.log('pageLoaded');
-
     gallery = new Gallery();
 }

@@ -39,7 +39,7 @@ export class Image {
 <div class="img" style="width: ${horizontalWidth}px; height: ${verticalWidth}px;">
     <a target="_blank" href="${this.resourceUrl}">
     <img src="${this.thumbnailUrl}" alt="${this.alt}" width="${this.thumbnailWidth}" height="${this.thumbnailHeight}" title="${this.title}" /></a>
-    <div class="title" style="width: ${this.thumbnailWidth}px">
+    <div class="title" style="width: ${this.thumbnailWidth}px; height: ${verticalWidth - this.thumbnailHeight - 20}px">
         <input type="checkbox" type="checkbox" value="selection" class="checkbox" index="${this.index}" />
         <label for="selection">${this.name}</label>
     </div>

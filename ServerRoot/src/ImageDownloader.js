@@ -4,6 +4,12 @@ export class ImageDownloader {
     }
 
     prepareDownload(selection, callback) {
+        if (selection === undefined) {
+            // TODO: Download everything...
+        } else {
+            // TODO: Download just the selected media.
+        }
+
         setTimeout(() => {
             callback(null, {
                 progressUrl: '/downloadProgress/1234'

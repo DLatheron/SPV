@@ -48,12 +48,26 @@ div.img img {
 }
 
 div.title {
+    position: relative;
     text-align: left;
     text-overflow: ellipsis;
     padding-top: 3px;
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
+}
+
+input.checkbox {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+div.title label {
+    position: absolute;
+    bottom: 8px;
+    left: 20px;
+    width: 80px;
 }
 
 div.img {
