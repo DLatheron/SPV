@@ -22,20 +22,63 @@ class HTTPServer {
     private let ipAddress = HTTPServer.GetIPAddress()
     
     init() {
-        server["/"] = scopes {
-            html {
-                body {
-                    center {
-                        img { src = "https://swift.org/assets/images/swift.svg" }
-                    }
-                    
-                    a {
-                        href = "/files/"
-                        inner = "Access Files"
-                    }                    
-                }
-            }
+//        server["/"] = scopes {
+//            html {
+//                body {
+//                    center {
+//                        img { src = "https://swift.org/assets/images/swift.svg" }
+//                    }
+//
+//                    a {
+//                        href = "/files/"
+//                        inner = "Access Files"
+//                    }
+//                }
+//            }
+//        }
+        let serverRootURL = Bundle.main.resourceURL!.appendingPathComponent("ServerRoot/");
+        
+        server["/"] = shareFile(serverRootURL.appendingPathComponent("index.html").path)
+        server["/html/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("html/").path)
+        server["/lib/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("lib/").path)
+        server["/css/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("css/").path)
+        server["/favicon/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("favicon/").path)
+        server["/src/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("src/").path)
+        server["/imageCount"] = { (HttpRequest) -> HttpResponse in
+            // TODO: Return the number of images in a JSON blob...
+            print("Request received")
+            
+            return HttpResponse.internalServerError
         }
+        server["/images"] = { (HttpRequest) -> HttpResponse in
+            print("Request received")
+            
+            // TODO: Access sort, direction, skip and limit to form the query.
+            
+            return HttpResponse.internalServerError
+        }
+        server["/downloadImages"] = { (HttpRequest) -> HttpResponse in
+            print("Request received")
+            
+            // TODO: Work out what we need to zip and create a job for it...
+            
+            return HttpResponse.internalServerError
+        }
+        server["/downloadProgress/:id"] = { (HttpRequest) -> HttpResponse in
+            print("Request received")
+            
+            // TODO: Work out what we need to zip and create a job for it...
+            
+            return HttpResponse.internalServerError
+        }
+        server["/downloads/:id/:file.zip"] = { (HttpRequest) -> HttpResponse in
+            print("Request received")
+            
+            // TODO: Work out what we need to zip and create a job for it...
+            
+            return HttpResponse.internalServerError
+        }
+
     }
     
     func activate() {
@@ -58,6 +101,46 @@ class HTTPServer {
         } catch {
             print("Server start error: \(error)")
             return nil
+        }
+    }
+    
+    public func serveFilesFromDirectory(_ directoryPath: String,
+                                        defaults: [String] = ["index.html", "default.html"]) -> ((HttpRequest) -> HttpResponse) {
+        return { r in
+            guard let fileRelativePath = r.params.first else {
+                return .notFound
+            }
+            if fileRelativePath.value.isEmpty {
+                for path in defaults {
+                    if let file = try? (directoryPath + String.pathSeparator + path).openForReading() {
+                        return .raw(200, "OK", [:], { writer in
+                            try? writer.write(file)
+                            file.close()
+                        })
+                    }
+                }
+            }
+            if let file = try? (directoryPath + String.pathSeparator + fileRelativePath.value).openForReading() {
+                let headers: [String:String]?
+                
+                switch (fileRelativePath.value as NSString).pathExtension.lowercased() {
+                case "js": headers = ["Content-type":"application/javascript"]
+                case "html": headers = ["Content-type":"text/html"]
+                case "json": headers = ["Content-type":"application/json"]
+                case "css": headers = ["Content-type":"text/css"]
+                case "jpg": headers = ["Content-type":"image/jpeg"]
+                case "jpeg": headers = ["Content-type":"image/jpeg"]
+                case "png": headers = ["Content-type":"image/png"]
+                case "gif": headers = ["Content-type":"image/gif"]
+                default: headers = ["Content-type":"text/plain"]
+                }
+                
+                return .raw(200, "OK", headers, { writer in
+                    try? writer.write(file)
+                    file.close()
+                })
+            }
+            return .notFound
         }
     }
     

@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         copyTestResources()
+        
+        HTTPServer.shared.activate()
     
         MediaManager.shared.scanForMedia(atPath: documentsURL)
         
