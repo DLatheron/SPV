@@ -1,7 +1,8 @@
 'use strict';
 
 export class Image {
-    constructor({ index, name, title, alt = 'TODO', thumbnailUrl, resourceUrl, width, height }) {
+    constructor({ id, index, name, title, alt = 'TODO', thumbnailUrl, resourceUrl, width, height, imageUrl, videoUrl }) {
+        this.id = id;
         this.index = index;
         this.name = name;
         this.title = title;
@@ -10,6 +11,8 @@ export class Image {
         this.resourceUrl = resourceUrl;
         this.width = width;
         this.height = height;
+        this.imageUrl = imageUrl;
+        this.videoUrl = videoUrl;
         this.fitToAspect = true;
     }
 
@@ -27,21 +30,98 @@ export class Image {
             this.thumbnailHeight = height;
         }
 
+        this.containerWidth = width;
+        this.containerHeight = height;
+
         this.fitToAspect = fitToAspect;
     }
 
+    container() {
+        if (this.imageUrl && this.videoUrl) {
+            return this.livePhotoContainer();
+        } else {
+            return this.imageContainer();
+        }
+    }
+
+    imageContainer() {
+        const horizontalBorder = (this.containerWidth - this.thumbnailWidth) / 2.0;
+        const verticalBorder = (this.containerWidth - this.thumbnailHeight) / 2.0;
+
+        return `
+            <img
+                src="${this.thumbnailUrl}"
+                alt="${this.alt}"
+                width="${this.thumbnailWidth}"
+                height="${this.thumbnailHeight}"
+                title="${this.title}"
+                style="
+                    margin: 0;
+                    padding-top: ${verticalBorder}px;
+                    padding-bottom: ${verticalBorder}px;
+                    padding-left: ${horizontalBorder}px;
+                    padding-right: ${horizontalBorder}px;
+                "
+            />`;
+    }
+
+    livePhotoContainer() {
+        const horizontalBorder = (this.containerWidth - this.thumbnailWidth) / 2.0;
+        const verticalBorder = (this.containerWidth - this.thumbnailHeight) / 2.0;
+
+        return `
+            <span
+                id="${this.id}"
+                class="livePhoto"
+                data-live-photo
+                data-photo-mime-type="image/jpeg"
+                data-video-mime-type="video/quicktime"
+                width="${this.thumbnailWidth}"
+                height="${this.thumbnailHeight}"
+                data-photo-src="${this.imageUrl}"
+                data-video-src="${this.videoUrl}"
+                style="
+                    margin: 0;
+                    width: ${this.thumbnailWidth}px;
+                    height: ${this.thumbnailHeight}px;
+                    padding-top: ${verticalBorder}px;
+                    padding-bottom: ${verticalBorder}px;
+                    padding-left: ${horizontalBorder}px:
+                    padding-right: ${horizontalBorder}px;
+                "
+            </span>`;
+    }
+
     addToElement(element) {
-        const horizontalWidth = this.thumbnailWidth + 16;
-        const verticalWidth = horizontalWidth + 20;
+        const bottomHeight = 20;
+        const checkboxInset = 20;
+        const container = this.containerWidth + 16;
+        const containerHeight = this.containerHeight + 16 + bottomHeight;
 
         element
             .append(`
-<div class="img" style="width: ${horizontalWidth}px; height: ${verticalWidth}px;">
+<div class="img" style="width: ${container}px; height: ${containerHeight}px;">
     <a target="_blank" href="${this.resourceUrl}">
-    <img src="${this.thumbnailUrl}" alt="${this.alt}" width="${this.thumbnailWidth}" height="${this.thumbnailHeight}" title="${this.title}" /></a>
-    <div class="title" style="width: ${this.thumbnailWidth}px; height: ${verticalWidth - this.thumbnailHeight - 20}px">
-        <input type="checkbox" type="checkbox" value="selection" class="checkbox" index="${this.index}" />
-        <label for="selection">${this.name}</label>
+        ${this.container()}
+    </a>
+    <div
+        class="title"
+        style="
+            width: ${this.containerWidth}px;
+            height: ${bottomHeight}px
+        "
+    >
+        <input
+            type="checkbox"
+            type="checkbox"
+            value="selection"
+            class="checkbox"
+            index="${this.index}"
+        />
+        <label
+            for="selection"
+            style="width: ${this.containerWidth - checkboxInset}px"
+        >${this.name}</label>
     </div>
 </div>`);
     }

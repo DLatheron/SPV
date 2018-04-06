@@ -9,6 +9,7 @@
 import Foundation
 import Swifter
 import Dispatch
+import SwiftyJSON
 
 class HTTPServer {
     enum HTTPServerError: Error {
@@ -37,6 +38,7 @@ class HTTPServer {
 //            }
 //        }
         let serverRootURL = Bundle.main.resourceURL!.appendingPathComponent("ServerRoot/");
+        let mediaManager = MediaManager.shared
         
         server["/"] = shareFile(serverRootURL.appendingPathComponent("index.html").path)
         server["/html/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("html/").path)
@@ -45,17 +47,127 @@ class HTTPServer {
         server["/favicon/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("favicon/").path)
         server["/src/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("src/").path)
         server["/imageCount"] = { (HttpRequest) -> HttpResponse in
-            // TODO: Return the number of images in a JSON blob...
-            print("Request received")
+            let json: [String:Any] = [
+                "totalImages": mediaManager.count
+            ]
             
-            return HttpResponse.internalServerError
+            return self.sendJSON(json as AnyObject)
         }
-        server["/images"] = { (HttpRequest) -> HttpResponse in
-            print("Request received")
+        server["/thumbnail/:id"] = { (request: HttpRequest) -> HttpResponse in
+            if let idParam = request.params[":id"] {
+                if let uuid = UUID(uuidString: idParam) {
+                    if let media = mediaManager.getMedia(byId: uuid) {
+                        return self.serve(filename: media.fileURL.path)
+                    }
+                }
+            }
+            return .notFound
+        }
+        server["/image/:id"] = { (request: HttpRequest) -> HttpResponse in
+            if let idParam = request.params[":id"] {
+                if let uuid = UUID(uuidString: idParam) {
+                    if let media = mediaManager.getMedia(byId: uuid) {
+                        return self.serve(filename: media.fileURL.path)
+                    }
+                }
+            }
+            return .notFound
+        }
+//        server["/livephoto/image/:id"] = { (request: HttpRequest) -> HttpResponse in
+//            if let idParam = request.params[":id"] {
+//                if let uuid = UUID(uuidString: idParam) {
+//                    if let livePhoto = mediaManager.getMedia(byId: uuid) as! LivePhoto? {
+//                        return self.serve(filename: livePhoto.imageURL.path)
+//                    }
+//                }
+//            }
+//            return .notFound
+//        }
+        server["/video/:id"] = { (request: HttpRequest) -> HttpResponse in
+            if let idParam = request.params[":id"] {
+                if let uuid = UUID(uuidString: idParam) {
+                    if let livePhoto = mediaManager.getMedia(byId: uuid) as! LivePhoto? {
+                        return self.serve(filename: livePhoto.videoURL.path)
+                    }
+                }
+            }
+            return .notFound
+        }
+        server["/images"] = { (request: HttpRequest) -> HttpResponse in
+            // TODO: Access all of the media, sort it, pull the limit number from the offset and return
+            // those as a JSON blob.
+            let mediaCollection = mediaManager.media
             
-            // TODO: Access sort, direction, skip and limit to form the query.
+            let paramSort = request.queryParams.first(where: { $0.0 == "sort" })?.1 ?? "date"
+            let paramDirection = request.queryParams.first(where: { $0.0 == "direction" })?.1 ?? "ascending"
+            let paramSkip = request.queryParams.first(where: { $0.0 == "skip" })?.1 ?? "0"
+            let paramLimit = request.queryParams.first(where: { $0.0 == "limit" })?.1
             
-            return HttpResponse.internalServerError
+            let sortBy: SortBy
+            
+            switch paramSort {
+            case "name": sortBy = .Name
+            case "natural": sortBy = .None
+            case "date": sortBy = .Added
+            case "size": sortBy = .Size
+            case "rating": sortBy = .Rating
+            default: sortBy = .Created
+            }
+            
+            let direction = (paramDirection == "ascending")
+                ? Direction.Ascending
+                : Direction.Descending
+            
+            var sortedMediaCollection = sortBy.sort(media: mediaCollection,
+                                                    direction: direction)
+            
+            if let skip = Int(paramSkip) {
+                if skip > 0 {
+                    sortedMediaCollection.removeFirst(skip)
+                }
+            }
+            
+            if let paramLimit = paramLimit {
+                if let limit = Int(paramLimit) {
+                    if limit > 0 {
+                        let quantityToRemove = (sortedMediaCollection.count - limit)
+                        if quantityToRemove > 0 {
+                            sortedMediaCollection.removeLast(quantityToRemove)
+                        }
+                    }
+                }
+            }
+            
+            var imageData = [[String:Any]]()
+            
+            for (index, media) in sortedMediaCollection.enumerated() {
+                var data = [String:Any]()
+                
+                data["id"] = media.id.uuidString
+                data["index"] = index
+                data["name"] = media.filename
+                data["title"] = media.filename
+                data["alt"] = media.filename
+                data["thumbnailUrl"] = "/thumbnail/\(media.id)"
+                data["resourceUrl"] = "/image/\(media.id)"
+                data["width"] = media.mediaInfo.resolution.width
+                data["height"] = media.mediaInfo.resolution.height
+                data["fitToAspect"] = true
+                
+                if media is LivePhoto {
+                    data["imageUrl"] = "/image/\(media.id)"
+                    data["videoUrl"] = "/video/\(media.id)"
+                }
+                
+                imageData.append(data)
+            }
+            
+            let json: [String:Any] = [
+                "totalImages": mediaManager.count,
+                "imageData": imageData
+            ]
+            
+            return self.sendJSON(json as AnyObject)
         }
         server["/downloadImages"] = { (HttpRequest) -> HttpResponse in
             print("Request received")
@@ -104,6 +216,10 @@ class HTTPServer {
         }
     }
     
+    public func sendJSON(_ json: AnyObject) -> HttpResponse {
+        return .ok(.json(json))
+    }
+    
     public func serveFilesFromDirectory(_ directoryPath: String,
                                         defaults: [String] = ["index.html", "default.html"]) -> ((HttpRequest) -> HttpResponse) {
         return { r in
@@ -120,28 +236,33 @@ class HTTPServer {
                     }
                 }
             }
-            if let file = try? (directoryPath + String.pathSeparator + fileRelativePath.value).openForReading() {
-                let headers: [String:String]?
-                
-                switch (fileRelativePath.value as NSString).pathExtension.lowercased() {
-                case "js": headers = ["Content-type":"application/javascript"]
-                case "html": headers = ["Content-type":"text/html"]
-                case "json": headers = ["Content-type":"application/json"]
-                case "css": headers = ["Content-type":"text/css"]
-                case "jpg": headers = ["Content-type":"image/jpeg"]
-                case "jpeg": headers = ["Content-type":"image/jpeg"]
-                case "png": headers = ["Content-type":"image/png"]
-                case "gif": headers = ["Content-type":"image/gif"]
-                default: headers = ["Content-type":"text/plain"]
-                }
-                
-                return .raw(200, "OK", headers, { writer in
-                    try? writer.write(file)
-                    file.close()
-                })
-            }
-            return .notFound
+            
+            return self.serve(filename: directoryPath + String.pathSeparator + fileRelativePath.value)
         }
+    }
+    
+    func serve(filename: String) -> HttpResponse {
+        if let file = try? (filename).openForReading() {
+            let headers: [String:String]?
+            
+            switch (filename as NSString).pathExtension.lowercased() {
+            case "js": headers = ["Content-type":"application/javascript"]
+            case "html": headers = ["Content-type":"text/html"]
+            case "json": headers = ["Content-type":"application/json"]
+            case "css": headers = ["Content-type":"text/css"]
+            case "jpg": headers = ["Content-type":"image/jpeg"]
+            case "jpeg": headers = ["Content-type":"image/jpeg"]
+            case "png": headers = ["Content-type":"image/png"]
+            case "gif": headers = ["Content-type":"image/gif"]
+            default: headers = ["Content-type":"text/plain"]
+            }
+            
+            return .raw(200, "OK", headers, { writer in
+                try? writer.write(file)
+                file.close()
+            })
+        }
+        return .notFound
     }
     
     func deactivate() {

@@ -52,7 +52,7 @@ div.title {
     text-align: left;
     text-overflow: ellipsis;
     padding-top: 3px;
-    display: inline-block;
+    display: block;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -65,9 +65,11 @@ input.checkbox {
 
 div.title label {
     position: absolute;
-    bottom: 8px;
     left: 20px;
-    width: 80px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 div.img {
@@ -75,7 +77,6 @@ div.img {
     padding: 5px;
     box-sizing: border-box;
     background: #f1f1f1;
-    line-height: 0px;
     height: auto;
     width: auto;
     float: left;
@@ -96,6 +97,12 @@ div.img img
 {
   display: inline-block;
   margin: 3px;
+}
+
+.livePhoto
+{
+    display: inline-block;
+    background-color: yellow;
 }
 
 @keyframes bgfade

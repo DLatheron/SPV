@@ -1,5 +1,5 @@
 'use strict';
-/* globals $, _, alert */
+/* globals $, _, alert, document, LivePhotosKit */
 
 import { ImageStore } from '/src/ImageStore.js';
 import { Modal } from '/src/Modal.js';
@@ -21,7 +21,8 @@ export class Gallery {
             { value: 'all' }
         ];
         this.sortByItems = [
-            { value: 'name', default: true },
+            { value: 'none', default: true },
+            { value: 'name' },
             { value: 'date' },
             { value: 'size' },
             { value: 'rating' }
@@ -221,6 +222,14 @@ export class Gallery {
         const galleryDiv = $('#gallery').first();
         galleryDiv.empty();
         this.imageStore.addToElement(galleryDiv);
+
+        $('span.livePhoto').each((index, element) => {
+            // const id = element.id;
+            // const image = this.imageStore.getImage(id);
+
+            const player = LivePhotosKit.augmentElementAsPlayer(element);
+            player.playbackStyle = LivePhotosKit.PlaybackStyle.HINT;
+        });
 
         $('input.checkbox').click(this.onCheckboxClick.bind(this));
         this.refreshUISelection();

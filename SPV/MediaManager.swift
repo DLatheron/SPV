@@ -153,8 +153,8 @@ class MediaManager {
                                 directoryPostfix: directoryPostfix)
     }
     
-    func getMedia(byId id: UUID) -> Media {
-        return idToMedia[id]!
+    func getMedia(byId id: UUID) -> Media? {
+        return idToMedia[id]
     }
     
     public var count: Int {

@@ -31,6 +31,12 @@ class Media : NSObject {
         }
     }
     
+    var index: Int {
+        get {
+            return MediaManager.shared.media.index(of: self)!
+        }
+    }
+    
     var filename: String {
         get {
             return fileURL.lastPathComponent
