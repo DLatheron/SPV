@@ -41,6 +41,28 @@ class HTTPServer {
         let mediaManager = MediaManager.shared
         
         server["/"] = shareFile(serverRootURL.appendingPathComponent("index.html").path)
+        server["/livephoto/:id"] = { (request: HttpRequest) -> HttpResponse in
+            if let idParam = request.params[":id"] {
+                if let uuid = UUID(uuidString: idParam) {
+                    if let media = mediaManager.getMedia(byId: uuid) {
+                        let width = media.mediaInfo.resolution.width / 5
+                        let height = media.mediaInfo.resolution.height / 5
+                        
+                        return self.returnTemplatedFile(
+                            serverRootURL.appendingPathComponent("livephoto.html").path,
+                            templates: [
+                                "%width%": "\(width)",
+                                "%height%": "\(height)",
+                                "%photo-src%": "/image/\(media.id)",
+                                "%video-src%": "/video/\(media.id)",
+                                "%url%": "/image/\(media.id)"
+                           ]
+                        )
+                    }
+                }
+            }
+            return .notFound
+        }
         server["/html/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("html/").path)
         server["/lib/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("lib/").path)
         server["/css/:path"] = serveFilesFromDirectory(serverRootURL.appendingPathComponent("css/").path)
@@ -67,27 +89,24 @@ class HTTPServer {
             if let idParam = request.params[":id"] {
                 if let uuid = UUID(uuidString: idParam) {
                     if let media = mediaManager.getMedia(byId: uuid) {
-                        return self.serve(filename: media.fileURL.path)
+                        return self.serve(filename: media.getImageURL.path)
                     }
                 }
             }
             return .notFound
         }
-//        server["/livephoto/image/:id"] = { (request: HttpRequest) -> HttpResponse in
-//            if let idParam = request.params[":id"] {
-//                if let uuid = UUID(uuidString: idParam) {
-//                    if let livePhoto = mediaManager.getMedia(byId: uuid) as! LivePhoto? {
-//                        return self.serve(filename: livePhoto.imageURL.path)
-//                    }
-//                }
-//            }
-//            return .notFound
-//        }
         server["/video/:id"] = { (request: HttpRequest) -> HttpResponse in
             if let idParam = request.params[":id"] {
                 if let uuid = UUID(uuidString: idParam) {
-                    if let livePhoto = mediaManager.getMedia(byId: uuid) as! LivePhoto? {
-                        return self.serve(filename: livePhoto.videoURL.path)
+                    if let media = mediaManager.getMedia(byId: uuid) {
+                        switch media {
+                        case let media as LivePhoto:
+                            return self.serve(filename: media.videoURL.path)
+                        case let media as Video:
+                            return self.serve(filename: media.fileURL.path)
+                        default:
+                            return .notFound
+                        }
                     }
                 }
             }
@@ -154,9 +173,14 @@ class HTTPServer {
                 data["height"] = media.mediaInfo.resolution.height
                 data["fitToAspect"] = true
                 
+                if media is Video {
+                    data["resourceUrl"] = "/video/\(media.id)"
+                }
+                
                 if media is LivePhoto {
                     data["imageUrl"] = "/image/\(media.id)"
                     data["videoUrl"] = "/video/\(media.id)"
+                    data["resourceUrl"] = "/livephoto/\(media.id)"
                 }
                 
                 imageData.append(data)
@@ -220,6 +244,23 @@ class HTTPServer {
         return .ok(.json(json))
     }
     
+    public func returnTemplatedFile(_ path: String, templates: [String: String]) -> HttpResponse {
+        do {
+            var text = try String(contentsOf: URL(fileURLWithPath: path),
+                                  encoding: .utf8)
+            for (name, replacement) in templates {
+                text = text.replacingOccurrences(of: name,
+                                                 with: replacement)
+            }
+            
+            return .ok(.text(text))
+        }
+        catch {
+            print("Server error: \(error)")
+            return .internalServerError
+        }
+    }
+    
     public func serveFilesFromDirectory(_ directoryPath: String,
                                         defaults: [String] = ["index.html", "default.html"]) -> ((HttpRequest) -> HttpResponse) {
         return { r in
@@ -254,6 +295,8 @@ class HTTPServer {
             case "jpeg": headers = ["Content-type":"image/jpeg"]
             case "png": headers = ["Content-type":"image/png"]
             case "gif": headers = ["Content-type":"image/gif"]
+            case "mov": headers = ["Content-type":"video/quicktime"]
+            case "mp4": headers = ["Content-type":"video/mp4"]
             default: headers = ["Content-type":"text/plain"]
             }
             
