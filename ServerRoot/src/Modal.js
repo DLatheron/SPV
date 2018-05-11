@@ -9,6 +9,13 @@ export class Modal {
         return this.progressBar.progressbar('value');
     }
 
+    set status(message) {
+        this.text.text(message);
+    }
+    get status() {
+        return this.text.text;
+    }
+
     constructor(selector) {
         this.modal = $(selector);
         this.closeSpan = $(`${selector} > close`).first();

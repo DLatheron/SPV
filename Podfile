@@ -12,6 +12,7 @@ target 'SPV' do
   pod 'Cosmos', '~> 11.0'
   pod 'Bluuur'
   pod 'Swifter', '~> 1.3.2'
+  pod 'Zip', '~> 1.1'
   
   target 'SPVTests' do
     inherit! :search_paths

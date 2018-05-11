@@ -10,6 +10,40 @@ import Foundation
 import Swifter
 import Dispatch
 import SwiftyJSON
+import Zip
+
+class ZipOperation {
+    let downloadId: UUID
+    let zipArchiveURL: URL
+    
+    var fileURLs: [URL] = []
+    var progress: Double = 0
+    
+    init() {
+        self.downloadId = UUID()
+        self.zipArchiveURL = HTTPServer.DocumentsDirectoryURL.appendingPathComponent("Downloads/\(downloadId).zip")
+    }
+    
+    func add(url: URL) {
+        fileURLs.append(url)
+    }
+    
+    func beginZip() -> Bool {
+        if fileURLs.count > 0 {
+            try? Zip.zipFiles(paths: fileURLs,
+                              zipFilePath: zipArchiveURL,
+                              password: nil,
+                              progress: self.updateProgress)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    private func updateProgress(_ progress: Double) {
+        self.progress = progress
+    }
+}
 
 class HTTPServer {
     enum HTTPServerError: Error {
@@ -21,22 +55,9 @@ class HTTPServer {
     private let server = HttpServer()
     private let sessionQueue = DispatchQueue(label: "http queue")
     private let ipAddress = HTTPServer.GetIPAddress()
+    private var zipOperations: [UUID: ZipOperation] = [:]
     
     init() {
-//        server["/"] = scopes {
-//            html {
-//                body {
-//                    center {
-//                        img { src = "https://swift.org/assets/images/swift.svg" }
-//                    }
-//
-//                    a {
-//                        href = "/files/"
-//                        inner = "Access Files"
-//                    }
-//                }
-//            }
-//        }
         let serverRootURL = Bundle.main.resourceURL!.appendingPathComponent("ServerRoot/");
         let mediaManager = MediaManager.shared
         
@@ -198,23 +219,86 @@ class HTTPServer {
             
             // TODO: Work out what we need to zip and create a job for it...
             
-            return HttpResponse.internalServerError
+            return .internalServerError
         }
-        server["/downloadProgress/:id"] = { (HttpRequest) -> HttpResponse in
-            print("Request received")
+        server["/downloadProgress/:id"] = { (request: HttpRequest) -> HttpResponse in
+            print("/downloadProgress/\(request.params[":id"] ?? "")")
             
-            // TODO: Work out what we need to zip and create a job for it...
+            if let idParam = request.params[":id"] {
+                if let downloadId = UUID(uuidString: idParam) {
+                    if let operation = self.zipOperations[downloadId] {
+                        var response: [String: Any] = [
+                            "downloadId": JSONHelper.ToString(uuid: downloadId),
+                            "status": "pending",
+                            "progress": operation.progress * 100
+                        ]
+                        
+                        if operation.progress == 1{
+                            response["downloadUrl"] = "/downloads/\(downloadId)"
+                            response["status"] = "done"
+                        }
+                        
+                        return self.sendJSON(response as AnyObject)
+                    }
+                }
+            }
             
-            return HttpResponse.internalServerError
+            return .internalServerError
         }
-        server["/downloads/:id/:file.zip"] = { (HttpRequest) -> HttpResponse in
-            print("Request received")
-            
-            // TODO: Work out what we need to zip and create a job for it...
-            
-            return HttpResponse.internalServerError
-        }
+        server["/downloads/:id"] = { (request: HttpRequest) -> HttpResponse in
+            print("/downloads/\(request.params[":id"] ?? "")")
 
+            if let idParam = request.params[":id"] { // TODO: Filter off the .zip bit...
+                if let downloadId = UUID(uuidString: idParam) {
+                    if let operation = self.zipOperations[downloadId] {
+                        if operation.progress == 1 {
+                            return self.serve(filename: operation.zipArchiveURL.path)
+                        } else {
+                            return .raw(503, "Not available", nil, nil)
+                        }
+                    }
+                }
+            }
+
+            return .internalServerError
+        }
+        server["prepareImagesForDownload"] = { (request: HttpRequest) -> HttpResponse in
+            print("/prepareImagesForDownload")
+
+            if let bodyString = String(bytes: request.body,
+                                       encoding: .utf8) {
+                if let json = JSONHelper.ToJSON(fromString: bodyString) {
+                    let zipOperation = ZipOperation()
+
+                    for (key, subJson):(String, JSON) in json {
+                        if let id = JSONHelper.ToUUID(string: subJson.stringValue) {
+                            print("\(key):\(id)")
+
+                            if let media = mediaManager.getMedia(byId: id) {
+                                let imageURL = media.getImageURL
+                                zipOperation.add(url: imageURL)
+                            }
+                        }
+                    }
+                    
+                    if zipOperation.beginZip() {
+                        self.zipOperations[zipOperation.downloadId] = zipOperation
+                        
+                        let response: [String:Any] = [
+                            "downloadId": JSONHelper.ToString(uuid: zipOperation.downloadId)
+                        ]
+        
+                        return self.sendJSON(response as AnyObject)
+                    }
+                }
+            }
+            
+            return .badRequest(nil)
+        }
+//        server["isReadyForDownload"] = { (request: HttpRequest) -> HttpResponse in
+//
+//            return .internalServerError
+//        }
     }
     
     func activate() {
@@ -297,6 +381,7 @@ class HTTPServer {
             case "gif": headers = ["Content-type":"image/gif"]
             case "mov": headers = ["Content-type":"video/quicktime"]
             case "mp4": headers = ["Content-type":"video/mp4"]
+            case "zip": headers = ["Content-type":"application/zip"]
             default: headers = ["Content-type":"text/plain"]
             }
             

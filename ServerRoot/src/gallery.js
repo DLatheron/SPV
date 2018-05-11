@@ -328,7 +328,7 @@ export class Gallery {
     onCheckboxClick(event) {
         const index = parseInt(event.target.attributes.index.value);
         if (event.target.checked) {
-            this.selection[index] = event.target.checked;
+            this.selection[index] = this.imageStore.images[index].id;
         } else {
             delete this.selection[index];
         }
@@ -340,7 +340,9 @@ export class Gallery {
         const selection = {};
 
         for (let index = 0; index < totalImages; index++) {
-            selection[index] = true;
+            if (this.imageStore.images[index]) {
+                selection[index] = this.imageStore.images[index].id;
+            }
         }
 
         return selection;
@@ -355,7 +357,9 @@ export class Gallery {
         const selection = {};
 
         for (let index = 0; index < totalImages; index++) {
-            selection[index] = !currentSelection[index];
+            if (!currentSelection[index]) {
+                selection[index] = this.imageStore.images[index].id;
+            }
         }
 
         return selection;
@@ -365,7 +369,7 @@ export class Gallery {
         const checkboxes = $('input.checkbox').toArray();
         checkboxes.forEach(checkbox => {
             const index = parseInt(checkbox.attributes.index.value);
-            const isSelected = this.selection[index];
+            const isSelected = !!this.selection[index];
             checkbox.checked = isSelected;
         });
         this.refreshUIState();
@@ -400,18 +404,19 @@ export class Gallery {
 
         imageDownloader.prepareDownload(selection, (error, result) => {
             if (error) {
-                // TODO: Handle the error.
-                return;
+                modal.status = error;
+                return modal.close(2000);
             }
 
             imageDownloader.waitForPreparationToComplete(
+                result.downloadId,
                 (progress) => {
                     modal.progress = progress;
                 },
                 (error, results) => {
                     if (error) {
-                        // TODO: Handle the error.
-                        return;
+                        modal.status = error;
+                        return modal.close(2000);
                     }
 
                     modal.progress = 100;

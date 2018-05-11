@@ -45,8 +45,8 @@ class JSONHelper {
     class func ToJSON(fromString jsonString: String) -> JSON? {
         if let dataFromString = jsonString.data(using: .utf8,
                                                 allowLossyConversion: false) {
-            return JSON(data: dataFromString,
-                        options: .allowFragments)
+            return try? JSON(data: dataFromString,
+                             options: .allowFragments)
         } else {
             return nil
         }

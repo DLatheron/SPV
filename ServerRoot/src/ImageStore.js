@@ -5,13 +5,13 @@ import { Image } from '/src/Image.js';
 
 const testing = false;
 const testImageData = [
-    { index: 0, name: 'Test01', width:  251, height:  201, title: 'Test01\nThis is text', thumbnailUrl: '/images/Test01.jpg', resourceUrl: '/images/Test01.jpg', size: 7, rating: 1, date: '2018-01-04T00:00:00Z' },
-    { index: 1, name: 'Test02', width:  227, height:  222, title: 'Test02', thumbnailUrl: '/images/Test02.jpg', resourceUrl: '/images/Test02.jpg', size: 6, rating: 2, date: '2018-01-03T00:00:00Z' },
-    { index: 2, name: 'Test03', width:  259, height:  194, title: 'Test03', thumbnailUrl: '/images/Test03.jpg', resourceUrl: '/images/Test03.jpg', size: 5, rating: 3, date: '2018-01-02T00:00:00Z' },
-    { index: 3, name: 'Test04', width:  259, height:  194, title: 'Test04', thumbnailUrl: '/images/Test04.png', resourceUrl: '/images/Test04.png', size: 4, rating: 4, date: '2018-01-01T00:00:00Z' },
-    { index: 4, name: 'Test05', width: 3840, height: 2160, title: 'Test05', thumbnailUrl: '/images/Test05.jpg', resourceUrl: '/images/Test05.jpg', size: 3, rating: 5, date: '2018-01-06T00:00:00Z' },
-    { index: 5, name: 'Test07 with a really long name', width:  850, height:  567, title: 'Test07', thumbnailUrl: '/images/Test07.gif', resourceUrl: '/images/Test07.gif', size: 2, rating: 1, date: '2018-01-05T00:00:00Z' },
-    { index: 6, name: 'LivePhotoTest', width:  3024, height: 4032, title: 'LivePhotoTest', thumbnailUrl: '/images/Test07.gif', resourceUrl: '/livephoto.html', size: 2, rating: 1, date: '2018-01-05T00:00:00Z', imageUrl: '/images/LivePhotoTest.jpeg', videoUrl: '/images/LivePhotoTest.mov' }
+    { id: 'id0', index: 0, name: 'Test01', width:  251, height:  201, title: 'Test01\nThis is text', thumbnailUrl: '/images/Test01.jpg', resourceUrl: '/images/Test01.jpg', size: 7, rating: 1, date: '2018-01-04T00:00:00Z' },
+    { id: 'id1', index: 1, name: 'Test02', width:  227, height:  222, title: 'Test02', thumbnailUrl: '/images/Test02.jpg', resourceUrl: '/images/Test02.jpg', size: 6, rating: 2, date: '2018-01-03T00:00:00Z' },
+    { id: 'id2', index: 2, name: 'Test03', width:  259, height:  194, title: 'Test03', thumbnailUrl: '/images/Test03.jpg', resourceUrl: '/images/Test03.jpg', size: 5, rating: 3, date: '2018-01-02T00:00:00Z' },
+    { id: 'id3', index: 3, name: 'Test04', width:  259, height:  194, title: 'Test04', thumbnailUrl: '/images/Test04.png', resourceUrl: '/images/Test04.png', size: 4, rating: 4, date: '2018-01-01T00:00:00Z' },
+    { id: 'id4', index: 4, name: 'Test05', width: 3840, height: 2160, title: 'Test05', thumbnailUrl: '/images/Test05.jpg', resourceUrl: '/images/Test05.jpg', size: 3, rating: 5, date: '2018-01-06T00:00:00Z' },
+    { id: 'id5', index: 5, name: 'Test07 with a really long name', width:  850, height:  567, title: 'Test07', thumbnailUrl: '/images/Test07.gif', resourceUrl: '/images/Test07.gif', size: 2, rating: 1, date: '2018-01-05T00:00:00Z' },
+    { id: 'id6', index: 6, name: 'LivePhotoTest', width:  3024, height: 4032, title: 'LivePhotoTest', thumbnailUrl: '/images/Test07.gif', resourceUrl: '/livephoto.html', size: 2, rating: 1, date: '2018-01-05T00:00:00Z', imageUrl: '/images/LivePhotoTest.jpeg', videoUrl: '/images/LivePhotoTest.mov' }
 ];
 
 export class ImageStore {
