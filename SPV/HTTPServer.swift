@@ -21,6 +21,11 @@ class ZipOperation {
     
     init() {
         self.downloadId = UUID()
+        
+        try? FileManager.default.createDirectory(at: HTTPServer.DocumentsDirectoryURL.appendingPathComponent("Downloads/"),
+                                                 withIntermediateDirectories: false,
+                                                 attributes: nil)
+        
         self.zipArchiveURL = HTTPServer.DocumentsDirectoryURL.appendingPathComponent("Downloads/\(downloadId).zip")
     }
     
@@ -214,13 +219,6 @@ class HTTPServer {
             
             return self.sendJSON(json as AnyObject)
         }
-        server["/downloadImages"] = { (HttpRequest) -> HttpResponse in
-            print("Request received")
-            
-            // TODO: Work out what we need to zip and create a job for it...
-            
-            return .internalServerError
-        }
         server["/downloadProgress/:id"] = { (request: HttpRequest) -> HttpResponse in
             print("/downloadProgress/\(request.params[":id"] ?? "")")
             
@@ -230,11 +228,11 @@ class HTTPServer {
                         var response: [String: Any] = [
                             "downloadId": JSONHelper.ToString(uuid: downloadId),
                             "status": "pending",
-                            "progress": operation.progress * 100
+                            "percentage": operation.progress * 100
                         ]
                         
                         if operation.progress == 1{
-                            response["downloadUrl"] = "/downloads/\(downloadId)"
+                            response["downloadUrl"] = "/downloads/\(downloadId).zip"
                             response["status"] = "done"
                         }
                         
@@ -245,10 +243,11 @@ class HTTPServer {
             
             return .internalServerError
         }
-        server["/downloads/:id"] = { (request: HttpRequest) -> HttpResponse in
-            print("/downloads/\(request.params[":id"] ?? "")")
+        server["/downloads/:idAndExtension"] = { (request: HttpRequest) -> HttpResponse in
+            print("/downloads/\(request.params[":idAndExtension"] ?? "")")
 
-            if let idParam = request.params[":id"] { // TODO: Filter off the .zip bit...
+            if let idAndExtensionParam = request.params[":idAndExtension"] {
+                let idParam = (idAndExtensionParam as NSString).deletingPathExtension
                 if let downloadId = UUID(uuidString: idParam) {
                     if let operation = self.zipOperations[downloadId] {
                         if operation.progress == 1 {
@@ -275,8 +274,11 @@ class HTTPServer {
                             print("\(key):\(id)")
 
                             if let media = mediaManager.getMedia(byId: id) {
-                                let imageURL = media.getImageURL
-                                zipOperation.add(url: imageURL)
+                                let fileURLs = media.getFileURLs
+                                
+                                for fileURL in fileURLs {
+                                    zipOperation.add(url: fileURL)
+                                }
                             }
                         }
                     }

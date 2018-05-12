@@ -22,7 +22,16 @@ class LivePhoto : Media {
             return imageURL
         }
     }
-
+    
+    override var getFileURLs: [URL] {
+        get {
+            return [
+                imageURL,
+                videoURL,
+                heicURL
+            ]
+        }
+    }
     
     var resourceFileURLs: [URL] {
         get {

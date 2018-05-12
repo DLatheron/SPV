@@ -49,32 +49,31 @@ export class ImageDownloader {
                     progressCallback(percentage);
 
                     if (status === 'done') {
-                        completionCallback(null, {
-                            downloadUrl
-                        });
+                        if (this.intervalId) {
+                            clearInterval(this.intervalId);
+                            this.intervalId = null;
+
+                            completionCallback(null, {
+                                downloadUrl
+                            });
+                        }
                     }
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
-                    completionCallback(`Failed to download file(s) from the server: ${errorThrown}`);
-                    clearInterval(this.intervalId);
+                    if (this.intervalId) {
+                        clearInterval(this.intervalId);
+                        this.intervalId = null;
+
+                        completionCallback(`Failed to download file(s) from the server: ${errorThrown}`);
+                    }
                 }
             });
         }, 1000);
     }
 
     getDownload(downloadUrl) {
-        clearInterval(this.intervalId);
-
-        window.open(downloadUrl, '_blank');
-        // $.ajax({
-        //     type: 'GET',
-        //     url: downloadUrl,
-        //     success: () => {
-        //         callback();
-        //     },
-        //     error: (jqXHR, textStatus, errorThrown) => {
-        //         callback(`Failed to download file(s) from the server: ${errorThrown}`);
-        //     }
-        // });
+        const fullUrl = `${window.location.origin}${downloadUrl}`;
+        window.location = fullUrl;
+        // window.open(fullUrl, '_blank');
     }
 }

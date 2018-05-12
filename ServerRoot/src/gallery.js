@@ -349,7 +349,7 @@ export class Gallery {
     }
 
     selectNone() {
-        return [];
+        return {};
     }
 
     selectionInvert(currentSelection) {

@@ -19,6 +19,12 @@ class Media : NSObject {
         }
     }
     
+    var getFileURLs: [URL] {
+        get {
+            return [_fileURL]
+        }
+    }
+    
     private var _fileURL: URL
     private(set) var fileURL: URL {
         get {
