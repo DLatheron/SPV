@@ -51,6 +51,7 @@ class MediaCell : UICollectionViewCell {
         if sender.state == .ended {
             DispatchQueue.main.async {
                 self.isSelected = !self.isSelected
+                self.delegate?.mediaCellSelectionChanged(self)
             }
         }
     }
@@ -59,16 +60,17 @@ class MediaCell : UICollectionViewCell {
         DispatchQueue.main.async {
             if self.isSelected {
                 self.isSelected = false
+                self.delegate?.mediaCellSelectionChanged(self)
             } else {
                 self.delegate?.mediaCellClicked(self)
+                self.delegate?.mediaCellSelectionChanged(self)
             }
         }
     }
     
     override var isSelected: Bool {
         didSet {
-            selectedView.isHidden = !self.isSelected
-            delegate?.mediaCellSelectionChanged(self)
+            selectedView.isHidden = !isSelected
         }
     }
     
@@ -76,6 +78,9 @@ class MediaCell : UICollectionViewCell {
         if let typeIndicatorText = mediaExtension.mediaCellTypeIndicator {
             typeIndicatorView.isHidden = false
             typeIndicatorView.text = typeIndicatorText
+        } else {
+            typeIndicatorView.isHidden = true
+            typeIndicatorView.text = ""
         }
     }
     
@@ -97,7 +102,7 @@ class MediaCell : UICollectionViewCell {
         
         let mediaType = media.mediaExtension.type
 
-        imageView.image = media.getImage()        
+        imageView.image = media.getImage()
         isSelected = selected
 
         displayTypeOverlay(mediaExtension: media.mediaExtension)

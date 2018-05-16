@@ -14,7 +14,7 @@ import Bluuur
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let initialTabIndex = 2
+    let initialTabIndex = 0
 
     var window: UIWindow?
     
@@ -270,15 +270,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           ofType srcType: String,
                           toPath dstPath: NSString) {
         let fileManger = FileManager.default
-        var destinationPath = dstPath.appendingPathComponent(srcFilename) as NSString
-        destinationPath = destinationPath.appendingPathExtension(srcType)! as NSString
-        
-        let srcPath = Bundle.main.path(forResource: srcFilename, ofType: srcType)
-        do {
-            try fileManger.copyItem(atPath: srcPath!, toPath: destinationPath as String)
+        var range = 0...4
+        if  srcType != "jpg" {
+            range = 0...0
         }
-        catch let error as NSError {
-            print("Unable to copy test resources because of \(error)")
+        
+        for index in range {
+            var destinationPath = dstPath.appendingPathComponent(srcFilename) as NSString
+            if index > 0 {
+                destinationPath = destinationPath.appending("-\(index)") as NSString
+            }
+            destinationPath = destinationPath.appendingPathExtension(srcType)! as NSString
+            
+            let srcPath = Bundle.main.path(forResource: srcFilename, ofType: srcType)
+            do {
+                try fileManger.copyItem(atPath: srcPath!, toPath: destinationPath as String)
+            }
+            catch let error as NSError {
+                print("Unable to copy test resources because of \(error)")
+            }
         }
     }
     

@@ -36,6 +36,7 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
     fileprivate var sortBy: SortBy = .Added
     fileprivate var direction: Direction = .Ascending
     
+    fileprivate var invertSelectionButton: UIBarButtonItem!
     fileprivate var deleteButton: UIBarButtonItem!
     fileprivate var actionButton: UIBarButtonItem!
     fileprivate var importButton: UIBarButtonItem!
@@ -48,6 +49,7 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
     fileprivate var selectedMedia = Set<Media>() {
         didSet {
             let anyMediaSelected = selectedMedia.count > 0
+            invertSelectionButton.isEnabled = true
             deleteButton.isEnabled = anyMediaSelected
             actionButton.isEnabled = anyMediaSelected
             importButton.isEnabled = !anyMediaSelected
@@ -87,13 +89,17 @@ class AlbumsViewController: UIViewController, UICollectionViewDelegate {
     }
     
     override func awakeFromNib() {
+        invertSelectionButton = UIBarButtonItem(image: UIImage(named: "invertSelection"),
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(invertMediaSelection(_:)))
         deleteButton = UIBarButtonItem(barButtonSystemItem: .trash,
                                        target: self,
                                        action: #selector(deleteSelectedMedia(_:)))
         actionButton = UIBarButtonItem(barButtonSystemItem: .action,
                                        target: self,
                                        action: #selector(actionOnSelectedMedia(_:)))
-        selectedNavButtons = [actionButton, deleteButton]
+        selectedNavButtons = [actionButton, deleteButton, invertSelectionButton]
         
         importButton = UIBarButtonItem(image: UIImage(named: "import"),
                                        style: .plain,
@@ -178,10 +184,12 @@ extension AlbumsViewController : UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as! MediaCell
         let media = getMedia(for: indexPath)
-        let selected = isSelected(media: media)
+        let cellSelected = self.isSelected(media: media)
+        
+        print("cellSelected = \(cellSelected)")
         
         cell.configure(withMedia: media,
-                       isSelected: selected,
+                       isSelected: cellSelected,
                        delegate: self)
         
         return cell
@@ -318,11 +326,14 @@ extension AlbumsViewController : MediaCellDelegate {
     
     func mediaCellSelectionChanged(_ sender: MediaCell) {
         if let media = sender.media {
+            print("- mediaCellSelectionChanged")
             if sender.isSelected {
                 selectedMedia.insert(media)
+                print("selectedMedia inserted")
                 selectMode = true
             } else {
                 selectedMedia.remove(media)
+                print("selectedMedia removed")
             }
         }
     }
@@ -558,6 +569,22 @@ extension AlbumsViewController {
         if clearSelection {
             self.selectMode = false
         }
+    }
+    
+    @objc func invertMediaSelection(_ sender: Any) {
+        var newSelection = Set<Media>()
+        
+        for media in mediaManager.media {
+            if !isSelected(media: media) {
+                newSelection.insert(media)
+            }
+        }
+        
+        selectedMedia.removeAll()
+        for selection in newSelection {
+            selectedMedia.insert(selection)
+        }
+        self.collectionView?.reloadData()
     }
     
     @objc func deleteSelectedMedia(_ sender: Any) {
