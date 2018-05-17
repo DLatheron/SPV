@@ -251,7 +251,8 @@ class HTTPServer {
                 if let downloadId = UUID(uuidString: idParam) {
                     if let operation = self.zipOperations[downloadId] {
                         if operation.progress == 1 {
-                            return self.serve(filename: operation.zipArchiveURL.path)
+                            return self.serve(filename: operation.zipArchiveURL.path,
+                                              autoDelete: true)
                         } else {
                             return .raw(503, "Not available", nil, nil)
                         }
@@ -368,7 +369,8 @@ class HTTPServer {
         }
     }
     
-    func serve(filename: String) -> HttpResponse {
+    func serve(filename: String,
+               autoDelete: Bool = false) -> HttpResponse {
         if let file = try? (filename).openForReading() {
             let headers: [String:String]?
             
@@ -390,6 +392,9 @@ class HTTPServer {
             return .raw(200, "OK", headers, { writer in
                 try? writer.write(file)
                 file.close()
+                if (autoDelete) {
+                    try? FileManager.default.removeItem(atPath: filename)
+                }
             })
         }
         return .notFound
