@@ -315,7 +315,7 @@ export class Gallery {
         this.enableElement('#last', !isLast);
         this.enableElement('#prev', !isFirst);
         this.enableElement('#next', !isLast);
-        this.enableElement('#imageRange', !isFirst && !isLast);
+        this.enableElement('#imageRange', !(isFirst && isLast));
 
         const anySelected = !_.isEqual(this.selection, this.selectNone());
         const allSelected = _.isEqual(this.selection, this.selectAll());

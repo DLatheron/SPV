@@ -14,11 +14,25 @@ class SettingsViewController: UIViewController {
     var settings: Settings = Settings.shared
     var settingsBlock: SettingsBlock!
     var alert: UIAlertController! = nil
+    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     required init?(coder aDecoder: NSCoder) {
         settingsBlock = settings.settingsBlock
 
         super.init(coder: aDecoder)
+    }
+    
+    func registerBackgroundTask() {
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+            self?.endBackgroundTask()
+        }
+        assert(backgroundTask != UIBackgroundTaskInvalid)
+    }
+    
+    func endBackgroundTask() {
+        print("Background task ended.")
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = UIBackgroundTaskInvalid
     }
 }
 
@@ -96,19 +110,33 @@ extension SettingsViewController : SettingChangedDelegate {
     }
     
     func httpServer(setting: SettingT<String>) {
+        func performIfActive(operation: () -> ()) {
+            switch UIApplication.shared.applicationState {
+            case .active:
+                operation()
+            case .background:
+                print("Background time remaining = \(UIApplication.shared.backgroundTimeRemaining) seconds")
+            case .inactive:
+                break
+            }
+        }
+        
         HTTPServer.shared.toggle() { address, error in
             DispatchQueue.main.async {
                 if let error = error {
+                    self.endBackgroundTask()
                     setting.name = "HTTP Server Errored"
                     print("HTTP Server errored: \(error)")
                 } else if let address = address {
+                    self.registerBackgroundTask()
                     setting.name = "HTTP Server Online: \(address)"
                     print("HTTP Server online at \(address)")
                 } else {
+                    self.endBackgroundTask()
                     setting.name = "Start HTTP Server"
                     print("HTTP Server offline")
                 }
-                self.settingsTableView.reloadData()
+                performIfActive { self.settingsTableView.reloadData() }
             }
         }
     }

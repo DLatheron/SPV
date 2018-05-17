@@ -186,8 +186,6 @@ extension AlbumsViewController : UICollectionViewDataSource {
         let media = getMedia(for: indexPath)
         let cellSelected = self.isSelected(media: media)
         
-        print("cellSelected = \(cellSelected)")
-        
         cell.configure(withMedia: media,
                        isSelected: cellSelected,
                        delegate: self)
