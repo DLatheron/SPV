@@ -30,10 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try? Settings.shared.save(toFileURL: Settings.defaultURL)
         }
         
-        copyTestResources()
-        
-        AuthenticationService.shared.clear()
-        
+//        copyTestResources()
+//        AuthenticationService.shared.clear()
 //        HTTPServer.shared.activate()
     
         MediaManager.shared.scanForMedia(atPath: documentsURL)

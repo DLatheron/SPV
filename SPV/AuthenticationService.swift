@@ -39,12 +39,16 @@ class AuthenticationService {
                     return "Unknown"
             }
             
-            switch context.biometryType {
-            case .touchID:
-                return "Touch ID"
-            case .faceID:
-                return "Face ID"
-            default:
+            if Settings.shared.biometricID.value {
+                switch context.biometryType {
+                case .touchID:
+                    return "Touch ID"
+                case .faceID:
+                    return "Face ID"
+                default:
+                    return "Unknown"
+                }
+            } else {
                 return "Unknown"
             }
         }

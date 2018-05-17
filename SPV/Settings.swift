@@ -23,10 +23,9 @@ class SettingsBlock {
 class Settings {
     static var shared: Settings = Settings()
     
-    
     let httpServer = SettingT<String>(name: "Start HTTP Server", value: "HTTPServer", editor: "ButtonCell")
-    let testOne = SettingT<Bool>(name: "Test One", value: true)
-    let testTwo = SettingT<Bool>(name: "Test Two", value: false)
+    let biometricID = SettingT<Bool>(name: "Biometric Authentication", value: true)
+    let autoBiometricID = SettingT<Bool>(name: "Auto Biometric Authentication", value: true)
     let testName = SettingT<String>(name: "Test Name", value: "Nothing")
     let testConstData0 = SettingT<Any>(name: "Const Data #0", value: "Const Data", editor: "ConstDataCell")
     let testConstData1 = SettingT<Any>(name: "Const Data #1", value: 12, editor: "ConstDataCell")
@@ -52,7 +51,6 @@ But still appears correctly - even if there are really long lines of text
     
     init() {
         legalSettingsBlock = SettingsBlock([
-            testTwo,
             textLegalBlurb
         ], name: "Legal")
         
@@ -60,7 +58,8 @@ But still appears correctly - even if there are really long lines of text
 
         settingsBlock = SettingsBlock([
             httpServer,
-            testOne,
+            biometricID,
+            autoBiometricID,
             testName,
             testConstData0,
             testConstData1,
@@ -76,8 +75,8 @@ But still appears correctly - even if there are really long lines of text
         // This will automatically merge in new default settings,
         // but cannot foricbly update existing settings (you have
         // to rename them).
-        testOne.value = json["testOne"].bool ?? true
-        testTwo.value = json["testTwo"].bool ?? false
+        biometricID.value = json["biometricID"].bool ?? true
+        autoBiometricID.value = json["autoBiometricID"].bool ?? true
         testName.value = json["testName"].string ?? ""
         testConstData0.value = json["testConstData0"].rawValue
         testConstData1.value = json["testConstData1"].rawValue
@@ -88,8 +87,8 @@ But still appears correctly - even if there are really long lines of text
     
     internal func writeAsJSON() -> JSON {
         return JSON([
-            "testOne": testOne.value,
-            "testTwo": testTwo.value,
+            "biometricID": biometricID.value,
+            "autoBiometricID": autoBiometricID.value,
             "testName": testName.value,
             "testConstData0": testConstData0.value,
             "testConstData1": testConstData1.value,

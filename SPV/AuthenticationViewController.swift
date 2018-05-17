@@ -50,6 +50,18 @@ class AuthenticationViewController : UIViewController {
         super.viewWillAppear(animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if canUseBiometry
+            && entryMode == .pin
+            && authenticationService.hasBiometry
+            && Settings.shared.biometricID.value
+            && Settings.shared.autoBiometricID.value {
+            performBiometricAuthentication()
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
@@ -91,7 +103,7 @@ extension AuthenticationViewController : PINButtonDelegate {
             pin.backspace()
             refreshPIN()
         } else if character == "*" {
-            if authenticationService.hasBiometry {
+            if authenticationService.hasBiometry && Settings.shared.biometricID.value {
                 performBiometricAuthentication()
             }
         } else {
