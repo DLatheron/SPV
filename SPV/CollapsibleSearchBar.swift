@@ -61,6 +61,8 @@ class CollapsibleSearchBar : UISearchBar {
         textField.leftViewMode = .never
         textField.clearButtonMode = .whileEditing
         textField.rightViewMode = .whileEditing
+        textField.keyboardType = .asciiCapable
+        textField.autocapitalizationType = .none
         
         _urlStringUpdated()
     }
@@ -144,6 +146,7 @@ extension CollapsibleSearchBar {
         setShowsCancelButton(true,
                              animated: true)
         editing = true
+        self.textField.selectAll(nil)
     }
     
     func deactivate() {

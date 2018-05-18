@@ -142,7 +142,21 @@ extension CollapsibleSearchBarViewController : UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchText = self.searchBar.text {
-            delegate?.navigateTo(url: searchText)
+            let pattern = "((http|ftp|https):\\/\\/)?(([\\w.-]*)\\.([\\w]*))"
+            let regex = try? NSRegularExpression(pattern: pattern)
+            let matches = regex?.matches(in: searchText,
+                                         options: [],
+                                         range: NSMakeRange(0, searchText.count))
+            if matches?.count == 1 {
+                print("Probably a URL")
+                
+                delegate?.navigateTo(url: searchText)
+            } else {
+                print("Probably not a URL")
+                let encodedQuery = searchText.replacingOccurrences(of: " ", with: "+")
+                let searchUrl = "https://www.google.com/search?q=\(encodedQuery)"
+                delegate?.navigateTo(url: searchUrl)
+            }
         }
         
         deactivateSearch()

@@ -14,7 +14,7 @@ import Bluuur
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let initialTabIndex = 0
+    let initialTabIndex = 1
 
     var window: UIWindow?
     
